@@ -24,6 +24,6 @@ module.exports = (mongoose) => {
     return object
   })
 
-  const Visit = mongoose.model('tutorial', schema)
+  const Visit = mongoose.model('visit', schema)
   return Visit
 }
