@@ -14,6 +14,8 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 const db = require('./models')
 const dbConfig = require('./config/db')
+const Role = db.role
+
 db.mongoose
   .connect(
     `mongodb+srv://${dbConfig.HOST}:${dbConfig.PWD}@spscluster.sa81d.mongodb.net/${dbConfig.DB}?retryWrites=true&w=majority`,
@@ -24,6 +26,7 @@ db.mongoose
   )
   .then(() => {
     console.log('Connected to the database!')
+    initial()
   })
   .catch((err) => {
     console.log('Cannot connect to the database!', err)
@@ -34,7 +37,7 @@ app.get('/', (req, res) => {
   res.json({ message: 'Welcome to SPSdent app.' })
 })
 
-const initial = () => {
+function initial() {
   Role.estimatedDocumentCount((err, count) => {
     if (!err && count === 0) {
       new Role({
@@ -71,8 +74,8 @@ const initial = () => {
 }
 
 // routes
-require('./app/routes/auth')(app)
-require('./app/routes/user')(app)
+require('./routes/auth')(app)
+require('./routes/user')(app)
 
 const PORT = process.env.PORT || 8080
 
