@@ -21,6 +21,7 @@ import { clearMessage } from '../store/actions/message'
 const RootNavigation = () => {
   const [showSpecBoard, setShowSpecBoard] = useState(false)
   const [showAdminBoard, setShowAdminBoard] = useState(false)
+  const [showUserBoard, setShowUserBoard] = useState(false)
 
   const { user: currentUser } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
@@ -35,6 +36,7 @@ const RootNavigation = () => {
     if (currentUser) {
       setShowSpecBoard(currentUser.roles.includes('ROLE_SPEC'))
       setShowAdminBoard(currentUser.roles.includes('ROLE_ADMIN'))
+      setShowUserBoard(currentUser.roles.includes('ROLE_USER'))
     }
   }, [currentUser])
 
@@ -46,13 +48,10 @@ const RootNavigation = () => {
     <BrowserRouter history={history}>
       <>
         <nav>
-          {showSpecBoard && <SpecNav />}
-          {showAdminBoard && <AdminNav />}
-          {currentUser && <UserNav />}
           {currentUser ? (
             <li>
               <a href='/login' onClick={logOut}>
-                Wylogu
+                Wyloguj
               </a>
             </li>
           ) : (
@@ -60,6 +59,9 @@ const RootNavigation = () => {
               <Link to='/login'>Zaloguj</Link>
             </li>
           )}
+          {showSpecBoard && <SpecNav />}
+          {showAdminBoard && <AdminNav />}
+          {showUserBoard && <UserNav />}
           <NonAuth />
         </nav>
         <>
