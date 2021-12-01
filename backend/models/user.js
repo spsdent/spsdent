@@ -10,7 +10,6 @@ const User = mongoose.model(
     miasto: String,
     ulica: String,
     kodPocztowy: Number,
-    email: String,
     password: String,
     roles: [
       {
