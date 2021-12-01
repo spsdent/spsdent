@@ -24,7 +24,7 @@ const Home = () => {
   return (
     <div>
       <header>
-        <h3>{content}</h3>
+        <h3>Home page</h3>
       </header>
     </div>
   )
