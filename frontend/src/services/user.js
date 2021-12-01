@@ -12,7 +12,7 @@ const getUserBoard = () => {
 }
 
 const getSpecBoard = () => {
-  return axios.get(API_URL + 'mod', { headers: authHeader() })
+  return axios.get(API_URL + 'spec', { headers: authHeader() })
 }
 
 const getAdminBoard = () => {

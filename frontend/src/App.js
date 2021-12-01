@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Router, Switch, Route, Link } from 'react-router-dom'
-import './App.css'
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import Login from './components/Login'
 import Register from './components/Register'
 import Home from './components/Home'
 import Profile from './components/Profile'
 import BoardUser from './components/BoardUser'
-import boardSpec from './components/BoardSpec'
+import BoardSpec from './components/BoardSpec'
 import BoardAdmin from './components/BoardAdmin'
 
-import { logout } from './actions/auth'
-import { clearMessage } from './actions/message'
+import { logout } from './store/actions/auth'
+import { clearMessage } from './store/actions/message'
 
 import { history } from './helpers/history'
-import BoardSpec from './components/BoardSpec'
 
 const App = () => {
   const [showSpecBoard, setShowSpecBoard] = useState(false)
@@ -31,7 +29,7 @@ const App = () => {
 
   useEffect(() => {
     if (currentUser) {
-      setShowSpecBoard(currentUser.roles.includes('ROLE_MODERATOR'))
+      setShowSpecBoard(currentUser.roles.includes('ROLE_SPEC'))
       setShowAdminBoard(currentUser.roles.includes('ROLE_ADMIN'))
     }
   }, [currentUser])
@@ -41,30 +39,30 @@ const App = () => {
   }
 
   return (
-    <Router history={history}>
+    <BrowserRouter history={history}>
       <div>
         <nav>
-          <Link to={'/'}>SPS Dent</Link>
+          <Link to='/'>SPS Dent</Link>
           <div>
             <li>
-              <Link to={'/home'}>Home</Link>
+              <Link to='/home'>Home</Link>
             </li>
 
             {showSpecBoard && (
               <li>
-                <Link to={'/mod'}>Spec Board</Link>
+                <Link to='/spec'>Spec Board</Link>
               </li>
             )}
 
             {showAdminBoard && (
               <li>
-                <Link to={'/admin'}>Admin Board</Link>
+                <Link to='/admin'>Admin Board</Link>
               </li>
             )}
 
             {currentUser && (
               <li>
-                <Link to={'/user'}>User</Link>
+                <Link to='/user'>User</Link>
               </li>
             )}
           </div>
@@ -72,7 +70,7 @@ const App = () => {
           {currentUser ? (
             <div>
               <li>
-                <Link to={'/profile'}>{currentUser.username}</Link>
+                <Link to='/profile'>{currentUser.username}</Link>
               </li>
               <li>
                 <a href='/login' onClick={logOut}>
@@ -83,29 +81,28 @@ const App = () => {
           ) : (
             <div>
               <li>
-                <Link to={'/login'}>Login</Link>
+                <Link to='/login'>Login</Link>
               </li>
 
               <li>
-                <Link to={'/register'}>Sign Up</Link>
+                <Link to='/register'>Sign Up</Link>
               </li>
             </div>
           )}
         </nav>
-
-        <div className='container mt-3'>
-          <Switch>
-            <Route exact path={['/', '/home']} component={Home} />
-            <Route exact path='/login' component={Login} />
-            <Route exact path='/register' component={Register} />
-            <Route exact path='/profile' component={Profile} />
-            <Route path='/user' component={BoardUser} />
-            <Route path='/mod' component={BoardSpec} />
-            <Route path='/admin' component={BoardAdmin} />
-          </Switch>
+        <div>
+          <Routes>
+            <Route exact path='/' element={<Home />} />
+            <Route exact path='login' element={<Login />} />
+            <Route exact path='register' element={<Register />} />
+            <Route exact path='profile' element={<Profile />} />
+            <Route path='user' element={<BoardUser />} />
+            <Route path='spec' element={<BoardSpec />} />
+            <Route path='admin' element={<BoardAdmin />} />
+          </Routes>
         </div>
       </div>
-    </Router>
+    </BrowserRouter>
   )
 }
 

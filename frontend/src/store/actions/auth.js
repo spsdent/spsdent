@@ -7,7 +7,7 @@ import {
   SET_MESSAGE,
 } from './types'
 
-import AuthService from '../services/auth'
+import AuthService from '../../services/auth'
 
 export const register =
   (imie, nazwisko, telefon, miasto, kodPocztowy, ulica, email, password) =>

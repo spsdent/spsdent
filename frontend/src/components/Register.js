@@ -6,7 +6,7 @@ import Input from 'react-validation/build/input'
 import CheckButton from 'react-validation/build/button'
 import { isEmail } from 'validator'
 
-import { register } from '../actions/auth'
+import { register } from '../store/actions/auth'
 
 const required = (value) => {
   if (!value) {
@@ -28,11 +28,61 @@ const validEmail = (value) => {
   }
 }
 
-const vusername = (value) => {
+const vimie = (value) => {
   if (value.length < 3 || value.length > 20) {
     return (
       <div className='alert alert-danger' role='alert'>
-        The username must be between 3 and 20 characters.
+        Imie must be between 3 and 20 characters.
+      </div>
+    )
+  }
+}
+
+const vnazwisko = (value) => {
+  if (value.length < 3 || value.length > 20) {
+    return (
+      <div className='alert alert-danger' role='alert'>
+        Nazwisko must be between 3 and 20 characters.
+      </div>
+    )
+  }
+}
+
+const vtelefon = (value) => {
+  if (value.length < 8 || value.length > 10) {
+    return (
+      <div className='alert alert-danger' role='alert'>
+        Telefon must be have 9 digits.
+      </div>
+    )
+  }
+}
+
+const vmiasto = (value) => {
+  if (value.length < 3 || value.length > 20) {
+    return (
+      <div className='alert alert-danger' role='alert'>
+        Miasto must be between 3 and 20 characters.
+      </div>
+    )
+  }
+}
+
+const vulica = (value) => {
+  if (value.length < 3 || value.length > 20) {
+    return (
+      <div className='alert alert-danger' role='alert'>
+        Ulica must be between 3 and 20 characters.
+      </div>
+    )
+  }
+}
+
+const vkodpocztowy = (value) => {
+  if (value.length < 4 || value.length > 6) {
+    return (
+      <div className='alert alert-danger' role='alert'>
+        Kod pocztowy must be have 5 digits.
       </div>
     )
   }
@@ -108,115 +158,117 @@ const Register = () => {
   const handleRegister = (e) => {
     e.preventDefault()
 
-    setSuccessful(false)
-
-    form.current.validateAll()
-
-    if (checkBtn.current.context._errors.length === 0) {
-      dispatch(
-        register(
-          imie,
-          nazwisko,
-          telefon,
-          miasto,
-          ulica,
-          kodPocztowy,
-          email,
-          password
-        )
+    dispatch(
+      register(
+        imie,
+        nazwisko,
+        telefon,
+        miasto,
+        ulica,
+        kodPocztowy,
+        email,
+        password
       )
-        .then(() => {
-          setSuccessful(true)
-        })
-        .catch(() => {
-          setSuccessful(false)
-        })
-    }
+    )
+      .then(() => {
+        setSuccessful(true)
+      })
+      .catch(() => {
+        setSuccessful(false)
+      })
   }
 
   return (
     <div>
       <div>
-        <Form onSubmit={handleRegister} ref={form}>
+        <form onSubmit={handleRegister} ref={form}>
           {!successful && (
             <div>
               <div>
                 <label htmlFor='imie'>Imie</label>
-                <Input
+                <input
                   type='text'
                   name='imie'
                   value={imie}
                   onChange={onChangeImie}
+                  validations={[required, vimie]}
                 />
               </div>
 
               <div>
                 <label htmlFor='nazwisko'>Nazwisko</label>
-                <Input
+                <input
                   type='text'
                   name='nazwisko'
                   value={nazwisko}
                   onChange={onChangeNazwisko}
+                  validations={[required, vnazwisko]}
                 />
               </div>
 
               <div>
                 <label htmlFor='telefon'>Telefon</label>
-                <Input
+                <input
                   type='text'
                   name='telefon'
                   value={telefon}
                   onChange={onChangeTelefon}
+                  validations={[required, vtelefon]}
                 />
               </div>
 
               <div>
                 <label htmlFor='miasto'>Miasto</label>
-                <Input
+                <input
                   type='text'
                   name='miasto'
                   value={miasto}
                   onChange={onChangeMiasto}
+                  validations={[required, vmiasto]}
                 />
               </div>
 
               <div>
                 <label htmlFor='ulica'>Ulica</label>
-                <Input
+                <input
                   type='text'
                   name='ulica'
                   value={ulica}
                   onChange={onChangeUlica}
+                  validations={[required, vulica]}
                 />
               </div>
 
               <div>
                 <label htmlFor='kodpocztowy'>kodpocztowy</label>
-                <Input
+                <input
                   type='text'
                   name='kodpocztowy'
                   value={kodPocztowy}
                   onChange={onChangeKodPocztowy}
+                  validations={[required, vkodpocztowy]}
                 />
               </div>
 
               <div>
                 <label htmlFor='email'>Email</label>
-                <Input
+                <input
                   type='text'
                   name='email'
                   value={email}
                   onChange={onChangeEmail}
+                  validations={[required, validEmail]}
                 />
               </div>
 
               <div>
                 <label htmlFor='password'>Password</label>
-                <Input
+                <input
                   type='password'
                   name='password'
                   value={password}
                   onChange={onChangePassword}
+                  validations={[required, vpassword]}
                 />
               </div>
 
@@ -231,8 +283,7 @@ const Register = () => {
               <div role='alert'>{message}</div>
             </div>
           )}
-          <CheckButton style={{ display: 'none' }} ref={checkBtn} />
-        </Form>
+        </form>
       </div>
     </div>
   )

@@ -7,8 +7,8 @@ const register = (
   nazwisko,
   telefon,
   miasto,
-  kodPocztowy,
   ulica,
+  kodPocztowy,
   email,
   password
 ) => {
@@ -16,9 +16,9 @@ const register = (
     imie,
     nazwisko,
     telefon,
-    kodPocztowy,
-    ulica,
     miasto,
+    ulica,
+    kodPocztowy,
     email,
     password,
   })
