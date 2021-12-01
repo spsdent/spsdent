@@ -70,6 +70,10 @@ const initial = () => {
   })
 }
 
+// routes
+require('./app/routes/auth')(app)
+require('./app/routes/user')(app)
+
 const PORT = process.env.PORT || 8080
 
 app.listen(PORT, () => {
