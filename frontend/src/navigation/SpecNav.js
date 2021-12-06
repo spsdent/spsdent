@@ -12,6 +12,9 @@ const SpecNav = () => (
     <li>
       <Link to='add-visit'>Zarezerwuj</Link>
     </li>
+    <li>
+      <Link to='/profile'>Ustawienia</Link>
+    </li>
   </>
 )
 

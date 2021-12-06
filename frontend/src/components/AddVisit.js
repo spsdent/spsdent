@@ -207,7 +207,7 @@ const AddVisit = () => {
             <Field as='select' name='usluga'>
               <option value=''>Wybierz usluge...</option>
               <option value='wybielanie'>Wybielanie</option>
-              <option value='Usuwanie'>Usuwanie</option>
+              <option value='usuwanie'>Usuwanie</option>
             </Field>
             {errors.usluga && touched.usluga ? (
               <div>{errors.usluga}</div>

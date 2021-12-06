@@ -3,11 +3,24 @@ import VisitDataService from '../services/visit'
 import { useSelector, useDispatch } from 'react-redux'
 import { refreshApp } from '../store/actions/refresh'
 import { useNavigate } from 'react-router-dom'
+import { Field, Form, Formik, FormikProps } from 'formik'
+import * as Yup from 'yup'
+import useDebounce from '../hooks/useDebounce'
+
+const SearchVisitSchema = Yup.object().shape({
+  usluga: Yup.string().required('Wpisz nazwe uslugi do wyszukania...'),
+})
 
 const VisitsList = () => {
+  const initialState = {
+    usluga: '',
+  }
+  const [visitSearch, setVisitSearch] = useState(initialState)
   const [visitsList, setVisitsList] = useState([])
   const { user: currentUser } = useSelector((state) => state.auth)
   const { refresh: isRefresh } = useSelector((state) => state)
+  const [searchTerm, setSearchTerm] = useState('')
+  const debouncedSearchTerm = useDebounce(searchTerm, 500)
   const dispatch = useDispatch()
   let navigate = useNavigate()
 
@@ -56,10 +69,38 @@ const VisitsList = () => {
     navigate(`/visits/${item.id}`, { state: item })
   }
 
+  // const searchService = (value) => {
+  //   VisitDataService.findByTitle(value.usluga)
+  //     .then((response) => {
+  //       setVisitsList(response.data)
+  //     })
+  //     .catch((e) => console.log(e))
+  // }
+
   return (
     <>
       <h1>Archive Visits List</h1>
       {console.log('wizyty', visitsList)}
+      {/* <Formik
+        initialValues={visitSearch}
+        validationSchema={SearchVisitSchema}
+        onSubmit={(values) => {
+          searchService(values)
+        }}
+      >
+        {({ errors, touched }) => (
+          <Form
+            style={{ display: 'flex', flexDirection: 'column', width: '200px' }}
+          >
+            <label>Usluga</label>
+            <Field name='usluga'></Field>
+            {errors.usluga && touched.usluga ? (
+              <div>{errors.usluga}</div>
+            ) : null}
+            <button type='submit'>Szukaj</button>
+          </Form>
+        )}
+      </Formik> */}
       {visitsList.length > 0 ? (
         visitsList.map((item) => (
           <div

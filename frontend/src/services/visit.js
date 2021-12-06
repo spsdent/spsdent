@@ -25,7 +25,7 @@ const removeAll = () => {
 }
 
 const findByTitle = (title) => {
-  return http.get(`/visits?title=${title}`)
+  return http.get(`/visits?usluga=${title}`)
 }
 
 export default {

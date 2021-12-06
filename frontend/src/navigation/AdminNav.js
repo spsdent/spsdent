@@ -12,6 +12,9 @@ const AdminNav = () => (
     <li>
       <Link to='/archive-visits'>Historia wizyt</Link>
     </li>
+    <li>
+      <Link to='/profile'>Ustawienia</Link>
+    </li>
   </>
 )
 
