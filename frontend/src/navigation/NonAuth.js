@@ -18,6 +18,9 @@ const NonAuth = () => (
     <li>
       <Link to='/'>Kontakt</Link>
     </li>
+    <li>
+      <Link to='add-visit'>Zarezerwuj</Link>
+    </li>
   </>
 )
 

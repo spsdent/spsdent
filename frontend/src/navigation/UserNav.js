@@ -15,6 +15,9 @@ const UserNav = () => (
     <li>
       <Link to='/user'>Panel pacjenta</Link>
     </li>
+    <li>
+      <Link to='add-visit'>Zarezerwuj</Link>
+    </li>
   </>
 )
 

@@ -9,6 +9,9 @@ const SpecNav = () => (
     <li>
       <Link to='/spec'>Historia wizyt</Link>
     </li>
+    <li>
+      <Link to='add-visit'>Zarezerwuj</Link>
+    </li>
   </>
 )
 
