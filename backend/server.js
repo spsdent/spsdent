@@ -4,13 +4,17 @@ const cors = require('cors')
 
 const app = express()
 
-const corsOptions = {
+let corsOptions = {
   origin: 'http://localhost:8081',
 }
 
 app.use(cors(corsOptions))
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+)
 
 const db = require('./models')
 const dbConfig = require('./config/db')
@@ -34,7 +38,9 @@ db.mongoose
   })
 
 app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to SPSdent app.' })
+  res.json({
+    message: 'Welcome to SPSdent app.',
+  })
 })
 
 function initial() {
@@ -76,6 +82,7 @@ function initial() {
 // routes
 require('./routes/auth')(app)
 require('./routes/user')(app)
+require('./routes/visit')(app)
 
 const PORT = process.env.PORT || 8080
 

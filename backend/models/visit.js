@@ -1,5 +1,5 @@
 module.exports = (mongoose) => {
-  const schema = mongoose.Schema(
+  let schema = mongoose.Schema(
     {
       usluga: String,
       specjalista: String,
@@ -12,6 +12,8 @@ module.exports = (mongoose) => {
       miasto: String,
       ulica: String,
       kodPocztowy: Number,
+      uid: String,
+      status: Boolean,
     },
     {
       timestamps: true,
