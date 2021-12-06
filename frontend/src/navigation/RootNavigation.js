@@ -21,6 +21,12 @@ import NonAuth from './NonAuth'
 
 import { logout } from '../store/actions/auth'
 import { clearMessage } from '../store/actions/message'
+import { Navigate } from 'react-router-dom'
+
+function PrivateRoute({ children }) {
+  const { user: currentUser } = useSelector((state) => state.auth)
+  return currentUser === null ? <Navigate to='/login' /> : children
+}
 
 const RootNavigation = () => {
   const [showSpecBoard, setShowSpecBoard] = useState(false)
@@ -78,9 +84,30 @@ const RootNavigation = () => {
             <Route path='spec' element={<BoardSpec />} />
             <Route path='admin' element={<BoardAdmin />} />
             <Route path='add-visit' element={<AddVisit />} />
-            <Route path='visits' element={<VisitsList />} />
-            <Route path='visits/:id' element={<Visit />} />
-            <Route path='archive-visits' element={<ArchiveVisitsList />} />
+            <Route
+              path='visits'
+              element={
+                <PrivateRoute>
+                  <VisitsList />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path='visits/:id'
+              element={
+                <PrivateRoute>
+                  <Visit />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path='archive-visits'
+              element={
+                <PrivateRoute>
+                  <ArchiveVisitsList />
+                </PrivateRoute>
+              }
+            />
           </Routes>
         </>
       </>

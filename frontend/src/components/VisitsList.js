@@ -20,6 +20,7 @@ const VisitsList = () => {
 
   useEffect(() => {
     retrieveVisits()
+    
   }, [isRefresh])
 
   const retrieveVisits = () => {

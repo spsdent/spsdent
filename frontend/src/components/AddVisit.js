@@ -101,6 +101,7 @@ const AddVisit = () => {
 
   useEffect(() => {
     retrieveVisits()
+    
   }, [isRefresh])
 
   const retrieveVisits = () => {
