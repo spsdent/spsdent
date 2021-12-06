@@ -25,7 +25,7 @@ const VisitsList = () => {
   const retrieveVisits = () => {
     VisitDataService.getAll()
       .then((response) => {
-        const visitsArr = response.data.filter((item) => item.status === false)
+        const visitsArr = response.data.filter((item) => item.status !== false)
         if (
           currentUser.roles.includes('ROLE_ADMIN') ||
           currentUser.roles.includes('ROLE_SPEC')
@@ -58,7 +58,7 @@ const VisitsList = () => {
 
   return (
     <>
-      <h1>Visits List</h1>
+      <h1>Archive Visits List</h1>
       {console.log('wizyty', visitsList)}
       {visitsList.length > 0 ? (
         visitsList.map((item) => (
@@ -75,6 +75,7 @@ const VisitsList = () => {
             <p>Specjalista: {item.specjalista}</p>
             <p>Data: {item.data}</p>
             <p>Godzina: {item.godzina}</p>
+            <p>Status: {item.status === false ? 'W trakcie' : 'Odbyta'}</p>
             <button
               onClick={() => deleteVisit(item)}
               style={{ backgroundColor: 'red', border: 0, color: '#fff' }}

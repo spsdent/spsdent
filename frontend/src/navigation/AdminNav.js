@@ -7,10 +7,10 @@ const AdminNav = () => (
       <Link to='/admin'>Grafik Administratora</Link>
     </li>
     <li>
-      <Link to='/admin'>Aktualne wizyty</Link>
+      <Link to='/visits'>Aktualne wizyty</Link>
     </li>
     <li>
-      <Link to='/admin'>Historia wizyt</Link>
+      <Link to='/archive-visits'>Historia wizyt</Link>
     </li>
   </>
 )

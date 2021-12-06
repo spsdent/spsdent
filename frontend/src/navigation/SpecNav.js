@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom'
 const SpecNav = () => (
   <>
     <li>
-      <Link to='/spec'>Grafik</Link>
+      <Link to='/visits'>Grafik</Link>
     </li>
     <li>
-      <Link to='/spec'>Historia wizyt</Link>
+      <Link to='/archive-visits'>Historia wizyt</Link>
     </li>
     <li>
       <Link to='add-visit'>Zarezerwuj</Link>

@@ -13,6 +13,7 @@ import BoardAdmin from '../components/BoardAdmin'
 import AddVisit from '../components/AddVisit'
 import VisitsList from '../components/VisitsList'
 import Visit from '../components/Visit'
+import ArchiveVisitsList from '../components/ArchiveVisitsList'
 import AdminNav from './AdminNav'
 import UserNav from './UserNav'
 import SpecNav from './SpecNav'
@@ -78,7 +79,8 @@ const RootNavigation = () => {
             <Route path='admin' element={<BoardAdmin />} />
             <Route path='add-visit' element={<AddVisit />} />
             <Route path='visits' element={<VisitsList />} />
-            <Route path='visit/:id' element={<Visit />} />
+            <Route path='visits/:id' element={<Visit />} />
+            <Route path='archive-visits' element={<ArchiveVisitsList />} />
           </Routes>
         </>
       </>

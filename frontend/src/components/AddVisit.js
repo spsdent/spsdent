@@ -3,6 +3,7 @@ import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import VisitDataService from '../services/visit'
 import { useDispatch, useSelector } from 'react-redux'
+import { refreshApp } from '../store/actions/refresh'
 
 const AddVisitSchema = Yup.object().shape({
   usluga: Yup.string().required('Wybierz usluge...'),
@@ -70,9 +71,10 @@ const AddVisit = () => {
   const [allVisitsArr, setAllVisitsArr] = useState([])
   const [choseHour, setChoseHour] = useState('')
   const { user: currentUser } = useSelector((state) => state.auth)
+  const { refresh: isRefresh } = useSelector((state) => state.refresh)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    retrieveVisits()
     const today = new Date()
     let hours = []
     for (let i = 8; i <= 16; i++) {
@@ -96,6 +98,10 @@ const AddVisit = () => {
     setVisitDates(arrOfDays)
     console.log('currentUser', currentUser)
   }, [])
+
+  useEffect(() => {
+    retrieveVisits()
+  }, [isRefresh])
 
   const retrieveVisits = () => {
     VisitDataService.getAll()
@@ -129,6 +135,7 @@ const AddVisit = () => {
       .then((response) => {
         setChoseDate('')
         setChoseHour('')
+        dispatch(refreshApp())
       })
       .catch((e) => {
         console.log(e)
