@@ -10,7 +10,6 @@ exports.create = (req, res) => {
 
   // Create a Tutorial
   const visit = new Visit({
-    grupa: req.body.grupa,
     usluga: req.body.usluga,
     specjalista: req.body.specjalista,
     data: req.body.data,

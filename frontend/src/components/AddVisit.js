@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
-import VisitData from '../services/visit'
+import VisitDataService from '../services/visit'
 import { useDispatch, useSelector } from 'react-redux'
 import { refreshApp } from '../store/actions/refresh'
-import ServiceData from '../services/service'
-import DoctorData from '../services/doctor'
 
 const AddVisitSchema = Yup.object().shape({
   usluga: Yup.string().required('Wybierz usluge...'),
@@ -39,7 +37,6 @@ const AddVisitSchema = Yup.object().shape({
 
 const AddVisit = () => {
   const initialVisitState = {
-    grupa: '',
     usluga: '',
     specjalista: '',
     data: '',
@@ -69,11 +66,6 @@ const AddVisit = () => {
     'Gru',
   ]
   const [visit, setVisit] = useState(initialVisitState)
-  const [services, setServices] = useState([])
-  const [doctors, setDoctors] = useState([])
-  const [serviceGroupSelected, setServiceGroupSelected] = useState('')
-  const [serviceSelected, setServiceSelected] = useState('')
-  const [doctorSelected, setDoctorSelected] = useState('')
   const [visitDates, setVisitDates] = useState([])
   const [choseDate, setChoseDate] = useState('')
   const [allVisitsArr, setAllVisitsArr] = useState([])
@@ -109,12 +101,11 @@ const AddVisit = () => {
 
   useEffect(() => {
     retrieveVisits()
-    retrieveServices()
-    retrieveDoctors()
+    
   }, [isRefresh])
 
   const retrieveVisits = () => {
-    VisitData.getAll()
+    VisitDataService.getAll()
       .then((response) => {
         const visitsArr = response.data
         setAllVisitsArr(visitsArr)
@@ -124,27 +115,8 @@ const AddVisit = () => {
       })
   }
 
-  const retrieveServices = () => {
-    ServiceData.getAll()
-      .then((response) => {
-        // console.log('Response in retrieveServices', response.data)
-        setServices(response.data)
-      })
-      .catch((e) => console.log('Errors in retrieveServices'))
-  }
-
-  const retrieveDoctors = () => {
-    DoctorData.getAll()
-      .then((response) => {
-        // console.log('Response in retrieveDoctors', response.data)
-        setDoctors(response.data)
-      })
-      .catch((e) => console.log('Errors in retrieveDoctors'))
-  }
-
-  const createVisit = (values) => {
+  const createVisit = (values, resetForm) => {
     let data = {
-      grupa: values.grupa,
       usluga: values.usluga,
       specjalista: values.specjalista,
       data: values.data,
@@ -160,12 +132,11 @@ const AddVisit = () => {
       uid: currentUser !== null ? currentUser.id : null,
     }
 
-    VisitData.create(data)
+    VisitDataService.create(data)
       .then((response) => {
         setChoseDate('')
         setChoseHour('')
         dispatch(refreshApp())
-        console.log(response)
       })
       .catch((e) => {
         console.log(e)
@@ -174,6 +145,7 @@ const AddVisit = () => {
 
   const helperFunc = (value) => {
     const dateChose = choseDate.split('.')[0]
+    console.log('test', allVisitsArr)
     const choseDateFromDb = allVisitsArr
       .filter((item) => item.data.split('.')[0] === dateChose)
       .map((item) => Number(item.godzina))
@@ -185,46 +157,6 @@ const AddVisit = () => {
     } else {
       return (value.hours = updatedHours)
     }
-  }
-
-  const serviceGroupHandler = (values) => {
-    setServiceGroupSelected(values.grupa)
-    if (serviceGroupSelected && !serviceSelected) {
-      values.specjalista = ''
-    } else if (!serviceGroupSelected) {
-      setServiceSelected('')
-      values.usluga = ''
-    }
-    return services.map((service) => (
-      <option value={service.grupa}>{service.grupa}</option>
-    ))
-  }
-
-  const serviceHandler = (values) => {
-    const selectedGroupServices = services
-      .filter((service) => service.grupa === serviceGroupSelected)
-      .map((service) => service.uslugi)
-      .flatMap((item) => item)
-    if (!serviceSelected) {
-      setServiceSelected('')
-      values.specjalista = ''
-    }
-    setServiceSelected(values.usluga)
-
-    return selectedGroupServices.map((item) => (
-      <option value={item.nazwa}>{item.nazwa}</option>
-    ))
-  }
-
-  const doctorHandler = (values) => {
-    const selectedGroupDoctors = doctors.filter((doctor) =>
-      doctor.specjalnosci.includes(serviceGroupSelected)
-    )
-    return selectedGroupDoctors.map((doctor) => (
-      <option value={doctor.imie + ' ' + doctor.nazwisko}>
-        {doctor.imie} {doctor.nazwisko}
-      </option>
-    ))
   }
 
   const selectDates = visitDates.map((item, index) => (
@@ -268,40 +200,29 @@ const AddVisit = () => {
         }}
         onReset={() => setVisit(initialVisitState)}
       >
-        {({ errors, touched, values }) => (
+        {({ errors, touched, values, resetForm }) => (
           <Form
             style={{ display: 'flex', flexDirection: 'column', width: '200px' }}
           >
-            <label>Grupa uslug</label>
-            <Field as='select' name='grupa'>
-              <option value=''>Wybierz grupe uslugi...</option>
-              {serviceGroupHandler(values)}
+            <label>Usluga</label>
+            <Field as='select' name='usluga'>
+              <option value=''>Wybierz usluge...</option>
+              <option value='wybielanie'>Wybielanie</option>
+              <option value='usuwanie'>Usuwanie</option>
             </Field>
-            {errors.grupa && touched.grupa ? <div>{errors.grupa}</div> : null}
-            {serviceGroupSelected && (
-              <>
-                <label>Usluga</label>
-                <Field as='select' name='usluga'>
-                  <option value=''>Wybierz usluge...</option>
-                  {serviceHandler(values)}
-                </Field>
-                {errors.usluga && touched.usluga ? (
-                  <div>{errors.usluga}</div>
-                ) : null}
-              </>
-            )}
-            {serviceSelected && (
-              <>
-                <label>Specjalista</label>
-                <Field as='select' name='specjalista'>
-                  <option value=''>Wybierz specjaliste...</option>
-                  {doctorHandler(values)}
-                </Field>
-                {errors.specjalista && touched.specjalista ? (
-                  <div>{errors.specjalista}</div>
-                ) : null}
-              </>
-            )}
+            {errors.usluga && touched.usluga ? (
+              <div>{errors.usluga}</div>
+            ) : null}
+            <label>Specjalista</label>
+            <Field as='select' name='specjalista'>
+              <option value=''>Wybierz specjaliste...</option>
+              <option value='Jan Nowak'>Jan Nowak</option>
+              <option value='Krzysztof Kowalski'>Krzysztof Kowalski</option>
+              <option value='Jan Matejko'>Jan Matejko</option>
+            </Field>
+            {errors.specjalista && touched.specjalista ? (
+              <div>{errors.specjalista}</div>
+            ) : null}
             <label>Data</label>
             <Field as='select' name='data'>
               <option value=''>Wybierz date...</option>
@@ -309,18 +230,14 @@ const AddVisit = () => {
             </Field>
             {errors.data && touched.data ? <div>{errors.data}</div> : null}
             {setChoseDate(values.data)}
-            {choseDate && (
-              <>
-                <label>Godzina</label>
-                <Field as='select' name='godzina'>
-                  <option value=''>Wybierz godzine...</option>
-                  {pickingHours}
-                </Field>
-                {errors.godzina && touched.godzina ? (
-                  <div>{errors.godzina}</div>
-                ) : null}
-              </>
-            )}
+            <label>Godzina</label>
+            <Field as='select' name='godzina'>
+              <option value=''>Wybierz godzine...</option>
+              {pickingHours}
+            </Field>
+            {errors.godzina && touched.godzina ? (
+              <div>{errors.godzina}</div>
+            ) : null}
             {setChoseHour(values.godzina)}
             <label>Imie</label>
             <Field name='imie' />
