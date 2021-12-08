@@ -42,7 +42,7 @@ exports.signup = (req, res) => {
               return
             }
 
-            res.send({ message: 'Uztkownik zostal zarejestrowany!' })
+            res.send({ message: 'User was registered successfully!' })
           })
         }
       )
@@ -60,7 +60,7 @@ exports.signup = (req, res) => {
             return
           }
 
-          res.send({ message: 'Uztkownik zostal zarejestrowany!' })
+          res.send({ message: 'User was registered successfully!' })
         })
       })
     }
@@ -79,7 +79,7 @@ exports.signin = (req, res) => {
       }
 
       if (!user) {
-        return res.status(404).send({ message: 'Nie ma takiego uzytkownika' })
+        return res.status(404).send({ message: 'User Not found.' })
       }
 
       var passwordIsValid = bcrypt.compareSync(req.body.password, user.password)
