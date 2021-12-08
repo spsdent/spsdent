@@ -1,6 +1,7 @@
 module.exports = (mongoose) => {
   let schema = mongoose.Schema(
     {
+      grupa: String,
       usluga: String,
       specjalista: String,
       data: String,
