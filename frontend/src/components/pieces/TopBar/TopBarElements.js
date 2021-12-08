@@ -12,6 +12,7 @@ export const Nav = styled.nav`
   top: 0;
   z-index: 999;
   overflow: hidden;
+  display: none;
 `;
 export const NavBarContainer = styled.div`
   display: flex;

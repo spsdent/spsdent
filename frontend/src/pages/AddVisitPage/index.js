@@ -1,12 +1,12 @@
 import React from "react";
-import Register from "../../components/Register";
+import AddVisit from "../../components/AddVisit";
 import { PageWrapper } from "../../components/PageWrapper";
 
 const AddVisitPage = () => {
   return (
     <PageWrapper>
       <h1>
-        <Register />
+        <AddVisit />
       </h1>
     </PageWrapper>
   );

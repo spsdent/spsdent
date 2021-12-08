@@ -11,6 +11,7 @@ export const SideBarContainer = styled.aside`
   font-size: 18px;
   max-width: 220px;
   margin-top: 100px;
+  display: none;
   @media screen and (max-width: 1280px) {
     font-size: 16px;
   }

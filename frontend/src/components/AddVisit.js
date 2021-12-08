@@ -190,7 +190,6 @@ const AddVisit = () => {
 
   return (
     <>
-      <h1>Signup</h1>
       <Formik
         initialValues={visit}
         validationSchema={AddVisitSchema}
