@@ -200,7 +200,7 @@ const AddVisit = () => {
         }}
         onReset={() => setVisit(initialVisitState)}
       >
-        {({ errors, touched, values, resetForm }) => (
+        {({ errors, touched, values }) => (
           <Form
             style={{ display: 'flex', flexDirection: 'column', width: '200px' }}
           >

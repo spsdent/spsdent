@@ -1,162 +1,80 @@
 import React, { useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-
-import Form from 'react-validation/build/form'
-import Input from 'react-validation/build/input'
-import CheckButton from 'react-validation/build/button'
-import { isEmail } from 'validator'
-
 import { register } from '../store/actions/auth'
+import * as Yup from 'yup'
+import { Formik, Form, Field } from 'formik'
 
-const required = (value) => {
-  if (!value) {
-    return (
-      <div className='alert alert-danger' role='alert'>
-        This field is required!
-      </div>
+export const signupValidationSchema = Yup.object().shape({
+  imie: Yup.string()
+    .min(3, 'Imie musi miec co najmniej 3 znaki')
+    .max(25, 'Imie moze miec maksymalnie 25 znakow')
+    .required('Wprowadz imie...'),
+  nazwisko: Yup.string()
+    .min(3, 'Nazwisko musi miec co najmniej 3 znaki')
+    .max(50, 'Nazwisko moze miec maksymalnie 50 znakow')
+    .required('Wprowadz nazwisko...'),
+  email: Yup.string()
+    .required('Wprowadz adres e-mail...')
+    .email('E-mail jest wymagany...')
+    .label('E-mail'),
+  password: Yup.string()
+    .required('Wprowadz haslo...')
+    .label('Password')
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      'Haslo musi zawierac min. 8 znakow w tym min.: 1 dużą, 1 małą, cyfre i znak specjalny'
+    ),
+  confirmPassword: Yup.string()
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      'Haslo musi zawierac min. 8 znakow w tym min.: 1 dużą, 1 małą, cyfre i znak specjalny'
     )
+    .oneOf([Yup.ref('password')], 'Powtarzane haslo musi byc takie same.')
+    .required('Wprowadz potwierdzenie hasla...'),
+  telefon: Yup.string()
+    .matches(/^\d{9}$/, 'Wprowadz prawidlowy numer telefonu')
+    .required('Wprowadz numer telefonu...'),
+  miasto: Yup.string()
+    .min(3, 'Miasto musi miec co najmniej 3 znaki')
+    .max(50, 'Miasto moze miec maksymalnie 50 znakow')
+    .required('Wprowadz miasto...'),
+  ulica: Yup.string()
+    .min(3, 'Ulica musi miec co najmniej 3 znaki')
+    .max(50, 'Ulica moze miec maksymalnie 50 znakow')
+    .required('Wprowadz ulice...'),
+  kodPocztowy: Yup.string()
+    .matches(/^\d{5}$/, 'Wprowadz prawidlowy kod pocztowy(5 znakow)')
+    .required('Wprowadz kod pocztowy...'),
+})
+
+const Register = (props) => {
+  const initialState = {
+    imie: '',
+    nazwisko: '',
+    telefon: '',
+    miasto: '',
+    ulica: '',
+    kodPocztowy: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
   }
-}
-
-const validEmail = (value) => {
-  if (!isEmail(value)) {
-    return (
-      <div className='alert alert-danger' role='alert'>
-        This is not a valid email.
-      </div>
-    )
-  }
-}
-
-const vimie = (value) => {
-  if (value.length < 3 || value.length > 20) {
-    return (
-      <div className='alert alert-danger' role='alert'>
-        Imie must be between 3 and 20 characters.
-      </div>
-    )
-  }
-}
-
-const vnazwisko = (value) => {
-  if (value.length < 3 || value.length > 20) {
-    return (
-      <div className='alert alert-danger' role='alert'>
-        Nazwisko must be between 3 and 20 characters.
-      </div>
-    )
-  }
-}
-
-const vtelefon = (value) => {
-  if (value.length < 8 || value.length > 10) {
-    return (
-      <div className='alert alert-danger' role='alert'>
-        Telefon must be have 9 digits.
-      </div>
-    )
-  }
-}
-
-const vmiasto = (value) => {
-  if (value.length < 3 || value.length > 20) {
-    return (
-      <div className='alert alert-danger' role='alert'>
-        Miasto must be between 3 and 20 characters.
-      </div>
-    )
-  }
-}
-
-const vulica = (value) => {
-  if (value.length < 3 || value.length > 20) {
-    return (
-      <div className='alert alert-danger' role='alert'>
-        Ulica must be between 3 and 20 characters.
-      </div>
-    )
-  }
-}
-
-const vkodpocztowy = (value) => {
-  if (value.length < 4 || value.length > 6) {
-    return (
-      <div className='alert alert-danger' role='alert'>
-        Kod pocztowy must be have 5 digits.
-      </div>
-    )
-  }
-}
-
-const vpassword = (value) => {
-  if (value.length < 6 || value.length > 40) {
-    return (
-      <div className='alert alert-danger' role='alert'>
-        The password must be between 6 and 40 characters.
-      </div>
-    )
-  }
-}
-
-const Register = () => {
-  const form = useRef()
-  const checkBtn = useRef()
-
-  const [imie, setImie] = useState('')
-  const [nazwisko, setNazwisko] = useState('')
-  const [telefon, setTelefon] = useState('')
-  const [miasto, setMiasto] = useState('')
-  const [ulica, setUlica] = useState('')
-  const [kodPocztowy, setKodPocztowy] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
   const [successful, setSuccessful] = useState(false)
 
   const { message } = useSelector((state) => state.message)
   const dispatch = useDispatch()
 
-  const onChangeImie = (e) => {
-    const imie = e.target.value
-    setImie(imie)
-  }
-
-  const onChangeNazwisko = (e) => {
-    const nazwisko = e.target.value
-    setNazwisko(nazwisko)
-  }
-
-  const onChangeTelefon = (e) => {
-    const telefon = e.target.value
-    setTelefon(telefon)
-  }
-
-  const onChangeMiasto = (e) => {
-    const miasto = e.target.value
-    setMiasto(miasto)
-  }
-
-  const onChangeUlica = (e) => {
-    const ulica = e.target.value
-    setUlica(ulica)
-  }
-
-  const onChangeKodPocztowy = (e) => {
-    const kodPocztowy = e.target.value
-    setKodPocztowy(kodPocztowy)
-  }
-
-  const onChangeEmail = (e) => {
-    const email = e.target.value
-    setEmail(email)
-  }
-
-  const onChangePassword = (e) => {
-    const password = e.target.value
-    setPassword(password)
-  }
-
-  const handleRegister = (e) => {
-    e.preventDefault()
+  const handleRegister = (values) => {
+    const {
+      imie,
+      nazwisko,
+      telefon,
+      miasto,
+      ulica,
+      kodPocztowy,
+      email,
+      password,
+    } = values
 
     dispatch(
       register(
@@ -171,121 +89,88 @@ const Register = () => {
       )
     )
       .then(() => {
-        setSuccessful(true)
+        props.history.push('/profile')
+        window.location.reload()
       })
-      .catch(() => {
-        setSuccessful(false)
-      })
+      .catch((e) => console.log(e))
   }
 
   return (
-    <div>
-      <div>
-        <form onSubmit={handleRegister} ref={form}>
-          {!successful && (
-            <div>
-              <div>
-                <label htmlFor='imie'>Imie</label>
-                <input
-                  type='text'
-                  name='imie'
-                  value={imie}
-                  onChange={onChangeImie}
-                  validations={[required, vimie]}
-                />
-              </div>
+    <>
+      <h1>Register page</h1>
+      <Formik
+        initialValues={initialState}
+        onSubmit={(values, actions) => {
+          handleRegister(values)
+          actions.resetForm()
+        }}
+        validationSchema={signupValidationSchema}
+      >
+        {({ errors, touched }) => (
+          <Form
+            style={{ display: 'flex', flexDirection: 'column', width: '250px' }}
+          >
+            <label htmlFor='imie'>Imie</label>
+            <Field name='imie' id='imie' placeholder='Imie' />
+            {errors.imie && touched.imie ? <div>{errors.imie}</div> : null}
+            <label htmlFor='nazwisko'>Nazwisko</label>
+            <Field name='nazwisko' id='nazwisko' placeholder='Nazwisko' />
+            {errors.nazwisko && touched.nazwisko ? (
+              <div>{errors.nazwisko}</div>
+            ) : null}
 
-              <div>
-                <label htmlFor='nazwisko'>Nazwisko</label>
-                <input
-                  type='text'
-                  name='nazwisko'
-                  value={nazwisko}
-                  onChange={onChangeNazwisko}
-                  validations={[required, vnazwisko]}
-                />
-              </div>
-
-              <div>
-                <label htmlFor='telefon'>Telefon</label>
-                <input
-                  type='text'
-                  name='telefon'
-                  value={telefon}
-                  onChange={onChangeTelefon}
-                  validations={[required, vtelefon]}
-                />
-              </div>
-
-              <div>
-                <label htmlFor='miasto'>Miasto</label>
-                <input
-                  type='text'
-                  name='miasto'
-                  value={miasto}
-                  onChange={onChangeMiasto}
-                  validations={[required, vmiasto]}
-                />
-              </div>
-
-              <div>
-                <label htmlFor='ulica'>Ulica</label>
-                <input
-                  type='text'
-                  name='ulica'
-                  value={ulica}
-                  onChange={onChangeUlica}
-                  validations={[required, vulica]}
-                />
-              </div>
-
-              <div>
-                <label htmlFor='kodpocztowy'>kodpocztowy</label>
-                <input
-                  type='text'
-                  name='kodpocztowy'
-                  value={kodPocztowy}
-                  onChange={onChangeKodPocztowy}
-                  validations={[required, vkodpocztowy]}
-                />
-              </div>
-
-              <div>
-                <label htmlFor='email'>Email</label>
-                <input
-                  type='text'
-                  name='email'
-                  value={email}
-                  onChange={onChangeEmail}
-                  validations={[required, validEmail]}
-                />
-              </div>
-
-              <div>
-                <label htmlFor='password'>Password</label>
-                <input
-                  type='password'
-                  name='password'
-                  value={password}
-                  onChange={onChangePassword}
-                  validations={[required, vpassword]}
-                />
-              </div>
-
-              <div>
-                <button>Sign Up</button>
-              </div>
-            </div>
-          )}
-
-          {message && (
-            <div>
-              <div role='alert'>{message}</div>
-            </div>
-          )}
-        </form>
-      </div>
-    </div>
+            <label htmlFor='telefon'>Telefon</label>
+            <Field name='telefon' id='telefon' placeholder='Telefon' />
+            {errors.telefon && touched.telefon ? (
+              <div>{errors.telefon}</div>
+            ) : null}
+            <label htmlFor='miasto'>Miasto</label>
+            <Field name='miasto' id='miasto' placeholder='Miasto' />
+            {errors.miasto && touched.miasto ? (
+              <div>{errors.miasto}</div>
+            ) : null}
+            <label htmlFor='ulica'>Ulica</label>
+            <Field name='ulica' id='ulica' placeholder='Ulica' />
+            {errors.ulica && touched.ulica ? <div>{errors.ulica}</div> : null}
+            <label htmlFor='kodpocztowy'>Kod-pocztowy</label>
+            <Field
+              name='kodPocztowy'
+              id='kodpocztowy'
+              placeholder='Kod-pocztowy'
+            />
+            {errors.kodPocztowy && touched.kodPocztowy ? (
+              <div>{errors.kodPocztowy}</div>
+            ) : null}
+            <label htmlFor='email'>E-mail</label>
+            <Field type='email' name='email' id='email' placeholder='Email' />
+            {errors.email && touched.email ? <div>{errors.email}</div> : null}
+            <label htmlFor='password'>Haslo</label>
+            <Field
+              type='password'
+              name='password'
+              id='password'
+              placeholder='Password'
+            />
+            {errors.password && touched.password ? (
+              <div>{errors.password}</div>
+            ) : null}
+            <label htmlFor='confirmPassword'>Potworz haslo</label>
+            <Field
+              type='password'
+              name='confirmPassword'
+              id='password'
+              placeholder='Powtorz haslo'
+            />
+            {errors.confirmPassword && touched.confirmPassword ? (
+              <div>{errors.confirmPassword}</div>
+            ) : null}
+            <button type='submit'>Register</button>
+            <button type='reset'>Reset</button>
+          </Form>
+        )}
+      </Formik>
+      {message && <h1>{message}</h1>}
+    </>
   )
 }
 

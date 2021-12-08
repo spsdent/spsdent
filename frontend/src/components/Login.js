@@ -1,13 +1,29 @@
 import React, { useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
-
+import * as Yup from 'yup'
 import { login } from '../store/actions/auth'
+import { Formik, Form, Field } from 'formik'
+
+export const loginValidationSchema = Yup.object().shape({
+  email: Yup.string()
+    .required('E-mail jest wymagany...')
+    .email()
+    .label('E-mail'),
+  password: Yup.string()
+    .required('Haslo jest wymagane...')
+    .label('Haslo')
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      'Haslo musi zawierac min. 8 znakow w tym min.: 1 dużą, 1 małą, cyfre i znak specjalny'
+    ),
+})
 
 const Login = (props) => {
-
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const initialState = {
+    email: '',
+    password: '',
+  }
   const [loading, setLoading] = useState(false)
 
   const { isLoggedIn } = useSelector((state) => state.auth)
@@ -15,19 +31,8 @@ const Login = (props) => {
 
   const dispatch = useDispatch()
 
-  const onChangeEmail = (e) => {
-    const email = e.target.value
-    setEmail(email)
-  }
-
-  const onChangePassword = (e) => {
-    const password = e.target.value
-    setPassword(password)
-  }
-
-  const handleLogin = (e) => {
-    e.preventDefault()
-
+  const handleLogin = (values) => {
+    const { email, password } = values
 
     dispatch(login(email, password))
       .then(() => {
@@ -44,46 +49,43 @@ const Login = (props) => {
   }
 
   return (
-    <div>
-      <div>
-        <form onSubmit={handleLogin}>
-          <div className='form-group'>
+    <>
+      <h1>Login Page</h1>
+      <Formik
+        initialValues={initialState}
+        onSubmit={(values, actions) => {
+          handleLogin(values)
+          actions.resetForm()
+        }}
+        validationSchema={loginValidationSchema}
+      >
+        {({ errors, touched, values }) => (
+          <Form
+            style={{ display: 'flex', flexDirection: 'column', width: '250px' }}
+          >
             <label htmlFor='email'>E-mail</label>
-            <input
-              type='text'
-              className='form-control'
-              name='email'
-              value={email}
-              onChange={onChangeEmail}
-            />
-          </div>
-
-          <div className='form-group'>
+            <Field type='email' name='email' id='email' placeholder='Email' />
+            {errors.email && touched.email ? <div>{errors.email}</div> : null}
             <label htmlFor='password'>Password</label>
-            <input
+            <Field
               type='password'
-              className='form-control'
               name='password'
-              value={password}
-              onChange={onChangePassword}
+              id='password'
+              placeholder='Password'
             />
-          </div>
-
-          <div>
-            <button>
+            {errors.password && touched.password ? (
+              <div>{errors.password}</div>
+            ) : null}
+            <button type='submit'>
               {loading && <span></span>}
               <span>Login</span>
             </button>
-          </div>
-
-          {message && (
-            <div>
-              <div>{message}</div>
-            </div>
-          )}
-        </form>
-      </div>
-    </div>
+            <button type='reset'>Reset</button>
+          </Form>
+        )}
+      </Formik>
+      {message && <h1>{message}</h1>}
+    </>
   )
 }
 
