@@ -22,7 +22,7 @@ const Role = db.role
 
 db.mongoose
   .connect(
-    `mongodb+srv://${dbConfig.HOST}:${dbConfig.PWD}@spscluster.sa81d.mongodb.net/${dbConfig.DB}?retryWrites=true&w=majority`,
+    `mongodb://${dbConfig.HOST}:${dbConfig.PWD}@spscluster-shard-00-00.sa81d.mongodb.net:27017,spscluster-shard-00-01.sa81d.mongodb.net:27017,spscluster-shard-00-02.sa81d.mongodb.net:27017/${dbConfig.DB}?ssl=true&replicaSet=atlas-3lyac2-shard-0&authSource=admin&retryWrites=true&w=majority`,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
