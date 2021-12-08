@@ -19,8 +19,8 @@ app.use(
 const db = require('./models')
 const dbConfig = require('./config/db')
 const Role = db.role
-const Specialization = db.specialization
 const Doctor = db.doctor
+const Service = db.service
 
 db.mongoose
   .connect(
@@ -79,67 +79,7 @@ function initial() {
       })
     }
   })
-  Specialization.estimatedDocumentCount((err, count) => {
-    if (!err && count === 0) {
-      new Specialization({
-        name: 'ortodoncja',
-      }).save((err) => {
-        if (err) {
-          console.log('error', err)
-        }
 
-        console.log("added 'ortodoncja' to specializations collection")
-      })
-
-      new Specialization({
-        name: 'protetyka stomatologiczna',
-      }).save((err) => {
-        if (err) {
-          console.log('error', err)
-        }
-
-        console.log(
-          "added 'protetyka stomatologiczna' to specializations collection"
-        )
-      })
-
-      new Specialization({
-        name: 'stomatologia dziecieca',
-      }).save((err) => {
-        if (err) {
-          console.log('error', err)
-        }
-
-        console.log(
-          "added 'stomatologia dziecieca' to specializations collection"
-        )
-      })
-
-      new Specialization({
-        name: 'stomatologia zachowawcza z endodoncja',
-      }).save((err) => {
-        if (err) {
-          console.log('error', err)
-        }
-
-        console.log(
-          "added 'stomatologia zachowawcza z endodoncja' to specializations collection"
-        )
-      })
-
-      new Specialization({
-        name: 'chirurgia stomatologiczna',
-      }).save((err) => {
-        if (err) {
-          console.log('error', err)
-        }
-
-        console.log(
-          "added 'chirurgia stomatologiczna' to specializations collection"
-        )
-      })
-    }
-  })
   Doctor.estimatedDocumentCount((err, count) => {
     if (!err && count === 0) {
       new Doctor({
@@ -147,7 +87,7 @@ function initial() {
         nazwisko: 'Nowak',
         telefon: '123123123',
         email: 'jannowak@gmail.com',
-        specjalnosci: ['ortodoncja', 'chirurgia stomatologiczna'],
+        specjalnosci: ['wybielanie'],
       }).save((err) => {
         if (err) {
           console.log('error', err)
@@ -161,7 +101,7 @@ function initial() {
         nazwisko: 'Kowalski',
         telefon: '987654321',
         email: 'kkowalski@gmail.com',
-        specjalnosci: ['stomatologia zachowawcza z endodoncja'],
+        specjalnosci: ['stomatologia zachowawcza', 'endodoncja'],
       }).save((err) => {
         if (err) {
           console.log('error', err)
@@ -175,13 +115,77 @@ function initial() {
         nazwisko: 'Nowak',
         telefon: '951753842',
         email: 'dwabulki@gmail.com',
-        specjalnosci: ['stomatologia dziecieca', 'protetyka stomatologiczna'],
+        specjalnosci: ['endodoncja', 'wybielanie'],
       }).save((err) => {
         if (err) {
           console.log('error', err)
         }
 
         console.log("added 'Adrian Nowak' to doctors collection")
+      })
+    }
+  })
+
+  Service.estimatedDocumentCount((err, count) => {
+    if (!err && count === 0) {
+      new Service({
+        grupa: 'stomatologia zachowawcza',
+        uslugi: [{
+          nazwa: 'znieczulenie miejscowe',
+          cena: 50
+        }, {
+          nazwa: 'znieczulenie komputerowe  THE WAND',
+          cena: 70
+        },{
+          nazwa: 'opatrunek',
+          cena: 50
+        },{
+          nazwa: 'znoszenie nadwrazliwosci',
+          cena: 30
+        },]
+      }).save((err) => {
+        if (err) {
+          console.log('error', err)
+        }
+        console.log("added 'stomatologia zachowawcza' to services collection")
+      })
+
+      new Service({
+        grupa: 'endodoncja',
+        uslugi: [{
+          nazwa: 'zeba jednokanałowego',
+          cena: 500
+        },{
+          nazwa: 'zeba dwukanalowego',
+          cena: 700
+        },{
+          nazwa: 'zeba trzykanalowego',
+          cena: 800
+        },]
+      }).save((err) => {
+        if (err) {
+          console.log('error', err)
+        }
+        console.log("added 'endodoncja' to services collection")
+      })
+
+      new Service({
+        grupa: 'wybielanie',
+        uslugi: [{
+          nazwa: 'wybielanie zebow(metoda nakladkowa)',
+          cena: 900
+        },{
+          nazwa: 'wybielanie zebow(system beyond)',
+          cena: 1200
+        },{
+          nazwa: 'wybielanie zeba martwego',
+          cena: 200
+        },]
+      }).save((err) => {
+        if (err) {
+          console.log('error', err)
+        }
+        console.log("added 'wybielanie' to services collection")
       })
     }
   })
@@ -193,7 +197,6 @@ require('./routes/user')(app)
 require('./routes/visit')(app)
 require('./routes/doctor')(app)
 require('./routes/service')(app)
-require('./routes/specialization')(app)
 
 const PORT = process.env.PORT || 8080
 

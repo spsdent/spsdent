@@ -7,12 +7,7 @@ const Doctor = mongoose.model(
     nazwisko: String,
     email: String,
     telefon: Number,
-    specjalnosci: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Specialization',
-      },
-    ],
+    specjalnosci: [String],
   })
 )
 

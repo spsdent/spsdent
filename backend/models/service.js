@@ -4,7 +4,12 @@ const Service = mongoose.model(
   'Service',
   new mongoose.Schema({
     grupa: String,
-    nazwa: String,
+    uslugi: [
+      {
+        nazwa: String,
+        cena: Number,
+      },
+    ],
   })
 )
 

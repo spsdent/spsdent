@@ -11,7 +11,7 @@ exports.create = (req, res) => {
   // Create a Tutorial
   const service = new Service({
     grupa: req.body.grupa,
-    nazwa: req.body.nazwa,
+    uslugi: req.body.uslugi
   })
 
   // Save Tutorial in the database
@@ -29,9 +29,9 @@ exports.create = (req, res) => {
 }
 
 exports.findAll = (req, res) => {
-  const nazwa = req.query.nazwa
-  let condition = nazwa
-    ? { nazwa: { $regex: new RegExp(nazwa), $options: 'i' } }
+  const grupa = req.query.grupa
+  let condition = grupa
+    ? { grupa: { $regex: new RegExp(grupa), $options: 'i' } }
     : {}
 
   Service.find(condition)
