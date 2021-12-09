@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Link as LinkLogo } from "react-router-dom";
 import { Link as LinkButton } from "react-router-dom";
 
@@ -8,11 +8,12 @@ export const Nav = styled.nav`
   display: flex;
   justify-content: center;
   align-items: center;
-  position: sticky;
-  top: 0;
   z-index: 999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   overflow: hidden;
-  display: none;
 `;
 export const NavBarContainer = styled.div`
   display: flex;
@@ -56,7 +57,7 @@ export const MobileIcon = styled.div`
 `;
 
 export const NavImage = styled.img`
-cursor: pointer;
+  cursor: pointer;
 `;
 
 export const NavInfo = styled.ul`
@@ -79,7 +80,7 @@ export const NavInfo = styled.ul`
 export const BarIcon = styled.img`
   height: 31px;
   white-space: nowrap;
-  transition: .2s ease-out;
+  transition: 0.2s ease-out;
   @media screen and (max-width: 1280px) {
     height: 21px;
   }
@@ -108,7 +109,7 @@ export const BarText = styled.p`
   font-size: 18px;
   color: rgba(51, 51, 51, 0.75);
   margin-left: 5px;
-  transition: .2s ease-out;
+  transition: 0.2s ease-out;
   @media screen and (max-width: 1280px) {
     font-size: 16px;
   }
@@ -139,7 +140,7 @@ export const ButtonLink = styled(LinkButton)`
   text-align: center;
   line-height: 50px;
   font-size: 18px;
-  transition: .2s ease-out;
+  transition: 0.2s ease-out;
 
   @media screen and (max-width: 1280px) {
     font-size: 16px;
@@ -154,7 +155,7 @@ export const ButtonNav = styled.div`
   justify-content: center;
   margin-right: 20px;
   height: 50px;
-  transition: .2s ease-out;
+  transition: 0.3s ease;
   background-color: ${(props) => (props.primary ? "#01D4BF" : "#333")};
   width: ${(props) => (props.primary ? "200px" : "150px")};
 
@@ -168,4 +169,15 @@ export const ButtonNav = styled.div`
   @media screen and (max-width: 768px) {
     display: none;
   }
+
+  &:hover {
+    background-color: #01d4bf;
+  }
+  ${(props) =>
+    props.primary &&
+    css`
+      &:hover {
+        background-color: #333;
+      }
+    `}
 `;

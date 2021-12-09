@@ -1,9 +1,10 @@
 import styled from "styled-components";
 
 export const PageWrapper = styled.div`
-display:  flex;
-justify-content: center;
+  display: flex;
+  justify-content: center;
   margin-left: 14%;
+  margin-top: 100px;
   @media screen and (min-width: 1570px) {
     margin-left: 220px;
   }

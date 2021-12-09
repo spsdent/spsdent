@@ -1,7 +1,20 @@
 import React, { useState, useEffect } from "react";
 import UserService from "../../services/user";
+import {FaAngleDoubleRight} from 'react-icons/fa'
 import { PageWrapper } from "../../components/PageWrapper";
-import { HeaderContainer, TextHeader } from "./HomePageElements";
+import {
+  HeaderContainer,
+  TextContainer,
+  HeaderWelcome,
+  HeaderText,
+  AddVisitButton,
+  HeaderPhotoContainer,
+  PhotoHeader,
+  StyledSpan,
+  ButtonSpan,
+  ButtonContainer,
+  Pattern
+} from "./HomePageElements";
 
 const Home = () => {
   const [content, setContent] = useState("");
@@ -25,17 +38,31 @@ const Home = () => {
   return (
     <PageWrapper>
       <HeaderContainer>
-        <h1>Witaj w SPS Dent</h1>
-        <TextHeader>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi eius
-          excepturi eaque dolorum voluptatum culpa voluptatem voluptatibus,
-          reprehenderit atque nihil. Expedita, qui amet minima facere alias odio
-          tempora doloribus eos unde dicta mollitia doloremque nemo iure ad
-          magnam dolore delectus. Quidem similique voluptate magni dolorum animi
-          molestias, quae repudiandae cupiditate?
-        </TextHeader>
-        <button>Umów się na wizyte</button>
+        <TextContainer>
+          <HeaderWelcome>
+            Witaj w <br/>
+            <StyledSpan primary>
+              SPS<StyledSpan>Dent</StyledSpan>!
+            </StyledSpan>
+          </HeaderWelcome>
+          <HeaderText>
+            SPS Dental Clinic to klinika oferująca kompleksowe usługi z zakresu
+            stomatologii: diagnostyki, profilaktyki, ortodoncji, chirurgii
+            stomatologicznej czy implantologii. Na rynku stomatologicznym
+            działamy od przeszło 8 lat. Znajdziemy idealne rozwiązanie dla
+            każdego, nawet najbardziej wymagającego pacjenta.
+          </HeaderText>
+          <ButtonContainer>
+          <ButtonSpan><FaAngleDoubleRight/></ButtonSpan>
+          <AddVisitButton>umów się na wizytę</AddVisitButton>
+          </ButtonContainer>
+        </TextContainer>
+        <HeaderPhotoContainer>
+          <PhotoHeader src="header1.png"></PhotoHeader>
+          <PhotoHeader primary src="header2.png"></PhotoHeader>
+        </HeaderPhotoContainer>
       </HeaderContainer>
+      <Pattern src="Pattern.png"></Pattern>
     </PageWrapper>
   );
 };

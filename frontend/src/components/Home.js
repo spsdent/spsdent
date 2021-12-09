@@ -26,7 +26,6 @@ const Home = () => {
     <div>
       <header>
         <h3>Home page</h3>
-        {console.log('kurwo jebana', content)}
       </header>
     </div>
   )
