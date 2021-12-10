@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import {motion} from "framer-motion"
 
 export const HeaderContainer = styled.div`
   display: flex;
@@ -164,15 +165,17 @@ export const HeaderPhotoContainer = styled.div`
   /* background-color: #444444; */
   margin-right: 20px;
 `;
-export const PhotoHeader = styled.img`
+export const PhotoHeader = styled(motion.img)`
   border: none;
   height: ${(props) => (props.primary ? "477px" : "600px")};
   width: ${(props) => (props.primary ? "343px" : "431px")};
   border-radius: 15px;
   /* max-height: ${(props) => (props.primary ? "54vh" : "64vh")}; */
-  transform: ${(props) =>
-    props.primary ? "translate(45%, -92%)" : "translateY(-5%)"};
-
+  /* transform: ${(props) =>
+    props.primary ? "translate(45%, -92%)" : "translateY(0%)"}; */
+    position: absolute;
+    top: ${props => props.primary ? "35%" : "0"};
+    left: ${props => props.primary ? "25%" : "0"};
   @media screen and (max-width: 1570px) {
     height: 553px;
     width: 398px;

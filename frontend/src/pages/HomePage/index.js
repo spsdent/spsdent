@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import UserService from "../../services/user";
-import {FaAngleDoubleRight} from 'react-icons/fa'
+import { FaAngleDoubleRight } from "react-icons/fa";
 import { PageWrapper } from "../../components/PageWrapper";
 import {
   HeaderContainer,
@@ -13,7 +13,7 @@ import {
   StyledSpan,
   ButtonSpan,
   ButtonContainer,
-  Pattern
+  Pattern,
 } from "./HomePageElements";
 
 const Home = () => {
@@ -40,26 +40,49 @@ const Home = () => {
       <HeaderContainer>
         <TextContainer>
           <HeaderWelcome>
-            Witaj w <br/>
+            Witaj w <br />
             <StyledSpan primary>
               SPS<StyledSpan>Dent</StyledSpan>!
             </StyledSpan>
           </HeaderWelcome>
           <HeaderText>
-            <strong>SPS Dental Clinic</strong> to klinika oferująca kompleksowe usługi z zakresu
-            stomatologii: diagnostyki, profilaktyki, ortodoncji, chirurgii
-            stomatologicznej czy implantologii. Na rynku stomatologicznym
-            działamy od przeszło 8 lat. Znajdziemy idealne rozwiązanie dla
-            każdego, nawet najbardziej wymagającego pacjenta.
+            <strong>SPS Dental Clinic</strong> to klinika oferująca kompleksowe
+            usługi z zakresu stomatologii: diagnostyki, profilaktyki,
+            ortodoncji, chirurgii stomatologicznej czy implantologii. Na rynku
+            stomatologicznym działamy od przeszło 8 lat. Znajdziemy idealne
+            rozwiązanie dla każdego, nawet najbardziej wymagającego pacjenta.
           </HeaderText>
           <ButtonContainer>
-          <ButtonSpan><FaAngleDoubleRight/></ButtonSpan>
-          <AddVisitButton>umów się na wizytę</AddVisitButton>
+            <ButtonSpan>
+              <FaAngleDoubleRight />
+            </ButtonSpan>
+            <AddVisitButton>umów się na wizytę</AddVisitButton>
           </ButtonContainer>
         </TextContainer>
         <HeaderPhotoContainer>
-          <PhotoHeader src="header1.png"></PhotoHeader>
-          <PhotoHeader primary src="header2.png"></PhotoHeader>
+          <PhotoHeader
+            drag
+            dragElastic={0.1}
+            dragConstraints={{
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+            }}
+            src="header1.png"
+          ></PhotoHeader>
+          <PhotoHeader
+            drag
+            dragElastic={0.1}
+            dragConstraints={{
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+            }}
+            primary
+            src="header2.png"
+          ></PhotoHeader>
         </HeaderPhotoContainer>
       </HeaderContainer>
       <Pattern src="Pattern.png"></Pattern>

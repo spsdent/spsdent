@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { PageWrapper } from "../../components/PageWrapper";
+import { motion } from "framer-motion";
 import OurStaff from "./OurStaff";
 import Cabinet from "./Cabinet";
 import Default from "./Default";
@@ -29,23 +30,23 @@ class AboutUsPage extends Component {
             <ButtonPick
               name={"Nasza Kadra"}
               image={"OurStaff.jpg"}
-              top={"40%"}
+              top={"30%"}
               click={() => this.handleClick(0)}
             />
             <ButtonPick
               name={"Gabinet"}
               image={"Cabinet.jpg"}
-              top={"70%"}
+              top={"60%"}
               click={() => this.handleClick(1)}
             />
           </PickContainer>
-          <AboutUsContent>
+          <AboutUsContent >
             {this.state.pick === "default" && <Default />}
             {this.state.pick === 1 && <Cabinet />}
             {this.state.pick === 0 && <OurStaff />}
           </AboutUsContent>
         </AboutUsContainer>
-        <FogAboutUs />
+        {/* <FogAboutUs /> */}
       </PageWrapper>
     );
   }

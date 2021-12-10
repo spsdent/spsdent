@@ -8,8 +8,18 @@ import {
 const Cabinet = () => {
   return (
     <>
-      <Title>Gabinet</Title>
-      <Content>
+      <Title
+        transition={{ duration: 1 }}
+        initial={{ opacity: 0, x: -200 }}
+        animate={{ opacity: 1, x: 0 }}
+      >
+        Gabinet
+      </Title>
+      <Content
+        transition={{ duration: .5 }}
+        initial={{ opacity: 0, x: -200 }}
+        animate={{ opacity: 1, x: 0 }}
+      >
         <ContentImage />
         <ContentText>
           Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nobis porro
@@ -34,17 +44,6 @@ const Cabinet = () => {
           pariatur atque? Lorem ipsum dolor sit amet consectetur adipisicing
           elit. Odio obcaecati officiis rerum quam unde nesciunt officia ullam
           <br />
-          <br />
-          rem inventore corporis beatae molestias tenetur consequuntur sint
-          aspernatur, consequatur facilis soluta provident consectetur
-          dignissimos cum, suscipit, expedita veritatis ipsum. Porro sint nisi
-          voluptates eveniet, enim alias expedita placeat error aut unde autem
-          odio animi repellendus laudantium deserunt repellat nihil ratione quam
-          recusandae vero ex. Veniam corrupti cupiditate velit deserunt expedita
-          exercitationem, earum quidem possimus perferendis ratione aspernatur
-          eum pariatur, dolorum illum corporis dolor, neque ullam? Perferendis,
-          vero odit eos debitis aperiam vitae laudantium voluptatibus ipsam
-          dolor praesentium animi facilis beatae libero repellat!
         </ContentText>
       </Content>
     </>

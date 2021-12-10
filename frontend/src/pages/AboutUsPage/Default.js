@@ -8,10 +8,18 @@ import {
 const Default = () => {
   return (
     <>
-      <Title>
+      <Title
+        transition={{ duration: 1 }}
+        initial={{ opacity: 0, x: -200 }}
+        animate={{ opacity: 1, x: 0 }}
+      >
         Naszym celem <br /> jest...
       </Title>
-      <Content>
+      <Content
+        transition={{ duration: 0.5 }}
+        initial={{ opacity: 0, x: -200 }}
+        animate={{ opacity: 1, x: 0 }}
+      >
         <ContentImage />
         <ContentText>
           Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nobis porro
@@ -31,20 +39,7 @@ const Default = () => {
           suscipit facilis tenetur impedit vero? Lorem ipsum dolor sit amet
           consectetur adipisicing elit. Voluptatibus voluptate libero corporis,
           beatae dolore hic. Rerum amet adipisci pariatur atque? Lorem ipsum
-          dolor sit amet consectetur adipisicing elit. Odio obcaecati officiis
-          rerum quam unde nesciunt officia ullam rem inventore corporis beatae
-          molestias tenetur consequuntur sint aspernatur, consequatur facilis
-          soluta provident consectetur dignissimos cum, suscipit, expedita
-          veritatis ipsum. Porro sint nisi voluptates eveniet, enim alias
-          expedita placeat error aut unde autem odio animi repellendus
-          laudantium deserunt repellat nihil ratione quam recusandae vero ex.
-          Veniam corrupti cupiditate velit deserunt expedita exercitationem,
-          <br />
-          <br />
-          earum quidem possimus perferendis ratione aspernatur eum pariatur,
-          dolorum illum corporis dolor, neque ullam? Perferendis, vero odit eos
-          debitis aperiam vitae laudantium voluptatibus ipsam dolor praesentium
-          animi facilis beatae libero repellat!
+          dolor sit amet consectetur adipisicing elit.
         </ContentText>
       </Content>
     </>
