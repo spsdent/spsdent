@@ -6,7 +6,8 @@ export const HeaderContainer = styled.div`
   justify-content: space-between;
   margin-top: 10vh;
   width: 85%;
-  height: 70vh;
+  height: 67vh;
+  /* overflow: hidden; */
   /* background-color: #444444; */
 
   @media (orientation: portrait) {
@@ -39,39 +40,47 @@ export const TextContainer = styled.div`
   }
 `;
 export const HeaderWelcome = styled.h1`
-  font-size: 96px;
+  font-size: 80px;
   letter-spacing: 5px;
   color: #333;
   width: 100%;
   @media screen and (max-width: 1570px) {
-    font-size: 80px;
+    font-size: 64px;
     letter-spacing: 3px;
   }
   @media screen and (max-width: 1280px) {
-    font-size: 64px;
+    font-size: 48px;
     letter-spacing: 2px;
   }
   @media screen and (max-width: 960px) {
-    font-size: 48px;
+    font-size: 32px;
     letter-spacing: 1px;
+  }
+  @media (orientation: portrait) {
+    margin-top: 35vh;
   }
 `;
 export const HeaderText = styled.p`
+  font-family: 'Poppins';
+  font-weight: 300;
   margin-bottom: 15px;
   width: 85%;
-  font-size: 20px;
+  font-size: 18px;
   color: #333;
+  line-height: 1rem;
   /* background-color: #444; */
   @media screen and (max-width: 1570px) {
-    font-size: 18px;
+    font-size: 16px;
     margin-bottom: 10px 0;
+    line-height: 0.9rem;
   }
   @media screen and (max-width: 1280px) {
-    font-size: 16px;
+    font-size: 14px;
     margin-bottom: 10px;
   }
   @media screen and (max-width: 960px) {
-    font-size: 14px;
+    font-size: 12px;
+    line-height: 0.7rem;
   }
   @media (orientation: portrait) {
     margin: 30px auto;
@@ -213,7 +222,7 @@ export const PhotoHeader = styled.img`
 export const StyledSpan = styled.span`
   color: ${(props) => (props.primary ? "#333" : "#01d4bf")};
   letter-spacing: 17px;
-  font-size: 144px;
+  font-size: 120px;
   line-height: 1px;
 
   @media screen and (max-width: 1570px) {
@@ -221,12 +230,13 @@ export const StyledSpan = styled.span`
     letter-spacing: 12px;
   }
   @media screen and (max-width: 1280px) {
-    font-size: 95px;
-    letter-spacing: 6px;
+    font-size: 80px;
+    letter-spacing: 8px;
   }
   @media screen and (max-width: 960px) {
-    font-size: 78px;
-    letter-spacing: 4px;
+    font-size: 60px;
+    letter-spacing: 6px;
+    line-height: 42px;
   }
 `;
 export const Pattern = styled.img`

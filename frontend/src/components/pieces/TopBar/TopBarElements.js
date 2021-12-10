@@ -107,6 +107,7 @@ export const BarAdress = styled.div`
 
 export const BarText = styled.p`
   font-size: 18px;
+  font-family: 'poppins';
   color: rgba(51, 51, 51, 0.75);
   margin-left: 5px;
   transition: 0.2s ease-out;

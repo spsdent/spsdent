@@ -46,7 +46,7 @@ const Home = () => {
             </StyledSpan>
           </HeaderWelcome>
           <HeaderText>
-            SPS Dental Clinic to klinika oferująca kompleksowe usługi z zakresu
+            <strong>SPS Dental Clinic</strong> to klinika oferująca kompleksowe usługi z zakresu
             stomatologii: diagnostyki, profilaktyki, ortodoncji, chirurgii
             stomatologicznej czy implantologii. Na rynku stomatologicznym
             działamy od przeszło 8 lat. Znajdziemy idealne rozwiązanie dla
