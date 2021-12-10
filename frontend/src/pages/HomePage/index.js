@@ -38,7 +38,21 @@ const Home = () => {
   return (
     <PageWrapper>
       <HeaderContainer>
-        <TextContainer>
+        <TextContainer
+          transition={{ duration: 0.8 }}
+          initial={{
+            opacity: 0,
+            scale: 0,
+            translateX: "10%",
+            translateY: "10%",
+          }}
+          animate={{
+            opacity: 1,
+            scale: 1,
+            translateX: "10%",
+            translateY: "10%",
+          }}
+        >
           <HeaderWelcome>
             Witaj w <br />
             <StyledSpan primary>
@@ -61,8 +75,12 @@ const Home = () => {
         </TextContainer>
         <HeaderPhotoContainer>
           <PhotoHeader
+            transition={{ duration: 1 }}
+            initial={{ opacity: 0, x: -200 }}
+            animate={{ opacity: 1, x: 0 }}
             drag
             dragElastic={0.1}
+            dragTransition={{ bounceStiffness: 600, bounceDamping: 20 }}
             dragConstraints={{
               top: 0,
               left: 0,
@@ -72,8 +90,12 @@ const Home = () => {
             src="header1.png"
           ></PhotoHeader>
           <PhotoHeader
+            transition={{ duration: .5 }}
+            initial={{ opacity: 0, x: -200 }}
+            animate={{ opacity: 1, x: 0 }}
             drag
             dragElastic={0.1}
+            dragTransition={{ bounceStiffness: 600, bounceDamping: 20 }}
             dragConstraints={{
               top: 0,
               left: 0,

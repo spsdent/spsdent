@@ -17,8 +17,8 @@ export const HeaderContainer = styled.div`
     justify-content: space-between;
   }
 `;
-export const TextContainer = styled.div`
-  transform: translate(10%, 10%);
+export const TextContainer = styled(motion.div)`
+  /* transform: translate(10%, 10%); */
   flex-basis: 45%;
   height: 100%;
   margin-right: 70px;

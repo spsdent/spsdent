@@ -29,13 +29,13 @@ class AboutUsPage extends Component {
           <PickContainer>
             <ButtonPick
               name={"Nasza Kadra"}
-              image={"OurStaff.jpg"}
+              image={"AboutUsButton.png"}
               top={"30%"}
               click={() => this.handleClick(0)}
             />
             <ButtonPick
               name={"Gabinet"}
-              image={"Cabinet.jpg"}
+              image={"AboutUsButton1.png"}
               top={"60%"}
               click={() => this.handleClick(1)}
             />
