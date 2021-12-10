@@ -215,7 +215,6 @@ export const PhotoHeader = styled(motion.img)`
       @media screen and (max-height: 840px) {
         height: 280px;
         width: 202px;
-        transform: translate(65%, -92%);
       }
       @media (orientation: portrait) {
         display: none;
