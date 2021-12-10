@@ -79,7 +79,10 @@ function initial() {
       })
     }
   })
+<<<<<<< HEAD
 
+=======
+>>>>>>> dev
   Doctor.estimatedDocumentCount((err, count) => {
     if (!err && count === 0) {
       new Doctor({
