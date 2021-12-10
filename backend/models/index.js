@@ -7,7 +7,9 @@ db.mongoose = mongoose
 db.visits = require('./visit')(mongoose)
 db.user = require('./user')
 db.role = require('./role')
+db.doctor = require('./doctor')
+db.service = require('./service')
 
-db.ROLES = ["user", "admin", "spec"];
+db.ROLES = ['user', 'admin', 'spec']
 
 module.exports = db
