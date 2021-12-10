@@ -1,15 +1,17 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useParams, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import VisitDataService from '../services/visit'
 import { refreshApp } from '../store/actions/refresh'
 
 const Visit = () => {
-  //   let params = useParams()
   let { state } = useLocation()
   let navigate = useNavigate()
   const { refresh: isRefresh } = useSelector((state) => state)
+  const { user: currentUser } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
+  const isAdmin = currentUser.roles.includes('ROLE_ADMIN')
+  const isSpec = currentUser.roles.includes('ROLE_SPEC')
 
   const deleteVisit = (item) => {
     VisitDataService.remove(item.id)
@@ -62,9 +64,11 @@ const Visit = () => {
         >
           X
         </button>
-        <button onClick={() => changeVisitStatus(state.id, state.status)}>
-          Zmien status
-        </button>
+        {(isAdmin || isSpec) ? (
+          <button onClick={() => changeVisitStatus(state.id, state.status)}>
+            Zmien status
+          </button>
+        ) : null}
         <button onClick={() => navigate('/visits')}>Wroc do listy wizyt</button>
       </div>
     </>

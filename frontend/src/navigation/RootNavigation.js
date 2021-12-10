@@ -86,7 +86,7 @@ const RootNavigation = () => {
             <Route exact path="/offer" element={<OfferPage />} />
             <Route exact path="/price-list" element={<PriceListPage />} />
             <Route exact path="/contact" element={<ContactPage />} />
-            <Route exact path="/add-visit" element={<AddVisitPage />} />
+            <Route exact path="/add-visit" element={<AddVisit />} />
 
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/register" element={<Register />} />

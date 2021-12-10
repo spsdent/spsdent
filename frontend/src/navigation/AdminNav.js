@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom'
 
 const AdminNav = () => (
   <>
+  <li>
+      <Link to='/add-visit'>Zarezerwuj</Link>
+    </li>
     <li>
       <Link to='/admin'>Grafik Administratora</Link>
     </li>
