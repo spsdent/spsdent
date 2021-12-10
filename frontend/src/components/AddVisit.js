@@ -6,8 +6,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { refreshApp } from '../store/actions/refresh'
 import ServiceData from '../services/service'
 import DoctorData from '../services/doctor'
+import UserData from '../services/user'
+import { PageWrapper } from './PageWrapper'
 
 const AddVisitSchema = Yup.object().shape({
+  grupa: Yup.string().required('Wybierz grupe uslug...'),
   usluga: Yup.string().required('Wybierz usluge...'),
   specjalista: Yup.string().required('Wybierz specjaliste'),
   data: Yup.string().required('Wybierz termin wizyty'),
@@ -15,11 +18,11 @@ const AddVisitSchema = Yup.object().shape({
   imie: Yup.string()
     .min(2, 'Too Short!')
     .max(50, 'Too Long!')
-    .required('Required'),
+    .required('Wprowadz imie...'),
   nazwisko: Yup.string()
     .min(2, 'Too Short!')
     .max(50, 'Too Long!')
-    .required('Required'),
+    .required('Wprowadz nazwisko...'),
   email: Yup.string().email('Invalid email').required('Required'),
   telefon: Yup.string()
     .matches(/^\d{9}$/, 'Wprowadz prawidlowy numer telefonu')
@@ -34,9 +37,15 @@ const AddVisitSchema = Yup.object().shape({
     .required('Wprowadz ulice...'),
   kodPocztowy: Yup.string()
     .matches(/^\d{5}$/, 'Wprowadz prawidlowy kod pocztowy')
-    .required('Kod pocztowy jest wymagany'),
+    .required('Wprowadz kod pocztowy'),
 })
 
+const SearchUserSchema = Yup.object().shape({
+  user: Yup.string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Wprowadz imie...'),
+})
 const AddVisit = () => {
   const initialVisitState = {
     grupa: '',
@@ -52,6 +61,10 @@ const AddVisit = () => {
     ulica: '',
     kodPocztowy: '',
     status: false,
+    pacjent: '',
+  }
+  const initialSearchUserState = {
+    user: '',
   }
   const daysOfWeek = ['Nd', 'Pon', 'Wt', 'Sr', 'Czw', 'Pt', 'Sb']
   const months = [
@@ -78,9 +91,12 @@ const AddVisit = () => {
   const [choseDate, setChoseDate] = useState('')
   const [allVisitsArr, setAllVisitsArr] = useState([])
   const [choseHour, setChoseHour] = useState('')
+  const [foundUsers, setFoundUsers] = useState([])
+  const [selectedUser, setSelectedUser] = useState(false)
   const { user: currentUser } = useSelector((state) => state.auth)
   const { refresh: isRefresh } = useSelector((state) => state.refresh)
   const dispatch = useDispatch()
+  // const isAdmin = currentUser.roles.includes('ROLE_ADMIN')
 
   useEffect(() => {
     const today = new Date()
@@ -103,8 +119,18 @@ const AddVisit = () => {
         hours: [...hours],
       })
     }
-    setVisitDates(arrOfDays)
-    console.log('currentUser', currentUser)
+    let updatedDates = []
+    updatedDates = arrOfDays.filter(
+      (item) => item.dateId.date == today.getDate() && today.getHours() <= 16
+    )
+    if (today.getHours() >= 16) {
+      updatedDates = arrOfDays.filter(
+        (item) => item.dateId.date != today.getDate()
+      )
+      setVisitDates(updatedDates)
+    } else {
+      setVisitDates([...arrOfDays])
+    }
   }, [])
 
   useEffect(() => {
@@ -256,10 +282,37 @@ const AddVisit = () => {
     })
   })
 
+  const searchUser = (values) => {
+    const { pacjent } = values
+    UserData.getAllUsers(pacjent)
+      .then((response) => {
+        console.log(response.data)
+        setFoundUsers(response.data)
+      })
+      .catch((e) => console.log(e))
+  }
+
+  const fillFormHandler = (user, setValues) => {
+    const { imie, nazwisko, email, telefon, miasto, ulica, kodPocztowy } = user
+    const updatedVisit = {
+      ...visit,
+      imie,
+      nazwisko,
+      email,
+      telefon,
+      miasto,
+      ulica,
+      kodPocztowy,
+    }
+    setValues(updatedVisit)
+    setFoundUsers([])
+  }
+
   return (
-    <>
+    <PageWrapper>
       <h1>Signup</h1>
       <Formik
+        enableReinitialize
         initialValues={visit}
         validationSchema={AddVisitSchema}
         onSubmit={(values, actions) => {
@@ -268,9 +321,9 @@ const AddVisit = () => {
         }}
         onReset={() => setVisit(initialVisitState)}
       >
-        {({ errors, touched, values }) => (
+        {({ errors, touched, values, setValues }) => (
           <Form
-            style={{ display: 'flex', flexDirection: 'column', width: '200px' }}
+            style={{ display: 'flex', flexDirection: 'column', width: '300px' }}
           >
             <label>Grupa uslug</label>
             <Field as='select' name='grupa'>
@@ -351,12 +404,43 @@ const AddVisit = () => {
             {errors.kodPocztowy && touched.kodPocztowy ? (
               <div>{errors.kodPocztowy}</div>
             ) : null}
-            <button type='submit'>Submit</button>
-            <button type='reset'>Reset</button>
+            <button type='submit'>Zarezerwuj</button>
+            <button type='reset'>Wyczysc formularz</button>
+            {currentUser && currentUser.roles.includes('ROLE_ADMIN') && (
+              <>
+                <label>Wyszukaj uzytkownika w bazie</label>
+                <Field name='pacjent' />
+                <button onClick={() => searchUser(values)}>Wyszukaj</button>
+                {errors.pacjent && touched.pacjent ? (
+                  <div>{errors.pacjent}</div>
+                ) : null}
+                {foundUsers.length > 0 ? (
+                  <>
+                    {foundUsers.map((user) => (
+                      <>
+                        <p>Imie: {user.imie}</p>
+                        <p>Nazwisko: {user.nazwisko}</p>
+                        <p>Telefon: {user.telefon}</p>
+                        <p>Miasto: {user.miasto}</p>
+                        <p>Ulica: {user.ulica}</p>
+                        <p>Kod-pocztowy: {user.kodPocztowy}</p>
+                        <button
+                          onClick={() => fillFormHandler(user, setValues)}
+                        >
+                          Wybierz tego pacjenta
+                        </button>
+                      </>
+                    ))}
+                  </>
+                ) : (
+                  <p>Nie ma takiego uzytkownika</p>
+                )}
+              </>
+            )}
           </Form>
         )}
       </Formik>
-    </>
+    </PageWrapper>
   )
 }
 
