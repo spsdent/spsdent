@@ -5,11 +5,12 @@ export const PageWrapper = styled.div`
   justify-content: center;
   margin-left: 14%;
   margin-top: 100px;
+
   @media screen and (min-width: 1570px) {
     margin-left: 220px;
   }
-
   @media screen and (max-width: 768px) {
-    margin-left: 0px;
+    margin-left: 0;
+    /* background-color: blue; */
   }
 `;

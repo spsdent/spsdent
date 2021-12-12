@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+
 const ButtonPick = (props) => {
   const style = {
     position: "fixed",
@@ -8,9 +9,9 @@ const ButtonPick = (props) => {
     display: "flex",
     justifyContent: "flex-start",
     alignItems: "flex-end",
-    width: "247px",
-    height: "189px",
-    fontSize: "36px",
+    width: "7em",
+    height: "5em",
+    fontSize: "1.5em",
     // border: "2px solid black",
     backgroundColor: "#666",
     borderRadius: "10px",
@@ -21,11 +22,10 @@ const ButtonPick = (props) => {
     backgroundSize: "cover",
     borderStyle: "none",
   };
-
   return (
     <motion.button
-      initial={{ opacity: 0, x: 200}}
-      animate={{ opacity: 1, x: 0}}
+      initial={{ opacity: 0, x: 200 }}
+      animate={{ opacity: 1, x: 0 }}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       transition={{ duration: 0.2 }}

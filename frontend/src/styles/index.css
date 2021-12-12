@@ -12,6 +12,7 @@ html {
     font-size: 24px;
     font-family: 'Bebas Neue','Montserrat';
 }
+
 ::selection {
     background-color: #01D4BF;
     color: #fff;

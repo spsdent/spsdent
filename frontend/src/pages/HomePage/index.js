@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import UserService from "../../services/user";
 import { FaAngleDoubleRight } from "react-icons/fa";
 import { PageWrapper } from "../../components/PageWrapper";
+import { Pattern } from "../../components/Pattern";
+import { ButtonLink } from "../../components/pieces/TopBar/TopBarElements";
 import {
   HeaderContainer,
   TextContainer,
@@ -13,7 +15,6 @@ import {
   StyledSpan,
   ButtonSpan,
   ButtonContainer,
-  Pattern,
 } from "./HomePageElements";
 
 const Home = () => {
@@ -43,14 +44,14 @@ const Home = () => {
           initial={{
             opacity: 0,
             x: 200,
-            translateX: "10%",
-            translateY: "10%",
+            // translateX: "10%",
+            // translateY: "10%",
           }}
           animate={{
             opacity: 1,
             x: 0,
-            translateX: "10%",
-            translateY: "10%",
+            // translateX: "10%",
+            // translateY: "10%",
           }}
         >
           <HeaderWelcome>
@@ -70,7 +71,9 @@ const Home = () => {
             <ButtonSpan>
               <FaAngleDoubleRight />
             </ButtonSpan>
-            <AddVisitButton>umów się na wizytę</AddVisitButton>
+            <AddVisitButton>
+              <ButtonLink to="/add-visit">Umów się na wizytę</ButtonLink>
+            </AddVisitButton>
           </ButtonContainer>
         </TextContainer>
         <HeaderPhotoContainer>
@@ -90,7 +93,7 @@ const Home = () => {
             src="header1.png"
           ></PhotoHeader>
           <PhotoHeader
-            transition={{ duration: .5 }}
+            transition={{ duration: 0.5 }}
             initial={{ opacity: 0, x: -200 }}
             animate={{ opacity: 1, x: 0 }}
             drag
@@ -107,7 +110,14 @@ const Home = () => {
           ></PhotoHeader>
         </HeaderPhotoContainer>
       </HeaderContainer>
-      <Pattern src="Pattern.png"></Pattern>
+      <Pattern
+        src="Pattern.png"
+        top="55%"
+        left="30%"
+        transition={{ duration: 1 }}
+        initial={{ scale: 0, rotate: 0 }}
+        animate={{ scale: 1, rotate: 360 }}
+      ></Pattern>
     </PageWrapper>
   );
 };

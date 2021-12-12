@@ -1,43 +1,62 @@
 import styled, { css } from "styled-components";
-import {motion} from "framer-motion"
-
+import { motion } from "framer-motion";
 export const HeaderContainer = styled.div`
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: space-around;
   margin-top: 10vh;
   width: 85%;
   height: 67vh;
   /* overflow: hidden; */
   /* background-color: #444444; */
 
-  @media (orientation: portrait) {
+  /* @media (orientation: portrait) {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-  }
+  } */
 `;
 export const TextContainer = styled(motion.div)`
   /* transform: translate(10%, 10%); */
-  flex-basis: 45%;
-  height: 100%;
-  margin-right: 70px;
-  /* background-color: #444; */
+  width: 50%;
+  height: fit-content;
+  margin-left: 2em;
+  /* margin-top: 4em; */
+  /* background-color: #777; */
   @media screen and (max-width: 1570px) {
-    margin-right: 40px;
+    margin-top: 2em;
+
   }
   @media screen and (max-width: 1280px) {
-    margin-right: 20px;
+
   }
   @media screen and (max-width: 960px) {
-    margin-right: 10px;
+
+  }
+  @media screen and (max-width: 768px) {
+    margin: 4em auto;
+    text-align: center;
+    position: absolute;
+    margin: 4em 0;
+    top: 10%;
+    left: 25%;
+    transform: translate(-50%, -50%);
   }
   @media (orientation: portrait) {
     text-align: center;
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -100%);
+    position: absolute;
+    margin: 4em 0;
+    top: 10%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+  }
+  @media (max-width: 768px) and (orientation: portrait) {
+    text-align: center;
+    position: absolute;
+    margin: 4em 0;
+    top: 10%;
+    left: 25%;
+    transform: translate(-50%, -50%);
   }
 `;
 export const HeaderWelcome = styled.h1`
@@ -57,18 +76,18 @@ export const HeaderWelcome = styled.h1`
     font-size: 32px;
     letter-spacing: 1px;
   }
-  @media (orientation: portrait) {
+  /* @media (orientation: portrait) {
     margin-top: 35vh;
-  }
+  } */
 `;
 export const HeaderText = styled.p`
-  font-family: 'Poppins';
+  font-family: "montserrat","Poppins";
   font-weight: 300;
   margin-bottom: 15px;
-  width: 85%;
+  width: 70%;
   font-size: 18px;
   color: #333;
-  line-height: 1rem;
+  line-height: 1.3em;
   /* background-color: #444; */
   @media screen and (max-width: 1570px) {
     font-size: 16px;
@@ -83,15 +102,20 @@ export const HeaderText = styled.p`
     font-size: 12px;
     line-height: 0.7rem;
   }
+  @media screen and (max-width: 768px) {
+    margin: 1em auto;   
+  }
   @media (orientation: portrait) {
     margin: 30px auto;
     text-align: center;
+    width: 100%;
   }
 `;
-export const ButtonContainer = styled.div`
+export const ButtonContainer = styled.button`
   display: flex;
   width: 255px;
   height: 64px;
+  border-style: none;
   cursor: pointer;
   @media screen and (max-width: 1570px) {
     height: 55px;
@@ -105,11 +129,15 @@ export const ButtonContainer = styled.div`
     height: 45px;
     width: 180px;
   }
+  @media screen and (max-width: 768px) {
+    margin: 0 auto;
+  }
   @media (orientation: portrait) {
     margin: 40px auto;
   }
 `;
 export const AddVisitButton = styled.button`
+  /* display: flex; */
   width: 190px;
   height: 100%;
   border: none;
@@ -173,9 +201,9 @@ export const PhotoHeader = styled(motion.img)`
   /* max-height: ${(props) => (props.primary ? "54vh" : "64vh")}; */
   /* transform: ${(props) =>
     props.primary ? "translate(45%, -92%)" : "translateY(0%)"}; */
-    position: absolute;
-    top: ${props => props.primary ? "35%" : "0"};
-    left: ${props => props.primary ? "25%" : "0"};
+  position: absolute;
+  top: ${(props) => (props.primary ? "35%" : "0")};
+  left: ${(props) => (props.primary ? "25%" : "0")};
   @media screen and (max-width: 1570px) {
     height: 553px;
     width: 398px;
@@ -191,6 +219,9 @@ export const PhotoHeader = styled(motion.img)`
   @media screen and (max-height: 840px) {
     height: 404px;
     width: 291px;
+  }
+  @media screen and (max-width: 768px) {
+    display: none;
   }
   @media (orientation: portrait) {
     display: none;
@@ -216,6 +247,9 @@ export const PhotoHeader = styled(motion.img)`
         height: 280px;
         width: 202px;
       }
+      @media screen and (max-width: 768px) {
+        display: none;
+      }
       @media (orientation: portrait) {
         display: none;
       }
@@ -240,12 +274,4 @@ export const StyledSpan = styled.span`
     letter-spacing: 6px;
     line-height: 42px;
   }
-`;
-export const Pattern = styled.img`
-  width: 550px;
-  height: 250px;
-  position: fixed;
-  top: 40%;
-  left: 30%;
-  z-index: -1;
 `;

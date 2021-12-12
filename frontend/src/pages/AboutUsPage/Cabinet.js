@@ -2,8 +2,10 @@ import React from "react";
 import {
   Title,
   Content,
-  ContentImage,
   ContentText,
+  LineAboutUs,
+  CabinetImage,
+  Gallery,
 } from "./AboutUsPageElements";
 const Cabinet = () => {
   return (
@@ -16,35 +18,31 @@ const Cabinet = () => {
         Gabinet
       </Title>
       <Content
-        transition={{ duration: .5 }}
+        transition={{ duration: 0.5 }}
         initial={{ opacity: 0, x: -200 }}
         animate={{ opacity: 1, x: 0 }}
       >
-        <ContentImage />
+        <LineAboutUs />
         <ContentText>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nobis porro
-          assumenda voluptatum quaerat natus numquam perspiciatis asperiores
-          quibusdam amet iusto. <br />
-          <br />
-          Voluptatibus totam praesentium numquam eaque iusto nam laboriosam
-          itaque minus illum, vel amet labore molestias natus. Ipsa, est.
-          Nostrum ratione dicta quibusdam assumenda velit unde nisi, ullam iure
-          asperiores! Repellendus!
-          <br />
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Commodi
-          perspiciatis deserunt illum accusamus eaque voluptas vero, nisi,
-          <br />
-          <br />
-          facilis aspernatur, consequuntur et vitae placeat fuga ipsum vel fugit
-          eius iusto magnam. Lorem ipsum dolor sit amet consectetur adipisicing
-          elit. Distinctio et labore fugit, magnam sunt culpa ratione excepturi
-          doloremque reiciendis suscipit facilis tenetur impedit vero? Lorem
-          ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus
-          voluptate libero corporis, beatae dolore hic. Rerum amet adipisci
-          pariatur atque? Lorem ipsum dolor sit amet consectetur adipisicing
-          elit. Odio obcaecati officiis rerum quam unde nesciunt officia ullam
-          <br />
+          SPS Dental Clinic to miejsce, gdzie czeka na państwa profesjonalny
+          zespół specjalistów.
         </ContentText>
+        <Gallery>
+          <CabinetImage primary src="cabinet1.png" />
+          {/* <LineAboutUs primary /> */}
+          <CabinetImage src="cabinet2.png" />
+          {/* <LineAboutUs primary /> */}
+          <CabinetImage primary src="cabinet3.png" />
+          {/* <LineAboutUs primary /> */}
+          <CabinetImage src="cabinet4.png" />
+          <LineAboutUs />
+          <ContentText>
+            Do Państwa dyspozycji jest ambitny zespół – doświadczeni
+            specjaliści, którzy stale się doszkalają, biorąc udział w kursach,
+            sympozjach i konferencjach, aby oferować Pacjentom jak najlepszą
+            obsługę. Jakość obsługi wyróżnia nas na tle innych gabinetów.
+          </ContentText>
+        </Gallery>
       </Content>
     </>
   );

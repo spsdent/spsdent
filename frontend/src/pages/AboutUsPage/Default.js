@@ -4,6 +4,9 @@ import {
   Content,
   ContentImage,
   ContentText,
+  LineAboutUs,
+  DoctorName,
+  Gallery
 } from "./AboutUsPageElements";
 const Default = () => {
   return (
@@ -20,27 +23,40 @@ const Default = () => {
         initial={{ opacity: 0, x: -200 }}
         animate={{ opacity: 1, x: 0 }}
       >
-        <ContentImage />
+        <Gallery>
+        {/* <LineAboutUs /> */}
         <ContentText>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nobis porro
-          assumenda voluptatum quaerat natus numquam perspiciatis asperiores
-          quibusdam amet iusto. Voluptatibus totam praesentium numquam eaque
-          iusto nam laboriosam itaque minus illum, vel amet labore molestias
-          natus.
-          <br />
-          <br />
-          Ipsa, est. Nostrum ratione dicta quibusdam assumenda velit unde nisi,
-          ullam iure asperiores! Repellendus! Lorem ipsum, dolor sit amet
-          consectetur adipisicing elit. Commodi perspiciatis deserunt illum
-          accusamus eaque voluptas vero, nisi, facilis aspernatur, consequuntur
-          et vitae placeat fuga ipsum vel fugit eius iusto magnam. Lorem ipsum
-          dolor sit amet consectetur adipisicing elit. Distinctio et labore
-          fugit, magnam sunt culpa ratione excepturi doloremque reiciendis
-          suscipit facilis tenetur impedit vero? Lorem ipsum dolor sit amet
-          consectetur adipisicing elit. Voluptatibus voluptate libero corporis,
-          beatae dolore hic. Rerum amet adipisci pariatur atque? Lorem ipsum
-          dolor sit amet consectetur adipisicing elit.
+          Naszym celem jest oferowanie najlepszej jakości usług, co zapewnia
+          długofalowy efekt przeprowadzanych zabiegów, a także sprawia, że
+          wszyscy Pacjenci czują się u nas wyjątkowo. Dla nas, jako
+          specjalistów, nie ma dla nas rzeczy niemożliwych. Podejmiemy się
+          każdego wyzwania!
         </ContentText>
+        <LineAboutUs />
+        <DoctorName>Nasz zespół</DoctorName>
+        <ContentText>
+          Zespół SPS Dental Clinic tworzą doświadczeni specjaliści – doktorzy
+          nauk medycznych oraz lekarze dentyści, a także dyplomowane higienistki
+          i asystentki stomatologiczne. Aby wdrażać najnowocześniejsze metody
+          leczenia, wszyscy z nich stale podnoszą swoje kompetencje. Poszukujesz
+          sprawdzonego dentysty w Lublinie? Wybierz{" "}
+          <strong>SPS Dental Clinic!</strong>
+        </ContentText>
+        <LineAboutUs />
+        <DoctorName>Co nas wyróżnia?</DoctorName>
+        <ContentText>
+          Oferujemy zindywidualizowane, w pełni bezpieczne metody leczenia oraz
+          rzetelną i fachową obsługę Pacjenta. Nasze gabinety wyposażone są w
+          nowoczesną aparaturę, za pomocą której możemy leczyć w sposób
+          maksymalnie profesjonalny i efektywny. W Lublinie jesteśmy znani jako
+          jedni z najlepszych stomatologów.
+          <strong> Jakość nigdy nie jest dziełem przypadku </strong> jest
+          rezultatem dobrych intencji, szczerego wysiłku, odpowiedniego
+          kierunku, umiejętnego wykonania
+          <strong> reprezentuje mądry wybór z wielu alternatyw.</strong>
+        </ContentText>
+        <LineAboutUs />
+        </Gallery>
       </Content>
     </>
   );
