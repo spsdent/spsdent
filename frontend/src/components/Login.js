@@ -31,7 +31,7 @@ const Login = (props) => {
 
     dispatch(login(email, password))
       .then(() => {
-        props.history.push('/profile')
+        props.history.push('/add-visit')
         window.location.reload()
       })
       .catch(() => {
@@ -40,7 +40,7 @@ const Login = (props) => {
   }
 
   if (isLoggedIn) {
-    return <Navigate to='/profile' />
+    return <Navigate to='/add-visit' />
   }
 
   return (

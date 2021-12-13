@@ -43,9 +43,9 @@ const NonAuth = () => {
     }
   }, [currentUser])
 
-  const logOut = () => {
-    dispatch(logout())
-  }
+  // const logOut = () => {
+  //   dispatch(logout())
+  // }
   return (
     <SideBarContainer>
       <NavTriangle />
@@ -69,13 +69,6 @@ const NonAuth = () => {
           <NavItem>
             <StyledLink to='/contact'>Kontakt</StyledLink>
           </NavItem>
-          {currentUser && (
-            <NavItem>
-              <StyledLink to='/login' onClick={logOut}>
-                Wyloguj
-              </StyledLink>
-            </NavItem>
-          )}
         </NavWrap>
       </SideNav>
       <NavSocials>
