@@ -23,7 +23,9 @@ const AddVisitSchema = Yup.object().shape({
     .min(2, 'Too Short!')
     .max(50, 'Too Long!')
     .required('Wprowadz nazwisko...'),
-  email: Yup.string().email('Invalid email').required('Wprowadz adres e-mail...'),
+  email: Yup.string()
+    .email('Invalid email')
+    .required('Wprowadz adres e-mail...'),
   telefon: Yup.string()
     .matches(/^\d{9}$/, 'Wprowadz prawidlowy numer telefonu')
     .required('Numer telefonu jest wymagany'),
@@ -633,15 +635,42 @@ const AddVisit = () => {
               {currentUser && currentUser.roles.includes('ROLE_ADMIN') && (
                 <>
                   <label>Wyszukaj uzytkownika w bazie</label>
-                  <Field name='pacjent' />
-                  <button onClick={() => searchUser(values)}>Wyszukaj</button>
+                  <Field
+                    name='pacjent'
+                    style={{
+                      backgroundColor: 'transparent',
+                      border: '2px solid #333',
+                      height: '3em',
+                      margin: '10px 0',
+                      paddingLeft: '1em',
+                    }}
+                    placeholder='Wyszukaj pacjenta...'
+                  />
+                  <button
+                    onClick={() => searchUser(values)}
+                    style={{
+                      backgroundColor: 'none',
+                      border: '2px solid #333',
+                      height: '3em',
+                      margin: '10px 0',
+                    }}
+                  >
+                    Wyszukaj
+                  </button>
                   {errors.pacjent && touched.pacjent ? (
                     <p style={{ color: 'red' }}>{errors.pacjent}</p>
                   ) : null}
-                  {foundUsers.length > 0 ? (
+                  {foundUsers.length > 0 && (
                     <>
                       {foundUsers.map((user) => (
-                        <>
+                        <div
+                          style={{
+                            backgroundColor: '#333',
+                            width: '300px',
+                            padding: '15px',
+                            color: 'white',
+                          }}
+                        >
                           <p>Imie: {user.imie}</p>
                           <p>Nazwisko: {user.nazwisko}</p>
                           <p>Telefon: {user.telefon}</p>
@@ -650,14 +679,20 @@ const AddVisit = () => {
                           <p>Kod-pocztowy: {user.kodPocztowy}</p>
                           <button
                             onClick={() => fillFormHandler(user, setValues)}
+                            style={{
+                              backgroundColor: 'none',
+                              border: '2px solid #333',
+                              height: '3em',
+                              margin: '10px 0',
+                              padding: '10px',
+                              cursor: 'pointer',
+                            }}
                           >
                             Wybierz tego pacjenta
                           </button>
-                        </>
+                        </div>
                       ))}
                     </>
-                  ) : (
-                    <p>Nie ma takiego uzytkownika</p>
                   )}
                 </>
               )}
