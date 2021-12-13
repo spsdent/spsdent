@@ -3,6 +3,7 @@ import VisitDataService from '../services/visit'
 import { useSelector, useDispatch } from 'react-redux'
 import { refreshApp } from '../store/actions/refresh'
 import { useNavigate } from 'react-router-dom'
+import { PageWrapper } from './PageWrapper'
 
 const VisitsList = () => {
   const [visitsList, setVisitsList] = useState([])
@@ -20,7 +21,6 @@ const VisitsList = () => {
 
   useEffect(() => {
     retrieveVisits()
-    
   }, [isRefresh])
 
   const retrieveVisits = () => {
@@ -58,37 +58,58 @@ const VisitsList = () => {
   }
 
   return (
-    <>
-      <h1>Visits List</h1>
-      {console.log('wizyty', visitsList)}
-      {visitsList.length > 0 ? (
-        visitsList.map((item) => (
-          <div
-            style={{
-              width: '250px',
-              backgroundColor: '#333',
-              color: '#fff',
-              padding: '10px',
-              marginBottom: '10px',
-            }}
-          >
-            <p>Usluga: {item.usluga}</p>
-            <p>Specjalista: {item.specjalista}</p>
-            <p>Data: {item.data}</p>
-            <p>Godzina: {item.godzina}</p>
-            <button
-              onClick={() => deleteVisit(item)}
-              style={{ backgroundColor: 'red', border: 0, color: '#fff' }}
-            >
-              X
-            </button>
-            <button onClick={() => goToVisit(item)}>Przejdz do wizyty</button>
+    <PageWrapper>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <h1>Aktualne wizyty</h1>
+        {visitsList.length > 0 ? (
+          <div>
+            {visitsList.map((item) => (
+              <div
+                style={{
+                  width: '250px',
+                  backgroundColor: '#333',
+                  color: '#fff',
+                  padding: '10px',
+                  marginBottom: '10px',
+                }}
+              >
+                <p>Usluga: {item.usluga}</p>
+                <p>Specjalista: {item.specjalista}</p>
+                <p>Data: {item.data}</p>
+                <p>Godzina: {item.godzina}</p>
+                <button
+                  onClick={() => deleteVisit(item)}
+                  style={{
+                    backgroundColor: 'transparent',
+                    border: '2px solid white',
+                    color: '#fff',
+                    padding: '5px',
+                    marginRight: '5px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  X
+                </button>
+                <button
+                  onClick={() => goToVisit(item)}
+                  style={{
+                    backgroundColor: 'transparent',
+                    border: '2px solid white',
+                    color: '#fff',
+                    padding: '5px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  Przejdz do wizyty
+                </button>
+              </div>
+            ))}
           </div>
-        ))
-      ) : (
-        <h1>Brak wizyt</h1>
-      )}
-    </>
+        ) : (
+          <h1>Brak wizyt</h1>
+        )}
+      </div>
+    </PageWrapper>
   )
 }
 

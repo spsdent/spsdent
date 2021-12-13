@@ -1,23 +1,26 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import {
+  NavItem,
+  StyledLink,
+} from "../components/pieces/SideBar/SideBarElements";
 
 const UserNav = () => (
   <>
-    <li>
-      <Link to='/add-visit'>Zarezerwuj</Link>
-    </li>
-    <li>
-      <Link to='/visits'>Aktualne rezerwacje</Link>
-    </li>
-    <li>
-      <Link to='/archive-visits'>Historia rezerwacji</Link>
-    </li>
-    <li>
-      <Link to='/user'>Panel pacjenta</Link>
-    </li>
-    <li>
-      <Link to='/profile'>Ustawienia</Link>
-    </li>
+    <NavItem>
+      <StyledLink to='/add-visit'>Zarezerwuj</StyledLink>
+    </NavItem>
+    <NavItem>
+      <StyledLink to='/visits'>Aktualne rezerwacje</StyledLink>
+    </NavItem>
+    <NavItem>
+      <StyledLink to='/archive-visits'>Historia rezerwacji</StyledLink>
+    </NavItem>
+    <NavItem>
+      <StyledLink to='/user'>Panel pacjenta</StyledLink>
+    </NavItem>
+    <NavItem>
+      <StyledLink to='/profile'>Ustawienia</StyledLink>
+    </NavItem>
   </>
 )
 
