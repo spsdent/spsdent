@@ -13,27 +13,65 @@ import {
   ButtonContact,
 } from "./ContactPageElements";
 class ContactPage extends Component {
-  state = {}
+  state = {
+    name: "",
+    email: "",
+    topic: "",
+    message: "",
+  };
+
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  };
 
   handleSubmit = (e) => {
     e.preventDefault();
-  }
+    this.setState({
+      name: "",
+      email: "",
+      topic: "",
+      message: "",
+    });
+  };
   render() {
     return (
       <PageWrapper>
-        <ContactContainer
-          initial={{ x: -300}}
-          animate={{ x: 0}}
-        >
+        <ContactContainer initial={{ x: -300 }} animate={{ x: 0 }}>
           <ContactForm onSubmit={this.handleSubmit}>
             <ContactTitle>Kontakt</ContactTitle>
             <ContactText primary>
               Chcesz się o coś zapytać?<br></br> Pisz śmiało!
             </ContactText>
-            <ContactInput type="text" placeholder="Imię i Nazwisko" />
-            <ContactInput type="text" placeholder="E-mail" />
-            <ContactInput type="text" placeholder="Temat" />
-            <ContactMessage type="text" placeholder="Treść" />
+            <ContactInput
+              type="text"
+              name="name"
+              value={this.state.name}
+              onChange={this.handleChange}
+              placeholder="Imię i Nazwisko"
+            />
+            <ContactInput
+              type="text"
+              name="email"
+              value={this.state.email}
+              onChange={this.handleChange}
+              placeholder="E-mail"
+            />
+            <ContactInput
+              type="text"
+              name="topic"
+              value={this.state.topic}
+              onChange={this.handleChange}
+              placeholder="Temat"
+            />
+            <ContactMessage
+              type="text"
+              name="message"
+              value={this.state.message}
+              onChange={this.handleChange}
+              placeholder="Treść"
+            />
             <ButtonContact type="submit">Wyślij</ButtonContact>
           </ContactForm>
           <ContactInfo>
