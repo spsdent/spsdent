@@ -36,30 +36,30 @@ function PrivateRoute({ children }) {
 }
 
 const RootNavigation = () => {
-  const [showSpecBoard, setShowSpecBoard] = useState(false)
-  const [showAdminBoard, setShowAdminBoard] = useState(false)
-  const [showUserBoard, setShowUserBoard] = useState(false)
+  // const [showSpecBoard, setShowSpecBoard] = useState(false)
+  // const [showAdminBoard, setShowAdminBoard] = useState(false)
+  // const [showUserBoard, setShowUserBoard] = useState(false)
 
-  const { user: currentUser } = useSelector((state) => state.auth)
-  const dispatch = useDispatch()
+  // const { user: currentUser } = useSelector((state) => state.auth)
+  // const dispatch = useDispatch()
 
-  useEffect(() => {
-    history.listen((location) => {
-      dispatch(clearMessage()) // clear message when changing location
-    })
-  }, [dispatch])
+  // useEffect(() => {
+  //   history.listen((location) => {
+  //     dispatch(clearMessage()) // clear message when changing location
+  //   })
+  // }, [dispatch])
 
-  useEffect(() => {
-    if (currentUser) {
-      setShowSpecBoard(currentUser.roles.includes('ROLE_SPEC'))
-      setShowAdminBoard(currentUser.roles.includes('ROLE_ADMIN'))
-      setShowUserBoard(currentUser.roles.includes('ROLE_USER'))
-    }
-  }, [currentUser])
+  // useEffect(() => {
+  //   if (currentUser) {
+  //     setShowSpecBoard(currentUser.roles.includes('ROLE_SPEC'))
+  //     setShowAdminBoard(currentUser.roles.includes('ROLE_ADMIN'))
+  //     setShowUserBoard(currentUser.roles.includes('ROLE_USER'))
+  //   }
+  // }, [currentUser])
 
-  const logOut = () => {
-    dispatch(logout())
-  }
+  // const logOut = () => {
+  //   dispatch(logout())
+  // }
 
   return (
     <BrowserRouter history={history}>

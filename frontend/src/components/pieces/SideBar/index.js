@@ -27,13 +27,13 @@ const NonAuth = () => {
   const [showUserBoard, setShowUserBoard] = useState(false)
 
   const { user: currentUser } = useSelector((state) => state.auth)
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
 
-  useEffect(() => {
-    history.listen((location) => {
-      dispatch(clearMessage()) // clear message when changing location
-    })
-  }, [dispatch])
+  // useEffect(() => {
+  //   history.listen((location) => {
+  //     dispatch(clearMessage()) // clear message when changing location
+  //   })
+  // }, [dispatch])
 
   useEffect(() => {
     if (currentUser) {
@@ -51,18 +51,20 @@ const NonAuth = () => {
       <NavTriangle />
       <SideNav>
         <NavWrap>
-          {showSpecBoard && <SpecNav />}
-          {showAdminBoard && <AdminNav />}
-          {showUserBoard && <UserNav />}
           {currentUser && (
-            <hr
-              style={{
-                width: '100%',
-                backgroundColor: '#333',
-                border: 'none',
-                height: '1px',
-              }}
-            />
+            <>
+              {showSpecBoard && <SpecNav />}
+              {showAdminBoard && <AdminNav />}
+              {showUserBoard && <UserNav />}
+              <hr
+                style={{
+                  width: '100%',
+                  backgroundColor: '#333',
+                  border: 'none',
+                  height: '1px',
+                }}
+              />
+            </>
           )}
           <NavItem>
             <StyledLink to='/'>Strona Główna</StyledLink>

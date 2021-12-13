@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FaBars } from 'react-icons/fa'
 import {
   Nav,
@@ -17,9 +17,19 @@ import {
 } from './TopBarElements'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../../../store/actions/auth'
+import { history } from '../../../helpers/history'
+import { clearMessage } from '../../../store/actions/message'
+
 const TopBar = () => {
   const { user: currentUser } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    history.listen((location) => {
+      dispatch(clearMessage()) // clear message when changing location
+    })
+  }, [dispatch])
+
   const logOut = () => {
     dispatch(logout())
   }
