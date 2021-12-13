@@ -14,15 +14,12 @@ import {
   MobileIcon,
   NavInfo,
   ButtonNav,
- 
-  
 } from "./TopBarElements";
 const TopBar = () => {
   return (
     <>
       <Nav>
         <NavBarContainer>
-
           <NavLogo to="/">
             <NavImage src="logo.png" alt="spsdentLogo" />
           </NavLogo>
@@ -34,7 +31,7 @@ const TopBar = () => {
           <NavInfo>
             <BarPhone>
               <BarIcon src="phoneIcon.png" alt="phone" />
-              <BarText>123 456 789</BarText>
+              <BarText>607 677 888</BarText>
             </BarPhone>
 
             <BarAdress>
@@ -45,13 +42,12 @@ const TopBar = () => {
 
           <NavButtons>
             <ButtonNav primary>
-            <ButtonLink to="/add-visit">Umów się na wizytę</ButtonLink>
+              <ButtonLink to="/add-visit">Umów się na wizytę</ButtonLink>
             </ButtonNav>
             <ButtonNav>
-            <ButtonLink to="/login">Zaloguj się</ButtonLink>
+              <ButtonLink to="/login">Zaloguj się</ButtonLink>
             </ButtonNav>
           </NavButtons>
-
         </NavBarContainer>
       </Nav>
     </>

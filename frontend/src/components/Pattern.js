@@ -7,6 +7,4 @@ export const Pattern = styled(motion.img)`
   top: ${(props) => props.top};
   left: ${(props) => props.left};
   z-index: -1;
-
-  @media screen and (max-width: 760)
 `;

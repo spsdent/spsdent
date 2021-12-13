@@ -11,7 +11,7 @@ import {
 const Default = () => {
   return (
     <>
-      <Title
+      <Title primary
         transition={{ duration: 1 }}
         initial={{ opacity: 0, x: -200 }}
         animate={{ opacity: 1, x: 0 }}

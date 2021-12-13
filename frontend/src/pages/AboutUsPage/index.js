@@ -4,13 +4,11 @@ import { motion } from "framer-motion";
 import OurStaff from "./OurStaff";
 import Cabinet from "./Cabinet";
 import Default from "./Default";
-import ButtonPick from "./Button";
 import { Pattern } from "../../components/Pattern";
 import {
   AboutUsContainer,
   AboutUsContent,
   PickContainer,
-  FogAboutUs,
   PickButton,
 } from "./AboutUsPageElements";
 class AboutUsPage extends Component {
@@ -30,18 +28,27 @@ class AboutUsPage extends Component {
       <PageWrapper>
         <AboutUsContainer>
           <PickContainer>
-            <ButtonPick
-              name={"Nasza Kadra"}
-              image={"AboutUsButton.png"}
-              top={"30%"}
-              click={() => this.handleClick(0)}
-            />
-            <ButtonPick
-              name={"Gabinet"}
-              image={"AboutUsButton1.png"}
-              top={"60%"}
-              click={() => this.handleClick(1)}
-            />
+            <PickButton
+              primary
+              initial={{ opacity: 0, x: 200 }}
+              animate={{ opacity: 1, x: 0 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => this.handleClick(0)}
+            >
+              Nasza Kadra
+            </PickButton>
+            <PickButton
+              initial={{ opacity: 0, x: 200 }}
+              animate={{ opacity: 1, x: 0 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => this.handleClick(1)}
+            >
+              Gabinet
+            </PickButton>
           </PickContainer>
           <AboutUsContent>
             {this.state.pick === "default" && <Default />}
@@ -65,7 +72,6 @@ class AboutUsPage extends Component {
           initial={{ scale: 0 }}
           animate={{ scale: 1.5 }}
         />
-        {/* <FogAboutUs /> */}
       </PageWrapper>
     );
   }
