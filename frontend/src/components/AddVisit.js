@@ -229,9 +229,15 @@ const AddVisit = () => {
     setServiceGroupSelected(values.grupa)
     if (serviceGroupSelected && !serviceSelected) {
       values.specjalista = ''
+      values.data = ''
+      values.godzina = ''
+      setDoctorSelected('')
     } else if (!serviceGroupSelected) {
       setServiceSelected('')
+      setDoctorSelected('')
       values.usluga = ''
+      values.data = ''
+      values.godzina = ''
     }
     return services.map((service) => (
       <option value={service.grupa}>{service.grupa}</option>
@@ -243,9 +249,13 @@ const AddVisit = () => {
       .filter((service) => service.grupa === serviceGroupSelected)
       .map((service) => service.uslugi)
       .flatMap((item) => item)
-    if (!serviceSelected) {
-      setServiceSelected('')
-      values.specjalista = ''
+    if (serviceSelected && !doctorSelected) {
+      values.godzina = ''
+      values.data = ''
+    } else if (!serviceSelected) {
+      values.godzina = ''
+      values.data = ''
+      setDoctorSelected('')
     }
     setServiceSelected(values.usluga)
 
@@ -258,6 +268,9 @@ const AddVisit = () => {
     const selectedGroupDoctors = doctors.filter((doctor) =>
       doctor.specjalnosci.includes(serviceGroupSelected)
     )
+    if(doctorSelected && !values.data) {
+      values.godzina = ''
+    }
     setDoctorSelected(values.specjalista)
     return selectedGroupDoctors.map((doctor) => (
       <option value={doctor.imie + ' ' + doctor.nazwisko}>
@@ -458,7 +471,7 @@ const AddVisit = () => {
                   ) : null}
                 </>
               )}
-              {doctorSelected !== '' && (
+              {doctorSelected && (
                 <>
                   <label>Data</label>
                   <Field
@@ -478,10 +491,9 @@ const AddVisit = () => {
                   {errors.data && touched.data ? (
                     <p style={{ color: 'red' }}>{errors.data}</p>
                   ) : null}
-                  {setChoseDate(values.data)}
                 </>
               )}
-              {choseDate && (
+              {values.data && (
                 <>
                   <label>Godzina</label>
                   <Field
@@ -501,9 +513,9 @@ const AddVisit = () => {
                   {errors.godzina && touched.godzina ? (
                     <p style={{ color: 'red' }}>{errors.godzina}</p>
                   ) : null}
+                  {setChoseHour(values.godzina)}
                 </>
               )}
-              {setChoseHour(values.godzina)}
               <label>Imie</label>
               <Field
                 name='imie'
