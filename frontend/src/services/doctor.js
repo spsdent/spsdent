@@ -9,16 +9,23 @@ const get = (id) => {
 }
 
 const create = (data) => {
-  return http.post('/doctors', data)
+return http.post('/doctors', data)
 }
 
 const remove = (id) => {
   return http.delete(`/doctors/${id}`)
 }
 
+const update = (id, data) => {
+  return http.put(`/doctors/${id}`, data)
+}
+
+// const update = 
+
 export default {
   getAll,
   get,
   create,
   remove,
+  update
 }
