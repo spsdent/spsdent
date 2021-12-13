@@ -99,7 +99,6 @@ const AddVisit = () => {
   const { user: currentUser } = useSelector((state) => state.auth)
   const { refresh: isRefresh } = useSelector((state) => state.refresh)
   const dispatch = useDispatch()
-  // const isAdmin = currentUser.roles.includes('ROLE_ADMIN')
 
   useEffect(() => {
     const today = new Date()
@@ -215,8 +214,8 @@ const AddVisit = () => {
 
     VisitData.create(visitData)
       .then((response) => {
-        setChoseDate('')
-        setChoseHour('')
+        // setChoseDate('')
+        // setChoseHour('')
         dispatch(refreshApp())
         console.log(response)
       })
