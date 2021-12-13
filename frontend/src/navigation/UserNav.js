@@ -10,10 +10,10 @@ const UserNav = () => (
       <StyledLink to='/add-visit'>Zarezerwuj</StyledLink>
     </NavItem>
     <NavItem>
-      <StyledLink to='/visits'>Aktualne rezerwacje</StyledLink>
+      <StyledLink to='/visits'>Aktualne wizyty</StyledLink>
     </NavItem>
     <NavItem>
-      <StyledLink to='/archive-visits'>Historia rezerwacji</StyledLink>
+      <StyledLink to='/archive-visits'>Historia wizyt</StyledLink>
     </NavItem>
     <NavItem>
       <StyledLink to='/user'>Panel pacjenta</StyledLink>

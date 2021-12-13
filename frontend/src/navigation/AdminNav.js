@@ -10,7 +10,7 @@ const AdminNav = () => (
       <StyledLink to='/add-visit'>Zarezerwuj</StyledLink>
     </NavItem>
     <NavItem>
-      <StyledLink to='/admin'>Grafik Administratora</StyledLink>
+      <StyledLink to='/admin'>Grafik</StyledLink>
     </NavItem>
     <NavItem>
       <StyledLink to='/visits'>Aktualne wizyty</StyledLink>

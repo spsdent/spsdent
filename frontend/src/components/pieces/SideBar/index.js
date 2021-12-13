@@ -54,6 +54,16 @@ const NonAuth = () => {
           {showSpecBoard && <SpecNav />}
           {showAdminBoard && <AdminNav />}
           {showUserBoard && <UserNav />}
+          {currentUser && (
+            <hr
+              style={{
+                width: '100%',
+                backgroundColor: '#333',
+                border: 'none',
+                height: '1px',
+              }}
+            />
+          )}
           <NavItem>
             <StyledLink to='/'>Strona Główna</StyledLink>
           </NavItem>
