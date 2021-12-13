@@ -8,6 +8,7 @@ import ServiceData from '../services/service'
 import DoctorData from '../services/doctor'
 import UserData from '../services/user'
 import { PageWrapper } from './PageWrapper'
+import { useNavigate } from 'react-router-dom'
 
 const AddVisitSchema = Yup.object().shape({
   grupa: Yup.string().required('Wybierz grupe uslug...'),
@@ -99,6 +100,7 @@ const AddVisit = () => {
   const { user: currentUser } = useSelector((state) => state.auth)
   const { refresh: isRefresh } = useSelector((state) => state.refresh)
   const dispatch = useDispatch()
+  let navigate = useNavigate()
 
   useEffect(() => {
     const today = new Date()
@@ -217,6 +219,7 @@ const AddVisit = () => {
         // setChoseDate('')
         // setChoseHour('')
         dispatch(refreshApp())
+        navigate('/visits')
         console.log(response)
       })
       .catch((e) => {
