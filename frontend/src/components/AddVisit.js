@@ -187,31 +187,31 @@ const AddVisit = () => {
       status: values.status,
       uid: currentUser !== null ? currentUser.id : null,
     }
-    const doctorDetails = doctors.find(
-      (doctor) =>
-        doctor.imie === doctorSelected.split(' ')[0] &&
-        doctor.nazwisko === doctorSelected.split(' ')[1]
-    )
-    const doctorHoursUpdate = doctorDetails.godzinyPracy.filter(
-      (godzina) => godzina != values.godzina
-    )
+    // const doctorDetails = doctors.find(
+    //   (doctor) =>
+    //     doctor.imie === doctorSelected.split(' ')[0] &&
+    //     doctor.nazwisko === doctorSelected.split(' ')[1]
+    // )
+    // const doctorHoursUpdate = doctorDetails.godzinyPracy.filter(
+    //   (godzina) => godzina != values.godzina
+    // )
 
-    let doctorData = {
-      imie: doctorToUpdateData.imie,
-      nazwisko: doctorToUpdateData.nazwisko,
-      email: doctorToUpdateData.email,
-      telefon: doctorToUpdateData.telefon,
-      specjalnosci: doctorToUpdateData.specjalnosci,
-      godzinyPracy: doctorHoursUpdate,
-    }
-    const { _id: doctorId } = doctorDetails
+    // let doctorData = {
+    //   imie: doctorToUpdateData.imie,
+    //   nazwisko: doctorToUpdateData.nazwisko,
+    //   email: doctorToUpdateData.email,
+    //   telefon: doctorToUpdateData.telefon,
+    //   specjalnosci: doctorToUpdateData.specjalnosci,
+    //   godzinyPracy: doctorHoursUpdate,
+    // }
+    // const { _id: doctorId } = doctorDetails
 
-    DoctorData.update(doctorId, doctorData)
-      .then((response) => {
-        console.log(response)
-        dispatch(refreshApp())
-      })
-      .catch((e) => console.log(e))
+    // DoctorData.update(doctorId, doctorData)
+    //   .then((response) => {
+    //     console.log(response)
+    //     dispatch(refreshApp())
+    //   })
+    //   .catch((e) => console.log(e))
 
     VisitData.create(visitData)
       .then((response) => {
@@ -268,7 +268,7 @@ const AddVisit = () => {
     const selectedGroupDoctors = doctors.filter((doctor) =>
       doctor.specjalnosci.includes(serviceGroupSelected)
     )
-    if(doctorSelected && !values.data) {
+    if (doctorSelected && !values.data) {
       values.godzina = ''
     }
     setDoctorSelected(values.specjalista)
@@ -330,7 +330,7 @@ const AddVisit = () => {
   //   }
   // })
 
-  const pickingHours = () => {
+  const pickingHours = (values) => {
     const dentHours = [8, 9, 10, 11, 12, 13, 14, 15, 16]
     const selectedDoctorData = doctors.find(
       (doctor) =>
@@ -341,7 +341,7 @@ const AddVisit = () => {
     const currentDayDoctorVisits = allVisitsArr
       .filter(
         (visit) =>
-          visit.data.split('.')[0] === choseDate.split('.')[0] &&
+          visit.data.split('.')[0] === values.split('.')[0] &&
           visit.specjalista ===
             `${selectedDoctorData.imie} ${selectedDoctorData.nazwisko}`
       )
@@ -508,7 +508,7 @@ const AddVisit = () => {
                     }}
                   >
                     <option value=''>Wybierz godzine...</option>
-                    {pickingHours()}
+                    {pickingHours(values.data)}
                   </Field>
                   {errors.godzina && touched.godzina ? (
                     <p style={{ color: 'red' }}>{errors.godzina}</p>
