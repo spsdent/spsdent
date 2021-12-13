@@ -8,6 +8,7 @@ const Doctor = mongoose.model(
     email: String,
     telefon: Number,
     specjalnosci: [String],
+    godzinyPracy: [Number]
   })
 )
 

@@ -14,6 +14,7 @@ exports.create = (req, res) => {
     nazwisko: req.body.nazwisko,
     email: req.body.email,
     telefon: req.body.telefon,
+    godzinyPracy: req.body.godzinyPracy,
   })
 
   // Save Tutorial in the database
@@ -79,6 +80,30 @@ exports.delete = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message: 'Could not delete Visit with id=' + id,
+      })
+    })
+}
+
+exports.update = (req, res) => {
+  if (!req.body) {
+    return res.status(400).send({
+      message: 'Data to update can not be empty!',
+    })
+  }
+
+  const id = req.params.id
+
+  Doctor.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+    .then((data) => {
+      if (!data) {
+        res.status(404).send({
+          message: `Cannot update Doctor with id=${id}. Maybe Doctor was not found!`,
+        })
+      } else res.send({ message: 'Doctor was updated successfully.' })
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: 'Error updating Doctor with id=' + id,
       })
     })
 }

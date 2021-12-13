@@ -87,6 +87,7 @@ function initial() {
         telefon: '123123123',
         email: 'jannowak@gmail.com',
         specjalnosci: ['wybielanie'],
+        godzinyPracy: [8, 9, 10, 11, 12, 13, 14, 15, 16]
       }).save((err) => {
         if (err) {
           console.log('error', err)
@@ -101,6 +102,7 @@ function initial() {
         telefon: '987654321',
         email: 'kkowalski@gmail.com',
         specjalnosci: ['stomatologia zachowawcza', 'endodoncja'],
+        godzinyPracy: [8, 9, 10, 11, 12, 13, 14, 15, 16]
       }).save((err) => {
         if (err) {
           console.log('error', err)
@@ -115,6 +117,7 @@ function initial() {
         telefon: '951753842',
         email: 'dwabulki@gmail.com',
         specjalnosci: ['endodoncja', 'wybielanie'],
+        godzinyPracy: [8, 9, 10, 11, 12, 13, 14, 15, 16]
       }).save((err) => {
         if (err) {
           console.log('error', err)
