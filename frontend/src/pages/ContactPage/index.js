@@ -37,9 +37,14 @@ class ContactPage extends Component {
   };
   render() {
     return (
-      <PageWrapper>
-        <ContactContainer initial={{ x: -300 }} animate={{ x: 0 }}>
-          <ContactForm onSubmit={this.handleSubmit}>
+      <PageWrapper primary>
+        <ContactContainer>
+          <ContactForm
+            onSubmit={this.handleSubmit}
+            initial={{ y: -300 }}
+            animate={{ y: 0 }}
+            transition={{ type: "spring", damping: 7, stiffness: 50 }}
+          >
             <ContactTitle>Kontakt</ContactTitle>
             <ContactText primary>
               Chcesz się o coś zapytać?<br></br> Pisz śmiało!
@@ -74,7 +79,11 @@ class ContactPage extends Component {
             />
             <ButtonContact type="submit">Wyślij</ButtonContact>
           </ContactForm>
-          <ContactInfo>
+          <ContactInfo
+            initial={{ y: 300 }}
+            animate={{ y: 0 }}
+            transition={{ type: "spring", damping: 5, stiffness: 100 }}
+          >
             <ContactInfoTitle>Tu nas znajdziesz</ContactInfoTitle>
             <ContactText>
               ul. Filaretów 27,<br></br>lok.4 20-609<br></br>Lublin

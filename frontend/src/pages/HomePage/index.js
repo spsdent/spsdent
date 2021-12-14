@@ -37,7 +37,7 @@ const Home = () => {
   }, []);
 
   return (
-    <PageWrapper>
+    <PageWrapper primary>
       <HeaderContainer>
         <TextContainer
           transition={{ duration: 0.5 }}

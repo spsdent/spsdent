@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
-export const ContactContainer = styled(motion.div)`
+export const ContactContainer = styled.div`
   width: 80%;
   height: 75vh;
   margin-top: 2.6em;
@@ -20,7 +20,7 @@ export const ContactContainer = styled(motion.div)`
     font-size: 13px;
   }
 `;
-export const ContactForm = styled.form`
+export const ContactForm = styled(motion.form)`
   /* background-color: cadetblue; */
   display: flex;
   flex-direction: column;
@@ -34,7 +34,7 @@ export const ContactForm = styled.form`
     max-width: 300px;
   }
 `;
-export const ContactInfo = styled.div`
+export const ContactInfo = styled(motion.div)`
   /* transform: translate(3em, -5em); */
   /* background-color: yellowgreen; */
   display: flex;
