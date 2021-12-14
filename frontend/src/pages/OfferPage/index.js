@@ -4,6 +4,7 @@ import {
   OfferPageContainer,
   OfferPageTitle,
   OfferPageContent,
+  OfferPageButtonRow,
   OfferPageButton,
 } from "./OfferPageElements";
 
@@ -14,7 +15,20 @@ const OfferPage = () => {
         <OfferPageTitle>To co możemy</OfferPageTitle>
         <OfferPageTitle primary>Zaoferowac</OfferPageTitle>
         <OfferPageContent>
-          <OfferPageButton />
+          <OfferPageButtonRow primary>
+            <OfferPageButton />
+            <OfferPageButton />
+            <OfferPageButton />
+            <OfferPageButton />
+            <OfferPageButton />
+          </OfferPageButtonRow>
+          <OfferPageButtonRow>
+            <OfferPageButton />
+            <OfferPageButton />
+            <OfferPageButton />
+            <OfferPageButton />
+            <OfferPageButton />
+          </OfferPageButtonRow>
         </OfferPageContent>
       </OfferPageContainer>
     </PageWrapper>
