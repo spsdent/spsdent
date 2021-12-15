@@ -15,6 +15,7 @@ const OfferRtg = () => {
   return (
     <PageWrapper>
       <HeaderImage
+        image={'url("../rtg.png")'}
         initial={{ y: -200 }}
         animate={{ y: 0 }}
         transition={{ duration: 1 }}
@@ -30,28 +31,25 @@ const OfferRtg = () => {
             W <strong>SPS Dental Clinic</strong> zapewniamy Państwu pełną
             diagnostykę radiologiczną niezbędną do leczenia zębów. Mamy do
             dyspozycji takie urządzenia do nowoczesnej diagnostyki
-            radiologicznej, jak:{" "}
+            radiologicznej, jak:
             <List>
               <ListText>
-                {" "}
                 Rentgen punktowy zębów – radiowizjografia punktowa 2D MyRay
                 zlokalizowana przy każdym fotelu stomatologicznym pozwala w
                 szybki i bezpieczny sposób przy minimalnej dawce promieniowania
                 zrobić jeszcze na fotelu (nawet w trakcie zabiegu) zdjęcię
-                pojedynczego zęba.{" "}
-              </ListText>{" "}
+                pojedynczego zęba.
+              </ListText>
               <ListText>
-                {" "}
                 Rentgen panoramiczny pozwala na robienie zdjęć
                 pantomograficznych 2D zębów, które służą do wykrywania
-                większości zmian , pozwala też wstępnie zaplanować leczenie.{" "}
-              </ListText>{" "}
+                większości zmian , pozwala też wstępnie zaplanować leczenie.
+              </ListText>
               <ListText>
-                {" "}
                 Tomografia zębów 3D tomografia komputerowa 3D zębów jest
-                niezbędna:{" "}
-              </ListText>{" "}
-            </List>{" "}
+                niezbędna:
+              </ListText>
+            </List>
             Przed leczeniem implantologicznym <br></br>skan 3D umożliwia ocenę
             ilości, objętości i jakości kości u pacjenta, potrzebnej do
             wszczepienia implantu zębowego. Na jego podstawie czas zabiegu

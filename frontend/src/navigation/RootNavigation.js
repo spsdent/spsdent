@@ -21,8 +21,19 @@ import TopBar from "../components/pieces/TopBar";
 // pages
 import HomePage from "../pages/HomePage/";
 import AboutUsPage from "../pages/AboutUsPage/";
+
 import OfferPage from "../pages/OfferPage/";
-import OfferRtg from "../pages/OfferPage/subpages/OfferRtg"
+import Rtg from "../pages/OfferPage/subpages/Rtg";
+import Endodoncja from '../pages/OfferPage/subpages/Endodoncja'
+import Dds from '../pages/OfferPage/subpages/Dds'
+import Pip from '../pages/OfferPage/subpages/Pip'
+import Pcyfrowa from "../pages/OfferPage/subpages/Pcyfrowa";
+import Implanty from "../pages/OfferPage/subpages/Implanty";
+import Ortodoncja from "../pages/OfferPage/subpages/Ortodoncja";
+import Diagnostyka from "../pages/OfferPage/subpages/Diagnostyka";
+import Znieczulenie from "../pages/OfferPage/subpages/Znieczulenie";
+import Zachowawcza from "../pages/OfferPage/subpages/Zachowawcza";
+
 import PriceListPage from "../pages/PriceListPage/";
 import ContactPage from "../pages/ContactPage/";
 import AddVisitPage from "../pages/AddVisitPage/";
@@ -81,7 +92,16 @@ const RootNavigation = () => {
             <Route path="/user" element={<BoardUser />} />
             <Route path="/spec" element={<BoardSpec />} />
             <Route path="/admin" element={<BoardAdmin />} />
-            <Route exact path="/offer/rtg-3d" element={<OfferRtg />} />
+            <Route exact path="/offer/rtg-3d" element={<Rtg />} />
+            <Route exact path="offer/endodoncja" element={<Endodoncja/>} />
+            <Route exact path="offer/dds" element={<Dds/>}/>
+            <Route exact path="offer/pip" element={<Pip/>}/>
+            <Route exact path="offer/pcyfrowa" element={<Pcyfrowa/>}/>
+            <Route exact path="offer/implanty" element={<Implanty/>}/>
+            <Route exact path="offer/ortodoncja" element={<Ortodoncja/>}/>
+            <Route exact path="offer/diagnostyka" element={<Diagnostyka/>}/>
+            <Route exact path="offer/znieczulenie" element={<Znieczulenie/>}/>
+            <Route exact path="offer/zachowawcza" element={<Zachowawcza/>}/>
             <Route
               path="/visits"
               element={

@@ -19,8 +19,12 @@ export const HeaderImage = styled(motion.div)`
   width: 90%;
   height: 7.9em;
   z-index: -1;
-  background-image: url("../rtg.png");
+  background-image:${props => props.image ? props.image : null};
   background-size: cover;
+  @media screen and (max-width: 768px) {
+    left: 0%;
+    width: 100%;
+  }
 `;
 export const PageTitle = styled.h1`
   font-size: 4em;
@@ -32,11 +36,18 @@ export const PageText = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   color: #333;
+  @media screen and (max-width: 768px) {
+   flex-direction: column;
+   align-items: center;
+  }
 `;
 export const PageTextColumn = styled.ul`
   width: 45%;
   font-family: "montserrat";
   font-size: 0.8em;
+  @media screen and (max-width: 768px) {
+    width: 90%;
+  }
 `;
 export const ComeBackButton = styled(Link)`
 text-decoration: none;
@@ -58,7 +69,7 @@ text-decoration: none;
 `;
 
 export const List = styled.ul`
-  list-style-image: url("../tooth.svg");
+  list-style: disc;
   padding: 1em;
 `;
 export const ListText = styled.li`

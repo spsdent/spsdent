@@ -6,5 +6,5 @@ export const Pattern = styled(motion.img)`
   position: fixed;
   top: ${(props) => props.top};
   left: ${(props) => props.left};
-  z-index: -1;
+  z-index: -2;
 `;
