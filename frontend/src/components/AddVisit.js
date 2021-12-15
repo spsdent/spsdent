@@ -43,12 +43,6 @@ const AddVisitSchema = Yup.object().shape({
     .required('Wprowadz kod pocztowy'),
 })
 
-const SearchUserSchema = Yup.object().shape({
-  user: Yup.string()
-    .min(2, 'Too Short!')
-    .max(50, 'Too Long!')
-    .required('Wprowadz imie...'),
-})
 const AddVisit = () => {
   const initialVisitState = {
     grupa: '',
@@ -219,7 +213,7 @@ const AddVisit = () => {
         // setChoseDate('')
         // setChoseHour('')
         dispatch(refreshApp())
-        navigate('/visits')
+        if (currentUser) navigate('/visits')
         console.log(response)
       })
       .catch((e) => {
@@ -275,7 +269,7 @@ const AddVisit = () => {
     }
     setDoctorSelected(values.specjalista)
     return selectedGroupDoctors.map((doctor) => (
-      <option value={doctor.imie + ' ' + doctor.nazwisko}>
+      <option value={`${doctor._id}`}>
         {doctor.imie} {doctor.nazwisko}
       </option>
     ))
@@ -335,17 +329,14 @@ const AddVisit = () => {
   const pickingHours = (values) => {
     const dentHours = [8, 9, 10, 11, 12, 13, 14, 15, 16]
     const selectedDoctorData = doctors.find(
-      (doctor) =>
-        doctor.imie === doctorSelected.split(' ')[0] &&
-        doctor.nazwisko === doctorSelected.split(' ')[1]
+      (doctor) => doctor._id === doctorSelected
     )
 
     const currentDayDoctorVisits = allVisitsArr
       .filter(
         (visit) =>
           visit.data.split('.')[0] === values.split('.')[0] &&
-          visit.specjalista ===
-            `${selectedDoctorData.imie} ${selectedDoctorData.nazwisko}`
+          visit.specjalista === `${selectedDoctorData._id}`
       )
       .map((item) => +item.godzina)
 
