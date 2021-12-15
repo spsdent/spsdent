@@ -23,5 +23,5 @@ body {
 }
 ::-webkit-scrollbar {
     -webkit-appearance: none;
-    width: 7px;
+    width: 0px;
   }

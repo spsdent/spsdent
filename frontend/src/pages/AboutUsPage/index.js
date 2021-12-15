@@ -34,7 +34,7 @@ class AboutUsPage extends Component {
               animate={{ opacity: 1, x: 0 }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.4 }}
               onClick={() => this.handleClick(0)}
             >
               Nasza Kadra
@@ -44,7 +44,7 @@ class AboutUsPage extends Component {
               animate={{ opacity: 1, x: 0 }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.5 }}
               onClick={() => this.handleClick(1)}
             >
               Gabinet

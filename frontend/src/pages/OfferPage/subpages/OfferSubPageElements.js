@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-export const SubPageContainer = styled.div`
+import {motion} from 'framer-motion'
+
+export const SubPageContainer = styled(motion.div)`
   width: 75%;
   /* background-color: #aaa; */
   margin-top: 11em;
@@ -9,13 +11,13 @@ export const SubPageContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
-export const HeaderImage = styled.div`
+export const HeaderImage = styled(motion.div)`
   /* background-color: cadetblue; */
   position: absolute;
   left: 10%;
   top: 100px;
   width: 90%;
-  height: 9.5em;
+  height: 7.9em;
   z-index: -1;
   background-image: url("../rtg.png");
   background-size: cover;

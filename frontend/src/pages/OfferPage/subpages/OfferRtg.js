@@ -1,5 +1,6 @@
 import React from "react";
 import { PageWrapper } from "../../../components/PageWrapper";
+import { Pattern } from "../../../components/Pattern";
 import {
   SubPageContainer,
   HeaderImage,
@@ -13,35 +14,46 @@ import {
 const OfferRtg = () => {
   return (
     <PageWrapper>
-      <SubPageContainer>
-        <HeaderImage />
-        <PageTitle>Rtg - 3D</PageTitle>
+      <HeaderImage
+        initial={{ y: -200 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 1 }}
+      />
+      <SubPageContainer
+        initial={{ y: -400 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <PageTitle>RTG - 3D</PageTitle>
         <PageText>
           <PageTextColumn>
             W <strong>SPS Dental Clinic</strong> zapewniamy Państwu pełną
             diagnostykę radiologiczną niezbędną do leczenia zębów. Mamy do
             dyspozycji takie urządzenia do nowoczesnej diagnostyki
-            radiologicznej, jak:
+            radiologicznej, jak:{" "}
             <List>
               <ListText>
+                {" "}
                 Rentgen punktowy zębów – radiowizjografia punktowa 2D MyRay
                 zlokalizowana przy każdym fotelu stomatologicznym pozwala w
                 szybki i bezpieczny sposób przy minimalnej dawce promieniowania
                 zrobić jeszcze na fotelu (nawet w trakcie zabiegu) zdjęcię
-                pojedynczego zęba.
-              </ListText>
+                pojedynczego zęba.{" "}
+              </ListText>{" "}
               <ListText>
+                {" "}
                 Rentgen panoramiczny pozwala na robienie zdjęć
                 pantomograficznych 2D zębów, które służą do wykrywania
-                większości zmian , pozwala też wstępnie zaplanować leczenie.
-              </ListText>
+                większości zmian , pozwala też wstępnie zaplanować leczenie.{" "}
+              </ListText>{" "}
               <ListText>
-                Tomografia zębów 3D  tomografia komputerowa 3D zębów jest
-                niezbędna:
-              </ListText>
-            </List>
-            Przed leczeniem implantologicznym <br></br>skan 3D umożliwia
-            ocenę ilości, objętości i jakości kości u pacjenta, potrzebnej do
+                {" "}
+                Tomografia zębów 3D tomografia komputerowa 3D zębów jest
+                niezbędna:{" "}
+              </ListText>{" "}
+            </List>{" "}
+            Przed leczeniem implantologicznym <br></br>skan 3D umożliwia ocenę
+            ilości, objętości i jakości kości u pacjenta, potrzebnej do
             wszczepienia implantu zębowego. Na jego podstawie czas zabiegu
             chirurgicznego zostaje skrócony, a ryzyko powikłań znacząco
             zmniejszone,<br></br> w kierunku diagnostyki chorób zatok
@@ -78,7 +90,14 @@ const OfferRtg = () => {
         </PageText>
         <ComeBackButton to="/offer">Powrót do oferty</ComeBackButton>
       </SubPageContainer>
-      <div></div>
+      <Pattern
+        src="../Pattern.png"
+        top="45%"
+        left="40%"
+        transition={{ duration: 2 }}
+        initial={{ y: -200 }}
+        animate={{ y: 0 }}
+      />
     </PageWrapper>
   );
 };
