@@ -38,7 +38,7 @@ const TopBar = () => {
       <Nav>
         <NavBarContainer>
           <NavLogo to='/'>
-            <NavImage src='logo.png' alt='spsdentLogo' />
+            <NavImage src='../logo.png' alt='spsdentLogo' />
           </NavLogo>
 
           <MobileIcon>
@@ -47,12 +47,12 @@ const TopBar = () => {
 
           <NavInfo>
             <BarPhone>
-              <BarIcon src='phoneIcon.png' alt='phone' />
+              <BarIcon src='../phoneIcon.png' alt='phone' />
               <BarText>607 677 888</BarText>
             </BarPhone>
 
             <BarAdress>
-              <BarIcon src='markerIcon.png' alt='marker' />
+              <BarIcon src='../markerIcon.png' alt='marker' />
               <BarText>ul.Filaretów 27, lok.4 20-609 Lublin</BarText>
             </BarAdress>
           </NavInfo>

@@ -126,6 +126,7 @@ background-color: #666;
 border-radius: 10px;
 font-family: "bebas neue";
 color: white;
+cursor: pointer;
 padding-left: .5em;
 background-image: ${(props) =>
   props.primary ? "url('aboutUsButton.png');" : "url('aboutUsButton1.png');"}

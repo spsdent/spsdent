@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
+import {Link} from "react-router-dom";
 export const OfferPageContainer = styled.div`
   width: 75%;
   height: 70vh;
@@ -54,7 +55,7 @@ export const OfferPageContent = styled(motion.div)`
     height: 100%;
   }
 `;
-export const OfferPageButtonRow = styled.div`
+export const OfferPageButtonRow = styled(motion.div)`
   flex-grow: 1;
   display: flex;
   justify-content: space-between;
@@ -114,7 +115,10 @@ export const OfferButtonImg = styled.img`
   user-select: none;
 `;
 export const OfferButtonText = styled.p`
-  font-size: 1em;
+text-align: center;
+  font-size: .9em;
+  padding: .2em;
+  letter-spacing: 1px;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -122,3 +126,7 @@ export const OfferButtonText = styled.p`
   -ms-user-select: none;
   user-select: none;
 `;
+export const LinkButton = styled(Link)`
+  text-decoration: none;
+  
+`

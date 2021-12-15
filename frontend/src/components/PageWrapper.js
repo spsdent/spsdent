@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const PageWrapper = styled.div`
+/* background-color: cadetblue; */
   display: flex;
   justify-content: center;
   margin-left: 14%;

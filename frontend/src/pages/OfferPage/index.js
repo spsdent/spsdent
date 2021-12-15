@@ -9,9 +9,29 @@ import {
   OfferButtonContainer,
   OfferButtonImg,
   OfferButtonText,
+  LinkButton,
 } from "./OfferPageElements";
 
 const OfferPage = () => {
+  const container = {
+    hidden: { opacity: 1, scale: 0 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delayChildren: 0.3,
+        staggerChildren: 0.1,
+      },
+    },
+  };
+  const item = {
+    hidden: { y: 50, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+    },
+  };
+
   return (
     <PageWrapper primary>
       <OfferPageContainer>
@@ -29,84 +49,122 @@ const OfferPage = () => {
         >
           Zaoferować
         </OfferPageTitle>
-        <OfferPageContent
-          initial={{ x: 300 }}
-          animate={{ x: 0 }}
-          transition={{ type: "spring", damping: 6, stiffness: 100 }}
-        >
-          <OfferPageButtonRow primary>
-            <OfferButtonContainer
-              whileHover={{ scale: 0.95 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <OfferButtonImg src="offer1.png" />
-              <OfferButtonText>rtg 3d</OfferButtonText>
-            </OfferButtonContainer>
-            <OfferButtonContainer
-              whileHover={{ scale: 0.95 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <OfferButtonImg src="offer2.png" />
-              <OfferButtonText>rtg 3d</OfferButtonText>
-            </OfferButtonContainer>
-            <OfferButtonContainer
-              whileHover={{ scale: 0.95 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <OfferButtonImg src="offer3.png" />
-              <OfferButtonText>rtg 3d</OfferButtonText>
-            </OfferButtonContainer>
-            <OfferButtonContainer
-              whileHover={{ scale: 0.95 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <OfferButtonImg src="offer4.png" />
-              <OfferButtonText>rtg 3d</OfferButtonText>
-            </OfferButtonContainer>
-            <OfferButtonContainer
-              whileHover={{ scale: 0.95 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <OfferButtonImg src="offer5.png" />
-              <OfferButtonText>rtg 3d</OfferButtonText>
-            </OfferButtonContainer>
+        <OfferPageContent>
+          <OfferPageButtonRow
+            primary
+            variants={container}
+            initial="hidden"
+            animate="visible"
+          >
+            <LinkButton to="/offer/rtg-3d">
+              <OfferButtonContainer
+                variants={item}
+                whileHover={{ scale: 0.95 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <OfferButtonImg src="offer1.png" />
+
+                <OfferButtonText>rtg 3d</OfferButtonText>
+              </OfferButtonContainer>
+            </LinkButton>
+            <LinkButton to="/offer/endodoncja">
+              <OfferButtonContainer
+                variants={item}
+                whileHover={{ scale: 0.95 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <OfferButtonImg src="offer2.png" />
+                <OfferButtonText>Endodoncja</OfferButtonText>
+              </OfferButtonContainer>
+            </LinkButton>
+            <LinkButton to="/offer/dds">
+              <OfferButtonContainer
+                whileHover={{ scale: 0.95 }}
+                whileTap={{ scale: 0.9 }}
+                variants={item}
+              >
+                <OfferButtonImg src="offer3.png" />
+                <OfferButtonText>DDS</OfferButtonText>
+              </OfferButtonContainer>
+            </LinkButton>
+            <LinkButton to="/offer/pip">
+              <OfferButtonContainer
+                whileHover={{ scale: 0.95 }}
+                whileTap={{ scale: 0.9 }}
+                variants={item}
+              >
+                <OfferButtonImg src="offer4.png" />
+                <OfferButtonText>
+                  Profilaktyka i periodontologia
+                </OfferButtonText>
+              </OfferButtonContainer>
+            </LinkButton>
+            <LinkButton to="/offer/pcyfrowa">
+              <OfferButtonContainer
+                whileHover={{ scale: 0.95 }}
+                whileTap={{ scale: 0.9 }}
+                variants={item}
+              >
+                <OfferButtonImg src="offer5.png" />
+                <OfferButtonText>Protetyka cyfrowa</OfferButtonText>
+              </OfferButtonContainer>
+            </LinkButton>
           </OfferPageButtonRow>
-          <OfferPageButtonRow>
-            <OfferButtonContainer
-              whileHover={{ scale: 0.95 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <OfferButtonImg src="offer6.png" />
-              <OfferButtonText>rtg 3d</OfferButtonText>
-            </OfferButtonContainer>
-            <OfferButtonContainer
-              whileHover={{ scale: 0.95 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <OfferButtonImg src="offer7.png" />
-              <OfferButtonText>rtg 3d</OfferButtonText>
-            </OfferButtonContainer>
-            <OfferButtonContainer
-              whileHover={{ scale: 0.95 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <OfferButtonImg src="offer8.png" />
-              <OfferButtonText>rtg 3d</OfferButtonText>
-            </OfferButtonContainer>
-            <OfferButtonContainer
-              whileHover={{ scale: 0.95 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <OfferButtonImg src="offer9.png" />
-              <OfferButtonText>rtg 3d</OfferButtonText>
-            </OfferButtonContainer>
-            <OfferButtonContainer
-              whileHover={{ scale: 0.95 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <OfferButtonImg src="offer10.png" />
-              <OfferButtonText>rtg 3d</OfferButtonText>
-            </OfferButtonContainer>
+          <OfferPageButtonRow
+            variants={container}
+            initial="hidden"
+            animate="visible"
+          >
+            <LinkButton to="/offer/implanty">
+              <OfferButtonContainer
+                whileHover={{ scale: 0.95 }}
+                whileTap={{ scale: 0.9 }}
+                variants={item}
+              >
+                <OfferButtonImg src="offer6.png" />
+                <OfferButtonText>Implanty</OfferButtonText>
+              </OfferButtonContainer>
+            </LinkButton>
+            <LinkButton to="/offer/ortodoncja">
+              <OfferButtonContainer
+                whileHover={{ scale: 0.95 }}
+                whileTap={{ scale: 0.9 }}
+                variants={item}
+              >
+                <OfferButtonImg src="offer7.png" />
+                <OfferButtonText>Ortodoncja</OfferButtonText>
+              </OfferButtonContainer>
+            </LinkButton>
+            <LinkButton to="/offer/diagnostyka">
+              <OfferButtonContainer
+                whileHover={{ scale: 0.95 }}
+                whileTap={{ scale: 0.9 }}
+                variants={item}
+              >
+                <OfferButtonImg src="offer8.png" />
+                <OfferButtonText>Diagnostyka</OfferButtonText>
+              </OfferButtonContainer>
+            </LinkButton>
+            <LinkButton to="/offer/znieczulenie">
+              <OfferButtonContainer
+                whileHover={{ scale: 0.95 }}
+                whileTap={{ scale: 0.9 }}
+                variants={item}
+              >
+                <OfferButtonImg src="offer9.png" />
+                <OfferButtonText>znieczulenie ogólne</OfferButtonText>
+              </OfferButtonContainer>
+            </LinkButton>
+            <LinkButton to="/offer/zachowawcza">
+              <OfferButtonContainer
+                whileHover={{ scale: 0.95 }}
+                whileTap={{ scale: 0.9 }}
+                variants={item}
+              >
+                <OfferButtonImg src="offer10.png" />
+                <OfferButtonText>stomatologia zachowawcza</OfferButtonText>
+              </OfferButtonContainer>
+            </LinkButton>
           </OfferPageButtonRow>
         </OfferPageContent>
       </OfferPageContainer>
