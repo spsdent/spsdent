@@ -76,15 +76,15 @@ export const AboutUsContainer = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  font-size: 24px;
+  font-size: 20px;
   @media screen and (max-width: 1500px) {
-    font-size: 20px;
-  }
-  @media screen and (max-width: 1280px) {
     font-size: 16px;
   }
+  @media screen and (max-width: 1280px) {
+    font-size: 14px;
+  }
   @media screen and (max-width: 960px) {
-    font-size: 13px;
+    font-size: 11px;
   }
   @media screen and (max-width: 768px) {
     flex-direction: column;

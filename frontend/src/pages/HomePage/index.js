@@ -97,8 +97,8 @@ const Home = () => {
             initial={{ opacity: 0, x: -200 }}
             animate={{ opacity: 1, x: 0 }}
             drag
-            dragElastic={0.1}
-            dragTransition={{ bounceStiffness: 600, bounceDamping: 20 }}
+            dragElastic={.5}
+            dragTransition={{ bounceStiffness: 100, bounceDamping: 20 }}
             dragConstraints={{
               top: 0,
               left: 0,

@@ -15,7 +15,7 @@ const Znieczulenie = () => {
   return (
     <PageWrapper>
       <HeaderImage
-        image={'url("../dds.png")'}
+        image={'url("../znieczulenie.png")'}
         initial={{ y: -200 }}
         animate={{ y: 0 }}
         transition={{ duration: 1 }}
@@ -28,72 +28,66 @@ const Znieczulenie = () => {
         <PageTitle>Znieczulenie ogólne</PageTitle>
         <PageText>
           <PageTextColumn>
-            <strong>DDS</strong> oznacza{" "}
-            <strong>Doctor of Dental Surgery</strong>. Jest to końcowy stopień
-            studiów stomatologicznych. W rzeczywistości każdy dentysta w USA
-            musi ukończyć ten poziom studiów, aby uzyskać licencję na praktykę.
-            Typowy stopień <strong>DDS</strong> daje wszechstronną wiedzę w
-            każdej dziedzinie stomatologii.
+            Przeprowadzamy leczenie stomatologiczne w znieczuleniu ogólnym czyli
+            narkozie. <br></br>
+            <br></br>Narkoza jest znieczuleniem ogólnym polegającym na
+            farmakologicznym wprowadzeniu pacjenta w stan snu. Umożliwia to
+            wykonanie bardziej złożonych zabiegów i uniknięcie bólu oraz stresu,
+            jakie wiążą się zwykle ze znieczuleniem miejscowym. Należy dodać, iż
+            narkoza jest podawana oraz kontrolowana przez lekarza anestezjologa
+            współpracującego z pielęgniarką anestezjologiczną. <br></br>
+            <br></br>Lekarz kwalifikuje pacjenta do zabiegu narkozy na podstawie
+            szczegółowego wywiadu. Wywiad ten dotyczy wszystkich przebytych oraz
+            aktualnych chorób, alergii, jak również zażywanych leków. Na
+            postawie wywiadu lekarz wybiera najkorzystniejszą metodę
+            znieczulenia ogólnego.
             <br></br>
             <br></br>
-            <strong>Współpraca krajowa</strong>
+            <strong>
+              W znieczuleniu tym proponujemy naszym Pacjentom zabiegi z zakresu:{" "}
+            </strong>
             <List>
-              <ListText>
-                Współpraca z uniwersytetami i organizacjami studenckimi oraz
-                wdrażanie programu stypendialnego
-              </ListText>
+              <ListText>chirurgii stomatologicznej</ListText>
+              <ListText>implantologii</ListText>
+              <ListText>stomatologii zachowawczej</ListText>
+              <ListText>endodoncji (leczenie kanałowe)</ListText>
+              <ListText>stomatologii wieku dziecięcego</ListText>
             </List>
-            <strong>Organizacja Wydarzeń</strong>
-            <List>
-              <ListText>
-                Organizacja własnych wydarzeń DDS PL oraz organizacja wspólnego
-                uczestnictwa w wydarzeniach zewnętrznych
-              </ListText>
-            </List>
-            <strong>Certyfikacja</strong>
-            <List>
-              <ListText>
-                Certyfikacja placówek stomatologicznych pod kątem poziomu
-                wdrożenia technologii cyfrowych
-              </ListText>
-            </List>
+            Wszystkie zabiegi wykonywane są pod stałą opieką i nadzorem
+            anestezjologa. Pacjent może być pewien, iż jest w rękach
+            profesjonalistów z wieloletnim doświadczeniem.
           </PageTextColumn>
           <PageTextColumn>
-            <strong>Badania i rozwój</strong>
-            <List>
-              <ListText>
-                Badania, rozwój, nowości technologiczne, innowacje i
-                certyfikacja instrumentarium stomatologii cyfrowej
-              </ListText>
-            </List>
-            <strong>Bieżąca Działalność</strong>
-            <List>
-              <ListText>
-                Współpraca z partnerami, sponsorami, organizacjami branżowymi
-                oraz rekrutacja członków i bieżąca działalność
-              </ListText>
-            </List>
-            <strong>Edukacja</strong>
-            <List>
-              <ListText>
-                Planowanie i wdrażanie programów szkoleniowych dla lekarzy i
-                techników, w tym Curriculum Stomatologii Cyfrowej
-              </ListText>
-            </List>
-            <strong>Marketing i Fotografia</strong>
-            <List>
-              <ListText>
-                Marketing i fotografia – dbałość o pozytywny wizerunek cyfrowej
-                stomatologii w branży oraz wśród pacjentów
-              </ListText>
-            </List>
-            <strong>Współpraca Zagraniczna</strong>
-            <List>
-              <ListText>
-                Współpraca z zagranicznymi: uniwersytetami, organizacjami
-                branżowymi oraz ośrodkami badawczymi.
-              </ListText>
-            </List>
+            Wskazaniami do narkozy może być silna obawa przed zabiegiem,
+            wzmożony odruch wymiotny lub choroby umysłowe – wszystko to, co
+            uniemożliwia przeprowadzenie koniecznych zabiegów. Narkoza polega na
+            podaniu środka, który prowadzi do całkowitej i odwracalnej utraty
+            świadomości.{" "}
+            <strong>
+              Jest to zabieg bardzo naturalny, którego historia sięga czasów
+              starożytnych.
+            </strong>
+            <br></br>
+            <br></br> Przed zabiegiem, jakim jest narkoza, pacjent nie powinien
+            jeść i pić przez okres co najmniej 5 godzin. Nie należy również
+            przyjmować lekarstw bez wiedzy anestezjologa. Ponadto pacjent
+            powinien również przyjechać z opiekunem, który odwiezie go po
+            zabiegu.<br></br>
+            <br></br> Należy dodać, iż w dniu narkozy pacjent pod żadnym pozorem
+            nie może prowadzić samochodu ani obsługiwać żadnych urządzeń
+            mechanicznych. Wszystkich szczegółowych zaleceń dotyczących
+            stosowania leków po narkozie udziela lekarz anestezjolog. Nie tylko
+            kwalifikuje on pacjenta do zabiegu, ale również wraz z pielęgniarką
+            anestezjologiczną czuwa w trakcie trwania zabiegu, który wykonuje
+            stomatolog.<br></br>
+            <br></br> Dzięki narkozie podanej pacjentowi, lekarz stomatolog może
+            przeprowadzić nawet bardziej skomplikowane zabiegi, a sam pacjent
+            unika dyskomfortu oraz bólu.{" "}
+            <strong>
+              Jeśli mają Państwo jakiekolwiek pytania dotyczące narkozy,
+              zapraszamy do kontaktu – chętnie udzielimy bardziej szczegółowych
+              informacji. Pozostajemy do Państwa dyspozycji.
+            </strong>
           </PageTextColumn>
         </PageText>
         <ComeBackButton to="/offer">Powrót do oferty</ComeBackButton>

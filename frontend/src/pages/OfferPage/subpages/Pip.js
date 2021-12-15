@@ -15,7 +15,7 @@ const Pip = () => {
   return (
     <PageWrapper>
       <HeaderImage
-        image={'url("../dds.png")'}
+        image={'url("../pip.png")'}
         initial={{ y: -200 }}
         animate={{ y: 0 }}
         transition={{ duration: 1 }}
@@ -28,71 +28,55 @@ const Pip = () => {
         <PageTitle>Profilaktyka i Periodontologia</PageTitle>
         <PageText>
           <PageTextColumn>
-            <strong>DDS</strong> oznacza{" "}
-            <strong>Doctor of Dental Surgery</strong>. Jest to końcowy stopień
-            studiów stomatologicznych. W rzeczywistości każdy dentysta w USA
-            musi ukończyć ten poziom studiów, aby uzyskać licencję na praktykę.
-            Typowy stopień <strong>DDS</strong> daje wszechstronną wiedzę w
-            każdej dziedzinie stomatologii.
+            Oryginalna terapia<strong> AIR-FLOW</strong> i metoda{" "}
+            <strong>Piezon</strong> teraz dostępne razem, gwarantują zarówno
+            kompletne i skuteczne leczenie profilaktyczne, jak również najwyższy
+            komfort dla pacjenta. Urządzenie{" "}
+            <strong>AIR-FLOW Master Piezon</strong> zapewnia skaling w
+            technologii no pain oraz piaskowanie <strong>AIR-FLOW</strong>{" "}
+            naddziąsłowe, przydziąsłowe i poddziąsłowe zarówno w płytkich, jak i
+            głębokich kieszonkach.
             <br></br>
             <br></br>
-            <strong>Współpraca krajowa</strong>
+            Terapia <strong>AIR-FLOW®</strong> zapewnia piaskowanie, które jest
+            skuteczne zarówno dla lekarza, jak i pacjenta. Bezstresowe ciche i
+            komfortowe dla pacjenta.
+            <br></br>
+            <br></br>
+            <strong>Metoda Piezon</strong> zapewniająca idealne liniowe drgania
+            końcówki roboczej oraz jej odpowiednie ustawienie do powierzchni
+            zęba, w połączeniu z inteligentną technologią NO PAIN zapewnia
+            maksymalną ochronę dziąseł oraz najwyższy komfort dla pacjenta.
+            Zalety terapii <strong>Air-Flow</strong> i{" "}
+            <strong>Air-Flow Perio</strong>:
             <List>
               <ListText>
-                Współpraca z uniwersytetami i organizacjami studenckimi oraz
-                wdrażanie programu stypendialnego
+                Doskonałe piaskowanie; niezawodne, szybkie i skuteczne
               </ListText>
-            </List>
-            <strong>Organizacja Wydarzeń</strong>
-            <List>
               <ListText>
-                Organizacja własnych wydarzeń DDS PL oraz organizacja wspólnego
-                uczestnictwa w wydarzeniach zewnętrznych
-              </ListText>
-            </List>
-            <strong>Certyfikacja</strong>
-            <List>
-              <ListText>
-                Certyfikacja placówek stomatologicznych pod kątem poziomu
-                wdrożenia technologii cyfrowych
+                Bezstresowa i komfortowa dla pacjenta (bez użycia kiret – bez
+                hałasu!)
               </ListText>
             </List>
           </PageTextColumn>
           <PageTextColumn>
-            <strong>Badania i rozwój</strong>
             <List>
+              <ListText>Delikatne wykorzystanie energii kinetycznej</ListText>
+              <ListText>Bezinwazyjna dla nabłonka oraz tkanki łącznej</ListText>
+              <ListText>Bez zarysowań na powierzchni zębów</ListText>
               <ListText>
-                Badania, rozwój, nowości technologiczne, innowacje i
-                certyfikacja instrumentarium stomatologii cyfrowej
+                Skutecznie usuwa biofilm nawet z najgłębszych kieszonek, trwale
+                zmniejsza ilość bakterii
               </ListText>
-            </List>
-            <strong>Bieżąca Działalność</strong>
-            <List>
               <ListText>
-                Współpraca z partnerami, sponsorami, organizacjami branżowymi
-                oraz rekrutacja członków i bieżąca działalność
+                Zapobiega przed utratą zęba (periodontitis) i utratą implantu (
+                periimplantitis)
               </ListText>
-            </List>
-            <strong>Edukacja</strong>
-            <List>
               <ListText>
-                Planowanie i wdrażanie programów szkoleniowych dla lekarzy i
-                techników, w tym Curriculum Stomatologii Cyfrowej
+                Jednolita, wirująca mieszanina powietrza i piasku oraz płukanie
+                wodą dzięki opatentowanej końcówce <strong>PERIO-FLOW</strong>
               </ListText>
-            </List>
-            <strong>Marketing i Fotografia</strong>
-            <List>
-              <ListText>
-                Marketing i fotografia – dbałość o pozytywny wizerunek cyfrowej
-                stomatologii w branży oraz wśród pacjentów
-              </ListText>
-            </List>
-            <strong>Współpraca Zagraniczna</strong>
-            <List>
-              <ListText>
-                Współpraca z zagranicznymi: uniwersytetami, organizacjami
-                branżowymi oraz ośrodkami badawczymi.
-              </ListText>
+              <ListText>Zapobiega emfizemie tkanki miękkiej</ListText>
             </List>
           </PageTextColumn>
         </PageText>

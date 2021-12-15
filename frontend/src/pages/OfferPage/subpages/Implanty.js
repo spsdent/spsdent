@@ -15,7 +15,7 @@ const Implanty = () => {
   return (
     <PageWrapper>
       <HeaderImage
-        image={'url("../dds.png")'}
+        image={'url("../implanty.png")'}
         initial={{ y: -200 }}
         animate={{ y: 0 }}
         transition={{ duration: 1 }}
@@ -28,72 +28,63 @@ const Implanty = () => {
         <PageTitle>Implanty</PageTitle>
         <PageText>
           <PageTextColumn>
-            <strong>DDS</strong> oznacza{" "}
-            <strong>Doctor of Dental Surgery</strong>. Jest to końcowy stopień
-            studiów stomatologicznych. W rzeczywistości każdy dentysta w USA
-            musi ukończyć ten poziom studiów, aby uzyskać licencję na praktykę.
-            Typowy stopień <strong>DDS</strong> daje wszechstronną wiedzę w
-            każdej dziedzinie stomatologii.
+            Jeśli z jakiegoś powodu dotknęła Cię utrata naturalnego uzębienia,
+            najprawdopodobniej poszukujesz sposobów jego szybkiej i trwałej
+            odbudowy. <br></br>
+            <br></br> Z pomocą przychodzi implantologia – technika odbudowy
+            uzębienia na implantach. To alternatywa dla klasycznych rozwiązań
+            protetycznych, umożliwiająca osiągnięcie trwałego efektu
+            estetycznego oraz przywrócenie odpowiedniej mechaniki narządu żucia.
+            Dzięki przywróceniu kompletnego uzębienia znów zaczniesz cieszyć się
+            pięknym uśmiechem.
             <br></br>
             <br></br>
-            <strong>Współpraca krajowa</strong>
-            <List>
-              <ListText>
-                Współpraca z uniwersytetami i organizacjami studenckimi oraz
-                wdrażanie programu stypendialnego
-              </ListText>
-            </List>
-            <strong>Organizacja Wydarzeń</strong>
-            <List>
-              <ListText>
-                Organizacja własnych wydarzeń DDS PL oraz organizacja wspólnego
-                uczestnictwa w wydarzeniach zewnętrznych
-              </ListText>
-            </List>
-            <strong>Certyfikacja</strong>
-            <List>
-              <ListText>
-                Certyfikacja placówek stomatologicznych pod kątem poziomu
-                wdrożenia technologii cyfrowych
-              </ListText>
-            </List>
+            Opogramowanie <strong>DDS-PRO</strong> przeznaczone jest do wsparcia
+            procesu diagnostycznego, przygotowania do zabiegu chirurgii
+            ortognatycznej; przygotowania do zabiegu implantologii
+            stomatologicznej wizualizacji 3D struktur kostnych oraz zaplanowaniu
+            i symulacji zabiegu implantoprotetycznego.
+            <br></br>
+            <br></br>W oprogramowaniu <strong>DDS-PRO</strong> siatkę
+            szczęki/żuchwy generuje się na podstawie badania tomograficznego
+            pacjenta zapisanego w formacie medycznym <strong>DICOM</strong>.
+            Jeśli jednak posiadamy model 3D wykonany za pomocą skanera
+            wewnątrzustnego lub skanu tomograficznego wycisku szczęki lub żuchwy
+            to można go zaimportować do oprogramowania <strong>DDS-Pro</strong>.
+            Gwarantuje to większą dokładność rzeczywistego odwzorowania, niż
+            badanie 3D pacjenta. Importowany plik musi mieć format STL.
+            Następnie szablon drukujemy na drukarce 3D i po etapie sterylizacji
+            jest gotowy do wykorzystania.
           </PageTextColumn>
           <PageTextColumn>
-            <strong>Badania i rozwój</strong>
+            Wykonujemy zabiegi podniesienia dna zatoki szczękowej metodą otwartą
+            oraz zamkniętą. Rozwiązania protetyczne stosowane wraz z implantami:
             <List>
               <ListText>
-                Badania, rozwój, nowości technologiczne, innowacje i
-                certyfikacja instrumentarium stomatologii cyfrowej
+                <strong>Brak jednego zęba</strong> – wykonanie korony na
+                implantach, nie ma potrzeby szlifowania sąsiednich zębów
               </ListText>
-            </List>
-            <strong>Bieżąca Działalność</strong>
-            <List>
               <ListText>
-                Współpraca z partnerami, sponsorami, organizacjami branżowymi
-                oraz rekrutacja członków i bieżąca działalność
+                <strong>Brak kilku zębów</strong> – stosuje się pojedyncze
+                korony lub most na implantach składający się z dwóch lub
+                większej liczby zębów zależnie od rozmieszczenia ubytków
               </ListText>
-            </List>
-            <strong>Edukacja</strong>
-            <List>
               <ListText>
-                Planowanie i wdrażanie programów szkoleniowych dla lekarzy i
-                techników, w tym Curriculum Stomatologii Cyfrowej
+                <strong>Całkowity brak zębów</strong> – wykorzystuje się mosty
+                okrężne uzupełniające ubytek całkowity albo też na implantach
+                umieszcza się protezy całkowite overdenture
               </ListText>
             </List>
-            <strong>Marketing i Fotografia</strong>
-            <List>
-              <ListText>
-                Marketing i fotografia – dbałość o pozytywny wizerunek cyfrowej
-                stomatologii w branży oraz wśród pacjentów
-              </ListText>
-            </List>
-            <strong>Współpraca Zagraniczna</strong>
-            <List>
-              <ListText>
-                Współpraca z zagranicznymi: uniwersytetami, organizacjami
-                branżowymi oraz ośrodkami badawczymi.
-              </ListText>
-            </List>
+            Każdy, kto chce cieszyć się z pięknego uśmiechu i komfortu, powinien
+            wybrać implanty – dzięki nim można komfortowo jeść, śmiać się i
+            cieszyć życiem!
+            <br></br>
+            <br></br>W SPS Dental Clinic mamy do zaoferowania naszym Pacjentom
+            implanty klasy{" "}
+            <strong>STANDARD (AlphaBio NEO, SPI, Tiologic ST)</strong> oraz
+            szwajcarskie <strong>PREMIUM (Thommen Medical).</strong> <br></br><br></br>
+            Do pomiaru stabilizacji implantów używamy urządzenia Osstell.
+            Zabiegi wykonujemy w powiększeniu.
           </PageTextColumn>
         </PageText>
         <ComeBackButton to="/offer">Powrót do oferty</ComeBackButton>
