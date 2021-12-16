@@ -13,6 +13,16 @@ const getAllUsers = (nazwisko) => {
   })
 }
 
+const getAll = () => {
+  return axios.get(API_URL + 'users', {
+    headers: authHeader(),
+  })
+}
+
+const deleteUser = (id) => {
+  return axios.delete(API_URL + `users/${id}`, { headers: authHeader() })
+}
+
 const getUserBoard = () => {
   return axios.get(API_URL + 'test/user', { headers: authHeader() })
 }
@@ -31,4 +41,6 @@ export default {
   getSpecBoard,
   getAdminBoard,
   getAllUsers,
+  getAll,
+  deleteUser,
 }
