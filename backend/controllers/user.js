@@ -41,22 +41,44 @@ exports.findAllUsers = (req, res) => {
     })
 }
 
-exports.deleteUser = (req, res) => {
-  User.findByIdAndRemove(req.params.id)
+exports.updateUser = (req, res) => {
+  const id = req.params.id
+
+  User.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
     .then((data) => {
       if (!data) {
         res.status(404).send({
-          message: `Cannot delete Visit with id=${id}. Maybe Visit was not found!`,
+          message: `Cannot update User with id=${id}. Maybe User was not found!`,
         })
       } else {
         res.send({
-          message: 'Visit was deleted successfully!',
+          message: 'User was updated successfully!',
         })
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: 'Could not delete Visit with id=' + id,
+        message: 'Could not update User with id=' + id,
+      })
+    })
+}
+
+exports.deleteUser = (req, res) => {
+  User.findByIdAndRemove(req.params.id)
+    .then((data) => {
+      if (!data) {
+        res.status(404).send({
+          message: `Cannot delete User with id=${id}. Maybe User was not found!`,
+        })
+      } else {
+        res.send({
+          message: 'User was deleted successfully!',
+        })
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: 'Could not delete User with id=' + id,
       })
     })
 }

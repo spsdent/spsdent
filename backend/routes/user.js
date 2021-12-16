@@ -20,6 +20,8 @@ module.exports = function (app) {
 
   app.delete('/api/users/:id', controller.deleteUser)
 
+  app.put('/api/users/:id', controller.updateUser)
+
   app.get(
     '/api/test/mod',
     [authJwt.verifyToken, authJwt.isSpec],
