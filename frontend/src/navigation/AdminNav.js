@@ -21,6 +21,9 @@ const AdminNav = () => (
     <NavItem>
       <StyledLink to='/profile'>Ustawienia</StyledLink>
     </NavItem>
+    <NavItem>
+      <StyledLink to='/control-panel'>Panel zarzadzania</StyledLink>
+    </NavItem>
   </>
 )
 
