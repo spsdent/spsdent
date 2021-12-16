@@ -19,6 +19,7 @@ const styles = {
 const UpdateService = () => {
   const [servicesArr, setServicesArr] = useState([])
   const [btnType, setBtnType] = useState('')
+  const [errorMsg, setErrorMsg] = useState('')
   const { isRefresh } = useSelector((state) => state.refresh)
   const dispatch = useDispatch()
 
@@ -56,7 +57,7 @@ const UpdateService = () => {
         })
         .catch((e) => console.log(e))
     } else {
-      console.log('to juz jest w kolekcji')
+      setErrorMsg('to juz jest w kolekcji')
     }
   }
 
@@ -179,6 +180,7 @@ const UpdateService = () => {
                   name='cena'
                 ></Field>
                 <button onClick={() => addNewService(values)}>Dodaj</button>
+                <p style={{ color: 'red' }}>{errorMsg}</p>
               </>
             )}
           </Form>
