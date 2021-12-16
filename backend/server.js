@@ -87,7 +87,7 @@ function initial() {
         telefon: '123123123',
         email: 'jannowak@gmail.com',
         specjalnosci: ['wybielanie'],
-        godzinyPracy: [8, 9, 10, 11, 12, 13, 14, 15, 16]
+        godzinyPracy: [8, 9, 10, 11, 12, 13, 14, 15, 16],
       }).save((err) => {
         if (err) {
           console.log('error', err)
@@ -102,7 +102,7 @@ function initial() {
         telefon: '987654321',
         email: 'kkowalski@gmail.com',
         specjalnosci: ['stomatologia zachowawcza', 'endodoncja'],
-        godzinyPracy: [8, 9, 10, 11, 12, 13, 14, 15, 16]
+        godzinyPracy: [8, 9, 10, 11, 12, 13, 14, 15, 16],
       }).save((err) => {
         if (err) {
           console.log('error', err)
@@ -117,7 +117,7 @@ function initial() {
         telefon: '951753842',
         email: 'dwabulki@gmail.com',
         specjalnosci: ['endodoncja', 'wybielanie'],
-        godzinyPracy: [8, 9, 10, 11, 12, 13, 14, 15, 16]
+        godzinyPracy: [8, 9, 10, 11, 12, 13, 14, 15, 16],
       }).save((err) => {
         if (err) {
           console.log('error', err)
@@ -128,69 +128,69 @@ function initial() {
     }
   })
 
-  Service.estimatedDocumentCount((err, count) => {
-    if (!err && count === 0) {
-      new Service({
-        grupa: 'stomatologia zachowawcza',
-        uslugi: [{
-          nazwa: 'znieczulenie miejscowe',
-          cena: 50
-        }, {
-          nazwa: 'znieczulenie komputerowe  THE WAND',
-          cena: 70
-        },{
-          nazwa: 'opatrunek',
-          cena: 50
-        },{
-          nazwa: 'znoszenie nadwrazliwosci',
-          cena: 30
-        },]
-      }).save((err) => {
-        if (err) {
-          console.log('error', err)
-        }
-        console.log("added 'stomatologia zachowawcza' to services collection")
-      })
+  // Service.estimatedDocumentCount((err, count) => {
+  //   if (!err && count === 0) {
+  //     new Service({
+  //       grupa: 'stomatologia zachowawcza',
+  //       uslugi: [{
+  //         nazwa: 'znieczulenie miejscowe',
+  //         cena: 50
+  //       }, {
+  //         nazwa: 'znieczulenie komputerowe  THE WAND',
+  //         cena: 70
+  //       },{
+  //         nazwa: 'opatrunek',
+  //         cena: 50
+  //       },{
+  //         nazwa: 'znoszenie nadwrazliwosci',
+  //         cena: 30
+  //       },]
+  //     }).save((err) => {
+  //       if (err) {
+  //         console.log('error', err)
+  //       }
+  //       console.log("added 'stomatologia zachowawcza' to services collection")
+  //     })
 
-      new Service({
-        grupa: 'endodoncja',
-        uslugi: [{
-          nazwa: 'zeba jednokanałowego',
-          cena: 500
-        },{
-          nazwa: 'zeba dwukanalowego',
-          cena: 700
-        },{
-          nazwa: 'zeba trzykanalowego',
-          cena: 800
-        },]
-      }).save((err) => {
-        if (err) {
-          console.log('error', err)
-        }
-        console.log("added 'endodoncja' to services collection")
-      })
+  //     new Service({
+  //       grupa: 'endodoncja',
+  //       uslugi: [{
+  //         nazwa: 'zeba jednokanałowego',
+  //         cena: 500
+  //       },{
+  //         nazwa: 'zeba dwukanalowego',
+  //         cena: 700
+  //       },{
+  //         nazwa: 'zeba trzykanalowego',
+  //         cena: 800
+  //       },]
+  //     }).save((err) => {
+  //       if (err) {
+  //         console.log('error', err)
+  //       }
+  //       console.log("added 'endodoncja' to services collection")
+  //     })
 
-      new Service({
-        grupa: 'wybielanie',
-        uslugi: [{
-          nazwa: 'wybielanie zebow(metoda nakladkowa)',
-          cena: 900
-        },{
-          nazwa: 'wybielanie zebow(system beyond)',
-          cena: 1200
-        },{
-          nazwa: 'wybielanie zeba martwego',
-          cena: 200
-        },]
-      }).save((err) => {
-        if (err) {
-          console.log('error', err)
-        }
-        console.log("added 'wybielanie' to services collection")
-      })
-    }
-  })
+  //     new Service({
+  //       grupa: 'wybielanie',
+  //       uslugi: [{
+  //         nazwa: 'wybielanie zebow(metoda nakladkowa)',
+  //         cena: 900
+  //       },{
+  //         nazwa: 'wybielanie zebow(system beyond)',
+  //         cena: 1200
+  //       },{
+  //         nazwa: 'wybielanie zeba martwego',
+  //         cena: 200
+  //       },]
+  //     }).save((err) => {
+  //       if (err) {
+  //         console.log('error', err)
+  //       }
+  //       console.log("added 'wybielanie' to services collection")
+  //     })
+  //   }
+  // })
 }
 
 // routes

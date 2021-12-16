@@ -3,7 +3,7 @@ const Service = db.service
 
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.nazwa) {
+  if (!req.body.grupa) {
     res.status(400).send({ message: 'Content can not be empty!' })
     return
   }
@@ -11,7 +11,7 @@ exports.create = (req, res) => {
   // Create a Tutorial
   const service = new Service({
     grupa: req.body.grupa,
-    uslugi: req.body.uslugi
+    uslugi: req.body.uslugi,
   })
 
   // Save Tutorial in the database
