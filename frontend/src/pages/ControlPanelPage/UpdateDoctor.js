@@ -85,7 +85,7 @@ const UpdateDoctor = () => {
     }
   }
 
-  const updateVisit = (values) => {
+  const updateUser = (values) => {
     const {
       imie,
       nazwisko,
@@ -104,6 +104,18 @@ const UpdateDoctor = () => {
       kodPocztowy,
       miasto,
       ulica,
+    }
+    UserService.updateUser(userId, userObj)
+      .then((response) => {
+        console.log(response)
+        setBtnType('')
+      })
+      .catch((e) => console.log(e))
+  }
+
+  const updateRoles = (values) => {
+    const { userId } = values
+    let userObj = {
       roles: [values.roles],
     }
     UserService.updateUser(userId, userObj)
@@ -111,14 +123,6 @@ const UpdateDoctor = () => {
         console.log(response)
         setBtnType('')
         setUser({
-          userId: '',
-          imie: '',
-          nazwisko: '',
-          telefon: '',
-          email: '',
-          miasto: '',
-          ulica: '',
-          kodPocztowy: '',
           roles: [{}],
         })
       })
@@ -128,8 +132,11 @@ const UpdateDoctor = () => {
   return (
     <>
       <p>Modyfikuj uzytkownika</p>
-      <Formik initialValues={user} onSubmit={(values) => updateVisit(values)}>
-        {({ errors, touched, values, setValues }) => (
+      <Formik
+        initialValues={user}
+        // onSubmit={(values) => updateVisit(values)}
+      >
+        {({ errors, touched, values, setValues, handleSubmit }) => (
           <Form
             style={{ width: '300px', display: 'flex', flexDirection: 'column' }}
           >
@@ -303,6 +310,22 @@ const UpdateDoctor = () => {
                 {errors.kodPocztowy && touched.kodPocztowy ? (
                   <p style={{ color: 'red' }}>{errors.kodPocztowy}</p>
                 ) : null}
+                <button
+                  type='submit'
+                  style={{
+                    backgroundColor: 'none',
+                    border: '2px solid #333',
+                    height: '3em',
+                    margin: '10px 0',
+                  }}
+                  onClick={() => updateUser(values)}
+                >
+                  Aktualizuj dane
+                </button>
+              </>
+            )}
+            {btnType === 'uprawnienia' && (
+              <>
                 <div id='checkbox-group'>Wybierz role</div>
                 <Field name='roles' as='select'>
                   <option value=''>Wybierz role</option>
@@ -318,19 +341,9 @@ const UpdateDoctor = () => {
                     height: '3em',
                     margin: '10px 0',
                   }}
+                  onClick={() => updateRoles(values)}
                 >
                   Aktualizuj dane
-                </button>
-                <button
-                  type='reset'
-                  style={{
-                    backgroundColor: 'none',
-                    border: '2px solid #333',
-                    height: '3em',
-                    margin: '10px 0',
-                  }}
-                >
-                  Wyczysc formularz
                 </button>
               </>
             )}
