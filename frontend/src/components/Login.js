@@ -4,8 +4,29 @@ import { Navigate } from 'react-router-dom'
 import { PageWrapper } from './PageWrapper'
 import { login } from '../store/actions/auth'
 
-const Login = (props) => {
+const styles = {
+  formGroup: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  inputStyle: {
+    backgroundColor: 'transparent',
+    border: '2px solid #333',
+    height: '3em',
+    margin: '10px 0',
+    paddingLeft: '1em',
+  },
+  buttonStyle: {
+    backgroundColor: 'none',
+    border: '2px solid #333',
+    height: '3em',
+    width: '200px',
+    margin: '10px 0',
+    cursor: 'pointer'
+  },
+}
 
+const Login = (props) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -28,7 +49,6 @@ const Login = (props) => {
   const handleLogin = (e) => {
     e.preventDefault()
 
-
     dispatch(login(email, password))
       .then(() => {
         props.history.push('/add-visit')
@@ -47,18 +67,19 @@ const Login = (props) => {
     <PageWrapper>
       <div>
         <form onSubmit={handleLogin}>
-          <div className='form-group'>
+          <div style={styles.formGroup}>
             <label htmlFor='email'>E-mail</label>
             <input
               type='text'
-              className='form-control'
               name='email'
               value={email}
               onChange={onChangeEmail}
+              style={styles.inputStyle}
+              placeholder='Imie'
             />
           </div>
 
-          <div className='form-group'>
+          <div style={styles.formGroup}>
             <label htmlFor='password'>Password</label>
             <input
               type='password'
@@ -66,11 +87,13 @@ const Login = (props) => {
               name='password'
               value={password}
               onChange={onChangePassword}
+              style={styles.inputStyle}
+              placeholder='Password'
             />
           </div>
 
           <div>
-            <button>
+            <button style={styles.buttonStyle}>
               {loading && <span></span>}
               <span>Login</span>
             </button>
@@ -83,7 +106,7 @@ const Login = (props) => {
           )}
         </form>
       </div>
-      </PageWrapper>
+    </PageWrapper>
   )
 }
 
