@@ -14,10 +14,11 @@ module.exports = function (app) {
 
   app.get('/api/test/user', [authJwt.verifyToken], controller.userBoard)
 
-  app.get(
-    '/api/users/:nazwisko',
-    controller.findAll
-  )
+  app.get('/api/users/:nazwisko', controller.findAll)
+
+  app.get('/api/users', controller.findAllUsers)
+
+  app.delete('/api/users/:id', controller.deleteUser)
 
   app.get(
     '/api/test/mod',

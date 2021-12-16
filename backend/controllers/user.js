@@ -18,13 +18,45 @@ exports.specBoard = (req, res) => {
 }
 
 exports.findAll = (req, res) => {
-  User.find({nazwisko: req.params.nazwisko})
+  User.find({ nazwisko: req.params.nazwisko })
     .then((data) => {
       res.send(data)
     })
     .catch((err) => {
       res.status(500).send({
         message: err.message || 'Some error occurred while retrieving users.',
+      })
+    })
+}
+
+exports.findAllUsers = (req, res) => {
+  User.find({})
+    .then((data) => {
+      res.send(data)
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || 'Some error occurred while retrieving users.',
+      })
+    })
+}
+
+exports.deleteUser = (req, res) => {
+  User.findByIdAndRemove(req.params.id)
+    .then((data) => {
+      if (!data) {
+        res.status(404).send({
+          message: `Cannot delete Visit with id=${id}. Maybe Visit was not found!`,
+        })
+      } else {
+        res.send({
+          message: 'Visit was deleted successfully!',
+        })
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: 'Could not delete Visit with id=' + id,
       })
     })
 }
