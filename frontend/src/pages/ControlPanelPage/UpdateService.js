@@ -35,23 +35,29 @@ const UpdateService = () => {
   }
 
   const addNewService = (values) => {
-    const serviceToUpdate = servicesArr.filter(
-      (service) => service.grupa === values.grupa
-    )
-    const [serviceObj] = serviceToUpdate
-    serviceObj.uslugi = [
-      ...serviceObj.uslugi,
-      { nazwa: values.nazwa, cena: values.cena },
-    ]
-
-    ServiceData.update(serviceObj._id, serviceObj)
-      .then((response) => {
-        console.log(response.data)
-        dispatch(refreshApp())
-        values.nazwa = ''
-        values.cena = ''
-      })
-      .catch((e) => console.log(e))
+    const isDuplicate = servicesArr
+      .filter((item) => item.grupa === values.grupa)[0]
+      .uslugi.filter((usluga) => usluga.nazwa === values.nazwa)
+    if (!isDuplicate.length) {
+      const serviceToUpdate = servicesArr.filter(
+        (service) => service.grupa === values.grupa
+      )
+      const [serviceObj] = serviceToUpdate
+      serviceObj.uslugi = [
+        ...serviceObj.uslugi,
+        { nazwa: values.nazwa, cena: values.cena },
+      ]
+      ServiceData.update(serviceObj._id, serviceObj)
+        .then((response) => {
+          console.log(response.data)
+          dispatch(refreshApp())
+          values.nazwa = ''
+          values.cena = ''
+        })
+        .catch((e) => console.log(e))
+    } else {
+      console.log('to juz jest w kolekcji')
+    }
   }
 
   const onServiceDelete = (service, usluga) => {
