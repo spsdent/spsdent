@@ -6,7 +6,7 @@ import { refreshApp } from '../../store/actions/refresh'
 
 const DeleteService = () => {
   const [servicesArr, setServicesArr] = useState([])
-  const { refresh: isRefresh } = useSelector((state) => state.refresh)
+  const { isRefresh } = useSelector((state) => state.refresh)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -23,11 +23,12 @@ const DeleteService = () => {
   }
 
   const onServiceDelete = (service) => {
-    console.log(service)
     ServiceData.remove(service)
-      .then((response) => console.log(response.data))
+      .then((response) => {
+        dispatch(refreshApp())
+      })
       .catch((e) => console.log(e))
-    dispatch(refreshApp())
+    console.log(isRefresh)
   }
 
   return (
