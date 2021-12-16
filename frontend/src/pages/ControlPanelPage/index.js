@@ -1,34 +1,67 @@
 import React, { useState, useEffect } from 'react'
 import { PageWrapper } from '../../components/PageWrapper'
 
-import OptionsBtn from './OptionsBtn'
-import NewDoctor from './NewDoctor'
-import UpdateDoctor from './UpdateDoctor'
+import DoctorsControl from './DoctorsControl'
+import ServicesControl from './ServicesControl'
 
 const ControlPanel = () => {
-  const [addNewDoctor, setAddNewDoctor] = useState(false)
-  const [updateDoctor, setUpdateDoctor] = useState(false)
-  const [btnName, setBtnName] = useState('')
+  const [btnType, setBtnType] = useState('')
   return (
     <PageWrapper>
       <div
         style={{
+          width: '100%',
           display: 'flex',
           flexDirection: 'column',
-          width: '50%',
-          backgroundColor: '#ddd',
           alignItems: 'center',
         }}
       >
-        <h1>Control Panel</h1>
-        <OptionsBtn
-          addDoctor={addNewDoctor}
-          updateDoctor={updateDoctor}
-          onAdd={setAddNewDoctor}
-          onUpdate={setUpdateDoctor}
-        />
-        {addNewDoctor && <NewDoctor />}
-        {updateDoctor && <UpdateDoctor />}
+        <h1>Panel zarzadzania</h1>
+        <div style={{ display: 'flex', marginBottom: '20px' }}>
+          <button
+            onClick={() => {
+              if (btnType === 'doctor') {
+                setBtnType('')
+              } else {
+                setBtnType('doctor')
+              }
+            }}
+            style={{
+              width: '200px',
+              height: '40px',
+              border: btnType === 'doctor' ? 'none' : '2px solid #333',
+              backgroundColor: btnType === 'doctor' ? '#01D4BF' : 'transparent',
+              marginRight: '5px',
+              cursor: 'pointer',
+              transition: '.2s',
+            }}
+          >
+            Zarzadzaj lekarzami
+          </button>
+          <button
+            onClick={() => {
+              if (btnType === 'service') {
+                setBtnType('')
+              } else {
+                setBtnType('service')
+              }
+            }}
+            style={{
+              width: '200px',
+              height: '40px',
+              border: btnType === 'service' ? 'none' : '2px solid #333',
+              backgroundColor:
+                btnType === 'service' ? '#01D4BF' : 'transparent',
+              marginRight: '5px',
+              cursor: 'pointer',
+              transition: '.2s',
+            }}
+          >
+            Zarzadzaj specjalnosciami
+          </button>
+        </div>
+        {btnType === 'doctor' && <DoctorsControl btnType={btnType} />}
+        {btnType === 'service' && <ServicesControl btnType={btnType} />}
       </div>
     </PageWrapper>
   )
