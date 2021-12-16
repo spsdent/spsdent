@@ -78,10 +78,7 @@ const UpdateService = () => {
   return (
     <>
       <h1>Zaktualizuj specjalizacje</h1>
-      <Formik
-        initialValues={{ grupa: '', nazwa: '' }}
-        onSubmit={(actions) => actions.resetForm()}
-      >
+      <Formik initialValues={{ grupa: '', nazwa: '' }}>
         {({ values, errors, touched }) => (
           <Form style={{ display: 'flex', flexDirection: 'column' }}>
             <label>Wybierz grupe</label>
@@ -114,7 +111,13 @@ const UpdateService = () => {
                     marginRight: '10px',
                     padding: '10px',
                   }}
-                  onClick={() => setBtnType('dodaj')}
+                  onClick={() => {
+                    if (btnType === 'dodaj') {
+                      setBtnType('')
+                    } else {
+                      setBtnType('dodaj')
+                    }
+                  }}
                 >
                   Dodaj usluge
                 </button>
@@ -127,7 +130,13 @@ const UpdateService = () => {
                     cursor: 'pointer',
                     padding: '10px',
                   }}
-                  onClick={() => setBtnType('usun')}
+                  onClick={() => {
+                    if (btnType === 'usun') {
+                      setBtnType('')
+                    } else {
+                      setBtnType('usun')
+                    }
+                  }}
                 >
                   Usun usluge
                 </button>

@@ -23,6 +23,10 @@ const deleteUser = (id) => {
   return axios.delete(API_URL + `users/${id}`, { headers: authHeader() })
 }
 
+const updateUser = (id, data) => {
+  return axios.put(API_URL + `users/${id}`, data, { headers: authHeader() })
+}
+
 const getUserBoard = () => {
   return axios.get(API_URL + 'test/user', { headers: authHeader() })
 }
@@ -43,4 +47,5 @@ export default {
   getAllUsers,
   getAll,
   deleteUser,
+  updateUser,
 }
