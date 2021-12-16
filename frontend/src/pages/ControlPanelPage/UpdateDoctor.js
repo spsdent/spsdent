@@ -5,7 +5,8 @@ import { Formik, Field, Form } from 'formik'
 import { refreshApp } from '../../store/actions/refresh'
 import DoctorService from '../../services/doctor'
 import UserService from '../../services/user'
-import VisitService from '../..//services/visit'
+import VisitService from '../../services/visit'
+import RoleService from '../../services/role'
 
 const UpdateDoctor = () => {
   let initialState = {
@@ -17,10 +18,12 @@ const UpdateDoctor = () => {
     miasto: '',
     ulica: '',
     kodPocztowy: '',
+    roles: [{}],
   }
   const [user, setUser] = useState(initialState)
   const [doctorsArr, setDoctorsArr] = useState([])
   const [usersArr, setUsersArr] = useState([])
+  const [rolesArr, setRolesArr] = useState([])
   const [btnType, setBtnType] = useState('')
   const { isRefresh } = useSelector((state) => state.refresh)
   const { user: currentUser } = useSelector((state) => state.auth)
@@ -29,6 +32,7 @@ const UpdateDoctor = () => {
   useEffect(() => {
     retrieveUsers()
     retrieveDoctors()
+    retrieveRoles()
   }, [isRefresh])
 
   const retrieveUsers = () => {
@@ -45,6 +49,15 @@ const UpdateDoctor = () => {
       .then((response) => {
         // console.log(response.data)
         setDoctorsArr(response.data)
+      })
+      .catch((e) => console.log(e))
+  }
+
+  const retrieveRoles = () => {
+    RoleService.getAll()
+      .then((response) => {
+        setRolesArr(response.data)
+        console.log('roles', response.data)
       })
       .catch((e) => console.log(e))
   }
@@ -91,9 +104,24 @@ const UpdateDoctor = () => {
       kodPocztowy,
       miasto,
       ulica,
+      roles: [values.roles],
     }
     UserService.updateUser(userId, userObj)
-      .then((response) => console.log(response))
+      .then((response) => {
+        console.log(response)
+        setBtnType('')
+        setUser({
+          userId: '',
+          imie: '',
+          nazwisko: '',
+          telefon: '',
+          email: '',
+          miasto: '',
+          ulica: '',
+          kodPocztowy: '',
+          roles: [{}],
+        })
+      })
       .catch((e) => console.log(e))
   }
 
@@ -275,6 +303,13 @@ const UpdateDoctor = () => {
                 {errors.kodPocztowy && touched.kodPocztowy ? (
                   <p style={{ color: 'red' }}>{errors.kodPocztowy}</p>
                 ) : null}
+                <div id='checkbox-group'>Wybierz role</div>
+                <Field name='roles' as='select'>
+                  <option value=''>Wybierz role</option>
+                  {rolesArr.map((role) => (
+                    <option value={`${role._id}`}> {role.name}</option>
+                  ))}
+                </Field>
                 <button
                   type='submit'
                   style={{

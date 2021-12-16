@@ -199,6 +199,7 @@ require('./routes/user')(app)
 require('./routes/visit')(app)
 require('./routes/doctor')(app)
 require('./routes/service')(app)
+require('./routes/role')(app)
 
 const PORT = process.env.PORT || 8080
 
