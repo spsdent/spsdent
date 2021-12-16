@@ -12,6 +12,10 @@ const create = (data) => {
   return http.post('/services', data)
 }
 
+const update = (id, data) => {
+  return http.put(`/services/${id}`, data)
+}
+
 const remove = (id) => {
   return http.delete(`/services/${id}`)
 }
@@ -21,4 +25,5 @@ export default {
   get,
   create,
   remove,
+  update,
 }
