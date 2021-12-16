@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Formik, Form, Field } from 'formik'
-import * as Yup from 'yup'
+// import * as Yup from 'yup'
 
 import ServiceData from '../../services/service'
 
@@ -18,63 +18,47 @@ const styles = {
 const NewService = () => {
   let initialState = {
     grupa: '',
-    value: {
-      usluga1: '',
-      cena1: '',
-    },
+    uslugi: [{}],
   }
-  const [inpArr, setInpArr] = useState([
-    {
-      id: 1,
-      value: {
-        usluga: 'usluga1',
-        cena: 'cena1',
-      },
-    },
-  ])
+  const [inputArr, setInputArr] = useState([{}])
   const [services, setServices] = useState(initialState)
-  const [counter, setCounter] = useState(2)
   const [errorMsg, setErrorMsg] = useState('')
 
   const newServiceInput = () => {
-    if (inpArr.length > 4) {
-      setErrorMsg('Maksymalna liczba specjalizacji to 5')
+    if (inputArr.length > 4) {
+      setErrorMsg('Maksymalna liczba uslug to 5.')
     } else {
-      setCounter(counter + 1)
-      setInpArr([
-        ...inpArr,
-        {
-          id: counter,
-          value: { usluga: `usluga${counter}`, cena: `cena${counter}` },
-        },
-      ])
-      setServices({
-        ...services,
-        value: {
-          [`usluga${counter}`]: '',
-          [`cena${counter}`]: '',
-        },
-      })
+      setInputArr([...inputArr, {}])
     }
   }
 
   const onSubmitHandle = (values) => {
-    const { grupa, ...uslugi } = values
-    // const uslugiArr = Object.entries(uslugi).map((item) => item[1])
-    console.log(inpArr)
+    ServiceData.create(values)
+      .then((response) => console.log('Dodano pomyslnie'))
+      .catch((e) => console.log(e))
+    setInputArr([{}])
+    setServices({
+      grupa: '',
+      uslugi: [
+        {
+          nazwa: '',
+          cena: '',
+        },
+      ],
+    })
   }
 
   return (
     <>
-      <h1>Dodaj specjalizacje lub uslugi</h1>
+      <h1>Dodaj specjalizacje</h1>
       <Formik
-        // enableReinitialize
+        enableReinitialize
         initialValues={services}
         // validationSchema={AddVisitSchema}
-        onSubmit={(values) => {
+        onSubmit={(values, actions) => {
           onSubmitHandle(values)
+          actions.resetForm()
         }}
-        // onReset={() => }
       >
         {({ errors, touched, values }) => (
           <Form
@@ -86,34 +70,36 @@ const NewService = () => {
               placeholder='Nazwa grupy uslug'
               name='grupa'
             ></Field>
-            {inpArr.map((item) => (
-              <React.Fragment key={item.id}>
-                <label>{item.id} Specjalizacja</label>
+            {inputArr.map((item, index) => (
+              <React.Fragment key={index}>
+                <label>Usluga {index + 1}</label>
                 <Field
                   style={styles.inputStyles}
                   placeholder='Nazwa uslugi'
-                  name={item.value.usluga}
+                  name={`uslugi[${index}].nazwa`}
                 ></Field>
                 <Field
                   style={styles.inputStyles}
                   placeholder='Cena uslugi'
-                  name={item.value.cena}
+                  name={`uslugi[${index}].cena`}
                 ></Field>
               </React.Fragment>
             ))}
+            {errorMsg && <p style={{ color: 'red' }}>{errorMsg}</p>}
             <button
+              type='button'
               style={{
                 height: '40px',
                 border: '2px solid #333',
                 background: 'transparent',
                 fontSize: '18px',
                 cursor: 'pointer',
+                marginTop: '10px',
               }}
               onClick={newServiceInput}
             >
-              Dodaj kolejna specjalizacje
+              Dodaj kolejna usluge
             </button>
-            {errorMsg && <p style={{ color: 'red' }}>{errorMsg}</p>}
             <button
               type='submit'
               style={{
