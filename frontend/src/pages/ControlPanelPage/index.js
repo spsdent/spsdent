@@ -36,7 +36,7 @@ const ControlPanel = () => {
               transition: '.2s',
             }}
           >
-            Zarzadzaj lekarzami
+            Zarzadzaj uzytkownikami
           </button>
           <button
             onClick={() => {

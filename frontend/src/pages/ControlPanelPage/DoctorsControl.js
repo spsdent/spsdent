@@ -1,26 +1,26 @@
 import React, { useState } from 'react'
-import NewDoctor from './NewDoctor'
+// import NewDoctor from './NewDoctor'
 import UpdateDoctor from './UpdateDoctor'
 import DeleteDoctor from './DeleteDoctor'
 
 const DoctorsControl = () => {
   const [state, setState] = useState({
-    addNewDoctor: false,
+    // addNewDoctor: false,
     updateDoctor: false,
     deleteDoctor: false,
   })
 
-  const addNewDoctorHandler = () => {
-    setState({
-      addNewDoctor: !state.addNewDoctor,
-      updateDoctor: false,
-      deleteDoctor: false,
-    })
-  }
+  // const addNewDoctorHandler = () => {
+  //   setState({
+  //     addNewDoctor: !state.addNewDoctor,
+  //     updateDoctor: false,
+  //     deleteDoctor: false,
+  //   })
+  // }
 
   const updateDoctorHandler = () => {
     setState({
-      addNewDoctor: false,
+      // addNewDoctor: false,
       updateDoctor: !state.updateDoctor,
       deleteDoctor: false,
     })
@@ -28,17 +28,17 @@ const DoctorsControl = () => {
 
   const deleteDoctorHandler = () => {
     setState({
-      addNewDoctor: false,
+      // addNewDoctor: false,
       updateDoctor: false,
       deleteDoctor: !state.deleteDoctor,
     })
   }
 
-  const { addNewDoctor, updateDoctor, deleteDoctor } = state
+  const { updateDoctor, deleteDoctor } = state
   return (
     <>
       <div style={{ display: 'flex' }}>
-        <button
+        {/* <button
           onClick={addNewDoctorHandler}
           style={{
             width: '200px',
@@ -51,7 +51,7 @@ const DoctorsControl = () => {
           }}
         >
           Utworz
-        </button>
+        </button> */}
         <button
           onClick={updateDoctorHandler}
           style={{
@@ -64,7 +64,7 @@ const DoctorsControl = () => {
             transition: '.2s',
           }}
         >
-          Aktualizuj
+          Modyfikuj
         </button>
         <button
           onClick={deleteDoctorHandler}
@@ -81,7 +81,7 @@ const DoctorsControl = () => {
           Usun
         </button>
       </div>
-      {addNewDoctor && <NewDoctor />}
+      {/* {addNewDoctor && <NewDoctor />} */}
       {updateDoctor && <UpdateDoctor />}
       {deleteDoctor && <DeleteDoctor />}
     </>
