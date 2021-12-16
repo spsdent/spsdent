@@ -22,7 +22,7 @@ const styles = {
     height: '3em',
     width: '200px',
     margin: '10px 0',
-    cursor: 'pointer'
+    cursor: 'pointer',
   },
 }
 
