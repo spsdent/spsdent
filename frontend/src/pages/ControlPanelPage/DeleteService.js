@@ -48,7 +48,6 @@ const DeleteService = () => {
           <h2>Grupa: {service.grupa}</h2>
           {service.uslugi.map((usluga) => (
             <div style={{ margin: '10px 0' }}>
-              <h3>Uslugi: </h3>
               <p>Nazwa uslugi: {usluga.nazwa}</p>
               <p>Cena uslugi: {usluga.cena}</p>
             </div>

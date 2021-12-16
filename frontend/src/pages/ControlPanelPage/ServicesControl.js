@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 import NewService from './NewService'
 import DeleteService from './DeleteService'
+import UpdateService from './UpdateService'
 
 const ServicesControl = () => {
   const [state, setState] = useState({
@@ -82,6 +83,7 @@ const ServicesControl = () => {
         </button>
       </div>
       {addNewService && <NewService />}
+      {updateService && <UpdateService />}
       {deleteService && <DeleteService />}
     </>
   )
