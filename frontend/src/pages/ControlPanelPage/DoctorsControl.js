@@ -50,7 +50,7 @@ const DoctorsControl = () => {
             transition: '.2s',
           }}
         >
-          Dodaj lekarza
+          Utworz
         </button>
         <button
           onClick={updateDoctorHandler}
@@ -64,7 +64,7 @@ const DoctorsControl = () => {
             transition: '.2s',
           }}
         >
-          Zmien dane lekarza
+          Aktualizuj
         </button>
         <button
           onClick={deleteDoctorHandler}
@@ -78,7 +78,7 @@ const DoctorsControl = () => {
             transition: '.2s',
           }}
         >
-          Usun lekarza
+          Usun
         </button>
       </div>
       {addNewDoctor && <NewDoctor />}

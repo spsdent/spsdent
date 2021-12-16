@@ -7,12 +7,14 @@ const ServicesControl = () => {
   const [state, setState] = useState({
     addNewService: false,
     deleteService: false,
+    updateService: false,
   })
 
   const addNewServiceHandler = () => {
     setState({
       addNewService: !state.addNewService,
       deleteService: false,
+      updateService: false,
     })
   }
 
@@ -20,10 +22,19 @@ const ServicesControl = () => {
     setState({
       addNewService: false,
       deleteService: !state.deleteService,
+      updateService: false,
     })
   }
 
-  const { addNewService, deleteService } = state
+  const updateServiceHandler = () => {
+    setState({
+      addNewService: false,
+      deleteService: false,
+      updateService: !state.updateService,
+    })
+  }
+
+  const { addNewService, deleteService, updateService } = state
   return (
     <>
       <div style={{ display: 'flex' }}>
@@ -39,7 +50,21 @@ const ServicesControl = () => {
             transition: '.2s',
           }}
         >
-          Dodaj specjalnosc
+          Utworz
+        </button>
+        <button
+          onClick={updateServiceHandler}
+          style={{
+            width: '200px',
+            height: '40px',
+            border: updateService ? 'none' : '2px solid #333',
+            backgroundColor: updateService ? '#01D4BF' : 'transparent',
+            marginRight: '5px',
+            cursor: 'pointer',
+            transition: '.2s',
+          }}
+        >
+          Aktualizuj
         </button>
         <button
           onClick={deleteServiceHandler}
@@ -53,7 +78,7 @@ const ServicesControl = () => {
             transition: '.2s',
           }}
         >
-          Usun specjalnosc
+          Usun
         </button>
       </div>
       {addNewService && <NewService />}

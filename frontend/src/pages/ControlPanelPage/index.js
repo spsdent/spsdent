@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { PageWrapper } from '../../components/PageWrapper'
 
 import DoctorsControl from './DoctorsControl'
@@ -57,7 +57,7 @@ const ControlPanel = () => {
               transition: '.2s',
             }}
           >
-            Zarzadzaj specjalnosciami
+            Zarzadzaj specjalizacjami
           </button>
         </div>
         {btnType === 'doctor' && <DoctorsControl btnType={btnType} />}
