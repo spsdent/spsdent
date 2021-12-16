@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Formik, Form, Field } from 'formik'
+import { useDispatch, useSelector } from 'react-redux'
 // import * as Yup from 'yup'
 
 import ServiceData from '../../services/service'
+import { refreshApp } from '../../store/actions/refresh'
 
 const styles = {
   inputStyles: {
@@ -23,6 +25,21 @@ const NewService = () => {
   const [inputArr, setInputArr] = useState([{}])
   const [services, setServices] = useState(initialState)
   const [errorMsg, setErrorMsg] = useState('')
+  const [servicesArr, setServicesArr] = useState([])
+  const { isRefresh } = useSelector((state) => state.refresh)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    retrieveSpecializations()
+  }, [isRefresh])
+
+  const retrieveSpecializations = () => {
+    ServiceData.getAll()
+      .then((response) => {
+        setServicesArr(response.data)
+      })
+      .catch((e) => console.log(e))
+  }
 
   const newServiceInput = () => {
     if (inputArr.length > 4) {
@@ -33,24 +50,41 @@ const NewService = () => {
   }
 
   const onSubmitHandle = (values) => {
-    ServiceData.create(values)
-      .then((response) => console.log('Dodano pomyslnie'))
-      .catch((e) => console.log(e))
-    setInputArr([{}])
-    setServices({
-      grupa: '',
-      uslugi: [
-        {
-          nazwa: '',
-          cena: '',
-        },
-      ],
-    })
+    const servicesToUpdate = servicesArr.filter(
+      (service) => service.grupa === values.grupa
+    )
+    if (servicesToUpdate.length) {
+      setErrorMsg('Ta pozycja znajduje sie juz w kolekcji!')
+      setInputArr([{}])
+      setServices({
+        grupa: '',
+        uslugi: [
+          {
+            nazwa: '',
+            cena: '',
+          },
+        ],
+      })
+    } else {
+      ServiceData.create(values)
+        .then((response) => console.log('Dodano pomyslnie'))
+        .catch((e) => console.log(e))
+      setInputArr([{}])
+      setServices({
+        grupa: '',
+        uslugi: [
+          {
+            nazwa: '',
+            cena: '',
+          },
+        ],
+      })
+    }
   }
 
   return (
     <>
-      <h1>Dodaj specjalizacje</h1>
+      <h1> Dodaj specjalizacje </h1>
       <Formik
         enableReinitialize
         initialValues={services}
@@ -62,9 +96,13 @@ const NewService = () => {
       >
         {({ errors, touched, values }) => (
           <Form
-            style={{ width: '350px', display: 'flex', flexDirection: 'column' }}
+            style={{
+              width: '350px',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
           >
-            <label>Nazwa grupy specjalizacji</label>
+            <label> Nazwa grupy specjalizacji </label>
             <Field
               style={styles.inputStyles}
               placeholder='Nazwa grupy uslug'
@@ -72,7 +110,7 @@ const NewService = () => {
             ></Field>
             {inputArr.map((item, index) => (
               <React.Fragment key={index}>
-                <label>Usluga {index + 1}</label>
+                <label> Usluga {index + 1} </label>
                 <Field
                   style={styles.inputStyles}
                   placeholder='Nazwa uslugi'
@@ -85,7 +123,15 @@ const NewService = () => {
                 ></Field>
               </React.Fragment>
             ))}
-            {errorMsg && <p style={{ color: 'red' }}>{errorMsg}</p>}
+            {errorMsg && (
+              <p
+                style={{
+                  color: 'red',
+                }}
+              >
+                {errorMsg}
+              </p>
+            )}
             <button
               type='button'
               style={{
