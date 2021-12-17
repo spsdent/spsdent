@@ -19,8 +19,6 @@ app.use(
 const db = require('./models')
 const dbConfig = require('./config/db')
 const Role = db.role
-const Doctor = db.doctor
-const Service = db.service
 
 db.mongoose
   .connect(
@@ -79,54 +77,54 @@ function initial() {
       })
     }
   })
-  Doctor.estimatedDocumentCount((err, count) => {
-    if (!err && count === 0) {
-      new Doctor({
-        imie: 'Jan',
-        nazwisko: 'Nowak',
-        telefon: '123123123',
-        email: 'jannowak@gmail.com',
-        specjalnosci: ['wybielanie'],
-        godzinyPracy: [8, 9, 10, 11, 12, 13, 14, 15, 16],
-      }).save((err) => {
-        if (err) {
-          console.log('error', err)
-        }
+  // Doctor.estimatedDocumentCount((err, count) => {
+  //   if (!err && count === 0) {
+  //     new Doctor({
+  //       imie: 'Jan',
+  //       nazwisko: 'Nowak',
+  //       telefon: '123123123',
+  //       email: 'jannowak@gmail.com',
+  //       specjalnosci: ['wybielanie'],
+  //       godzinyPracy: [8, 9, 10, 11, 12, 13, 14, 15, 16],
+  //     }).save((err) => {
+  //       if (err) {
+  //         console.log('error', err)
+  //       }
 
-        console.log("added 'Jan Nowak' to doctors collection")
-      })
+  //       console.log("added 'Jan Nowak' to doctors collection")
+  //     })
 
-      new Doctor({
-        imie: 'Krzysztof',
-        nazwisko: 'Kowalski',
-        telefon: '987654321',
-        email: 'kkowalski@gmail.com',
-        specjalnosci: ['stomatologia zachowawcza', 'endodoncja'],
-        godzinyPracy: [8, 9, 10, 11, 12, 13, 14, 15, 16],
-      }).save((err) => {
-        if (err) {
-          console.log('error', err)
-        }
+  //     new Doctor({
+  //       imie: 'Krzysztof',
+  //       nazwisko: 'Kowalski',
+  //       telefon: '987654321',
+  //       email: 'kkowalski@gmail.com',
+  //       specjalnosci: ['stomatologia zachowawcza', 'endodoncja'],
+  //       godzinyPracy: [8, 9, 10, 11, 12, 13, 14, 15, 16],
+  //     }).save((err) => {
+  //       if (err) {
+  //         console.log('error', err)
+  //       }
 
-        console.log("added 'Krzysztof Kowalski' to doctors collection")
-      })
+  //       console.log("added 'Krzysztof Kowalski' to doctors collection")
+  //     })
 
-      new Doctor({
-        imie: 'Adrian',
-        nazwisko: 'Nowak',
-        telefon: '951753842',
-        email: 'dwabulki@gmail.com',
-        specjalnosci: ['endodoncja', 'wybielanie'],
-        godzinyPracy: [8, 9, 10, 11, 12, 13, 14, 15, 16],
-      }).save((err) => {
-        if (err) {
-          console.log('error', err)
-        }
+  //     new Doctor({
+  //       imie: 'Adrian',
+  //       nazwisko: 'Nowak',
+  //       telefon: '951753842',
+  //       email: 'dwabulki@gmail.com',
+  //       specjalnosci: ['endodoncja', 'wybielanie'],
+  //       godzinyPracy: [8, 9, 10, 11, 12, 13, 14, 15, 16],
+  //     }).save((err) => {
+  //       if (err) {
+  //         console.log('error', err)
+  //       }
 
-        console.log("added 'Adrian Nowak' to doctors collection")
-      })
-    }
-  })
+  //       console.log("added 'Adrian Nowak' to doctors collection")
+  //     })
+  //   }
+  // })
 
   // Service.estimatedDocumentCount((err, count) => {
   //   if (!err && count === 0) {

@@ -3,17 +3,15 @@ const Doctor = db.doctor
 
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.nazwisko) {
+  if (!req.body.doctorId) {
     res.status(400).send({ message: 'Content can not be empty!' })
     return
   }
 
   // Create a Tutorial
   const doctor = new Doctor({
-    imie: req.body.imie,
-    nazwisko: req.body.nazwisko,
-    email: req.body.email,
-    telefon: req.body.telefon,
+    doctorId: req.body.doctorId,
+    specjalnosci: req.body.specjalnosci,
     godzinyPracy: req.body.godzinyPracy,
   })
 
