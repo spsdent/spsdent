@@ -170,9 +170,10 @@ const OfferPage = () => {
       </OfferPageContainer>
       <Pattern
         src="pattern.png"
+        top="11%"
         initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 1, scale: 1.5 }}
-        transition={{ duration: 2 }}
+        animate={{ opacity: 1, scale: 1.3 }}
+        transition={{ duration: 1.5 }}
       />
     </PageWrapper>
   );

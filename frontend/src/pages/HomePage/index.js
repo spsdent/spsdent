@@ -78,7 +78,7 @@ const Home = () => {
         </TextContainer>
         <HeaderPhotoContainer>
           <PhotoHeader
-            transition={{ duration: 1 }}
+            transition={{ type: "spring", bounce: 0.6, duration: 1.5 }}
             initial={{ opacity: 0, x: -200 }}
             animate={{ opacity: 1, x: 0 }}
             drag
@@ -93,11 +93,11 @@ const Home = () => {
             src="header1.png"
           ></PhotoHeader>
           <PhotoHeader
-            transition={{ duration: 0.5 }}
+            transition={{ type: "spring", bounce: 0.6, duration: 2, delay: .2 }}
             initial={{ opacity: 0, x: -200 }}
             animate={{ opacity: 1, x: 0 }}
             drag
-            dragElastic={.5}
+            dragElastic={0.5}
             dragTransition={{ bounceStiffness: 100, bounceDamping: 20 }}
             dragConstraints={{
               top: 0,
@@ -115,8 +115,8 @@ const Home = () => {
         top="55%"
         left="30%"
         transition={{ duration: 1 }}
-        initial={{ scale: 0, rotate: 0 }}
-        animate={{ scale: 1, rotate: 360 }}
+        initial={{ scale: 0, rotate: 45 }}
+        animate={{ scale: 1, rotate: 0 }}
       ></Pattern>
     </PageWrapper>
   );
