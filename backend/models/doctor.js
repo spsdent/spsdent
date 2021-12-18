@@ -4,12 +4,7 @@ const Doctor = mongoose.model(
   'Doctor',
   new mongoose.Schema({
     doctorId: String,
-    specjalnosci: [
-      {
-        id: String,
-        nazwa: String,
-      },
-    ],
+    specjalnosci: [String],
     godzinyPracy: [Number],
   })
 )

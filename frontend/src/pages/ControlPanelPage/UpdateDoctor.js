@@ -34,6 +34,7 @@ const UpdateDoctor = () => {
   const [selectedSpecs, setSelectedSpecs] = useState(null)
   const [selectedOption, setSelectedOption] = useState(null)
   const [errorMsg, setErrorMsg] = useState('')
+  const [submitBtn, setSubmitBtn] = useState('')
   const { isRefresh } = useSelector((state) => state.refresh)
   const { user: currentUser } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
@@ -151,10 +152,7 @@ const UpdateDoctor = () => {
   }
 
   const handleDoctor = (values) => {
-    const specsIdArr = selectedSpecs.map((spec) => ({
-      id: spec.value,
-      nazwa: spec.label,
-    }))
+    const specsIdArr = selectedSpecs.map((spec) => spec.value)
     let godzinyPracy = []
     for (let i = +values.godzinyStart; i <= +values.godzinyKoniec; i++) {
       godzinyPracy = [...godzinyPracy, i]
@@ -164,18 +162,37 @@ const UpdateDoctor = () => {
       specjalnosci: specsIdArr,
       godzinyPracy,
     }
-    DoctorService.create(doctorObj)
-      .then((response) => {
-        setBtnType('')
-        setUser({
-          godzinyStart: '',
-          godzinyKoniec: '',
+    const isDoctorAlreadyCreated = doctorsArr.filter(
+      (doctor) => doctor.doctorId === values.userId
+    )
+
+    if (isDoctorAlreadyCreated.length > 0) {
+      const doctorId = isDoctorAlreadyCreated[0]._id
+      DoctorService.update(doctorId, doctorObj)
+        .then((response) => {
+          setBtnType('')
+          setUser({
+            godzinyStart: '',
+            godzinyKoniec: '',
+          })
+          setSelectedSpecs(null)
+          setErrorMsg('')
         })
-        setSelectedSpecs(null)
-        setErrorMsg('')
-        console.log(response)
-      })
-      .catch((e) => console.log(e))
+        .catch((e) => console.log(e))
+    } else {
+      DoctorService.create(doctorObj)
+        .then((response) => {
+          setBtnType('')
+          setUser({
+            godzinyStart: '',
+            godzinyKoniec: '',
+          })
+          setSelectedSpecs(null)
+          setErrorMsg('')
+          console.log(response)
+        })
+        .catch((e) => console.log(e))
+    }
   }
 
   const handleUpdateMethods = (values) => {
@@ -191,19 +208,11 @@ const UpdateDoctor = () => {
     }
   }
 
-  const onFillInputs = (values) => {
-    let arr = doctorsArr.filter(
-      (doctor) => doctor.doctorId === values.userId
-    )[0].godzinyPracy
-
-    values.godzinyStart = arr[0]
-    values.godzinyKoniec = arr[arr.length - 1]
-  }
-
   return (
     <>
       <p>Modyfikuj uzytkownika</p>
       <Formik
+        enableReinitialize={true}
         initialValues={user}
         // onSubmit={(values) => updateVisit(values)}
       >
@@ -382,7 +391,7 @@ const UpdateDoctor = () => {
                   <p style={{ color: 'red' }}>{errors.kodPocztowy}</p>
                 ) : null}
                 <button
-                  type='submit'
+                  type='button'
                   style={{
                     backgroundColor: 'none',
                     border: '2px solid #333',
@@ -397,22 +406,6 @@ const UpdateDoctor = () => {
             )}
             {btnType === 'uprawnienia' && (
               <>
-                {/* <div id='checkbox-group'>Wybierz role</div>
-                <Field
-                  name='roles'
-                  as='select'
-                  style={{
-                    backgroundColor: 'transparent',
-                    border: '2px solid #333',
-                    height: '3em',
-                    margin: '10px 0',
-                  }}
-                >
-                  <option value=''>Wybierz role</option>
-                  {rolesArr.map((role) => (
-                    <option value={`${role._id}`}> {role.name}</option>
-                  ))}
-                </Field> */}
                 <label>Role</label>
                 <Select
                   isMulti
@@ -423,98 +416,48 @@ const UpdateDoctor = () => {
                     label: role.name,
                   }))}
                 />
-                {doctorsArr.filter(
-                  (doctor) => doctor.doctorId === values.userId
-                ).length > 0 ? (
-                  <>
-                    <label>Specjalizacja</label>
-                    <Select
-                      isMulti
-                      defaultValue={selectedSpecs}
-                      onChange={setSelectedSpecs}
-                      options={specsArr.map((spec) => ({
-                        value: spec._id,
-                        label: spec.grupa,
-                      }))}
-                    />
-                    {onFillInputs(values)}
-                    <label>Godziny pracy</label>
-                    <div style={{ display: 'flex' }}>
-                      <p>Od</p>
-                      <Field
-                        name='godzinyStart'
-                        style={{
-                          backgroundColor: 'transparent',
-                          border: '2px solid #333',
-                          height: '3em',
-                          paddingLeft: '1em',
-                          width: '100%',
-                          marginRight: '5px',
-                        }}
-                        placeholder='Start pracy'
-                      />
-                      <p>do</p>
-                      <Field
-                        name='godzinyKoniec'
-                        style={{
-                          backgroundColor: 'transparent',
-                          border: '2px solid #333',
-                          height: '3em',
-                          paddingLeft: '1em',
-                          width: '100%',
-                          marginLeft: '5px',
-                        }}
-                        placeholder='Koniec pracy'
-                      />
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <label>Specjalizacja</label>
-                    <Select
-                      isMulti
-                      defaultValue={selectedSpecs}
-                      onChange={setSelectedSpecs}
-                      options={specsArr.map((spec) => ({
-                        value: spec._id,
-                        label: spec.grupa,
-                      }))}
-                    />
-
-                    <label>Godziny pracy</label>
-                    <div style={{ display: 'flex' }}>
-                      <p>Od</p>
-                      <Field
-                        name='godzinyStart'
-                        style={{
-                          backgroundColor: 'transparent',
-                          border: '2px solid #333',
-                          height: '3em',
-                          paddingLeft: '1em',
-                          width: '100%',
-                          marginRight: '5px',
-                        }}
-                        placeholder='Start pracy'
-                      />
-                      <p>do</p>
-                      <Field
-                        name='godzinyKoniec'
-                        style={{
-                          backgroundColor: 'transparent',
-                          border: '2px solid #333',
-                          height: '3em',
-                          paddingLeft: '1em',
-                          width: '100%',
-                          marginLeft: '5px',
-                        }}
-                        placeholder='Koniec pracy'
-                      />
-                    </div>
-                  </>
-                )}
+                <label>Specjalizacja</label>
+                <Select
+                  isMulti
+                  defaultValue={selectedSpecs}
+                  onChange={setSelectedSpecs}
+                  options={specsArr.map((spec) => ({
+                    value: spec._id,
+                    label: spec.grupa,
+                  }))}
+                />
+                <label>Godziny pracy</label>
+                <div style={{ display: 'flex' }}>
+                  <p>Od</p>
+                  <Field
+                    name='godzinyStart'
+                    style={{
+                      backgroundColor: 'transparent',
+                      border: '2px solid #333',
+                      height: '3em',
+                      paddingLeft: '1em',
+                      width: '100%',
+                      marginRight: '5px',
+                    }}
+                    placeholder='Start pracy'
+                  />
+                  <p>do</p>
+                  <Field
+                    name='godzinyKoniec'
+                    style={{
+                      backgroundColor: 'transparent',
+                      border: '2px solid #333',
+                      height: '3em',
+                      paddingLeft: '1em',
+                      width: '100%',
+                      marginLeft: '5px',
+                    }}
+                    placeholder='Koniec pracy'
+                  />
+                </div>
                 {errorMsg && <p style={{ color: 'red' }}>{errorMsg}</p>}
                 <button
-                  type='submit'
+                  type='button'
                   style={{
                     backgroundColor: 'none',
                     border: '2px solid #333',

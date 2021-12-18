@@ -9,6 +9,7 @@ import DoctorData from '../services/doctor'
 import UserData from '../services/user'
 import { PageWrapper } from './PageWrapper'
 import { useNavigate } from 'react-router-dom'
+import user from '../services/user'
 
 const AddVisitSchema = Yup.object().shape({
   grupa: Yup.string().required('Wybierz grupe uslug...'),
@@ -85,6 +86,7 @@ const AddVisit = () => {
   const [serviceSelected, setServiceSelected] = useState('')
   const [doctorSelected, setDoctorSelected] = useState('')
   const [visitDates, setVisitDates] = useState([])
+  const [users, setUsers] = useState([])
   const [choseDate, setChoseDate] = useState('')
   const [allVisitsArr, setAllVisitsArr] = useState([])
   const [choseHour, setChoseHour] = useState('')
@@ -134,6 +136,7 @@ const AddVisit = () => {
     retrieveVisits()
     retrieveServices()
     retrieveDoctors()
+    retrieveUsers()
   }, [isRefresh])
 
   const retrieveVisits = () => {
@@ -161,6 +164,15 @@ const AddVisit = () => {
       .then((response) => {
         // console.log('Response in retrieveDoctors', response.data)
         setDoctors(response.data)
+      })
+      .catch((e) => console.log('Errors in retrieveDoctors'))
+  }
+
+  const retrieveUsers = () => {
+    UserData.getAll()
+      .then((response) => {
+        // console.log('Response in retrieveDoctors', response.data)
+        setUsers(response.data)
       })
       .catch((e) => console.log('Errors in retrieveDoctors'))
   }
@@ -261,14 +273,22 @@ const AddVisit = () => {
   }
 
   const doctorHandler = (values) => {
-    const selectedGroupDoctors = doctors.filter((doctor) =>
-      doctor.specjalnosci.includes(serviceGroupSelected)
+    const selectedGroupData = services.filter(
+      (service) => service.grupa === serviceGroupSelected
+    )
+    const selectedGroupDoctors = doctors
+      .filter((doctor) =>
+        doctor.specjalnosci.includes(selectedGroupData[0]._id)
+      )
+      .map((item) => item.doctorId)
+    const usersToDisplay = users.filter((user) =>
+      selectedGroupDoctors.includes(user._id)
     )
     if (doctorSelected && !values.data) {
       values.godzina = ''
     }
     setDoctorSelected(values.specjalista)
-    return selectedGroupDoctors.map((doctor) => (
+    return usersToDisplay.map((doctor) => (
       <option value={`${doctor._id}`}>
         {doctor.imie} {doctor.nazwisko}
       </option>
@@ -329,20 +349,20 @@ const AddVisit = () => {
   const pickingHours = (values) => {
     const dentHours = [8, 9, 10, 11, 12, 13, 14, 15, 16]
     const selectedDoctorData = doctors.find(
-      (doctor) => doctor._id === doctorSelected
+      (doctor) => doctor.doctorId === doctorSelected
     )
+    const today = new Date()
 
     const currentDayDoctorVisits = allVisitsArr
       .filter(
         (visit) =>
           visit.data.split('.')[0] === values.split('.')[0] &&
-          visit.specjalista === `${selectedDoctorData._id}`
+          visit.specjalista === `${selectedDoctorData.doctorId}`
       )
       .map((item) => +item.godzina)
-
-    const updatedHours = selectedDoctorData.godzinyPracy.filter(
-      (item) => !currentDayDoctorVisits.includes(item)
-    )
+    const updatedHours = selectedDoctorData.godzinyPracy
+      .filter((item) => !currentDayDoctorVisits.includes(item))
+      .filter((hour) => hour > today.getHours())
 
     if (updatedHours.length > 0) {
       return updatedHours.map((item) => (
