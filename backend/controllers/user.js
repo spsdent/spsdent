@@ -17,10 +17,14 @@ exports.specBoard = (req, res) => {
   res.status(200).send('Specialist Content.')
 }
 
-exports.findAll = (req, res) => {
-  User.find({ nazwisko: req.params.nazwisko })
+exports.findByLastName = (req, res) => {
+  User.find({})
     .then((data) => {
-      res.send(data)
+      const filteredUsers = data.filter(
+        (user) =>
+          user.nazwisko.toLowerCase() === req.params.nazwisko.toLowerCase()
+      )
+      res.send(filteredUsers)
     })
     .catch((err) => {
       res.status(500).send({
