@@ -370,7 +370,6 @@ const AddVisit = () => {
         }
       })
 
-    console.log('testujemy godzinki', values)
     if (updatedHours.length > 0) {
       return updatedHours.map((item) => (
         <option value={`${item}`} key={`${item}`}>{`${item}`}</option>

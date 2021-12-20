@@ -13,11 +13,9 @@ import AddVisit from '../components/AddVisit'
 import VisitsList from '../components/VisitsList'
 import Visit from '../components/Visit'
 import ArchiveVisitsList from '../components/ArchiveVisitsList'
-import AdminNav from './AdminNav'
-import UserNav from './UserNav'
-import SpecNav from './SpecNav'
 import NonAuth from '../components/pieces/SideBar'
 import TopBar from '../components/pieces/TopBar'
+
 // pages
 import HomePage from '../pages/HomePage/'
 import AboutUsPage from '../pages/AboutUsPage/'
@@ -38,6 +36,7 @@ import PriceListPage from '../pages/PriceListPage/'
 import ContactPage from '../pages/ContactPage/'
 import AddVisitPage from '../pages/AddVisitPage/'
 import ControlPanelPage from '../pages/ControlPanelPage'
+import DoctorTimesheetPage from '../pages/DoctorTimesheetPage'
 
 import { logout } from '../store/actions/auth'
 import { clearMessage } from '../store/actions/message'
@@ -50,6 +49,15 @@ function PrivateRoute({ children }) {
 function AdminPrivateRoute({ children }) {
   const { user: currentUser } = useSelector((state) => state.auth)
   return !currentUser.roles.includes('ROLE_ADMIN') ? (
+    <Navigate to='/add-visit' />
+  ) : (
+    children
+  )
+}
+
+function DoctorPrivateRoute({ children }) {
+  const { user: currentUser } = useSelector((state) => state.auth)
+  return !currentUser.roles.includes('ROLE_SPEC') ? (
     <Navigate to='/add-visit' />
   ) : (
     children
@@ -143,6 +151,16 @@ const RootNavigation = () => {
                   <AdminPrivateRoute>
                     <ControlPanelPage />
                   </AdminPrivateRoute>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path='doctor-timesheet'
+              element={
+                <PrivateRoute>
+                  <DoctorPrivateRoute>
+                    <DoctorTimesheetPage />
+                  </DoctorPrivateRoute>
                 </PrivateRoute>
               }
             />
