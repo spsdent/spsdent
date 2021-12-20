@@ -376,7 +376,7 @@ const AddVisit = () => {
 
   const searchUser = (values) => {
     const { pacjent } = values
-    UserData.getAllUsers(pacjent)
+    UserData.getUsersByLastName(pacjent)
       .then((response) => {
         console.log(response.data)
         setFoundUsers(response.data)

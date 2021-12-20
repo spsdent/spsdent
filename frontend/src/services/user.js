@@ -7,7 +7,7 @@ const getPublicContent = () => {
   return axios.get(API_URL + 'test/all')
 }
 
-const getAllUsers = (nazwisko) => {
+const getUsersByLastName = (nazwisko) => {
   return axios.get(API_URL + `users/${nazwisko}`, {
     headers: authHeader(),
   })
@@ -44,7 +44,7 @@ export default {
   getUserBoard,
   getSpecBoard,
   getAdminBoard,
-  getAllUsers,
+  getUsersByLastName,
   getAll,
   deleteUser,
   updateUser,
