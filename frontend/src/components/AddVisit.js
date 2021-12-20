@@ -225,8 +225,8 @@ const AddVisit = () => {
         // setChoseDate('')
         // setChoseHour('')
         dispatch(refreshApp())
-        if (currentUser) navigate('/visits')
-        console.log(response)
+        // if (currentUser) navigate('/visits')
+        // console.log(response)
       })
       .catch((e) => {
         console.log(e)
@@ -362,16 +362,24 @@ const AddVisit = () => {
       .map((item) => +item.godzina)
     const updatedHours = selectedDoctorData.godzinyPracy
       .filter((item) => !currentDayDoctorVisits.includes(item))
-      .filter((hour) => hour > today.getHours())
+      .filter((hour) => {
+        if (today.getDate() === values.split('.')[0]) {
+          return hour > today.getHours()
+        } else {
+          return hour
+        }
+      })
 
+    console.log('testujemy godzinki', values)
     if (updatedHours.length > 0) {
       return updatedHours.map((item) => (
         <option value={`${item}`} key={`${item}`}>{`${item}`}</option>
       ))
+    } else {
+      return dentHours.map((item) => (
+        <option value={`${item}`} key={`${item}`}>{`${item}`}</option>
+      ))
     }
-    return dentHours.map((item) => (
-      <option value={`${item}`} key={`${item}`}>{`${item}`}</option>
-    ))
   }
 
   const searchUser = (values) => {

@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { Field, Form, Formik, FormikProps } from 'formik'
 import * as Yup from 'yup'
 import useDebounce from '../hooks/useDebounce'
+import { PageWrapper } from './PageWrapper'
 
 const SearchVisitSchema = Yup.object().shape({
   usluga: Yup.string().required('Wpisz nazwe uslugi do wyszukania...'),
@@ -78,10 +79,10 @@ const VisitsList = () => {
   // }
 
   return (
-    <>
-      <h1>Archive Visits List</h1>
-      {console.log('wizyty', visitsList)}
-      {/* <Formik
+    <PageWrapper>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <h1>Archive Visits List</h1>
+        {/* <Formik
         initialValues={visitSearch}
         validationSchema={SearchVisitSchema}
         onSubmit={(values) => {
@@ -101,35 +102,36 @@ const VisitsList = () => {
           </Form>
         )}
       </Formik> */}
-      {visitsList.length > 0 ? (
-        visitsList.map((item) => (
-          <div
-            style={{
-              width: '250px',
-              backgroundColor: '#333',
-              color: '#fff',
-              padding: '10px',
-              marginBottom: '10px',
-            }}
-          >
-            <p>Usluga: {item.usluga}</p>
-            <p>Specjalista: {item.specjalista}</p>
-            <p>Data: {item.data}</p>
-            <p>Godzina: {item.godzina}</p>
-            <p>Status: {item.status === false ? 'W trakcie' : 'Odbyta'}</p>
-            <button
-              onClick={() => deleteVisit(item)}
-              style={{ backgroundColor: 'red', border: 0, color: '#fff' }}
+        {visitsList.length > 0 ? (
+          visitsList.map((item) => (
+            <div
+              style={{
+                width: '250px',
+                backgroundColor: '#333',
+                color: '#fff',
+                padding: '10px',
+                marginBottom: '10px',
+              }}
             >
-              X
-            </button>
-            <button onClick={() => goToVisit(item)}>Przejdz do wizyty</button>
-          </div>
-        ))
-      ) : (
-        <h1>Brak wizyt</h1>
-      )}
-    </>
+              <p>Usluga: {item.usluga}</p>
+              <p>Specjalista: {item.specjalista}</p>
+              <p>Data: {item.data}</p>
+              <p>Godzina: {item.godzina}</p>
+              <p>Status: {item.status === false ? 'W trakcie' : 'Odbyta'}</p>
+              <button
+                onClick={() => deleteVisit(item)}
+                style={{ backgroundColor: 'red', border: 0, color: '#fff' }}
+              >
+                X
+              </button>
+              <button onClick={() => goToVisit(item)}>Przejdz do wizyty</button>
+            </div>
+          ))
+        ) : (
+          <h2>Brak wizyt</h2>
+        )}
+      </div>
+    </PageWrapper>
   )
 }
 
