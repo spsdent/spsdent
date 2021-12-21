@@ -10,11 +10,13 @@ import {
   TimesheetContainer,
   TimesheetDaysContainer,
   Day,
+  TimesheetWrap,
   TimesheetHoursContainer,
   Hour,
   Timesheet,
   VisitRow,
   Visit,
+  Option,
 } from "./TimesheetPageElements";
 const DoctorTimesheetPage = () => {
   return (
@@ -25,8 +27,13 @@ const DoctorTimesheetPage = () => {
           <TimesheetTitle primary>Wizytę</TimesheetTitle>
         </TimesheetTitleContainer>
         <TimesheetPickContainer>
-          <TimesheetPick placeholder="Wybierz usługe"></TimesheetPick>
-          <TimesheetPick placeholder="Wybierz specjaliste"></TimesheetPick>
+          <TimesheetPick as='select' >
+          <Option value="" disabled selected hidden>Wybierz usługę</Option>
+          <Option value="1" >Wybierz ausługę</Option>
+          </TimesheetPick>
+          <TimesheetPick as='select'>
+
+          </TimesheetPick>
         </TimesheetPickContainer>
 
         <TimesheetContainer>
@@ -37,6 +44,7 @@ const DoctorTimesheetPage = () => {
             <Day></Day>
             <Day></Day>
           </TimesheetDaysContainer>
+          <TimesheetWrap>
           <TimesheetHoursContainer>
             <Hour></Hour>
             <Hour></Hour>
@@ -53,6 +61,7 @@ const DoctorTimesheetPage = () => {
               <Visit></Visit>
             </VisitRow>
           </Timesheet>
+          </TimesheetWrap>
         </TimesheetContainer>
       </TimesheetPageContainer>
       <Pattern src="Pattern.png" />

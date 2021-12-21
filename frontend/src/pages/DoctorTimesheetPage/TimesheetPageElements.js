@@ -34,26 +34,25 @@ export const TimesheetTitle = styled.h1`
   letter-spacing: 0.05em;
 `;
 export const TimesheetPickContainer = styled.div`
-width: 100%;
-display: flex;
-justify-content: space-evenly;
-align-items: center;
-height: 15%;
-background-color: #999;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 15%;
+  background-color: #999;
 `;
 export const TimesheetPick = styled.input`
-width: 35%;
-padding: .8em;
-outline: none;
-border: 2px solid #333;
-font-family: 'poppins';
-
-&:focus {
+  width: 35%;
+  padding: 0.6em;
+  outline: none;
+  border: 2px solid #333;
+  font-family: "bebas neue";
+  font-size: 0.7em;
+  color: #333;
+  &:focus {
     box-shadow: 0px 0px 3px 0.1px #333;
     outline: none;
-    &::-webkit-input-placeholder {
-      color: rgba(1, 212, 191, 0.75);
-    }
+    color: rgba(1, 212, 191, 0.75);
   }
   &[type="text"] {
     color: #333;
@@ -61,6 +60,9 @@ font-family: 'poppins';
   &::-webkit-input-placeholder {
     color: rgba(51, 51, 51, 0.75);
   }
+`;
+export const Option = styled.option`
+  color: #333;
 `;
 
 export const TimesheetContainer = styled.div`
@@ -71,6 +73,7 @@ export const TimesheetContainer = styled.div`
 
 export const TimesheetDaysContainer = styled.div``;
 
+export const TimesheetWrap = styled.div``;
 export const Day = styled.p``;
 
 export const TimesheetHoursContainer = styled.div``;
