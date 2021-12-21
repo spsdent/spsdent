@@ -129,19 +129,22 @@ const NonAuth = (props) => {
           </NavItem>
           {currentLocation === 'price-list' && (
             <>
-              {serviceData.map((service) => (
-                <NavItemSub>
-                  <StyledLinkSub
-                    to={`/price-list/${service.grupa.split(' ').join('-')}`}
-                  >
-                    {service.grupa.split(' ').length > 2
-                      ? `${service.grupa.split(' ')[0][0]}${
-                          service.grupa.split(' ')[1][0]
-                        }${service.grupa.split(' ')[2][0]}`
-                      : service.grupa}
-                  </StyledLinkSub>
-                </NavItemSub>
-              ))}
+              {serviceData.map(
+                (service) =>
+                  service.uslugi.length > 0 && (
+                    <NavItemSub>
+                      <StyledLinkSub
+                        to={`/price-list/${service.grupa.split(' ').join('-')}`}
+                      >
+                        {service.grupa.split(' ').length > 2
+                          ? `${service.grupa.split(' ')[0][0]}${
+                              service.grupa.split(' ')[1][0]
+                            }${service.grupa.split(' ')[2][0]}`
+                          : service.grupa}
+                      </StyledLinkSub>
+                    </NavItemSub>
+                  )
+              )}
             </>
           )}
           <NavItem>
