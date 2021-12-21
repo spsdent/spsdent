@@ -59,7 +59,7 @@ const PriceListPage = () => {
         <PriceListSubPage group={priceGroup}/>
       </PriceListPageContainer>
       <Pattern
-        src='Pattern.png'
+        src='/Pattern.png'
         top={'45%'}
         left={'5%'}
         transition={{ type: 'spring', bounce: 0.5, duration: 2, delay: 0.5 }}
@@ -67,7 +67,7 @@ const PriceListPage = () => {
         animate={{ opacity: 1, x: 0, rotate: 90 }}
       />
       <Pattern
-        src='Pattern.png'
+        src='/Pattern.png'
         top={'5%'}
         left={'70%'}
         transition={{ type: 'spring', bounce: 0.5, duration: 2, delay: 0.5 }}
