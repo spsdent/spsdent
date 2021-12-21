@@ -60,12 +60,6 @@ export const TimesheetPick = styled(motion.select)`
     outline: none;
     color: rgba(1, 212, 191, 0.75);
   }
-  &[type="text"] {
-    color: #333;
-  }
-  &::-webkit-input-placeholder {
-    color: rgba(51, 51, 51, 0.75);
-  }
 `;
 export const Option = styled.option`
   color: #333;
