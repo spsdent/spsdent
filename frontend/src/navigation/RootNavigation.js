@@ -40,6 +40,7 @@ import DoctorTimesheetPage from '../pages/DoctorTimesheetPage'
 
 import { logout } from '../store/actions/auth'
 import { clearMessage } from '../store/actions/message'
+import PriceListSubPage from '../pages/PriceListPage/PriceListSubPage'
 
 function PrivateRoute({ children }) {
   const { user: currentUser } = useSelector((state) => state.auth)
@@ -97,10 +98,13 @@ const RootNavigation = () => {
         <NonAuth />
         <>
           <Routes>
-            <Route exact path='/' element={<HomePage/>} />
+            <Route exact path='/' element={<HomePage />} />
             <Route exact path='/about-us' element={<AboutUsPage />} />
             <Route exact path='/offer' element={<OfferPage />} />
-            <Route exact path='/price-list' element={<PriceListPage />} />
+            <Route path='/price-list' element={<PriceListPage />}>
+              <Route path=':group' element={<PriceListSubPage />} />
+            </Route>
+
             <Route exact path='/contact' element={<ContactPage />} />
             <Route exact path='/add-visit' element={<AddVisit />} />
 

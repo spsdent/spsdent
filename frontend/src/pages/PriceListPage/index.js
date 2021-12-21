@@ -1,14 +1,20 @@
-import React from "react";
-import { PageWrapper } from "../../components/PageWrapper";
-import { Pattern } from "../../components/Pattern";
+import React from 'react'
+import { PageWrapper } from '../../components/PageWrapper'
+import { Pattern } from '../../components/Pattern'
 import {
   PriceListPageContainer,
   PriceListTitle,
   PriceListTable,
   PriceTableRow,
   PriceTableContent,
-} from "./PriceListPageElements";
+} from './PriceListPageElements'
+
+import { useParams } from 'react-router-dom'
+import PriceListSubPage from './PriceListSubPage'
+
 const PriceListPage = () => {
+  let params = useParams()
+  let priceGroup = params['group']
   const container = {
     hidden: { y: -100, opacity: 0, scale: 1 },
     visible: {
@@ -21,7 +27,7 @@ const PriceListPage = () => {
         staggerChildren: 0.1,
       },
     },
-  };
+  }
 
   const item = {
     hidden: { y: -100, opacity: 0 },
@@ -29,85 +35,47 @@ const PriceListPage = () => {
       y: 0,
       opacity: 1,
     },
-  };
+  }
 
   return (
     <PageWrapper>
+      {console.log('params', params)}
       <PriceListPageContainer>
         <PriceListTitle
           primary
-          transition={{ type: "spring", bounce: 0.5, duration: 1.2 }}
+          transition={{ type: 'spring', bounce: 0.5, duration: 1.2 }}
           initial={{ y: -200 }}
           animate={{ y: 0 }}
         >
           cennik
         </PriceListTitle>
         <PriceListTitle
-          transition={{ type: "spring", bounce: 0.5, duration: 1.5 }}
+          transition={{ type: 'spring', bounce: 0.5, duration: 1.5 }}
           initial={{ y: -200 }}
           animate={{ y: 0 }}
         >
-          Stomatologia zachowawcza
+          {priceGroup}
         </PriceListTitle>
-        <PriceListTable variants={container} initial="hidden" animate="visible">
-          <PriceTableRow primary>
-            <PriceTableContent>Usługa</PriceTableContent>
-            <PriceTableContent price>Cena</PriceTableContent>
-          </PriceTableRow>
-          <PriceTableRow variants={item}>
-            <PriceTableContent>
-              Znieczulenie komputerowe Wand STA
-            </PriceTableContent>
-            <PriceTableContent price>50 zł</PriceTableContent>
-          </PriceTableRow>
-          <PriceTableRow variants={item}>
-            <PriceTableContent>Konsultacja specjalistyczna</PriceTableContent>
-            <PriceTableContent price>100 zł</PriceTableContent>
-          </PriceTableRow>
-          <PriceTableRow variants={item}>
-            <PriceTableContent>
-              Wypełnienie światłoutwardzalne
-            </PriceTableContent>
-            <PriceTableContent price>200 zł</PriceTableContent>
-          </PriceTableRow>
-          <PriceTableRow variants={item}>
-            <PriceTableContent>
-              Rekonstrukcja na ćwieku metalowym
-            </PriceTableContent>
-            <PriceTableContent price>250 zł</PriceTableContent>
-          </PriceTableRow>
-          <PriceTableRow variants={item}>
-            <PriceTableContent>
-              Rekonstrukcja zęba na wkładzie z włókien szklanych
-            </PriceTableContent>
-            <PriceTableContent price>450 zł</PriceTableContent>
-          </PriceTableRow>
-          <PriceTableRow variants={item}>
-            <PriceTableContent>
-              Znieczulenie komputerowe Wand STA
-            </PriceTableContent>
-            <PriceTableContent price>50 zł</PriceTableContent>
-          </PriceTableRow>
-        </PriceListTable>
+        <PriceListSubPage group={priceGroup}/>
       </PriceListPageContainer>
       <Pattern
-        src="Pattern.png"
-        top={"45%"}
-        left={"5%"}
-        transition={{ type: "spring", bounce: 0.5, duration: 2, delay: 0.5 }}
+        src='Pattern.png'
+        top={'45%'}
+        left={'5%'}
+        transition={{ type: 'spring', bounce: 0.5, duration: 2, delay: 0.5 }}
         initial={{ opacity: 0, x: -200, rotate: 90 }}
         animate={{ opacity: 1, x: 0, rotate: 90 }}
       />
       <Pattern
-        src="Pattern.png"
-        top={"5%"}
-        left={"70%"}
-        transition={{ type: "spring", bounce: 0.5, duration: 2, delay: 0.5 }}
+        src='Pattern.png'
+        top={'5%'}
+        left={'70%'}
+        transition={{ type: 'spring', bounce: 0.5, duration: 2, delay: 0.5 }}
         initial={{ opacity: 0, y: -200 }}
         animate={{ opacity: 1, y: 0 }}
       />
     </PageWrapper>
-  );
-};
+  )
+}
 
-export default PriceListPage;
+export default PriceListPage
