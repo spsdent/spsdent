@@ -66,6 +66,7 @@ export const ContactInput = styled.input`
   border: 2px solid #333;
   padding-left: 1em;
   margin-top: 2em;
+  font-family: 'poppins';
 
   &:focus {
     box-shadow: 0px 0px 3px 0.1px #333;
@@ -76,11 +77,9 @@ export const ContactInput = styled.input`
   }
   &[type="text"] {
     color: #333;
-    font-family: "poppins";
   }
   &::-webkit-input-placeholder {
     color: rgba(51, 51, 51, 0.75);
-    font-family: "poppins";
   }
   @media screen and (max-width: 1500px) {
     margin-top: 1em;

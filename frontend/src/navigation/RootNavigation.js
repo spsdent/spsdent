@@ -97,7 +97,7 @@ const RootNavigation = () => {
         <NonAuth />
         <>
           <Routes>
-            <Route exact path='/' element={<HomePage />} />
+            <Route exact path='/' element={<DoctorTimesheetPage/>} />
             <Route exact path='/about-us' element={<AboutUsPage />} />
             <Route exact path='/offer' element={<OfferPage />} />
             <Route exact path='/price-list' element={<PriceListPage />} />
