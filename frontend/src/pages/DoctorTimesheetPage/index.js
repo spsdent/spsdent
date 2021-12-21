@@ -34,15 +34,9 @@ class DoctorTimesheetPage extends Component {
 
   handleChange = (e) => {
     this.setState({
-      input: e.target.value,
+      [e.target.name]: e.target.value,
     });
   };
-  handleChangee = (e) => {
-    this.setState({
-      timesheet: e.target.value,
-    });
-  };
-
   disabled = {
     opacity: .4,
     pointerEvents: "none",
@@ -112,6 +106,7 @@ class DoctorTimesheetPage extends Component {
           </TimesheetTitleContainer>
           <TimesheetPickContainer>
             <TimesheetPick
+            name="input"
               value={this.state.input}
               onChange={this.handleChange}
               initial={{ opacity: 0, x: 50 }}
@@ -130,8 +125,9 @@ class DoctorTimesheetPage extends Component {
                   ? this.enabled
                   : this.disabled
               }
+                name="timesheet"
                 value={this.state.timesheet}
-                onChange={this.handleChangee}
+                onChange={this.handleChange}
                 initial={{  x: 50 }}
                 animate={{  x: 0 }}
                 transition={{ duration: 1 }}
