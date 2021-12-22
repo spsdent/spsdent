@@ -17,6 +17,7 @@ import AdminNav from '../../../navigation/AdminNav'
 import UserNav from '../../../navigation/UserNav'
 import SpecNav from '../../../navigation/SpecNav'
 // import TopBar from '../TopBar'
+import { motion } from 'framer-motion'
 
 // import { logout } from '../../../store/actions/auth'
 // import { clearMessage } from '../../../store/actions/message'
@@ -130,9 +131,13 @@ const NonAuth = (props) => {
           {currentLocation === 'price-list' && (
             <>
               {serviceData.map(
-                (service) =>
+                (service, i) =>
                   service.uslugi.length > 0 && (
-                    <NavItemSub>
+                    <motion.li
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3, delay: i * 0.1 }}
+                    >
                       <StyledLinkSub
                         to={`/price-list/${service.grupa.split(' ').join('-')}`}
                       >
@@ -142,7 +147,7 @@ const NonAuth = (props) => {
                             }${service.grupa.split(' ')[2][0]}`
                           : service.grupa}
                       </StyledLinkSub>
-                    </NavItemSub>
+                    </motion.li>
                   )
               )}
             </>

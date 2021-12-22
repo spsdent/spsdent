@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Fragment } from 'react'
 import {
   PriceListTable,
   PriceTableRow,
@@ -6,6 +6,28 @@ import {
 } from './PriceListPageElements'
 import ServiceData from '../../services/service'
 import { useParams } from 'react-router-dom'
+
+const container = {
+  hidden: { y: -100, opacity: 0, scale: 1 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.3,
+      delayChildren: 0.3,
+      staggerChildren: 0.3,
+    },
+  },
+}
+
+const item = {
+  hidden: { y: -100, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+  },
+}
 
 const PriceListSubPage = () => {
   const [currentPathServices, setCurrentPathServices] = useState([])
@@ -22,31 +44,21 @@ const PriceListSubPage = () => {
           item.grupa.toLowerCase() === group.split('-').join(' ').toLowerCase()
       )
       setCurrentPathServices(filteredResult[0].uslugi)
-      console.log(currentPathServices)
     })
   }
 
-  const container = {
-    hidden: { y: -100, opacity: 0, scale: 1 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.3,
-        delayChildren: 0.2,
-        staggerChildren: 0.1,
-      },
-    },
-  }
+  const services = currentPathServices.map((service, i) => (
+    <PriceTableRow
+      initial={{ opacity: 0, translateY: -100 }}
+      animate={{ opacity: 1, translateY: 0 }}
+      transition={{ duration: 0.3, delay: i * 0.2 }}
+      key={service._id}
+    >
+      <PriceTableContent>{service.nazwa}</PriceTableContent>
+      <PriceTableContent price>{service.cena}</PriceTableContent>
+    </PriceTableRow>
+  ))
 
-  const item = {
-    hidden: { y: -100, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-    },
-  }
   return (
     <>
       <PriceListTable variants={container} initial='hidden' animate='visible'>
@@ -54,12 +66,24 @@ const PriceListSubPage = () => {
           <PriceTableContent>Usługa</PriceTableContent>
           <PriceTableContent price>Cena</PriceTableContent>
         </PriceTableRow>
-        {currentPathServices.map((service) => (
-          <PriceTableRow variants={item}>
-            <PriceTableContent>{service.nazwa}</PriceTableContent>
-            <PriceTableContent price>{service.cena}</PriceTableContent>
-          </PriceTableRow>
+        {services}
+        {/* {arr.map((item, i) => (
+          <motion.div
+            key={item.nazwa}
+            initial={{ opacity: 0, translateY: -100 }}
+            animate={{ opacity: 1, translateY: 0 }}
+            transition={{ duration: 0.3, delay: i * 0.2 }}
+          >
+            <div>
+              <p>{item.nazwa}</p>
+              <p>{item.cena}</p>
+            </div>
+          </motion.div>
         ))}
+        <PriceTableRow variants={item}>
+          <PriceTableContent>test</PriceTableContent>
+          <PriceTableContent price>55</PriceTableContent>
+        </PriceTableRow> */}
       </PriceListTable>
     </>
   )

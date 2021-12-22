@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { PageWrapper } from '../../components/PageWrapper'
 import { Pattern } from '../../components/Pattern'
 import {
@@ -11,35 +11,53 @@ import {
 
 import { useParams } from 'react-router-dom'
 import PriceListSubPage from './PriceListSubPage'
+import ServiceData from '../../services/service'
+import { motion } from 'framer-motion'
+
+const container = {
+  hidden: { y: -100, opacity: 0, scale: 1 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.3,
+      delayChildren: 1,
+      staggerChildren: 1,
+    },
+  },
+}
+
+const item = {
+  hidden: { y: -100, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+  },
+}
 
 const PriceListPage = () => {
+  const [currentPathServices, setCurrentPathServices] = useState([])
   let params = useParams()
   let priceGroup = params['group']
-  const container = {
-    hidden: { y: -100, opacity: 0, scale: 1 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.3,
-        delayChildren: 0.2,
-        staggerChildren: 0.1,
-      },
-    },
-  }
 
-  const item = {
-    hidden: { y: -100, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-    },
+  useEffect(() => {
+    retrieveServices()
+  }, [priceGroup])
+
+  const retrieveServices = () => {
+    ServiceData.getAll().then((response) => {
+      const filteredResult = response.data.filter(
+        (item) =>
+          item.grupa.toLowerCase() ===
+          priceGroup.split('-').join(' ').toLowerCase()
+      )
+      setCurrentPathServices(filteredResult[0].uslugi)
+    })
   }
 
   return (
     <PageWrapper>
-      {console.log('params', params)}
       <PriceListPageContainer>
         <PriceListTitle
           primary
@@ -54,9 +72,9 @@ const PriceListPage = () => {
           initial={{ y: -200 }}
           animate={{ y: 0 }}
         >
-          {priceGroup}
+          {priceGroup.split('-').join(' ')}
         </PriceListTitle>
-        <PriceListSubPage group={priceGroup}/>
+        <PriceListSubPage group={priceGroup} />
       </PriceListPageContainer>
       <Pattern
         src='/Pattern.png'
