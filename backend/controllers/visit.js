@@ -22,12 +22,14 @@ exports.create = (req, res) => {
     miasto: req.body.miasto,
     ulica: req.body.ulica,
     kodPocztowy: req.body.kodPocztowy,
+    cena: req.body.cena,
     uid: req.body.uid,
     status: req.body.status ? req.body.status : false,
   })
 
   // Save Tutorial in the database
-  visit.save(visit)
+  visit
+    .save(visit)
     .then((data) => {
       res.send(data)
     })

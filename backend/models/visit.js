@@ -13,6 +13,7 @@ module.exports = (mongoose) => {
       miasto: String,
       ulica: String,
       kodPocztowy: Number,
+      cena: String,
       uid: String,
       status: Boolean,
     },
