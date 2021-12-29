@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React from 'react'
+import { useSelector } from 'react-redux'
 import { history } from '../helpers/history'
-import { BrowserRouter, Routes, Route, Link, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 
 import Login from '../components/Login'
 import Register from '../components/Register'
 import AddVisit from '../components/AddVisit'
-import VisitsList from '../components/VisitsList'
-import Visit from '../components/Visit'
 import NonAuth from '../components/pieces/SideBar'
 import TopBar from '../components/pieces/TopBar'
 
@@ -29,7 +27,7 @@ import Zachowawcza from '../pages/OfferPage/subpages/Zachowawcza'
 
 import PriceListPage from '../pages/PriceListPage/'
 import ContactPage from '../pages/ContactPage/'
-import AddVisitPage from '../pages/AddVisitPage/'
+// import AddVisitPage from '../pages/AddVisitPage/'
 import ArchiveVisitsPage from '../pages/ArchiveVisitsPage'
 import ControlPanelPage from '../pages/ControlPanelPage'
 // import DoctorTimesheetPage from '../pages/DoctorTimesheetPage'
@@ -38,9 +36,8 @@ import DoctorTimesheet from '../pages/DoctorTimesheetPage'
 import VisitsPage from '../pages/VisitsPage'
 import ProfilePage from '../pages/ProfilePage'
 import PwdChangePage from '../pages/PwdChangePage'
+import VisitPage from '../pages/VisitPage'
 
-import { logout } from '../store/actions/auth'
-import { clearMessage } from '../store/actions/message'
 import PriceListSubPage from '../pages/PriceListPage/PriceListSubPage'
 
 function PrivateRoute({ children }) {
@@ -129,7 +126,7 @@ const RootNavigation = () => {
               path='visits/:id'
               element={
                 <PrivateRoute>
-                  <Visit />
+                  <VisitPage />
                 </PrivateRoute>
               }
             />
