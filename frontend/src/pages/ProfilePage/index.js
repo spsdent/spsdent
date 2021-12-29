@@ -31,7 +31,16 @@ const styles = {
 const ProfilePage = () => {
   const { user: currentUser } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
-  const [userData, setUserData] = useState({ email: '', password: '' })
+  const [userData, setUserData] = useState({
+    imie: '',
+    nazwisko: '',
+    telefon: '',
+    miasto: '',
+    ulica: '',
+    kodPocztowy: '',
+    email: '',
+  })
+  const [userPwdData, setUserPwdData] = useState({ email: '', password: '' })
   const [isEditing, setIsEditing] = useState(false)
 
   if (!currentUser) {
@@ -44,12 +53,18 @@ const ProfilePage = () => {
   //   ))
   // }
 
+  // const onUserUpdate = () => {
+
+  // }
+
   const onInputHandle = (e) => {
-    setUserData({ ...userData, [e.target.name]: e.target.value })
+    const { name, value } = e.target
+    setUserPwdData({ ...userPwdData, [name]: value })
+    setUserData({ ...userData, [name]: value })
   }
 
   const onPwdUpdate = () => {
-    AuthData.passwordChange(userData).then((response) => {
+    AuthData.passwordChange(userPwdData).then((response) => {
       dispatch(logout())
       return <Navigate to='/login' />
     })
@@ -87,24 +102,87 @@ const ProfilePage = () => {
               <p>
                 <strong>Imie:</strong> {currentUser.imie}
               </p>
+              {isEditing && (
+                <input
+                  type='text'
+                  name='imie'
+                  onChange={onInputHandle}
+                  placeholder='Imie'
+                  style={styles.inputStyle}
+                />
+              )}
               <p>
                 <strong>Nazwisko:</strong> {currentUser.nazwisko}
               </p>
+              {isEditing && (
+                <input
+                  type='text'
+                  name='nazwisko'
+                  onChange={onInputHandle}
+                  placeholder='Nazwisko'
+                  style={styles.inputStyle}
+                />
+              )}
               <p>
                 <strong>Telefon:</strong> {currentUser.telefon}
               </p>
+              {isEditing && (
+                <input
+                  type='text'
+                  name='telefon'
+                  onChange={onInputHandle}
+                  placeholder='Telefon'
+                  style={styles.inputStyle}
+                />
+              )}
               <p>
                 <strong>Miasto:</strong> {currentUser.miasto}
               </p>
+              {isEditing && (
+                <input
+                  type='text'
+                  name='miasto'
+                  onChange={onInputHandle}
+                  placeholder='Miasto'
+                  style={styles.inputStyle}
+                />
+              )}
               <p>
                 <strong>Ulica:</strong> {currentUser.ulica}
               </p>
+              {isEditing && (
+                <input
+                  type='text'
+                  name='ulica'
+                  onChange={onInputHandle}
+                  placeholder='Ulica'
+                  style={styles.inputStyle}
+                />
+              )}
               <p>
                 <strong>Kod-pocztowy:</strong> {currentUser.kodPocztowy}
               </p>
+              {isEditing && (
+                <input
+                  type='text'
+                  name='kodPocztowy'
+                  onChange={onInputHandle}
+                  placeholder='Kod-pocztowy'
+                  style={styles.inputStyle}
+                />
+              )}
               <p>
                 <strong>Email:</strong> {currentUser.email}
               </p>
+              {isEditing && (
+                <input
+                  type='text'
+                  name='email'
+                  onChange={onInputHandle}
+                  placeholder='E-mail'
+                  style={styles.inputStyle}
+                />
+              )}
               {isEditing && (
                 <div
                   style={{
@@ -113,6 +191,7 @@ const ProfilePage = () => {
                     flexDirection: 'column',
                   }}
                 >
+                  <p>Zmien haslo</p>
                   <input
                     type='text'
                     name='email'
