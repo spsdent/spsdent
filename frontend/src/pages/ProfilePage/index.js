@@ -8,10 +8,31 @@ import UserData from '../../services/user'
 import AuthData from '../../services/auth'
 import { logout } from '../../store/actions/auth'
 
+const styles = {
+  formGroup: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  inputStyle: {
+    backgroundColor: 'transparent',
+    border: '2px solid #333',
+    height: '3em',
+    margin: '10px 0',
+    paddingLeft: '1em',
+  },
+  buttonStyle: {
+    backgroundColor: 'transparent',
+    border: '2px solid #333',
+    cursor: 'pointer',
+    padding: '.5rem 0',
+  },
+}
+
 const ProfilePage = () => {
   const { user: currentUser } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
   const [userData, setUserData] = useState({ email: '', password: '' })
+  const [isEditing, setIsEditing] = useState(false)
 
   if (!currentUser) {
     return <Navigate to='/login' />
@@ -23,20 +44,19 @@ const ProfilePage = () => {
   //   ))
   // }
 
-  // const onInputHandle = (e) => {
-  //   setUserData({ ...userData, [e.target.name]: e.target.value })
-  // }
+  const onInputHandle = (e) => {
+    setUserData({ ...userData, [e.target.name]: e.target.value })
+  }
 
-  // const onPwdUpdate = () => {
-  //   AuthData.passwordChange(userData).then((response) => {
-  //     dispatch(logout())
-  //     return <Navigate to='/login' />
-  //   })
-  // }
+  const onPwdUpdate = () => {
+    AuthData.passwordChange(userData).then((response) => {
+      dispatch(logout())
+      return <Navigate to='/login' />
+    })
+  }
 
   return (
     <PageWrapper>
-      {console.log('currentuser', currentUser.id)}
       <Container>
         <TitleContainer>
           <Title>Panel</Title>
@@ -56,11 +76,13 @@ const ProfilePage = () => {
         >
           <div
             style={{
-              width: '70%',
+              width: '100%',
               height: '50%',
-              display: 'flex',
+              display: 'grid',
+              gridTemplateColumns: '80% 20%',
             }}
           >
+            {console.log('xxxx', currentUser)}
             <div>
               <p>
                 <strong>Imie:</strong> {currentUser.imie}
@@ -83,6 +105,33 @@ const ProfilePage = () => {
               <p>
                 <strong>Email:</strong> {currentUser.email}
               </p>
+              {isEditing && (
+                <div
+                  style={{
+                    width: '200px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  <input
+                    type='text'
+                    name='email'
+                    onChange={onInputHandle}
+                    placeholder='E-mail'
+                    style={styles.inputStyle}
+                  />
+                  <input
+                    type='password'
+                    name='password'
+                    onChange={onInputHandle}
+                    placeholder='Nowe haslo'
+                    style={styles.inputStyle}
+                  />
+                  <button style={styles.buttonStyle} onClick={onPwdUpdate}>
+                    Zmien haslo
+                  </button>
+                </div>
+              )}
             </div>
             <div
               style={{
@@ -91,24 +140,14 @@ const ProfilePage = () => {
                 rowGap: '5px',
               }}
             >
-              <button>Edytuj profil</button>
-              <button>Usun konto</button>
+              <button
+                style={styles.buttonStyle}
+                onClick={() => setIsEditing(!isEditing)}
+              >
+                {isEditing ? 'Zakoncz edycje' : 'Edytuj profil'}
+              </button>
+              <button style={styles.buttonStyle}>Usun konto</button>
             </div>
-            {/* <div>
-              <input
-                type='text'
-                name='email'
-                onChange={onInputHandle}
-                placeholder='E-mail'
-              />
-              <input
-                type='password'
-                name='password'
-                onChange={onInputHandle}
-                placeholder='Nowe haslo'
-              />
-              <button onClick={onPwdUpdate}>Zmien haslo</button>
-            </div> */}
           </div>
           <div
             style={{
