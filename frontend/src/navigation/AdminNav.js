@@ -16,7 +16,7 @@ const AdminNav = () => (
       <StyledLink to='/visits'>Aktualne wizyty</StyledLink>
     </NavItem>
     <NavItem>
-      <StyledLink to='/archive-visits'>Historia wizyt</StyledLink>
+      <StyledLink to='/archive'>Historia wizyt</StyledLink>
     </NavItem>
     <NavItem>
       <StyledLink to='/profile'>Ustawienia</StyledLink>

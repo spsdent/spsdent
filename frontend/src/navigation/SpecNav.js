@@ -2,15 +2,15 @@ import React from 'react'
 import {
   NavItem,
   StyledLink,
-} from "../components/pieces/SideBar/SideBarElements";
+} from '../components/pieces/SideBar/SideBarElements'
 
 const SpecNav = () => (
   <>
     <NavItem>
-      <StyledLink to='/doctor-timesheet'>Grafik</StyledLink>
+      <StyledLink to='/timesheet'>Grafik</StyledLink>
     </NavItem>
     <NavItem>
-      <StyledLink to='/archive-visits'>Historia wizyt</StyledLink>
+      <StyledLink to='/archive'>Historia wizyt</StyledLink>
     </NavItem>
     <NavItem>
       <StyledLink to='add-visit'>Zarezerwuj</StyledLink>

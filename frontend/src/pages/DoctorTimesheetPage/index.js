@@ -72,30 +72,38 @@ const DoctorTimesheetPage = () => {
   })
   const [doctors, setDoctors] = useState([])
   const [users, setUsers] = useState([])
-  const [usersToDisplay, setUsersToDisplay] = useState([])
   const [visits, setVisits] = useState([])
   const daysOfWeek = ['Poniedzialek', 'Wtorek', 'Sroda', 'Czwartek', 'Piatek']
+  const [week, setWeek] = useState([])
 
   useEffect(() => {
     retrieveDoctors()
     retrieveUsers()
     retrieveVisits()
-    const filteredUsers = users.filter((user) =>
-      doctors.some((doctor) => doctor.doctorId === user._id)
-    )
-    setUsersToDisplay(filteredUsers)
+    let curr = new Date()
+    const daysOfWeek = ['Pon', 'Wt', 'Sr', 'Czw', 'Pt']
+    let week = []
+
+    for (let i = 1; i <= 5; i++) {
+      let first = curr.getDate() - curr.getDay() + i
+      let day = new Date(curr.setDate(first)).toISOString().slice(0, 10)
+      week.push(
+        `${daysOfWeek[i - 1]}, ${day.split('-')[2]}.${day.split('-')[1]}.${
+          day.split('-')[0]
+        }`
+      )
+    }
+    setWeek(week)
   }, [])
 
   const retrieveDoctors = () => {
     DoctorData.getAll().then((response) => {
-      console.log('doctors', response.data)
       setDoctors(response.data)
     })
   }
 
   const retrieveUsers = () => {
     UserData.getAll().then((response) => {
-      console.log('users', response.data)
       setUsers(response.data)
     })
   }
@@ -109,6 +117,10 @@ const DoctorTimesheetPage = () => {
   const handleChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value })
   }
+
+  const filteredUsers = users.filter((user) =>
+    doctors.some((doctor) => doctor.doctorId === user._id)
+  )
 
   return (
     <PageWrapper>
@@ -124,21 +136,7 @@ const DoctorTimesheetPage = () => {
               duration: 0.5,
             }}
           >
-            Zarezerwuj
-          </TimesheetTitle>
-          <TimesheetTitle
-            primary
-            initial={{ x: 300, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{
-              type: 'spring',
-              damping: 7,
-              stiffness: 50,
-              duration: 0.5,
-              delay: 0.3,
-            }}
-          >
-            Wizytę
+            Grafik
           </TimesheetTitle>
         </TimesheetTitleContainer>
         <TimesheetPickContainer>
@@ -153,7 +151,7 @@ const DoctorTimesheetPage = () => {
             <Option value='true' selected>
               Wybierz lekarza
             </Option>
-            {usersToDisplay.map((user) => (
+            {filteredUsers.map((user) => (
               <Option value={user._id}>
                 {user.imie} {user.nazwisko}
               </Option>
@@ -169,7 +167,7 @@ const DoctorTimesheetPage = () => {
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              {daysOfWeek.map((day) => (
+              {week.map((day) => (
                 <Day>{day}</Day>
               ))}
             </TimesheetDaysContainer>
@@ -191,7 +189,7 @@ const DoctorTimesheetPage = () => {
                 initial='hidden'
                 animate='visible'
               >
-                {doctors
+                {/* {doctors
                   .filter((doctor) => doctor.doctorId === state.input)[0]
                   .godzinyPracy.map((hour) => (
                     <VisitRow variants={itemOne}>
@@ -201,7 +199,8 @@ const DoctorTimesheetPage = () => {
                       <Visit></Visit>
                       <Visit></Visit>
                     </VisitRow>
-                  ))}
+                  ))} */}
+                {console.log('czy to id lekarza?', state.input)}
               </Timesheet>
             </TimesheetWrap>
           </TimesheetContainer>

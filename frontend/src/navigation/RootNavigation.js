@@ -12,7 +12,6 @@ import BoardAdmin from '../components/BoardAdmin'
 import AddVisit from '../components/AddVisit'
 import VisitsList from '../components/VisitsList'
 import Visit from '../components/Visit'
-import ArchiveVisitsList from '../components/ArchiveVisitsList'
 import NonAuth from '../components/pieces/SideBar'
 import TopBar from '../components/pieces/TopBar'
 
@@ -35,9 +34,12 @@ import Zachowawcza from '../pages/OfferPage/subpages/Zachowawcza'
 import PriceListPage from '../pages/PriceListPage/'
 import ContactPage from '../pages/ContactPage/'
 import AddVisitPage from '../pages/AddVisitPage/'
+import ArchiveVisitsPage from '../pages/ArchiveVisitsPage'
 import ControlPanelPage from '../pages/ControlPanelPage'
 // import DoctorTimesheetPage from '../pages/DoctorTimesheetPage'
 import DoctorTimesheetPage from '../pages/DoctorTimesheetPage/timesheet-pacjent'
+import DoctorTimesheet from '../pages/DoctorTimesheetPage'
+import VisitsPage from '../pages/VisitsPage'
 
 import { logout } from '../store/actions/auth'
 import { clearMessage } from '../store/actions/message'
@@ -105,6 +107,17 @@ const RootNavigation = () => {
             <Route path='/price-list' element={<PriceListPage />}>
               <Route path=':group' element={<PriceListSubPage />} />
             </Route>
+            <Route
+              exact
+              path='/timesheet'
+              element={
+                <PrivateRoute>
+                  <DoctorPrivateRoute>
+                    <DoctorTimesheet />
+                  </DoctorPrivateRoute>
+                </PrivateRoute>
+              }
+            />
 
             <Route exact path='/contact' element={<ContactPage />} />
             <Route exact path='/add-visit' element={<AddVisit />} />
@@ -129,7 +142,7 @@ const RootNavigation = () => {
               path='/visits'
               element={
                 <PrivateRoute>
-                  <VisitsList />
+                  <VisitsPage />
                 </PrivateRoute>
               }
             />
@@ -142,10 +155,10 @@ const RootNavigation = () => {
               }
             />
             <Route
-              path='archive-visits'
+              path='archive'
               element={
                 <PrivateRoute>
-                  <ArchiveVisitsList />
+                  <ArchiveVisitsPage />
                 </PrivateRoute>
               }
             />

@@ -92,6 +92,7 @@ const AddVisit = () => {
   const [choseHour, setChoseHour] = useState('')
   const [foundUsers, setFoundUsers] = useState([])
   const [selectedUser, setSelectedUser] = useState(false)
+  const [selectedServicePrice, setSelectedServicePrice] = useState('')
   const [doctorToUpdateData, setDoctorToUpdateData] = useState('')
   const { user: currentUser } = useSelector((state) => state.auth)
   const { refresh: isRefresh } = useSelector((state) => state.refresh)
@@ -192,6 +193,7 @@ const AddVisit = () => {
       kodPocztowy: values.kodPocztowy,
       ulica: values.ulica,
       status: values.status,
+      cena: selectedServicePrice,
       uid: currentUser !== null ? currentUser.id : null,
     }
     // const doctorDetails = doctors.find(
@@ -284,6 +286,10 @@ const AddVisit = () => {
     const usersToDisplay = users.filter((user) =>
       selectedGroupDoctors.includes(user._id)
     )
+    const servicePrice = services
+      .filter((service) => service.grupa === serviceGroupSelected)[0]
+      .uslugi.filter((usluga) => usluga.nazwa === serviceSelected)[0]
+    setSelectedServicePrice(servicePrice.cena)
     if (doctorSelected && !values.data) {
       values.godzina = ''
     }
