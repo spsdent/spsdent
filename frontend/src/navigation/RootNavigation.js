@@ -37,6 +37,7 @@ import DoctorTimesheetPage from '../pages/DoctorTimesheetPage/timesheet-pacjent'
 import DoctorTimesheet from '../pages/DoctorTimesheetPage'
 import VisitsPage from '../pages/VisitsPage'
 import ProfilePage from '../pages/ProfilePage'
+import PwdChangePage from '../pages/PwdChangePage'
 
 import { logout } from '../store/actions/auth'
 import { clearMessage } from '../store/actions/message'
@@ -93,6 +94,7 @@ const RootNavigation = () => {
 
             <Route exact path='/contact' element={<ContactPage />} />
             <Route exact path='/add-visit' element={<AddVisit />} />
+            <Route exact path='/password-change' element={<PwdChangePage />} />
 
             <Route exact path='/login' element={<Login />} />
             <Route exact path='/register' element={<Register />} />

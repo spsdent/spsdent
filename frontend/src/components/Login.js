@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import { PageWrapper } from './PageWrapper'
 import { login } from '../store/actions/auth'
+import { Link } from 'react-router-dom'
 
 const styles = {
   formGroup: {
@@ -105,6 +106,15 @@ const Login = (props) => {
             </div>
           )}
         </form>
+        <div style={{ display: 'flex', color: '#333' }}>
+          <p style={{ marginRight: '5px' }}>Zapomniales hasla?</p>
+          <Link
+            style={{ textDecoration: 'none', color: '#333' }}
+            to='/password-change'
+          >
+            Zresetuj haslo!
+          </Link>
+        </div>
       </div>
     </PageWrapper>
   )
