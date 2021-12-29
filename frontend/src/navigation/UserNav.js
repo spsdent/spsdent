@@ -19,7 +19,7 @@ const UserNav = () => (
       <StyledLink to='/user'>Panel pacjenta</StyledLink>
     </NavItem>
     <NavItem>
-      <StyledLink to='/profile'>Ustawienia</StyledLink>
+      <StyledLink to='/settings'>Ustawienia</StyledLink>
     </NavItem>
   </>
 )

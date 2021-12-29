@@ -27,23 +27,9 @@ const updateUser = (id, data) => {
   return axios.put(API_URL + `users/${id}`, data, { headers: authHeader() })
 }
 
-const getUserBoard = () => {
-  return axios.get(API_URL + 'test/user', { headers: authHeader() })
-}
-
-const getSpecBoard = () => {
-  return axios.get(API_URL + 'test/spec', { headers: authHeader() })
-}
-
-const getAdminBoard = () => {
-  return axios.get(API_URL + 'test/admin', { headers: authHeader() })
-}
 
 export default {
   getPublicContent,
-  getUserBoard,
-  getSpecBoard,
-  getAdminBoard,
   getUsersByLastName,
   getAll,
   deleteUser,

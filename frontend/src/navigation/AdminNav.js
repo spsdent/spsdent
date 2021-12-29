@@ -19,7 +19,7 @@ const AdminNav = () => (
       <StyledLink to='/archive'>Historia wizyt</StyledLink>
     </NavItem>
     <NavItem>
-      <StyledLink to='/profile'>Ustawienia</StyledLink>
+      <StyledLink to='/settings'>Ustawienia</StyledLink>
     </NavItem>
     <NavItem>
       <StyledLink to='/control-panel'>Panel zarzadzania</StyledLink>

@@ -5,10 +5,6 @@ import { BrowserRouter, Routes, Route, Link, Navigate } from 'react-router-dom'
 
 import Login from '../components/Login'
 import Register from '../components/Register'
-import Profile from '../components/Profile'
-import BoardUser from '../components/BoardUser'
-import BoardSpec from '../components/BoardSpec'
-import BoardAdmin from '../components/BoardAdmin'
 import AddVisit from '../components/AddVisit'
 import VisitsList from '../components/VisitsList'
 import Visit from '../components/Visit'
@@ -40,6 +36,7 @@ import ControlPanelPage from '../pages/ControlPanelPage'
 import DoctorTimesheetPage from '../pages/DoctorTimesheetPage/timesheet-pacjent'
 import DoctorTimesheet from '../pages/DoctorTimesheetPage'
 import VisitsPage from '../pages/VisitsPage'
+import ProfilePage from '../pages/ProfilePage'
 
 import { logout } from '../store/actions/auth'
 import { clearMessage } from '../store/actions/message'
@@ -69,31 +66,6 @@ function DoctorPrivateRoute({ children }) {
 }
 
 const RootNavigation = () => {
-  // const [showSpecBoard, setShowSpecBoard] = useState(false)
-  // const [showAdminBoard, setShowAdminBoard] = useState(false)
-  // const [showUserBoard, setShowUserBoard] = useState(false)
-
-  // const { user: currentUser } = useSelector((state) => state.auth)
-  // const dispatch = useDispatch()
-
-  // useEffect(() => {
-  //   history.listen((location) => {
-  //     dispatch(clearMessage()) // clear message when changing location
-  //   })
-  // }, [dispatch])
-
-  // useEffect(() => {
-  //   if (currentUser) {
-  //     setShowSpecBoard(currentUser.roles.includes('ROLE_SPEC'))
-  //     setShowAdminBoard(currentUser.roles.includes('ROLE_ADMIN'))
-  //     setShowUserBoard(currentUser.roles.includes('ROLE_USER'))
-  //   }
-  // }, [currentUser])
-
-  // const logOut = () => {
-  //   dispatch(logout())
-  // }
-
   return (
     <BrowserRouter history={history}>
       <>
@@ -124,10 +96,6 @@ const RootNavigation = () => {
 
             <Route exact path='/login' element={<Login />} />
             <Route exact path='/register' element={<Register />} />
-            <Route exact path='/profile' element={<Profile />} />
-            <Route path='/user' element={<BoardUser />} />
-            <Route path='/spec' element={<BoardSpec />} />
-            <Route path='/admin' element={<BoardAdmin />} />
             <Route exact path='/offer/rtg-3d' element={<Rtg />} />
             <Route exact path='offer/endodoncja' element={<Endodoncja />} />
             <Route exact path='offer/dds' element={<Dds />} />
@@ -138,6 +106,15 @@ const RootNavigation = () => {
             <Route exact path='offer/diagnostyka' element={<Diagnostyka />} />
             <Route exact path='offer/znieczulenie' element={<Znieczulenie />} />
             <Route exact path='offer/zachowawcza' element={<Zachowawcza />} />
+            <Route
+              exact
+              path='/settings'
+              element={
+                <PrivateRoute>
+                  <ProfilePage />
+                </PrivateRoute>
+              }
+            />
             <Route
               path='/visits'
               element={
