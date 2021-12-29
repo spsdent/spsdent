@@ -114,3 +114,25 @@ exports.signin = (req, res) => {
       })
     })
 }
+
+exports.changePwd = (req, res) => {
+  User.findOneAndUpdate(
+    req.body.email,
+    { password: bcrypt.hashSync(req.body.password, 8) },
+    { useFindAndModify: false }
+  )
+    .then((data) => {
+      if (!data) {
+        res.status(404).send({
+          message: `Cannot update User Pwd with email=${req.body.email}. Maybe User was not found!`,
+        })
+      } else {
+        res.send({ message: 'User Pwd was updated successfully.' })
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: 'Error updating Visit with id=' + id,
+      })
+    })
+}

@@ -39,6 +39,10 @@ const login = (email, password) => {
     })
 }
 
+const passwordChange = (data) => {
+  return axios.post(API_URL + 'passwordchange', data)
+}
+
 const logout = () => {
   localStorage.removeItem('user')
 }
@@ -47,4 +51,5 @@ export default {
   register,
   login,
   logout,
+  passwordChange,
 }

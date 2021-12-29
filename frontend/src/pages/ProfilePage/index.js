@@ -1,19 +1,42 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Navigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { PageWrapper } from '../../components/PageWrapper'
 
 import { Container, Title, TitleContainer } from './ProfilePageElements'
+import UserData from '../../services/user'
+import AuthData from '../../services/auth'
+import { logout } from '../../store/actions/auth'
 
 const ProfilePage = () => {
   const { user: currentUser } = useSelector((state) => state.auth)
+  const dispatch = useDispatch()
+  const [userData, setUserData] = useState({ email: '', password: '' })
 
   if (!currentUser) {
     return <Navigate to='/login' />
   }
 
+  // const onUserDelete = () => {
+  //   UserData.deleteUser(currentUser.id).then((response) => (
+  //     <Navigate to='/login' />
+  //   ))
+  // }
+
+  // const onInputHandle = (e) => {
+  //   setUserData({ ...userData, [e.target.name]: e.target.value })
+  // }
+
+  // const onPwdUpdate = () => {
+  //   AuthData.passwordChange(userData).then((response) => {
+  //     dispatch(logout())
+  //     return <Navigate to='/login' />
+  //   })
+  // }
+
   return (
     <PageWrapper>
+      {console.log('currentuser', currentUser.id)}
       <Container>
         <TitleContainer>
           <Title>Panel</Title>
@@ -71,6 +94,21 @@ const ProfilePage = () => {
               <button>Edytuj profil</button>
               <button>Usun konto</button>
             </div>
+            {/* <div>
+              <input
+                type='text'
+                name='email'
+                onChange={onInputHandle}
+                placeholder='E-mail'
+              />
+              <input
+                type='password'
+                name='password'
+                onChange={onInputHandle}
+                placeholder='Nowe haslo'
+              />
+              <button onClick={onPwdUpdate}>Zmien haslo</button>
+            </div> */}
           </div>
           <div
             style={{
