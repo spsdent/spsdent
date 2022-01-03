@@ -79,7 +79,7 @@ exports.signin = (req, res) => {
       }
 
       if (!user) {
-        return res.status(404).send({ message: 'Nie ma takiego uzytkownika' })
+        return res.status(404).send({ message: 'Nie ma użytkownika o podanym adresie e-mail' })
       }
 
       var passwordIsValid = bcrypt.compareSync(req.body.password, user.password)
@@ -87,7 +87,7 @@ exports.signin = (req, res) => {
       if (!passwordIsValid) {
         return res.status(401).send({
           accessToken: null,
-          message: 'Invalid Password!',
+          message: 'Nieprawidłowe hasło',
         })
       }
 
