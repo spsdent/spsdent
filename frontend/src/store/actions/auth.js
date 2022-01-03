@@ -7,6 +7,7 @@ import {
   SET_MESSAGE,
   CHANGE_PASSWORD_SUCCESS,
   CHANGE_PASSWORD_FAIL,
+  CLEAR_MESSAGE,
 } from './types'
 
 import AuthService from '../../services/auth'

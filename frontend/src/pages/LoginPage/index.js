@@ -5,6 +5,7 @@ import { login } from '../../store/actions/auth'
 import { PageWrapper } from '../../components/PageWrapper'
 import { Field, Form, Formik } from 'formik'
 import { loginValidationSchema } from '../../utils/validationSchemas'
+import { clearMessage } from '../../store/actions/message'
 
 const styles = {
   inputStyle: {
@@ -42,6 +43,7 @@ const LoginPage = () => {
 
     dispatch(login(email, password))
       .then(() => {
+        dispatch(clearMessage())
         navigate('/add-visit')
       })
       .catch(() => {

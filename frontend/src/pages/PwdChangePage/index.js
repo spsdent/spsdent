@@ -48,15 +48,6 @@ const PwdChangePage = () => {
       .catch((e) => {
         console.log(e)
       })
-    // AuthData.passwordChange({ email, password })
-    //   .then((response) => {
-    //     if (currentUser) {
-    //       dispatch(logout())
-    //     }
-    //     values = initialValues
-    //     return <Navigate to='/login' />
-    //   })
-    //   .catch((e) => console.log(e))
   }
 
   return (
