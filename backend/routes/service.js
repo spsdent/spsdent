@@ -3,19 +3,19 @@ module.exports = (app) => {
 
   var router = require('express').Router()
 
-  // Create a new Tutorial
+  // Create a new Service
   router.post('/', services.create)
 
-  // Retrieve all services
+  // Retrieve all Services
   router.get('/', services.findAll)
 
-  // Retrieve a single Tutorial with id
+  // Retrieve a single Service with id
   router.get('/:id', services.findOne)
 
-  // Update a service
+  // Update a Service
   router.put('/:id', services.update)
 
-  // Delete a Tutorial with id
+  // Delete a Service with id
   router.delete('/:id', services.delete)
 
   app.use('/api/services', router)
