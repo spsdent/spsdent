@@ -79,7 +79,9 @@ exports.signin = (req, res) => {
       }
 
       if (!user) {
-        return res.status(404).send({ message: 'Nie ma użytkownika o podanym adresie e-mail' })
+        return res
+          .status(404)
+          .send({ message: 'Nie ma użytkownika o podanym adresie e-mail' })
       }
 
       var passwordIsValid = bcrypt.compareSync(req.body.password, user.password)
@@ -116,23 +118,22 @@ exports.signin = (req, res) => {
 }
 
 exports.changePwd = (req, res) => {
-  User.findOneAndUpdate(
-    req.body.email,
-    { password: bcrypt.hashSync(req.body.password, 8) },
-    { useFindAndModify: false }
+  User.updateOne(
+    { email: req.body.email },
+    { password: bcrypt.hashSync(req.body.password, 8) }
   )
     .then((data) => {
       if (!data) {
         res.status(404).send({
-          message: `Cannot update User Pwd with email=${req.body.email}. Maybe User was not found!`,
+          message: `Nie mozna zaktualizowac hasla uzytkownika o adresie e-mail=${req.body.email}. Mozliwe ze nie ma takiego uzytkownika.`,
         })
       } else {
-        res.send({ message: 'User Pwd was updated successfully.' })
+        res.send({ message: 'Haslo zostalo zmienione pomyslnie' })
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: 'Error updating Visit with id=' + id,
+        message: 'Wystapil blad podczas zmiany hasla',
       })
     })
 }
