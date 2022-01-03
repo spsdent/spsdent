@@ -25,7 +25,7 @@ const styles = {
   },
 }
 
-const LoginPage = (props) => {
+const LoginPage = () => {
   const initialValues = {
     email: '',
     password: '',
