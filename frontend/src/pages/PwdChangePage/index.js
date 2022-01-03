@@ -2,19 +2,14 @@ import React, { useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { PageWrapper } from '../../components/PageWrapper'
-import UserData from '../../services/user'
 import AuthData from '../../services/auth'
 import { logout } from '../../store/actions/auth'
-
-import { Container, Title, TitleContainer } from './PwdChangePageElements'
+import { Formik, Field, Form } from 'formik'
+import { passwordChangeValidationSchema } from '../../utils/validationSchemas'
 
 const styles = {
-  formGroup: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
   inputStyle: {
-    width: '250px',
+    width: '300px',
     backgroundColor: 'transparent',
     border: '2px solid #333',
     height: '3em',
@@ -22,7 +17,7 @@ const styles = {
     paddingLeft: '1em',
   },
   buttonStyle: {
-    width: '250px',
+    width: '300px',
     backgroundColor: 'transparent',
     border: '2px solid #333',
     height: '3em',
@@ -32,61 +27,66 @@ const styles = {
 }
 
 const PwdChangePage = () => {
-  const dispatch = useDispatch()
-  const [userData, setUserData] = useState({ email: '', password: '' })
-  const [msg, setMsg] = useState('')
-
-  const onInputHandle = (e) => {
-    setUserData({ ...userData, [e.target.name]: e.target.value })
+  const initialValues = {
+    email: '',
+    newPassword: '',
   }
+  const dispatch = useDispatch()
+  const { user: currentUser } = useSelector((state) => state.auth)
+  const { message } = useSelector((state) => state.message)
 
-  const onPwdUpdate = () => {
-    AuthData.passwordChange(userData)
+  const onPwdUpdate = (values) => {
+    const { email, newPassword: password } = values
+    console.log(values)
+    AuthData.passwordChange({ email, password })
       .then((response) => {
-        dispatch(logout())
-        setUserData({ email: '', password: '' })
-        setMsg('Haslo zostalo zmienione pomyslnie!')
+        if (currentUser) {
+          dispatch(logout())
+        }
         return <Navigate to='/login' />
       })
-      .catch((e) => setMsg('Wystapil blad podczas zmiany hasla', e))
+      .catch((e) => console.log(e))
   }
 
   return (
     <PageWrapper>
-      <Container>
-        <TitleContainer>
-          <Title>Zmien</Title>
-          <Title primary>haslo</Title>
-        </TitleContainer>
-        <div
-          style={{
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <h1>Zmien haslo</h1>
+        <Formik
+          initialValues={initialValues}
+          onSubmit={(values) => onPwdUpdate(values)}
+          validationSchema={passwordChangeValidationSchema}
         >
-          <input
-            type='text'
-            name='email'
-            onChange={onInputHandle}
-            placeholder='E-mail'
-            style={styles.inputStyle}
-          />
-          <input
-            type='password'
-            name='password'
-            onChange={onInputHandle}
-            placeholder='Nowe haslo'
-            style={styles.inputStyle}
-          />
-          <button style={styles.buttonStyle} onClick={onPwdUpdate}>
-            Zmien haslo
-          </button>
-        </div>
-        <span>{msg}</span>
-      </Container>
+          {({ values, errors }) => (
+            <Form style={{ display: 'flex', flexDirection: 'column' }}>
+              <Field
+                type='text'
+                name='email'
+                placeholder='E-mail'
+                value={values.email}
+                style={styles.inputStyle}
+              />
+              <p style={{ color: 'red', textAlign: 'center' }}>
+                {errors.email}
+              </p>
+              <Field
+                type='password'
+                name='newPassword'
+                placeholder='Nowe haslo'
+                value={values.newPassword}
+                style={styles.inputStyle}
+              />
+              <p style={{ color: 'red', textAlign: 'center' }}>
+                {errors.newPassword}
+              </p>
+              <button style={styles.buttonStyle}>Zmien haslo</button>
+            </Form>
+          )}
+        </Formik>
+        {message && (
+          <p style={{ color: 'red', textAlign: 'center' }}>{message}</p>
+        )}
+      </div>
     </PageWrapper>
   )
 }

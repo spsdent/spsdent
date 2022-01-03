@@ -1,14 +1,18 @@
 import * as Yup from 'yup'
 
 export const loginValidationSchema = Yup.object().shape({
-  email: Yup.string().required('E-mail jest wymagany').email('Wpisz poprawny adres e-mail').label('E-mail'),
-  password: Yup.string()
-    .required('Haslo jest wymagane')
-    .label('Haslo')
+  email: Yup.string()
+    .required('E-mail jest wymagany')
+    .email('Wpisz poprawny adres e-mail')
+    .label('E-mail'),
+  password: Yup.string().required('Haslo jest wymagane').label('Haslo'),
 })
 
 export const passwordChangeValidationSchema = Yup.object().shape({
-  email: Yup.string().required('E-mail jest wymagany').email().label('E-mail'),
+  email: Yup.string()
+    .required('E-mail jest wymagany')
+    .email('Wpisz poprawny adres e-mail')
+    .label('E-mail'),
   newPassword: Yup.string()
     .required('Nowe haslo jest wymagane')
     .label('New Password')
@@ -53,11 +57,4 @@ export const signupValidationSchema = Yup.object().shape({
     .max(50, 'Miejscowosc moze miec maksymalnie 50 znakow')
     .required('Miejscowosc jest wymagana'),
   regulamin: Yup.bool().oneOf([true], 'Pole wymaga zaznaczenia'),
-})
-
-export const passwordResetSchema = Yup.object().shape({
-  email: Yup.string()
-    .required('E-mail jst wymagany')
-    .label('E-mail')
-    .email('Wprowadz poprawny adres e-mail'),
 })

@@ -64,7 +64,7 @@ const LoginPage = (props) => {
           initialValues={initialValues}
           validationSchema={loginValidationSchema}
         >
-          {({ errors, handleBlur, values }) => (
+          {({ errors, values }) => (
             <Form style={{ display: 'flex', flexDirection: 'column' }}>
               <Field
                 type='text'
