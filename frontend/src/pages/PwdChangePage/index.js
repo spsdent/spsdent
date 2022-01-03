@@ -35,13 +35,14 @@ const PwdChangePage = () => {
   const { user: currentUser } = useSelector((state) => state.auth)
   const { message } = useSelector((state) => state.message)
 
-  const onPwdUpdate = (values) => {
+  const onPwdUpdate = (values, actions) => {
     const { email, newPassword: password } = values
     dispatch(changePassword({ email, password }))
       .then(() => {
         if (currentUser) {
           dispatch(logout())
         }
+        actions.resetForm()
       })
       .catch((e) => {
         console.log(e)
@@ -63,7 +64,9 @@ const PwdChangePage = () => {
         <h1>Zmien haslo</h1>
         <Formik
           initialValues={initialValues}
-          onSubmit={(values) => onPwdUpdate(values)}
+          onSubmit={(values, actions) => {
+            onPwdUpdate(values, actions)
+          }}
           validationSchema={passwordChangeValidationSchema}
         >
           {({ values, errors }) => (
