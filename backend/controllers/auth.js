@@ -60,7 +60,7 @@ exports.signup = (req, res) => {
             return
           }
 
-          res.send({ message: 'Uztkownik zostal zarejestrowany!' })
+          res.send({ message: 'Uzytkownik zostal zarejestrowany!' })
         })
       })
     }
@@ -120,37 +120,39 @@ exports.signin = (req, res) => {
 exports.changePwd = (req, res) => {
   User.findOne({
     email: req.body.email,
-  })
-    .then((data) => {
-      let passwordIsValid = bcrypt.compareSync(req.body.password, data.password)
-      if (!passwordIsValid) {
-        User.updateOne(
-          { email: req.body.email },
-          { password: bcrypt.hashSync(req.body.password, 8) }
-        )
-          .then((data) => {
-            if (!data) {
-              res.status(404).send({
-                message: `Nie mozna zaktualizowac hasla uzytkownika o adresie e-mail=${req.body.email}. Mozliwe ze nie ma takiego uzytkownika.`,
-              })
-            } else {
-              res.send({ message: 'Haslo zostalo zmienione pomyslnie' })
-            }
-          })
-          .catch((err) => {
-            res.status(500).send({
-              message: 'Wystapil blad podczas zmiany hasla',
-            })
-          })
-      } else {
-        res.status(500).send({
-          message: 'Podane nowe haslo jest takie same jak aktualnie uzywane',
+  }).exec((err, user) => {
+    if (err) {
+      res.status(500).send({ message: err })
+      return
+    }
+
+    if (!user) {
+      return res
+        .status(404)
+        .send({ message: 'Nie ma użytkownika o podanym adresie e-mail' })
+    }
+
+    let passwordIsValid = bcrypt.compareSync(req.body.password, user.password)
+    if (!passwordIsValid) {
+      User.updateOne(
+        { email: req.body.email },
+        { password: bcrypt.hashSync(req.body.password, 8) }
+      )
+        .then((response) => {
+          if (response) {
+            res.send({ message: 'Haslo zostalo zmienione.' })
+          } else {
+            return res
+              .status(404)
+              .send({ message: 'Haslo nie zostalo zmienione' })
+          }
         })
-      }
-    })
-    .catch((e) =>
+        .catch((e) => res.status(500).send({ message: e }))
+    } else {
       res.status(500).send({
-        message: 'Uzytkownik o podanym adresie e-mail nie istnieje',
+        message:
+          'Podane nowe haslo jest takie same jak aktualnie uzywane, wprowadz nowe.',
       })
-    )
+    }
+  })
 }
