@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Navigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { PageWrapper } from '../../components/PageWrapper'
+import { Formik, Form, Field } from 'formik'
+import * as Yup from 'yup'
 
 import { Container, Title, TitleContainer } from './ProfilePageElements'
 import UserData from '../../services/user'
@@ -29,23 +31,37 @@ const styles = {
 }
 
 const ProfilePage = () => {
-  const { user: currentUser } = useSelector((state) => state.auth)
-  const dispatch = useDispatch()
-  const [userData, setUserData] = useState({
+  const [initialValues, setInitialValues] = useState({
     imie: '',
     nazwisko: '',
+    kodPocztowy: '',
     telefon: '',
     miasto: '',
-    ulica: '',
-    kodPocztowy: '',
     email: '',
+    ulica: '',
   })
+  const { user: currentUser } = useSelector((state) => state.auth)
+  const dispatch = useDispatch()
   const [userPwdData, setUserPwdData] = useState({ email: '', password: '' })
   const [isEditing, setIsEditing] = useState(false)
+  const [isChangingPwd, setIsChangingPwd] = useState(false)
 
-  if (!currentUser) {
-    return <Navigate to='/login' />
-  }
+  useEffect(() => {
+    if (!currentUser) {
+      return <Navigate to='/login' />
+    }
+    const { imie, nazwisko, kodPocztowy, email, ulica, miasto, telefon } =
+      currentUser
+    setInitialValues({
+      imie,
+      nazwisko,
+      kodPocztowy,
+      email,
+      ulica,
+      miasto,
+      telefon,
+    })
+  }, [])
 
   // const onUserDelete = () => {
   //   UserData.deleteUser(currentUser.id).then((response) => (
@@ -60,7 +76,6 @@ const ProfilePage = () => {
   const onInputHandle = (e) => {
     const { name, value } = e.target
     setUserPwdData({ ...userPwdData, [name]: value })
-    setUserData({ ...userData, [name]: value })
   }
 
   const onPwdUpdate = () => {
@@ -97,121 +112,166 @@ const ProfilePage = () => {
               gridTemplateColumns: '80% 20%',
             }}
           >
-            {console.log('xxxx', currentUser)}
-            <div>
-              <p>
-                <strong>Imie:</strong> {currentUser.imie}
-              </p>
-              {isEditing && (
-                <input
-                  type='text'
-                  name='imie'
-                  onChange={onInputHandle}
-                  placeholder='Imie'
-                  style={styles.inputStyle}
-                />
+            <Formik
+              enableReinitialize
+              initialValues={initialValues}
+              onSubmit={(values) => {
+                console.log(values)
+              }}
+            >
+              {({
+                errors,
+                touched,
+                values,
+                setValues,
+                handleChange,
+                handleBlur,
+              }) => (
+                <Form
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    width: '300px',
+                  }}
+                >
+                  <p>
+                    <strong>Imie:</strong> {currentUser.imie}
+                  </p>
+                  {isEditing && (
+                    <input
+                      type='text'
+                      name='imie'
+                      placeholder='Imie'
+                      value={values.imie}
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      style={styles.inputStyle}
+                    />
+                  )}
+                  <p>
+                    <strong>Nazwisko:</strong> {currentUser.nazwisko}
+                  </p>
+                  {isEditing && (
+                    <input
+                      type='text'
+                      name='nazwisko'
+                      placeholder='Nazwisko'
+                      value={values.nazwisko}
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      style={styles.inputStyle}
+                    />
+                  )}
+                  <p>
+                    <strong>Telefon:</strong> {currentUser.telefon}
+                  </p>
+                  {isEditing && (
+                    <input
+                      type='text'
+                      name='telefon'
+                      placeholder='Telefon'
+                      value={values.telefon}
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      style={styles.inputStyle}
+                    />
+                  )}
+                  <p>
+                    <strong>Miasto:</strong> {currentUser.miasto}
+                  </p>
+                  {isEditing && (
+                    <input
+                      type='text'
+                      name='miasto'
+                      placeholder='Miasto'
+                      value={values.miasto}
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      style={styles.inputStyle}
+                    />
+                  )}
+                  <p>
+                    <strong>Ulica:</strong> {currentUser.ulica}
+                  </p>
+                  {isEditing && (
+                    <input
+                      type='text'
+                      name='ulica'
+                      placeholder='Ulica'
+                      value={values.ulica}
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      style={styles.inputStyle}
+                    />
+                  )}
+                  <p>
+                    <strong>Kod-pocztowy:</strong> {currentUser.kodPocztowy}
+                  </p>
+                  {isEditing && (
+                    <input
+                      type='text'
+                      name='kodPocztowy'
+                      placeholder='Kod-pocztowy'
+                      value={values.kodPocztowy}
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      style={styles.inputStyle}
+                    />
+                  )}
+                  <p>
+                    <strong>Email:</strong> {currentUser.email}
+                  </p>
+                  {isEditing && (
+                    <input
+                      type='text'
+                      name='email'
+                      placeholder='E-mail'
+                      value={values.email}
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      style={styles.inputStyle}
+                    />
+                  )}
+                  {isEditing && (
+                    <button style={styles.buttonStyle}>Zapisz zmiany</button>
+                  )}
+                </Form>
               )}
-              <p>
-                <strong>Nazwisko:</strong> {currentUser.nazwisko}
-              </p>
-              {isEditing && (
-                <input
-                  type='text'
-                  name='nazwisko'
-                  onChange={onInputHandle}
-                  placeholder='Nazwisko'
-                  style={styles.inputStyle}
-                />
-              )}
-              <p>
-                <strong>Telefon:</strong> {currentUser.telefon}
-              </p>
-              {isEditing && (
-                <input
-                  type='text'
-                  name='telefon'
-                  onChange={onInputHandle}
-                  placeholder='Telefon'
-                  style={styles.inputStyle}
-                />
-              )}
-              <p>
-                <strong>Miasto:</strong> {currentUser.miasto}
-              </p>
-              {isEditing && (
-                <input
-                  type='text'
-                  name='miasto'
-                  onChange={onInputHandle}
-                  placeholder='Miasto'
-                  style={styles.inputStyle}
-                />
-              )}
-              <p>
-                <strong>Ulica:</strong> {currentUser.ulica}
-              </p>
-              {isEditing && (
-                <input
-                  type='text'
-                  name='ulica'
-                  onChange={onInputHandle}
-                  placeholder='Ulica'
-                  style={styles.inputStyle}
-                />
-              )}
-              <p>
-                <strong>Kod-pocztowy:</strong> {currentUser.kodPocztowy}
-              </p>
-              {isEditing && (
-                <input
-                  type='text'
-                  name='kodPocztowy'
-                  onChange={onInputHandle}
-                  placeholder='Kod-pocztowy'
-                  style={styles.inputStyle}
-                />
-              )}
-              <p>
-                <strong>Email:</strong> {currentUser.email}
-              </p>
-              {isEditing && (
+            </Formik>
+            {isChangingPwd && (
+              <div
+                style={{
+                  width: '200px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <p>Zmien haslo</p>
                 <input
                   type='text'
                   name='email'
-                  onChange={onInputHandle}
                   placeholder='E-mail'
                   style={styles.inputStyle}
+                  onChange={onInputHandle}
                 />
-              )}
-              {isEditing && (
-                <div
-                  style={{
-                    width: '200px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
+                <input
+                  type='password'
+                  name='password'
+                  placeholder='Nowe haslo'
+                  style={styles.inputStyle}
+                  onChange={onInputHandle}
+                />
+                <button style={styles.buttonStyle} onClick={onPwdUpdate}>
+                  Zmien haslo
+                </button>
+                <button
+                  style={styles.buttonStyle}
+                  onClick={() => setIsChangingPwd(!isChangingPwd)}
                 >
-                  <p>Zmien haslo</p>
-                  <input
-                    type='text'
-                    name='email'
-                    onChange={onInputHandle}
-                    placeholder='E-mail'
-                    style={styles.inputStyle}
-                  />
-                  <input
-                    type='password'
-                    name='password'
-                    onChange={onInputHandle}
-                    placeholder='Nowe haslo'
-                    style={styles.inputStyle}
-                  />
-                  <button style={styles.buttonStyle} onClick={onPwdUpdate}>
-                    Zmien haslo
-                  </button>
-                </div>
-              )}
-            </div>
+                  Anuluj zmiane hasla
+                </button>
+              </div>
+            )}
             <div
               style={{
                 display: 'flex',
@@ -225,6 +285,14 @@ const ProfilePage = () => {
               >
                 {isEditing ? 'Zakoncz edycje' : 'Edytuj profil'}
               </button>
+              {!isChangingPwd && (
+                <button
+                  style={styles.buttonStyle}
+                  onClick={() => setIsChangingPwd(!isChangingPwd)}
+                >
+                  Zmien haslo
+                </button>
+              )}
               <button style={styles.buttonStyle}>Usun konto</button>
             </div>
           </div>
