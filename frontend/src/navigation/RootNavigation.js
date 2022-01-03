@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux'
 import { history } from '../helpers/history'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 
-import Register from '../components/Register'
 import AddVisit from '../components/AddVisit'
 import NonAuth from '../components/pieces/SideBar'
 import TopBar from '../components/pieces/TopBar'
@@ -37,6 +36,7 @@ import ProfilePage from '../pages/ProfilePage'
 import PwdChangePage from '../pages/PwdChangePage'
 import VisitPage from '../pages/VisitPage'
 import LoginPage from '../pages/LoginPage'
+import RegisterPage from '../pages/RegisterPage'
 
 import PriceListSubPage from '../pages/PriceListPage/PriceListSubPage'
 
@@ -94,7 +94,7 @@ const RootNavigation = () => {
             <Route exact path='/password-change' element={<PwdChangePage />} />
 
             <Route exact path='/login' element={<LoginPage />} />
-            <Route exact path='/register' element={<Register />} />
+            <Route exact path='/register' element={<RegisterPage />} />
             <Route exact path='/offer/rtg-3d' element={<Rtg />} />
             <Route exact path='offer/endodoncja' element={<Endodoncja />} />
             <Route exact path='offer/dds' element={<Dds />} />

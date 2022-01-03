@@ -42,19 +42,18 @@ export const signupValidationSchema = Yup.object().shape({
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
       'Haslo musi zawierac min. 8 znakow w tym: litere, cyfre i znak specjalny'
     ),
-  confirmPassword: Yup.string()
-    .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-      'Haslo musi zawierac min. 8 znakow w tym: litere, cyfre i znak specjalny'
-    )
-    .oneOf([Yup.ref('password')], 'Powtarzane haslo musi byc takie same.')
-    .required('Potwierdzenie hasla jest wymagane.'),
   telefon: Yup.string()
     .required('Numer telefonu jest wymagany')
     .matches(/^\d{9}$/, 'Numer telefonu jest wymagany (9 cyfr)'),
-  miejscowosc: Yup.string()
-    .min(3, 'Miejscowosc musi miec co najmniej 3 znaki')
-    .max(50, 'Miejscowosc moze miec maksymalnie 50 znakow')
-    .required('Miejscowosc jest wymagana'),
-  regulamin: Yup.bool().oneOf([true], 'Pole wymaga zaznaczenia'),
+  miasto: Yup.string()
+    .min(3, 'Miasto musi miec co najmniej 3 znaki')
+    .max(50, 'Miasto moze miec maksymalnie 50 znakow')
+    .required('Miasto jest wymagana'),
+  ulica: Yup.string()
+    .min(3, 'Ulica musi miec co najmniej 3 znaki')
+    .max(50, 'Ulica moze miec maksymalnie 50 znakow')
+    .required('Ulica jest wymagana'),
+  kodPocztowy: Yup.string()
+    .required('Kod-pocztowy jest wymagany')
+    .matches(/^\d{5}$/, 'Kod-pocztowy jest wymagany (5 cyfr) - bez(-)'),
 })
