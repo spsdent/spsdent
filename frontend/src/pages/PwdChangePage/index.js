@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { PageWrapper } from '../../components/PageWrapper'
 import AuthData from '../../services/auth'
-import { logout } from '../../store/actions/auth'
+import { changePassword, logout } from '../../store/actions/auth'
 import { Formik, Field, Form } from 'formik'
 import { passwordChangeValidationSchema } from '../../utils/validationSchemas'
 
@@ -37,15 +37,24 @@ const PwdChangePage = () => {
 
   const onPwdUpdate = (values) => {
     const { email, newPassword: password } = values
-    console.log(values)
-    AuthData.passwordChange({ email, password })
-      .then((response) => {
+    dispatch(changePassword({ email, password }))
+      .then(() => {
         if (currentUser) {
           dispatch(logout())
         }
-        return <Navigate to='/login' />
       })
-      .catch((e) => console.log(e))
+      .catch((e) => {
+        console.log(e)
+      })
+    // AuthData.passwordChange({ email, password })
+    //   .then((response) => {
+    //     if (currentUser) {
+    //       dispatch(logout())
+    //     }
+    //     values = initialValues
+    //     return <Navigate to='/login' />
+    //   })
+    //   .catch((e) => console.log(e))
   }
 
   return (
@@ -80,12 +89,12 @@ const PwdChangePage = () => {
                 {errors.newPassword}
               </p>
               <button style={styles.buttonStyle}>Zmien haslo</button>
+              {message && (
+                <p style={{ color: 'red', textAlign: 'center' }}>{message}</p>
+              )}
             </Form>
           )}
         </Formik>
-        {message && (
-          <p style={{ color: 'red', textAlign: 'center' }}>{message}</p>
-        )}
       </div>
     </PageWrapper>
   )

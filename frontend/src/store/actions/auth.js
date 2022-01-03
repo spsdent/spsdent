@@ -5,6 +5,8 @@ import {
   LOGIN_FAIL,
   LOGOUT,
   SET_MESSAGE,
+  CHANGE_PASSWORD_SUCCESS,
+  CHANGE_PASSWORD_FAIL,
 } from './types'
 
 import AuthService from '../../services/auth'
@@ -76,6 +78,42 @@ export const login = (email, password) => (dispatch) => {
 
       dispatch({
         type: LOGIN_FAIL,
+      })
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      })
+
+      return Promise.reject()
+    }
+  )
+}
+
+export const changePassword = (data) => (dispatch) => {
+  return AuthService.passwordChange(data).then(
+    (response) => {
+      dispatch({
+        type: CHANGE_PASSWORD_SUCCESS,
+      })
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: response.data.message,
+      })
+
+      return Promise.resolve()
+    },
+    (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+
+      dispatch({
+        type: CHANGE_PASSWORD_FAIL,
       })
 
       dispatch({

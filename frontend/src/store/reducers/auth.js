@@ -4,6 +4,8 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
+  CHANGE_PASSWORD_FAIL,
+  CHANGE_PASSWORD_SUCCESS,
 } from '../actions/types'
 
 const user = JSON.parse(localStorage.getItem('user'))
@@ -33,6 +35,18 @@ export default function (state = initialState, action) {
         user: payload.user,
       }
     case LOGIN_FAIL:
+      return {
+        ...state,
+        isLoggedIn: false,
+        user: null,
+      }
+    case CHANGE_PASSWORD_FAIL:
+      return {
+        ...state,
+        isLoggedIn: false,
+        user: null,
+      }
+    case CHANGE_PASSWORD_SUCCESS:
       return {
         ...state,
         isLoggedIn: false,
