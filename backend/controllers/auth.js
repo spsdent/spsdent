@@ -118,22 +118,39 @@ exports.signin = (req, res) => {
 }
 
 exports.changePwd = (req, res) => {
-  User.updateOne(
-    { email: req.body.email },
-    { password: bcrypt.hashSync(req.body.password, 8) }
-  )
+  User.findOne({
+    email: req.body.email,
+  })
     .then((data) => {
-      if (!data) {
-        res.status(404).send({
-          message: `Nie mozna zaktualizowac hasla uzytkownika o adresie e-mail=${req.body.email}. Mozliwe ze nie ma takiego uzytkownika.`,
-        })
+      let passwordIsValid = bcrypt.compareSync(req.body.password, data.password)
+      if (!passwordIsValid) {
+        User.updateOne(
+          { email: req.body.email },
+          { password: bcrypt.hashSync(req.body.password, 8) }
+        )
+          .then((data) => {
+            if (!data) {
+              res.status(404).send({
+                message: `Nie mozna zaktualizowac hasla uzytkownika o adresie e-mail=${req.body.email}. Mozliwe ze nie ma takiego uzytkownika.`,
+              })
+            } else {
+              res.send({ message: 'Haslo zostalo zmienione pomyslnie' })
+            }
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message: 'Wystapil blad podczas zmiany hasla',
+            })
+          })
       } else {
-        res.send({ message: 'Haslo zostalo zmienione pomyslnie' })
+        res.status(500).send({
+          message: 'Podane nowe haslo jest takie same jak aktualnie uzywane',
+        })
       }
     })
-    .catch((err) => {
+    .catch((e) =>
       res.status(500).send({
-        message: 'Wystapil blad podczas zmiany hasla',
+        message: 'Uzytkownik o podanym adresie e-mail nie istnieje',
       })
-    })
+    )
 }
