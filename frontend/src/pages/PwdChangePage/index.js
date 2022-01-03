@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Navigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { PageWrapper } from '../../components/PageWrapper'
 import AuthData from '../../services/auth'
@@ -34,6 +34,7 @@ const PwdChangePage = () => {
   const dispatch = useDispatch()
   const { user: currentUser } = useSelector((state) => state.auth)
   const { message } = useSelector((state) => state.message)
+  let navigate = useNavigate()
 
   const onPwdUpdate = (values, actions) => {
     const { email, newPassword: password } = values
@@ -43,6 +44,7 @@ const PwdChangePage = () => {
           dispatch(logout())
         }
         actions.resetForm()
+        navigate('/login')
       })
       .catch((e) => {
         console.log(e)

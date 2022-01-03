@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Navigate, Link } from 'react-router-dom'
+import { Navigate, Link, useNavigate } from 'react-router-dom'
 import { login } from '../../store/actions/auth'
 import { PageWrapper } from '../../components/PageWrapper'
 import { Field, Form, Formik } from 'formik'
-import * as Yup from 'yup'
 import { loginValidationSchema } from '../../utils/validationSchemas'
 
 const styles = {
@@ -32,9 +31,9 @@ const LoginPage = (props) => {
     password: '',
   }
   const [loading, setLoading] = useState(false)
-
   const { isLoggedIn } = useSelector((state) => state.auth)
   const { message } = useSelector((state) => state.message)
+  let navigate = useNavigate()
 
   const dispatch = useDispatch()
 
@@ -43,8 +42,7 @@ const LoginPage = (props) => {
 
     dispatch(login(email, password))
       .then(() => {
-        props.history.push('/add-visit')
-        window.location.reload()
+        navigate('/add-visit')
       })
       .catch(() => {
         setLoading(false)
