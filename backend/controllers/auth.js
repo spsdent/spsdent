@@ -131,27 +131,36 @@ exports.changePwd = (req, res) => {
         .status(404)
         .send({ message: 'Nie ma użytkownika o podanym adresie e-mail' })
     }
-
-    let passwordIsValid = bcrypt.compareSync(req.body.password, user.password)
-    if (!passwordIsValid) {
-      User.updateOne(
-        { email: req.body.email },
-        { password: bcrypt.hashSync(req.body.password, 8) }
+    let oldPassword = bcrypt.compareSync(req.body.oldPassword, user.password)
+    if (oldPassword) {
+      let passwordIsValid = bcrypt.compareSync(
+        req.body.newPassword,
+        user.password
       )
-        .then((response) => {
-          if (response) {
-            res.send({ message: 'Haslo zostalo zmienione.' })
-          } else {
-            return res
-              .status(404)
-              .send({ message: 'Haslo nie zostalo zmienione' })
-          }
+      if (!passwordIsValid) {
+        User.updateOne(
+          { email: req.body.email },
+          { password: bcrypt.hashSync(req.body.newPassword, 8) }
+        )
+          .then((response) => {
+            if (response) {
+              res.send({ message: 'Haslo zostalo zmienione.' })
+            } else {
+              return res
+                .status(404)
+                .send({ message: 'Haslo nie zostalo zmienione' })
+            }
+          })
+          .catch((e) => res.status(500).send({ message: e }))
+      } else {
+        res.status(500).send({
+          message:
+            'Podane nowe haslo jest takie same jak aktualnie uzywane, wprowadz nowe.',
         })
-        .catch((e) => res.status(500).send({ message: e }))
+      }
     } else {
       res.status(500).send({
-        message:
-          'Podane nowe haslo jest takie same jak aktualnie uzywane, wprowadz nowe.',
+        message: 'Stare haslo nie jest prawidlowe',
       })
     }
   })

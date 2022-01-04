@@ -28,6 +28,7 @@ const styles = {
 const PwdChangePage = () => {
   const initialValues = {
     email: '',
+    oldPassword: '',
     newPassword: '',
   }
   const dispatch = useDispatch()
@@ -36,8 +37,7 @@ const PwdChangePage = () => {
   let navigate = useNavigate()
 
   const onPwdUpdate = (values, actions) => {
-    const { email, newPassword: password } = values
-    dispatch(changePassword({ email, password }))
+    dispatch(changePassword(values))
       .then(() => {
         if (currentUser) {
           dispatch(logout())
@@ -72,6 +72,16 @@ const PwdChangePage = () => {
               />
               <p style={{ color: 'red', textAlign: 'center' }}>
                 {errors.email}
+              </p>
+              <Field
+                type='password'
+                name='oldPassword'
+                placeholder='Stare haslo'
+                value={values.oldPassword}
+                style={styles.inputStyle}
+              />
+              <p style={{ color: 'red', textAlign: 'center' }}>
+                {errors.oldPassword}
               </p>
               <Field
                 type='password'

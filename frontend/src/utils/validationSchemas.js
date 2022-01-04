@@ -13,9 +13,16 @@ export const passwordChangeValidationSchema = Yup.object().shape({
     .required('E-mail jest wymagany')
     .email('Wpisz poprawny adres e-mail')
     .label('E-mail'),
+  oldPassword: Yup.string()
+    .required('Stare haslo jest wymagane')
+    .label('Stare haslo')
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      'Haslo musi zawierac min. 8 znakow w tym: litere, cyfre i znak specjalny'
+    ),
   newPassword: Yup.string()
     .required('Nowe haslo jest wymagane')
-    .label('New Password')
+    .label('Nowe haslo')
     .matches(
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
       'Haslo musi zawierac min. 8 znakow w tym: litere, cyfre i znak specjalny'
