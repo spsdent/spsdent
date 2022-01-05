@@ -6,7 +6,7 @@ export const Container = styled.div`
   height: 75vh;
   margin-top: 2.6em;
   font-size: 24px;
-  marginleft: 0.3rem;
+  margin-left: 0.3rem;
   font-family: 'Poppins';
   // background-color: cadetblue;
   @media screen and (max-width: 1500px) {
@@ -19,31 +19,29 @@ export const Container = styled.div`
     font-size: 14px;
   }
 `
-
-export const TitleContainer = styled.div`
-  width: 100%;
-  height: 15%;
-  font-family: 'bebas neue';
-  display: flex;
+export const VisitTitle = styled(motion.h1)`
+color: ${props => props.primary ? "#01D4BF" : "#333"};
+font-family: 'bebas neue';
+font-size: 5em;
+letter-spacing: .02em;
 `
-
-export const Title = styled(motion.h1)`
-  font-size: 5em;
-  letter-spacing: 5px;
-  color: ${(props) => (props.primary ? '#01d4bf' : '#333')};
-  line-height: 1em;
-  white-space: nowrap;
-  padding-left: 0.3rem;
-  /* background-color: red; */
-  @media screen and (max-width: 768px) {
-    margin-top: ${(props) => (props.primary ? '-2em' : '0')};
-    text-align: center;
-    font-size: 2.5em;
-  }
+export const VisitContainer = styled(motion.div)`
+background-color: rgba(255,255,255,.7);
+border-radius: 15px;
+padding: 1em;
+width: 70%;
+margin: 0 auto;
 `
-
-export const EmptyListHeading = styled(Title)`
-  font-size: 2.5rem;
-  text-decoration: underline;
-  color: salmon;
+export const VisitTitleContainer = styled.div`
+display: flex;
+justify-content: center;
+gap: 1.5em;
 `
+export const VisitText = styled.p`
+
+`
+// export const EmptyListHeading = styled(Title)`
+//   font-size: 2.5rem;
+//   text-decoration: underline;
+//   color: salmon;
+// `

@@ -5,18 +5,8 @@ import VisitDataService from '../../services/visit'
 import { refreshApp } from '../../store/actions/refresh'
 import { PageWrapper } from '../../components/PageWrapper'
 
-import { Container, Title, TitleContainer } from './VisitPageElements'
+import {Container, VisitContainer, VisitTitleContainer, VisitTitle,  VisitText } from './VisitPageElements'
 
-const styles = {
-  buttonStyle: {
-    backgroundColor: 'transparent',
-    border: '2px solid #333',
-    cursor: 'pointer',
-    padding: '.5rem 0',
-    width: '300px',
-    margin: '0 auto',
-  },
-}
 
 const VisitPage = () => {
   let { state } = useLocation()
@@ -52,64 +42,41 @@ const VisitPage = () => {
   return (
     <PageWrapper>
       <Container>
-        <Title>Wizyta</Title>
-        <div
-          style={{
-            backgroundColor: '#fff',
-            width: '100%',
-            padding: '2rem',
-            borderRadius: '10px',
-            display: 'flex',
-            flexDirection: ' column',
-            gap: '10px',
-          }}
-        >
-          <p>Usluga: {state.usluga}</p>
-          <p>Specjalista: {state.specjalista}</p>
-          <p>Data: {state.data}</p>
-          <p>Godzina: {state.godzina}</p>
-          <p>Telefon: {state.telefon}</p>
-          <p>Imie: {state.imie}</p>
-          <p>Nazwisko: {state.nazwisko}</p>
-          <p>Miasto: {state.miasto}</p>
-          <p>Ulica: {state.ulica}</p>
-          <p>Kod-pocztowy: {state.kodPocztowy}</p>
-          <p>Status: {state.status === false ? 'W trakcie' : 'Zrealizowna'}</p>
+      <VisitTitleContainer>
+        <VisitTitle primary>Szczegóły</VisitTitle>
+        <VisitTitle>Rezerwacji</VisitTitle>
+        </VisitTitleContainer>
+          <VisitContainer>
+          < VisitText>Usługa: {state.usluga}</ VisitText>
+          < VisitText>Specjalista: {state.specjalista}</ VisitText>
+          < VisitText>Data: {state.data}</ VisitText>
+          < VisitText>Godzina: {state.godzina}</ VisitText>
+          < VisitText>Telefon: {state.telefon}</ VisitText>
+          < VisitText>Imię: {state.imie}</ VisitText>
+          < VisitText>Nazwisko: {state.nazwisko}</ VisitText>
+          < VisitText>Miasto: {state.miasto}</ VisitText>
+          < VisitText>Ulica: {state.ulica}</ VisitText>
+          < VisitText>Kod pocztowy: {state.kodPocztowy}</ VisitText>
+          < VisitText>Status: {state.status === false ? 'W trakcie' : 'Zrealizowna'}</ VisitText>
           <button
             onClick={() => deleteVisit(state)}
-            style={{
-              backgroundColor: 'transparent',
-              border: '2px solid white',
-              color: '#fff',
-              padding: '5px',
-              marginRight: '5px',
-              cursor: 'pointer',
-            }}
+      
           >
-            X
+            Usuń wizytę
           </button>
           {isAdmin || isSpec ? (
             <button
               onClick={() => changeVisitStatus(state.id, state.status)}
-              style={{
-                backgroundColor: 'transparent',
-                border: '2px solid white',
-                color: '#fff',
-                padding: '5px',
-                marginRight: '5px',
-                cursor: 'pointer',
-              }}
             >
-              Zmien status
+              Archiwizuj wizytę
             </button>
           ) : null}
           <button
             onClick={() => navigate('/visits')}
-            style={styles.buttonStyle}
           >
-            Wroc do listy wizyt
+            Wróć do listy wizyt
           </button>
-        </div>
+        </VisitContainer>
       </Container>
     </PageWrapper>
   )
