@@ -59,6 +59,7 @@ export const ButtonVisit = styled(motion.button)`
  font-size: .8em;
  letter-spacing: .02em;
  white-space: nowrap;
+ cursor: pointer;
 `
 
 // export const EmptyListHeading = styled(Title)`
