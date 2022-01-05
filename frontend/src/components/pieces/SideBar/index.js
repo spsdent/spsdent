@@ -83,9 +83,15 @@ const NonAuth = (props) => {
 
   useEffect(() => {
     if (currentUser) {
-      setShowSpecBoard(currentUser.roles.includes('ROLE_SPEC'))
-      setShowAdminBoard(currentUser.roles.includes('ROLE_ADMIN'))
-      setShowUserBoard(currentUser.roles.includes('ROLE_USER'))
+      setShowSpecBoard(
+        currentUser.roles[currentUser.roles.length - 1] === 'ROLE_SPEC'
+      )
+      setShowAdminBoard(
+        currentUser.roles[currentUser.roles.length - 1] === 'ROLE_ADMIN'
+      )
+      setShowUserBoard(
+        currentUser.roles[currentUser.roles.length - 1] === 'ROLE_USER'
+      )
     }
   }, [currentUser])
 
