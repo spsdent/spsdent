@@ -116,7 +116,7 @@ const ArchiveVisitsList = () => {
           </VisitsPageTitle>
         </VisitsPageTitleContainer>
         <VisitsContainer>
-          {[].length > 0 ? (
+          {visitsList.length > 0 ? (
             <>
               <Headers variants={container} initial='hidden' animate='show'>
                 <Header primary>
@@ -141,7 +141,7 @@ const ArchiveVisitsList = () => {
                 initial='hidden'
                 animate='show'
               >
-                {[].map((item, i) => (
+                {visitsList.map((item, i) => (
                   <Visit
                     initial={{ opacity: 0, x: -100 }}
                     animate={{ opacity: 1, x: 0 }}
