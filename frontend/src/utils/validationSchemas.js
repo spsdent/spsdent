@@ -64,3 +64,51 @@ export const signupValidationSchema = Yup.object().shape({
     .required('Kod-pocztowy jest wymagany')
     .matches(/^\d{5}$/, 'Kod-pocztowy jest wymagany (5 cyfr) - bez(-)'),
 })
+
+export const addVisitValidationSchema = Yup.object().shape({
+  grupa: Yup.string().required('Wybierz grupe uslug...'),
+  usluga: Yup.string().required('Wybierz usluge...'),
+  specjalista: Yup.string().required('Wybierz specjaliste'),
+  data: Yup.string().required('Wybierz termin wizyty'),
+  godzina: Yup.string().required('Wybierz godzine wizyty'),
+  imie: Yup.string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Wprowadz imie...'),
+  nazwisko: Yup.string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Wprowadz nazwisko...'),
+  email: Yup.string()
+    .email('Invalid email')
+    .required('Wprowadz adres e-mail...'),
+  telefon: Yup.string()
+    .matches(/^\d{9}$/, 'Wprowadz prawidlowy numer telefonu')
+    .required('Numer telefonu jest wymagany'),
+  miasto: Yup.string()
+    .min(3, 'Miejscowosc musi miec co najmniej 3 znaki')
+    .max(50, 'Miejscowosc moze miec maksymalnie 50 znakow')
+    .required('Wprowadz miejscowosc...'),
+  ulica: Yup.string()
+    .min(3, 'Ulica musi miec co najmniej 3 znaki')
+    .max(50, 'Ulica moze miec maksymalnie 50 znakow')
+    .required('Wprowadz ulice...'),
+  kodPocztowy: Yup.string()
+    .matches(/^\d{5}$/, 'Wprowadz prawidlowy kod pocztowy')
+    .required('Wprowadz kod pocztowy'),
+  password: Yup.string()
+    .required('Haslo jest wymagane')
+    .label('Password')
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      'Haslo musi zawierac min. 8 znakow w tym: litere, cyfre i znak specjalny'
+    ),
+})
+
+export const addVisitUserValidationSchema = Yup.object().shape({
+  grupa: Yup.string().required('Wybierz grupe uslug...'),
+  usluga: Yup.string().required('Wybierz usluge...'),
+  specjalista: Yup.string().required('Wybierz specjaliste'),
+  data: Yup.string().required('Wybierz termin wizyty'),
+  godzina: Yup.string().required('Wybierz godzine wizyty'),
+})

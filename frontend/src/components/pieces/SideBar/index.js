@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { history } from '../../../helpers/history'
+import { useSelector } from 'react-redux'
 import { FaInstagram } from 'react-icons/fa'
 import { FiFacebook, FiTwitter } from 'react-icons/fi'
 import {
@@ -23,7 +22,6 @@ import { motion } from 'framer-motion'
 // import { clearMessage } from '../../../store/actions/message'
 
 import ServiceData from '../../../services/service'
-import { refreshApp } from '../../../store/actions/refresh'
 
 import {
   useLocation,

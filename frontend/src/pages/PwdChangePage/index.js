@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { PageWrapper } from '../../components/PageWrapper'
 import { changePassword, logout } from '../../store/actions/auth'
 import { Formik, Field, Form } from 'formik'
 import { passwordChangeValidationSchema } from '../../utils/validationSchemas'
+import { Link } from 'react-router-dom'
 
 const styles = {
   inputStyle: {
@@ -61,7 +62,7 @@ const PwdChangePage = () => {
           }}
           validationSchema={passwordChangeValidationSchema}
         >
-          {({ values, errors }) => (
+          {({ values, errors, touched }) => (
             <Form style={{ display: 'flex', flexDirection: 'column' }}>
               <Field
                 type='text'
@@ -70,9 +71,9 @@ const PwdChangePage = () => {
                 value={values.email}
                 style={styles.inputStyle}
               />
-              <p style={{ color: 'red', textAlign: 'center' }}>
-                {errors.email}
-              </p>
+              {errors.email && touched.email ? (
+                <p style={{ color: 'red' }}>{errors.email}</p>
+              ) : null}
               <Field
                 type='password'
                 name='oldPassword'
@@ -80,9 +81,9 @@ const PwdChangePage = () => {
                 value={values.oldPassword}
                 style={styles.inputStyle}
               />
-              <p style={{ color: 'red', textAlign: 'center' }}>
-                {errors.oldPassword}
-              </p>
+              {errors.oldPassword && touched.oldPassword ? (
+                <p style={{ color: 'red' }}>{errors.oldPassword}</p>
+              ) : null}
               <Field
                 type='password'
                 name='newPassword'
@@ -90,9 +91,9 @@ const PwdChangePage = () => {
                 value={values.newPassword}
                 style={styles.inputStyle}
               />
-              <p style={{ color: 'red', textAlign: 'center' }}>
-                {errors.newPassword}
-              </p>
+              {errors.newPassword && touched.newPassword ? (
+                <p style={{ color: 'red' }}>{errors.newPassword}</p>
+              ) : null}
               <button style={styles.buttonStyle}>Zmien haslo</button>
               {message && (
                 <p style={{ color: 'red', textAlign: 'center' }}>{message}</p>
@@ -100,6 +101,15 @@ const PwdChangePage = () => {
             </Form>
           )}
         </Formik>
+        <div style={{ display: 'flex', color: '#333' }}>
+          <p style={{ marginRight: '5px' }}>Chcesz utworzyć konto?</p>
+          <Link
+            style={{ textDecoration: 'none', color: '#01D4BF' }}
+            to='/register'
+          >
+            Kliknij tutaj!
+          </Link>
+        </div>
       </div>
     </PageWrapper>
   )

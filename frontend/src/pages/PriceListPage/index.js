@@ -4,37 +4,33 @@ import { Pattern } from '../../components/Pattern'
 import {
   PriceListPageContainer,
   PriceListTitle,
-  PriceListTable,
-  PriceTableRow,
-  PriceTableContent,
 } from './PriceListPageElements'
 
 import { useParams } from 'react-router-dom'
 import PriceListSubPage from './PriceListSubPage'
 import ServiceData from '../../services/service'
-import { motion } from 'framer-motion'
+// import { motion } from 'framer-motion'
 
-const container = {
-  hidden: { y: -100, opacity: 0, scale: 1 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    scale: 1,
-    transition: {
-      duration: 0.3,
-      delayChildren: 1,
-      staggerChildren: 1,
-    },
-  },
-}
+// const container = {
+//   hidden: { y: -100, opacity: 0, scale: 1 },
+//   visible: {
+//     y: 0,
+//     opacity: 1,
+//     scale: 1,
+//     transition: {
+//       duration: 0.3,
+//       delayChildren: 1,
+//       staggerChildren: 1,
+//     },
+//   },
+// }
 
-const item = {
-  hidden: { y: -100, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-  },
-}
+// const item = {
+//   hidden: { y: -100, opacity: 0 },
+//   visible: {
+//     y: 0,
+//     opacity: 1,
+//   },
 
 const PriceListPage = () => {
   const [currentPathServices, setCurrentPathServices] = useState([])

@@ -5,7 +5,7 @@ import VisitDataService from '../../services/visit'
 import { refreshApp } from '../../store/actions/refresh'
 import { PageWrapper } from '../../components/PageWrapper'
 
-import { Container, Title, TitleContainer } from './VisitPageElements'
+import { Container, Title } from './VisitPageElements'
 
 const styles = {
   buttonStyle: {
@@ -21,7 +21,6 @@ const styles = {
 const VisitPage = () => {
   let { state } = useLocation()
   let navigate = useNavigate()
-  const { refresh: isRefresh } = useSelector((state) => state)
   const { user: currentUser } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
   const isAdmin = currentUser.roles.includes('ROLE_ADMIN')

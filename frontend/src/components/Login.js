@@ -112,7 +112,7 @@ const Login = (props) => {
             style={{ textDecoration: 'none', color: '#333' }}
             to='/password-change'
           >
-            Zresetuj haslo!
+            Zresetuj haslo
           </Link>
         </div>
       </div>

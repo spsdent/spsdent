@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { Navigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { PageWrapper } from '../../components/PageWrapper'
-import { Formik, Form, Field } from 'formik'
-import * as Yup from 'yup'
+import { Formik, Form} from 'formik'
 
 import { Container, Title, TitleContainer } from './ProfilePageElements'
-import UserData from '../../services/user'
 import AuthData from '../../services/auth'
 import { logout } from '../../store/actions/auth'
 

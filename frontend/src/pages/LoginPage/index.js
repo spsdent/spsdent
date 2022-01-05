@@ -100,6 +100,15 @@ const LoginPage = () => {
           )}
         </Formik>
         <div style={{ display: 'flex', color: '#333' }}>
+          <p style={{ marginRight: '5px' }}>Chcesz utworzyć konto?</p>
+          <Link
+            style={{ textDecoration: 'none', color: '#01D4BF' }}
+            to='/register'
+          >
+            Kliknij tutaj!
+          </Link>
+        </div>
+        <div style={{ display: 'flex', color: '#333' }}>
           <p style={{ marginRight: '5px' }}>Zapomniales hasla?</p>
           <Link
             style={{ textDecoration: 'none', color: '#01D4BF' }}
