@@ -138,16 +138,16 @@ const itemOne = {
           top={"18%"}
           left={"65%"}
           transition={{ duration: 1 }}
-          initial={{ scale: 0 }}
-          animate={{ scale: 1.2 }}
+          initial={{ x: 400 }}
+          animate={{ x: 0 }}
         />
         <Pattern
           src="Pattern.png"
           top={"70%"}
           left={"13%"}
           transition={{ duration: 1 }}
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
+          initial={{ x: -400 }}
+          animate={{ x: 0 }}
         />
     </PageWrapper>
   );
