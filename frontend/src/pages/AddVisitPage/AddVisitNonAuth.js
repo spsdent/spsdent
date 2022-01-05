@@ -3,12 +3,22 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, Field } from 'formik'
 import { useNavigate } from 'react-router-dom'
 
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+import { addDays, getDay } from 'date-fns'
+
 import VisitData from '../../services/visit'
 import { refreshApp } from '../../store/actions/refresh'
 import { addVisitNonAuthValidationSchema } from '../../utils/validationSchemas'
 import { PageWrapper } from '../../components/PageWrapper'
 
-import { months, days, initialAddVisitValues, dentHours } from '../../helpers'
+import {
+  months,
+  days,
+  initialAddVisitValues,
+  dentHours,
+  startDate,
+} from '../../helpers'
 import {
   useFetchAllDoctors,
   useFetchAllServices,
@@ -43,6 +53,15 @@ const styles = {
   errorStyle: { color: 'red' },
 }
 
+const minDate =
+  new Date().getHours() > 16
+    ? new Date(
+        `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${
+          new Date().getDate() + 1
+        }`
+      )
+    : new Date()
+
 const AddVisitNonAuth = () => {
   const [visit, setVisit] = useState(initialAddVisitValues)
   const [serviceGroupSelected, setServiceGroupSelected] = useState('')
@@ -50,6 +69,7 @@ const AddVisitNonAuth = () => {
   const [doctorSelected, setDoctorSelected] = useState('')
   const [selectedServicePrice, setSelectedServicePrice] = useState('')
   const [isCreateAccount, setIsCreateAccount] = useState(false)
+  const [startDate, setStartDate] = useState(null)
 
   const { user: currentUser } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
@@ -214,20 +234,20 @@ const AddVisitNonAuth = () => {
     ))
   }
 
-  const selectDates = dates.map((item, index) => (
-    <option
-      value={`${item.date.getDate()}.${
-        item.date.getMonth() + 1
-      }.${item.date.getFullYear()}`}
-      key={`${item.date.getDate()}.${
-        item.date.getMonth() + 1
-      }.${item.date.getFullYear()}`}
-    >
-      {`${days[item.date.getDay()]}, ${item.date.getDate()} ${
-        months[item.date.getMonth()]
-      } ${item.date.getFullYear()}`}
-    </option>
-  ))
+  // const selectDates = dates.map((item, index) => (
+  //   <option
+  //     value={`${item.date.getDate()}.${
+  //       item.date.getMonth() + 1
+  //     }.${item.date.getFullYear()}`}
+  //     key={`${item.date.getDate()}.${
+  //       item.date.getMonth() + 1
+  //     }.${item.date.getFullYear()}`}
+  //   >
+  //     {`${days[item.date.getDay()]}, ${item.date.getDate()} ${
+  //       months[item.date.getMonth()]
+  //     } ${item.date.getFullYear()}`}
+  //   </option>
+  // ))
 
   const pickingHours = (values) => {
     const selectedDoctorData = allDoctorsFromDb.find(
@@ -262,6 +282,29 @@ const AddVisitNonAuth = () => {
       ))
     }
   }
+
+  const isWeekday = (date) => {
+    const day = getDay(date)
+    return day !== 0 && day !== 6
+  }
+
+  const counts = allVisitsFromDb.reduce(
+    (acc, value) => ({
+      ...acc,
+      [value.data]: (acc[value.data] || 0) + 1,
+    }),
+    {}
+  )
+
+  let arrToReturn = [new Date()]
+
+  let datesToExclude = Object.entries(counts)
+    .filter((item) => item[1] > 7)
+    .map((item) => [
+      ...arrToReturn,
+      addDays(new Date(), +item[0].split('.')[0] - new Date().getDate()),
+    ])
+    .flat()
 
   return (
     <PageWrapper>
@@ -331,18 +374,21 @@ const AddVisitNonAuth = () => {
                       {doctorSelected && (
                         <>
                           <label>Data</label>
-                          <Field
-                            as='select'
-                            name='data'
-                            style={styles.selectStyle}
-                            onBlur={handleBlur}
-                          >
-                            <option value=''>Wybierz date...</option>
-                            {selectDates}
-                          </Field>
-                          {errors.data && touched.data ? (
-                            <p style={styles.errorStyle}>{errors.data}</p>
-                          ) : null}
+                          <DatePicker
+                            selected={startDate}
+                            dateFormat='dd/MM/yyyy'
+                            onChange={(date) => {
+                              setStartDate(date)
+                              values.data = `${date.getDate()}.${
+                                date.getMonth() + 1
+                              }.${date.getFullYear()}`
+                              setValues(values)
+                            }}
+                            minDate={minDate}
+                            placeholderText='Select a date after 5 days ago'
+                            filterDate={isWeekday}
+                            excludeDates={datesToExclude}
+                          />
                           {values.data && (
                             <>
                               <label>Godzina</label>
@@ -360,7 +406,6 @@ const AddVisitNonAuth = () => {
                                   {errors.godzina}
                                 </p>
                               ) : null}
-                              {/* {setChoseHour(values.godzina)} */}
                             </>
                           )}
                         </>
