@@ -192,6 +192,7 @@ const AddVisitNonAuth = () => {
     if (serviceSelected && !doctorSelected) {
       values.godzina = ''
       values.data = ''
+      setStartDate(null)
     } else if (!serviceSelected) {
       values.godzina = ''
       values.data = ''
@@ -385,7 +386,7 @@ const AddVisitNonAuth = () => {
                               setValues(values)
                             }}
                             minDate={minDate}
-                            placeholderText='Select a date after 5 days ago'
+                            placeholderText='Wybierz termin wizyty'
                             filterDate={isWeekday}
                             excludeDates={datesToExclude}
                           />
