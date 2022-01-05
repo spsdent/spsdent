@@ -18,6 +18,7 @@ import {
   initialAddVisitValues,
   dentHours,
   startDate,
+  minDate
 } from '../../helpers'
 import {
   useFetchAllDoctors,
@@ -52,15 +53,6 @@ const styles = {
   },
   errorStyle: { color: 'red' },
 }
-
-const minDate =
-  new Date().getHours() > 16
-    ? new Date(
-        `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${
-          new Date().getDate() + 1
-        }`
-      )
-    : new Date()
 
 const AddVisitNonAuth = () => {
   const [visit, setVisit] = useState(initialAddVisitValues)

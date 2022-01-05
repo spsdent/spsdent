@@ -40,3 +40,12 @@ export const startDate =
         }`
       )
     : new Date()
+
+export const minDate =
+  new Date().getHours() > 16
+    ? new Date(
+        `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${
+          new Date().getDate() + 1
+        }`
+      )
+    : new Date()

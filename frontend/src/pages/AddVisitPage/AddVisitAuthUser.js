@@ -3,12 +3,16 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, Field } from 'formik'
 import { useNavigate } from 'react-router-dom'
 
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+import { addDays, getDay } from 'date-fns'
+
 import VisitData from '../../services/visit'
 import { refreshApp } from '../../store/actions/refresh'
 import { addVisitUserValidationSchema } from '../../utils/validationSchemas'
 import { PageWrapper } from '../../components/PageWrapper'
 
-import { months, days, initialAddVisitValues, dentHours } from '../../helpers'
+import { months, days, initialAddVisitValues, dentHours, minDate } from '../../helpers'
 import {
   useFetchAllDoctors,
   useFetchAllServices,
@@ -60,6 +64,7 @@ const AddVisitAuthUser = () => {
   const [doctorSelected, setDoctorSelected] = useState('')
   const [selectedServicePrice, setSelectedServicePrice] = useState('')
   const [isSubmit, setIsSubmit] = useState(false)
+  const [startDate, setStartDate] = useState(null)
 
   const { user: currentUser } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
@@ -244,6 +249,29 @@ const AddVisitAuthUser = () => {
     }
   }
 
+  const isWeekday = (date) => {
+    const day = getDay(date)
+    return day !== 0 && day !== 6
+  }
+
+  const counts = allVisitsFromDb.reduce(
+    (acc, value) => ({
+      ...acc,
+      [value.data]: (acc[value.data] || 0) + 1,
+    }),
+    {}
+  )
+
+  let arrToReturn = [new Date()]
+
+  let datesToExclude = Object.entries(counts)
+    .filter((item) => item[1] > 7)
+    .map((item) => [
+      ...arrToReturn,
+      addDays(new Date(), +item[0].split('.')[0] - new Date().getDate()),
+    ])
+    .flat()
+
   return (
     <PageWrapper>
       <div
@@ -260,7 +288,7 @@ const AddVisitAuthUser = () => {
           onSubmit={() => setIsSubmit(true)}
           onReset={() => setVisit(initialAddVisitValues)}
         >
-          {({ errors, touched, values, setValues, resetForm }) => (
+          {({ errors, touched, values, setValues, resetForm, handleBlur }) => (
             <Form
               style={{
                 display: 'flex',
@@ -269,7 +297,7 @@ const AddVisitAuthUser = () => {
               }}
             >
               <label> Grupa uslug </label>
-              <Field as='select' name='grupa' style={styles.selectStyle}>
+              <Field as='select' name='grupa' style={styles.selectStyle} onBlur={handleBlur}>
                 <option value=''> Wybierz grupe uslugi... </option>
                 {serviceGroupHandler(values)}
               </Field>
@@ -279,7 +307,7 @@ const AddVisitAuthUser = () => {
               {serviceGroupSelected && (
                 <>
                   <label> Usluga </label>
-                  <Field as='select' name='usluga' style={styles.inputStyle}>
+                  <Field as='select' name='usluga' style={styles.inputStyle} onBlur={handleBlur}>
                     <option value=''> Wybierz usluge... </option>
                     {serviceHandler(values)}
                   </Field>
@@ -293,6 +321,7 @@ const AddVisitAuthUser = () => {
                         as='select'
                         name='specjalista'
                         style={styles.selectStyle}
+                        onBlur={handleBlur}
                       >
                         <option value=''> Wybierz specjaliste... </option>
                         {doctorHandler(values)}
@@ -302,17 +331,26 @@ const AddVisitAuthUser = () => {
                       ) : null}
                       {doctorSelected && (
                         <>
-                          <label> Data </label>
-                          <Field
-                            as='select'
+                          <label>Data</label>
+                          <DatePicker
+                            selected={startDate}
+                            dateFormat='dd/MM/yyyy'
+                            onChange={(date) => {
+                              setStartDate(date)
+                              values.data = `${date.getDate()}.${
+                                date.getMonth() + 1
+                              }.${date.getFullYear()}`
+                              setValues(values)
+                            }}
+                            minDate={minDate}
+                            placeholderText='Wybierz termin wizyty'
+                            filterDate={isWeekday}
+                            excludeDates={datesToExclude}
                             name='data'
-                            style={styles.selectStyle}
-                          >
-                            <option value=''> Wybierz date... </option>
-                            {selectDates}
-                          </Field>
+                            onBlur={handleBlur}
+                          />
                           {errors.data && touched.data ? (
-                            <p style={styles.errorStyle}> {errors.data} </p>
+                            <p style={styles.errorStyle}>{errors.data}</p>
                           ) : null}
                           {values.data && (
                             <>
@@ -321,6 +359,7 @@ const AddVisitAuthUser = () => {
                                 as='select'
                                 name='godzina'
                                 style={styles.inputStyle}
+                                onBlur={handleBlur}
                               >
                                 <option value=''> Wybierz godzine... </option>
                                 {pickingHours(values.data)}
