@@ -277,7 +277,7 @@ const AddVisitNonAuth = () => {
           }}
           onReset={() => setVisit(initialAddVisitValues)}
         >
-          {({ errors, touched, values, setValues }) => (
+          {({ errors, touched, values, setValues, handleBlur }) => (
             <Form
               style={{
                 display: 'flex',
@@ -286,7 +286,12 @@ const AddVisitNonAuth = () => {
               }}
             >
               <label>Grupa uslug</label>
-              <Field as='select' name='grupa' style={styles.selectStyle}>
+              <Field
+                as='select'
+                name='grupa'
+                style={styles.selectStyle}
+                onBlur={handleBlur}
+              >
                 <option value=''>Wybierz grupe uslugi...</option>
                 {serviceGroupHandler(values)}
               </Field>
@@ -296,7 +301,12 @@ const AddVisitNonAuth = () => {
               {serviceGroupSelected && (
                 <>
                   <label>Usluga</label>
-                  <Field as='select' name='usluga' style={styles.inputStyle}>
+                  <Field
+                    as='select'
+                    name='usluga'
+                    style={styles.inputStyle}
+                    onBlur={handleBlur}
+                  >
                     <option value=''>Wybierz usluge...</option>
                     {serviceHandler(values)}
                   </Field>
@@ -310,6 +320,7 @@ const AddVisitNonAuth = () => {
                         as='select'
                         name='specjalista'
                         style={styles.selectStyle}
+                        onBlur={handleBlur}
                       >
                         <option value=''>Wybierz specjaliste...</option>
                         {doctorHandler(values)}
@@ -324,6 +335,7 @@ const AddVisitNonAuth = () => {
                             as='select'
                             name='data'
                             style={styles.selectStyle}
+                            onBlur={handleBlur}
                           >
                             <option value=''>Wybierz date...</option>
                             {selectDates}
@@ -338,6 +350,7 @@ const AddVisitNonAuth = () => {
                                 as='select'
                                 name='godzina'
                                 style={styles.inputStyle}
+                                onBlur={handleBlur}
                               >
                                 <option value=''>Wybierz godzine...</option>
                                 {pickingHours(values.data)}
@@ -357,7 +370,12 @@ const AddVisitNonAuth = () => {
                 </>
               )}
               <label>Imie</label>
-              <Field name='imie' style={styles.inputStyle} placeholder='Imie' />
+              <Field
+                name='imie'
+                style={styles.inputStyle}
+                placeholder='Imie'
+                onBlur={handleBlur}
+              />
               {errors.imie && touched.imie ? (
                 <p style={styles.errorStyle}>{errors.imie}</p>
               ) : null}
@@ -366,6 +384,7 @@ const AddVisitNonAuth = () => {
                 name='nazwisko'
                 style={styles.inputStyle}
                 placeholder='Nazwisko'
+                onBlur={handleBlur}
               />
               {errors.nazwisko && touched.nazwisko ? (
                 <p style={styles.errorStyle}>{errors.nazwisko}</p>
@@ -376,6 +395,7 @@ const AddVisitNonAuth = () => {
                 type='email'
                 style={styles.inputStyle}
                 placeholder='E-mail'
+                onBlur={handleBlur}
               />
               {errors.email && touched.email ? (
                 <p style={styles.errorStyle}>{errors.email}</p>
@@ -385,6 +405,7 @@ const AddVisitNonAuth = () => {
                 name='telefon'
                 style={styles.inputStyle}
                 placeholder='Telefon'
+                onBlur={handleBlur}
               />
               {errors.telefon && touched.telefon ? (
                 <p style={styles.errorStyle}>{errors.telefon}</p>
@@ -394,6 +415,7 @@ const AddVisitNonAuth = () => {
                 name='miasto'
                 style={styles.inputStyle}
                 placeholder='Miasto'
+                onBlur={handleBlur}
               />
               {errors.miasto && touched.miasto ? (
                 <p style={styles.errorStyle}>{errors.miasto}</p>
@@ -403,6 +425,7 @@ const AddVisitNonAuth = () => {
                 name='ulica'
                 style={styles.inputStyle}
                 placeholder='Ulica'
+                onBlur={handleBlur}
               />
               {errors.ulica && touched.ulica ? (
                 <p style={styles.errorStyle}>{errors.ulica}</p>
@@ -412,6 +435,7 @@ const AddVisitNonAuth = () => {
                 name='kodPocztowy'
                 style={styles.inputStyle}
                 placeholder='Kod-pocztowy'
+                onBlur={handleBlur}
               />
               {errors.kodPocztowy && touched.kodPocztowy ? (
                 <p style={styles.errorStyle}>{errors.kodPocztowy}</p>
@@ -426,7 +450,9 @@ const AddVisitNonAuth = () => {
                         cursor: 'pointer',
                       }}
                       onClick={() => {
+                        const { password, ...oldValues } = values
                         setIsCreateAccount(false)
+                        setValues(oldValues)
                       }}
                     >
                       Kliknij tutaj
@@ -444,6 +470,7 @@ const AddVisitNonAuth = () => {
                       paddingLeft: '1em',
                     }}
                     placeholder='Haslo do konta'
+                    onBlur={handleBlur}
                   />
                   {errors.password && touched.password ? (
                     <p style={{ color: 'red' }}>{errors.password}</p>
