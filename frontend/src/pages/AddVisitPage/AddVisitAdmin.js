@@ -3,6 +3,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, Field } from 'formik'
 import { useNavigate } from 'react-router-dom'
 
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+import { addDays, getDay } from 'date-fns'
+
 import VisitData from '../../services/visit'
 import { refreshApp } from '../../store/actions/refresh'
 import {
@@ -11,7 +15,13 @@ import {
 } from '../../utils/validationSchemas'
 import { PageWrapper } from '../../components/PageWrapper'
 
-import { months, days, initialAddVisitValues, dentHours } from '../../helpers'
+import {
+  months,
+  days,
+  initialAddVisitValues,
+  dentHours,
+  minDate,
+} from '../../helpers'
 import {
   useFetchAllDoctors,
   useFetchAllServices,
@@ -56,6 +66,7 @@ const AddVisitAdmin = () => {
   const [isCreateAccount, setIsCreateAccount] = useState(false)
   const [foundUsers, setFoundUsers] = useState([])
   const [errorMsg, setErrorMsg] = useState('')
+  const [startDate, setStartDate] = useState(null)
 
   const { user: currentUser } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
@@ -308,6 +319,29 @@ const AddVisitAdmin = () => {
     setValues(oldValues)
   }
 
+  const isWeekday = (date) => {
+    const day = getDay(date)
+    return day !== 0 && day !== 6
+  }
+
+  const counts = allVisitsFromDb.reduce(
+    (acc, value) => ({
+      ...acc,
+      [value.data]: (acc[value.data] || 0) + 1,
+    }),
+    {}
+  )
+
+  let arrToReturn = [new Date()]
+
+  let datesToExclude = Object.entries(counts)
+    .filter((item) => item[1] > 7)
+    .map((item) => [
+      ...arrToReturn,
+      addDays(new Date(), +item[0].split('.')[0] - new Date().getDate()),
+    ])
+    .flat()
+
   return (
     <PageWrapper>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -377,15 +411,23 @@ const AddVisitAdmin = () => {
                         {doctorSelected && (
                           <>
                             <label>Data</label>
-                            <Field
-                              as='select'
+                            <DatePicker
+                              selected={startDate}
+                              dateFormat='dd/MM/yyyy'
+                              onChange={(date) => {
+                                setStartDate(date)
+                                values.data = `${date.getDate()}.${
+                                  date.getMonth() + 1
+                                }.${date.getFullYear()}`
+                                setValues(values)
+                              }}
+                              minDate={minDate}
+                              placeholderText='Wybierz termin wizyty'
+                              filterDate={isWeekday}
+                              excludeDates={datesToExclude}
                               name='data'
-                              style={styles.selectStyle}
                               onBlur={handleBlur}
-                            >
-                              <option value=''>Wybierz date...</option>
-                              {selectDates}
-                            </Field>
+                            />
                             {errors.data && touched.data ? (
                               <p style={styles.errorStyle}>{errors.data}</p>
                             ) : null}
