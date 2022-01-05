@@ -5,7 +5,7 @@ export const Container = styled.div`
   width: 80%;
   height: 75vh;
   margin-top: 1em;
-  font-size: 24px;
+  font-size: 22px;
   margin-left: 0.3rem;
   font-family: 'Poppins';
   // background-color: cadetblue;
@@ -13,10 +13,10 @@ export const Container = styled.div`
     font-size: 18px;
   }
   @media screen and (max-width: 1280px) {
-    font-size: 16px;
+    font-size: 14px;
   }
   @media screen and (max-width: 960px) {
-    font-size: 14px;
+    font-size: 10px;
   }
 `
 export const VisitTitle = styled(motion.h1)`
@@ -47,6 +47,9 @@ export const ButtonContainer = styled.div`
 display: flex;
 justify-content: center;
 align-items: center;
+ @media screen and (max-width: 768px) {
+    flex-direction: column;
+  }
 `
 export const ButtonVisit = styled(motion.button)`
  margin: 2em 1em 1em 1em;
