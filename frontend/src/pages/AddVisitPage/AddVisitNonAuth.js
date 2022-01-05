@@ -389,7 +389,12 @@ const AddVisitNonAuth = () => {
                             placeholderText='Wybierz termin wizyty'
                             filterDate={isWeekday}
                             excludeDates={datesToExclude}
+                            name='data'
+                            onBlur={handleBlur}
                           />
+                          {errors.data && touched.data ? (
+                            <p style={styles.errorStyle}>{errors.data}</p>
+                          ) : null}
                           {values.data && (
                             <>
                               <label>Godzina</label>
