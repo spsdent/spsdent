@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 import VisitData from '../../services/visit'
 import { refreshApp } from '../../store/actions/refresh'
-import { signupValidationSchema } from '../../utils/validationSchemas'
+import { addVisitNonAuthValidationSchema } from '../../utils/validationSchemas'
 import { PageWrapper } from '../../components/PageWrapper'
 
 import { months, days, initialAddVisitValues, dentHours } from '../../helpers'
@@ -16,6 +16,8 @@ import {
   useFetchAllUsers,
   useCreateDates,
 } from '../../hooks'
+
+import { register } from '../../store/actions/auth'
 
 const styles = {
   inputStyle: {
@@ -47,6 +49,7 @@ const AddVisitNonAuth = () => {
   const [serviceSelected, setServiceSelected] = useState('')
   const [doctorSelected, setDoctorSelected] = useState('')
   const [selectedServicePrice, setSelectedServicePrice] = useState('')
+  const [isCreateAccount, setIsCreateAccount] = useState(false)
 
   const { user: currentUser } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
@@ -59,21 +62,37 @@ const AddVisitNonAuth = () => {
   const dates = useCreateDates()
 
   const createVisit = (values) => {
+    const {
+      grupa,
+      usluga,
+      specjalista,
+      data,
+      godzina,
+      imie,
+      nazwisko,
+      email,
+      telefon,
+      miasto,
+      kodPocztowy,
+      ulica,
+      status,
+    } = values
+
     // Create object with values from form
     let visitData = {
-      grupa: values.grupa,
-      usluga: values.usluga,
-      specjalista: values.specjalista,
-      data: values.data,
-      godzina: values.godzina,
-      imie: values.imie,
-      nazwisko: values.nazwisko,
-      email: values.email,
-      telefon: values.telefon,
-      miasto: values.miasto,
-      kodPocztowy: values.kodPocztowy,
-      ulica: values.ulica,
-      status: values.status,
+      grupa,
+      usluga,
+      specjalista,
+      data,
+      godzina,
+      imie,
+      nazwisko,
+      email,
+      telefon,
+      miasto,
+      kodPocztowy,
+      ulica,
+      status,
       cena: selectedServicePrice,
       uid: currentUser !== null ? currentUser.id : null,
     }
@@ -82,16 +101,37 @@ const AddVisitNonAuth = () => {
     VisitData.create(visitData)
       .then((response) => {
         dispatch(refreshApp())
-        navigate('visits')
+        navigate('/visits')
       })
       .catch((e) => {
         console.log(e)
       })
+    if (values.password) {
+      // Create new visit based on provide visitData object
+      dispatch(
+        register(
+          imie,
+          nazwisko,
+          telefon,
+          miasto,
+          ulica,
+          kodPocztowy,
+          email,
+          values.password
+        )
+      )
+        .then(() => {
+          navigate('/login')
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+    }
   }
 
   // function responsible for display services from db as options to select
   const serviceGroupHandler = (values) => {
-      // set serviceGroupSelected state with value selected in form field "grupa usluga"
+    // set serviceGroupSelected state with value selected in form field "grupa usluga"
     setServiceGroupSelected(values.grupa)
 
     // this conditon is responsible for clear select form fields when we
@@ -117,7 +157,7 @@ const AddVisitNonAuth = () => {
 
   // function responsible for display services relative to before chosen value in field "grupa uslug"
   const serviceHandler = (values) => {
-    // selectedGroupServices is an array which store speficic services for current selected 
+    // selectedGroupServices is an array which store speficic services for current selected
     // group in field "grupa uslug"
     // 1. filter all services which are accesible in DB by service.grupa name
     // 2. using map we return only properties uslugi which are arrays
@@ -128,7 +168,7 @@ const AddVisitNonAuth = () => {
       .map((service) => service.uslugi)
       .flatMap((item) => item)
 
-      // as before we clear form select fields when change to default values
+    // as before we clear form select fields when change to default values
     if (serviceSelected && !doctorSelected) {
       values.godzina = ''
       values.data = ''
@@ -230,7 +270,7 @@ const AddVisitNonAuth = () => {
         <Formik
           enableReinitialize
           initialValues={visit}
-          validationSchema={signupValidationSchema}
+          validationSchema={addVisitNonAuthValidationSchema}
           onSubmit={(values, actions) => {
             createVisit(values)
             actions.resetForm()
@@ -376,6 +416,53 @@ const AddVisitNonAuth = () => {
               {errors.kodPocztowy && touched.kodPocztowy ? (
                 <p style={styles.errorStyle}>{errors.kodPocztowy}</p>
               ) : null}
+              {isCreateAccount ? (
+                <>
+                  <p style={{ fontSize: '.75em' }}>
+                    Jednak nie chcesz tworzyc konta?
+                    <span
+                      style={{
+                        color: '#01D4BF',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => {
+                        setIsCreateAccount(false)
+                      }}
+                    >
+                      Kliknij tutaj
+                    </span>
+                  </p>
+                  <label>Haslo</label>
+                  <Field
+                    name='password'
+                    type='password'
+                    style={{
+                      backgroundColor: 'transparent',
+                      border: '2px solid #333',
+                      height: '3em',
+                      margin: '10px 0',
+                      paddingLeft: '1em',
+                    }}
+                    placeholder='Haslo do konta'
+                  />
+                  {errors.password && touched.password ? (
+                    <p style={{ color: 'red' }}>{errors.password}</p>
+                  ) : null}
+                </>
+              ) : (
+                <p style={{ fontSize: '.75em' }}>
+                  Chcesz utworzyć konto?
+                  <span
+                    style={{
+                      color: '#01D4BF',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => setIsCreateAccount(true)}
+                  >
+                    Kliknij tutaj
+                  </span>
+                </p>
+              )}
               <button type='submit' style={styles.buttonStyle}>
                 Zarezerwuj
               </button>
