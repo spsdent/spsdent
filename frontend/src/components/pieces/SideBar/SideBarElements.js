@@ -73,7 +73,7 @@ export const NavTriangle = styled.div`
   border-left: 140px solid #fff;
   transform-origin: center;
   transform: rotate(225deg);
-  z-index: 999;
+  z-index: 999999;
 
   @media screen and (min-width: 1570px) {
     left: 198px;
