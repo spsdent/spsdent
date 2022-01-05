@@ -73,17 +73,35 @@ const VisitsPage = () => {
     navigate(`/visits/${item.id}`, { state: item });
   };
 
+const container = {
+  hidden: {opacity: 0},
+  show: {
+    opacity: 1,
+    transition: {
+      duration: .5,
+      delayChildren: 1,
+      staggerChildren: 1,
+    },
+  },
+}
+const itemOne = {
+  hidden: { y: -100, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+  },
+}
   return (
     <PageWrapper>
       <VisitsPageContainer>
         <VisitsPageTitleContainer>
-          <VisitsPageTitle>Aktualne</VisitsPageTitle>
-          <VisitsPageTitle primary>Rezerwacje</VisitsPageTitle>
+          <VisitsPageTitle initial={{y: -50, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: .1}}>Aktualne</VisitsPageTitle>
+          <VisitsPageTitle primary initial={{y: -50, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: .2}}>Rezerwacje</VisitsPageTitle>
         </VisitsPageTitleContainer>
         <VisitsContainer>
-          <Headers>
+          <Headers variants={container} initial="hidden" animate="show">
             <Header primary>
-              <HeaderText>usługa</HeaderText> <Triangle />
+              <HeaderText variants={itemOne}>usługa</HeaderText> <Triangle />
             </Header>
             <Header>
               <HeaderText>lekarz</HeaderText> <Triangle />
@@ -98,9 +116,12 @@ const VisitsPage = () => {
               <HeaderText>cena</HeaderText> <Triangle />
             </Header>
           </Headers>
-          <VisitsListContainer>
-            {visitsList.map((item) => (
-              <Visit onClick={() => goToVisit(item)}>
+          <VisitsListContainer variants={container} initial='hidden' animate='show'>
+            {visitsList.map((item,i) => (
+              <Visit initial={{ opacity: 0, x: -100 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: .3, delay: i * 0.2 }}
+      key={item._id} onClick={() => goToVisit(item)}>
               <VisitContent primary>{item.usluga}</VisitContent>
               <VisitContent >Leno Paleno</VisitContent>
               <VisitContent >{item.data}</VisitContent>

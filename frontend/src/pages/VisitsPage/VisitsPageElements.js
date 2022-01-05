@@ -18,24 +18,23 @@ export const VisitsPageContainer = styled.div`
 `;
 export const VisitsPageTitleContainer = styled.div`
   display: flex;
-  margin-bottom: 1em;
-
+  margin: 1.5em;
 `;
-export const VisitsPageTitle = styled.h1`
+export const VisitsPageTitle = styled(motion.h1)`
   font-size: 4em;
   letter-spacing: 0.05em;
   margin-left: 0.25em;
   color: ${(props) => (props.primary ? "#01D4BF" : "#333")};
 `;
 export const VisitsContainer = styled.div`
-  height: 100%;
+  height: fit-content;
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
 `;
-export const Headers = styled.div`
+export const Headers = styled(motion.div)`
   height: fit-content;
   padding: .5em 0;
   width: 96%;
@@ -44,7 +43,7 @@ export const Headers = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
-export const Header = styled.div`
+export const Header = styled(motion.div)`
   width: ${(props) => (props.primary ? "35%" : "15%")};
   display: flex;
   align-items: center;
@@ -63,7 +62,7 @@ export const Triangle = styled.div`
   border-top: 0.35em solid #333;
   margin-left: 0.3em;
 `;
-export const VisitsListContainer = styled.div`
+export const VisitsListContainer = styled(motion.div)`
   height: fit-content;
   width: 105%;
   
@@ -80,6 +79,7 @@ export const Visit = styled(motion.div)`
   align-items: center;
   padding-left: .7em;
   cursor: pointer;
+
 `;
 export const VisitContent = styled.p`
   font-family: "poppins";
