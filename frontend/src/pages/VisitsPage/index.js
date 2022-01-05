@@ -135,19 +135,19 @@ const itemOne = {
       </VisitsPageContainer>
       <Pattern
           src="Pattern.png"
-          top={"18%"}
-          left={"65%"}
-          transition={{ duration: 1 }}
-          initial={{ x: 400 }}
-          animate={{ x: 0 }}
+          top={"12%"}
+          left={"70%"}
+          transition={{ duration: .5 }}
+          initial={{ y: -400 }}
+          animate={{ y: 0 }}
         />
         <Pattern
           src="Pattern.png"
           top={"70%"}
           left={"13%"}
           transition={{ duration: 1 }}
-          initial={{ x: -400 }}
-          animate={{ x: 0 }}
+          initial={{ y: 400 }}
+          animate={{ y: 0 }}
         />
     </PageWrapper>
   );

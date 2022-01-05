@@ -4,9 +4,8 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import VisitDataService from '../../services/visit'
 import { refreshApp } from '../../store/actions/refresh'
 import { PageWrapper } from '../../components/PageWrapper'
-
-import {Container, VisitContainer, VisitTitleContainer, VisitTitle,  VisitText } from './VisitPageElements'
-
+import {Container, VisitContainer, VisitTitleContainer, VisitTitle,  VisitText, ButtonContainer, ButtonVisit} from './VisitPageElements';
+import { Pattern } from "../../components/Pattern";
 
 const VisitPage = () => {
   let { state } = useLocation()
@@ -41,12 +40,19 @@ const VisitPage = () => {
   }
   return (
     <PageWrapper>
+    
       <Container>
       <VisitTitleContainer>
-        <VisitTitle primary>Szczegóły</VisitTitle>
-        <VisitTitle>Rezerwacji</VisitTitle>
+        <VisitTitle primary initial={{ opacity: 0, x: 200 }}
+        animate={{ opacity: 1, x: 0}}
+        transition={{ delay: .1}}>Szczegóły</VisitTitle>
+        <VisitTitle initial={{ opacity: 0, x: 200 }}
+        animate={{ opacity: 1, x: 0}}
+        transition={{ delay: .3}} >Rezerwacji</VisitTitle>
         </VisitTitleContainer>
-          <VisitContainer>
+          <VisitContainer initial={{ opacity: 0, scale: .4 }}
+        animate={{ opacity: 1, scale: 1}}
+        transition={{duration: .5}}>
           < VisitText>Usługa: {state.usluga}</ VisitText>
           < VisitText>Specjalista: {state.specjalista}</ VisitText>
           < VisitText>Data: {state.data}</ VisitText>
@@ -58,26 +64,51 @@ const VisitPage = () => {
           < VisitText>Ulica: {state.ulica}</ VisitText>
           < VisitText>Kod pocztowy: {state.kodPocztowy}</ VisitText>
           < VisitText>Status: {state.status === false ? 'W trakcie' : 'Zrealizowna'}</ VisitText>
-          <button
+          <ButtonContainer>
+          <ButtonVisit
+          whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
             onClick={() => deleteVisit(state)}
       
           >
             Usuń wizytę
-          </button>
+          </ButtonVisit>
           {isAdmin || isSpec ? (
-            <button
+            <ButtonVisit primary
+            whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               onClick={() => changeVisitStatus(state.id, state.status)}
             >
               Archiwizuj wizytę
-            </button>
+            </ButtonVisit>
           ) : null}
-          <button
+          <ButtonVisit
+          whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
             onClick={() => navigate('/visits')}
           >
             Wróć do listy wizyt
-          </button>
+          </ButtonVisit>
+          </ButtonContainer>
         </VisitContainer>
       </Container>
+      
+          <Pattern
+        src="/pattern.png"
+        top="50%"
+        left="18%"
+        initial={{ opacity: 0, x: 200}}
+        animate={{ opacity: 1, x: 0}}
+        transition={{ duration: 1.5 }}
+      />
+          <Pattern
+        src="/pattern.png"
+        top="35%"
+        left="65%"
+        initial={{ opacity: 0, x: -200 }}
+        animate={{ opacity: 1, x: 0}}
+        transition={{ duration: 1.5 }}
+      />
     </PageWrapper>
   )
 }
