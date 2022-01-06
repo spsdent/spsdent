@@ -12,7 +12,13 @@ import { refreshApp } from '../../store/actions/refresh'
 import { addVisitUserValidationSchema } from '../../utils/validationSchemas'
 import { PageWrapper } from '../../components/PageWrapper'
 
-import { months, days, initialAddVisitValues, dentHours, minDate } from '../../helpers'
+import {
+  months,
+  days,
+  initialAddVisitValues,
+  dentHours,
+  minDate,
+} from '../../helpers'
 import {
   useFetchAllDoctors,
   useFetchAllServices,
@@ -20,6 +26,25 @@ import {
   useFetchAllUsers,
   useCreateDates,
 } from '../../hooks'
+import {
+  Container,
+  Title,
+  TitleContainer,
+  DashboardContainer,
+  VitalInfoContainer,
+  VitalInfoText,
+  VitalInfoEdit,
+  VitalInfoSocket,
+  ButtonDashboard,
+  PasswordChangeContainer,
+  ButtonsContainer,
+  ButtonVitalInfo,
+  DashboardVisitContainer,
+  DashboardVisit,
+  DashboardVisitTitle,
+  DashboardVisitText,
+  DashboardVisitButton,
+} from '../ProfilePage/ProfilePageElements'
 
 const styles = {
   inputStyle: {
@@ -154,9 +179,11 @@ const AddVisitAuthUser = () => {
     if (serviceSelected && !doctorSelected) {
       values.godzina = ''
       values.data = ''
+      setStartDate(null)
     } else if (!serviceSelected) {
       values.godzina = ''
       values.data = ''
+      setStartDate(null)
       setDoctorSelected('')
     }
 
@@ -274,12 +301,7 @@ const AddVisitAuthUser = () => {
 
   return (
     <PageWrapper>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
+      <Container>
         <h1> Zarezerwuj wizyte - user </h1>
         <Formik
           enableReinitialize
@@ -297,7 +319,12 @@ const AddVisitAuthUser = () => {
               }}
             >
               <label> Grupa uslug </label>
-              <Field as='select' name='grupa' style={styles.selectStyle} onBlur={handleBlur}>
+              <Field
+                as='select'
+                name='grupa'
+                style={styles.selectStyle}
+                onBlur={handleBlur}
+              >
                 <option value=''> Wybierz grupe uslugi... </option>
                 {serviceGroupHandler(values)}
               </Field>
@@ -307,7 +334,12 @@ const AddVisitAuthUser = () => {
               {serviceGroupSelected && (
                 <>
                   <label> Usluga </label>
-                  <Field as='select' name='usluga' style={styles.inputStyle} onBlur={handleBlur}>
+                  <Field
+                    as='select'
+                    name='usluga'
+                    style={styles.inputStyle}
+                    onBlur={handleBlur}
+                  >
                     <option value=''> Wybierz usluge... </option>
                     {serviceHandler(values)}
                   </Field>
@@ -387,16 +419,13 @@ const AddVisitAuthUser = () => {
               {isSubmit && (
                 <div
                   style={{
-                    width: '100%',
+                    width: '100vw',
                     height: '100vh',
-                    backgroundColor: 'rgba(3,3,3, .5)',
                     position: 'absolute',
                     left: '0',
                     top: '0',
+                    backgroundColor: 'rgba(3,3,3,.5)',
                     zIndex: '999',
-                    fontFamily: 'Poppins',
-                    fontSize: '.75rem',
-                    fontWeight: '500',
                   }}
                 >
                   <div
@@ -415,12 +444,14 @@ const AddVisitAuthUser = () => {
                       justifyContent: 'center',
                     }}
                   >
-                    <h1>Podsumowanie</h1>
+                    <h2 style={{ marginBottom: '20px' }}>Podsumowanie</h2>
                     <div
                       style={{
+                        position: 'relative',
+                        backgroundColor: '#fff',
                         display: 'flex',
-                        justifyContent: 'space-between',
-                        gap: '30px',
+                        alignItems: 'center',
+                        justifyContent: 'center',
                       }}
                     >
                       <div
@@ -483,7 +514,7 @@ const AddVisitAuthUser = () => {
             </Form>
           )}
         </Formik>
-      </div>
+      </Container>
     </PageWrapper>
   )
 }

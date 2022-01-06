@@ -633,6 +633,7 @@ const AddVisitAdmin = () => {
                           padding: '15px',
                           color: 'white',
                         }}
+                        key={user._id}
                       >
                         <p>Imie: {user.imie}</p>
                         <p>Nazwisko: {user.nazwisko}</p>

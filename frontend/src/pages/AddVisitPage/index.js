@@ -9,7 +9,7 @@ import AddVisitNonAuth from './AddVisitNonAuth'
 const AddVisitPage = () => {
   const { user: currentUser } = useSelector((state) => state.auth)
   return (
-    <PageWrapper>
+    <>
       {currentUser &&
         currentUser.roles[currentUser.roles.length - 1] === 'ROLE_ADMIN' && (
           <AddVisitAdmin />
@@ -19,7 +19,7 @@ const AddVisitPage = () => {
           <AddVisitAuthUser />
         )}
       {!currentUser && <AddVisitNonAuth />}
-    </PageWrapper>
+    </>
   )
 }
 

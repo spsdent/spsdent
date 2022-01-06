@@ -153,13 +153,13 @@ exports.changePwd = (req, res) => {
           })
           .catch((e) => res.status(500).send({ message: e }))
       } else {
-        res.status(500).send({
+        res.status(404).send({
           message:
             'Podane nowe haslo jest takie same jak aktualnie uzywane, wprowadz nowe.',
         })
       }
     } else {
-      res.status(500).send({
+      res.status(404).send({
         message: 'Stare haslo nie jest prawidlowe',
       })
     }

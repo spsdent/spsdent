@@ -1,5 +1,4 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { PageWrapper } from '../../components/PageWrapper'
 import { changePassword, logout } from '../../store/actions/auth'
@@ -33,18 +32,12 @@ const PwdChangePage = () => {
     newPassword: '',
   }
   const dispatch = useDispatch()
-  const { user: currentUser } = useSelector((state) => state.auth)
   const { message } = useSelector((state) => state.message)
-  let navigate = useNavigate()
 
   const onPwdUpdate = (values, actions) => {
     dispatch(changePassword(values))
       .then(() => {
-        if (currentUser) {
-          dispatch(logout())
-        }
         actions.resetForm()
-        navigate('/login')
       })
       .catch((e) => {
         console.log(e)

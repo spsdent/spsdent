@@ -135,7 +135,7 @@ const UpdateDoctor = () => {
 
   const updateRoles = (values) => {
     const { userId } = values
-    const rolesIdArr = selectedOption.map((option) => option.value)
+    const rolesIdArr = selectedOption.value
     let userObj = {
       roles: rolesIdArr,
     }
@@ -408,7 +408,6 @@ const UpdateDoctor = () => {
               <>
                 <label>Role</label>
                 <Select
-                  isMulti
                   defaultValue={selectedOption}
                   onChange={setSelectedOption}
                   options={rolesArr.map((role) => ({

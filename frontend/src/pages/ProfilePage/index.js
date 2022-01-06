@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { PageWrapper } from '../../components/PageWrapper'
-import { Formik, Form } from 'formik'
+import { Formik, Form, Field } from 'formik'
 import { Pattern } from '../../components/Pattern'
 import { useNavigate } from 'react-router'
+
+import {
+  updateUserDataValidationSchema,
+  signInChangePasswordValidationSchema,
+} from '../../utils/validationSchemas'
 
 import {
   Container,
@@ -24,9 +29,10 @@ import {
   DashboardVisitText,
   DashboardVisitButton,
 } from './ProfilePageElements'
-import AuthData from '../../services/auth'
-import { logout } from '../../store/actions/auth'
+import { logout, changePassword } from '../../store/actions/auth'
+import { refreshApp } from '../../store/actions/refresh'
 import UserData from '../../services/user'
+import { useFetchAllUsers } from '../../hooks'
 
 const ProfilePage = () => {
   const [initialValues, setInitialValues] = useState({
@@ -38,55 +44,78 @@ const ProfilePage = () => {
     email: '',
     ulica: '',
   })
+  const [oldUserValues, setOldUserValues] = useState()
   const { user: currentUser } = useSelector((state) => state.auth)
-  const dispatch = useDispatch()
-  const [userPwdData, setUserPwdData] = useState({ email: '', password: '' })
+  const { isRefresh } = useSelector((state) => state.refresh)
+  const { message } = useSelector((state) => state.message)
   const [isEditing, setIsEditing] = useState(false)
   const [isChangingPwd, setIsChangingPwd] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
-  let navigate = useNavigate()
+  const [userData, setUserData] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const allUsers = useFetchAllUsers()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   useEffect(() => {
-    if (!currentUser) {
-      navigate('/login')
-    }
-    const { imie, nazwisko, kodPocztowy, email, ulica, miasto, telefon } =
-      currentUser
-    setInitialValues({
-      imie,
-      nazwisko,
-      kodPocztowy,
-      email,
-      ulica,
-      miasto,
-      telefon,
+    setIsLoading(true)
+    UserData.getAll().then((response) => {
+      setIsLoading(false)
+      const signInUser = response.data.filter(
+        (user) => user._id === currentUser.id
+      )[0]
+      const { imie, nazwisko, kodPocztowy, email, ulica, miasto, telefon } =
+        signInUser
+      const obj = {
+        imie,
+        nazwisko,
+        kodPocztowy,
+        email,
+        ulica,
+        miasto,
+        telefon,
+      }
+      setUserData(obj)
+      setInitialValues(obj)
+      setOldUserValues(obj)
     })
-  }, [])
-
-  const onInputHandle = (e) => {
-    const { name, value } = e.target
-    setUserPwdData({ ...userPwdData, [name]: value })
-  }
-
-  const onPwdUpdate = () => {
-    AuthData.passwordChange(userPwdData).then((response) => {
-      dispatch(logout())
-      navigate('/login')
-    })
-  }
+  }, [isRefresh])
 
   const isUser = currentUser.roles[currentUser.roles.length - 1] === 'ROLE_USER'
   const isDoctor =
     currentUser.roles[currentUser.roles.length - 1] === 'ROLE_SPEC'
 
-  const deleteAccount = () => {
+  const onAccountDelete = () => {
     setIsDelete(false)
     UserData.deleteUser(currentUser.id)
       .then((response) => {
         dispatch(logout())
         navigate('/login')
       })
-      .catch((e) => console.log('Blad podczas usuwania konta'))
+      .catch((e) => console.log('Blad podczas usuwania'))
+  }
+
+  const onPwdUpdate = (values, actions) => {
+    let updateObj = { ...values, email: currentUser.email }
+    dispatch(changePassword(updateObj))
+      .then((response) => {
+        dispatch(logout())
+        actions.resetForm()
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+  }
+
+  const onUserUpdate = (values, actions) => {
+    UserData.updateUser(currentUser.id, values)
+      .then((response) => {
+        setIsEditing(false)
+        dispatch(refreshApp())
+      })
+      .catch((e) => {
+        console.log(e)
+      })
   }
 
   return (
@@ -118,8 +147,9 @@ const ProfilePage = () => {
             <Formik
               enableReinitialize
               initialValues={initialValues}
-              onSubmit={(values) => {
-                console.log(values)
+              validationSchema={updateUserDataValidationSchema}
+              onSubmit={(values, actions) => {
+                onUserUpdate(values, actions)
               }}
             >
               {({
@@ -140,59 +170,75 @@ const ProfilePage = () => {
                   >
                     <VitalInfoSocket>
                       <VitalInfoText primary>Imię:</VitalInfoText>
-                      <VitalInfoText>{currentUser.imie}</VitalInfoText>
+                      <VitalInfoText>{userData.imie}</VitalInfoText>
                     </VitalInfoSocket>
                     {isEditing && (
-                      <VitalInfoEdit
-                        type='text'
-                        name='imie'
-                        placeholder='Imie'
-                        value={values.imie}
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                      />
+                      <>
+                        <VitalInfoEdit
+                          type='text'
+                          name='imie'
+                          placeholder='Imie'
+                          value={values.imie}
+                          onBlur={handleBlur}
+                        />
+                        {errors.imie && touched.imie ? (
+                          <p style={{ color: 'red' }}>{errors.imie}</p>
+                        ) : null}
+                      </>
                     )}
                     <VitalInfoSocket>
                       <VitalInfoText primary>Nazwisko:</VitalInfoText>
-                      <VitalInfoText>{currentUser.nazwisko}</VitalInfoText>
+                      <VitalInfoText>{userData.nazwisko}</VitalInfoText>
                     </VitalInfoSocket>
                     {isEditing && (
-                      <VitalInfoEdit
-                        type='text'
-                        name='nazwisko'
-                        placeholder='Nazwisko'
-                        value={values.nazwisko}
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                      />
+                      <>
+                        <VitalInfoEdit
+                          type='text'
+                          name='nazwisko'
+                          placeholder='Nazwisko'
+                          value={values.nazwisko}
+                          onBlur={handleBlur}
+                        />
+                        {errors.nazwisko && touched.nazwisko ? (
+                          <p style={{ color: 'red' }}>{errors.nazwisko}</p>
+                        ) : null}
+                      </>
                     )}
                     <VitalInfoSocket>
                       <VitalInfoText primary>Telefon:</VitalInfoText>
-                      <VitalInfoText>{currentUser.telefon}</VitalInfoText>
+                      <VitalInfoText>{userData.telefon}</VitalInfoText>
                     </VitalInfoSocket>
                     {isEditing && (
-                      <VitalInfoEdit
-                        type='text'
-                        name='telefon'
-                        placeholder='Telefon'
-                        value={values.telefon}
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                      />
+                      <>
+                        <VitalInfoEdit
+                          type='text'
+                          name='telefon'
+                          placeholder='Telefon'
+                          value={values.telefon}
+                          onBlur={handleBlur}
+                        />
+                        {errors.telefon && touched.telefon ? (
+                          <p style={{ color: 'red' }}>{errors.telefon}</p>
+                        ) : null}
+                      </>
                     )}
                     <VitalInfoSocket>
                       <VitalInfoText primary>Miasto:</VitalInfoText>
-                      <VitalInfoText>{currentUser.miasto}</VitalInfoText>
+                      <VitalInfoText>{userData.miasto}</VitalInfoText>
                     </VitalInfoSocket>
                     {isEditing && (
-                      <VitalInfoEdit
-                        type='text'
-                        name='miasto'
-                        placeholder='Miasto'
-                        value={values.miasto}
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                      />
+                      <>
+                        <VitalInfoEdit
+                          type='text'
+                          name='miasto'
+                          placeholder='Miasto'
+                          value={values.miasto}
+                          onBlur={handleBlur}
+                        />
+                        {errors.miasto && touched.miasto ? (
+                          <p style={{ color: 'red' }}>{errors.miasto}</p>
+                        ) : null}
+                      </>
                     )}
                   </Form>
                   <Form
@@ -204,92 +250,135 @@ const ProfilePage = () => {
                   >
                     <VitalInfoSocket>
                       <VitalInfoText primary>Ulica:</VitalInfoText>
-                      <VitalInfoText>{currentUser.ulica}</VitalInfoText>
+                      <VitalInfoText>{userData.ulica}</VitalInfoText>
                     </VitalInfoSocket>
                     {isEditing && (
-                      <VitalInfoEdit
-                        type='text'
-                        name='ulica'
-                        placeholder='Ulica'
-                        value={values.ulica}
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                      />
+                      <>
+                        <VitalInfoEdit
+                          type='text'
+                          name='ulica'
+                          placeholder='Ulica'
+                          value={values.ulica}
+                          onBlur={handleBlur}
+                        />
+                        {errors.miasto && touched.miasto ? (
+                          <p style={{ color: 'red' }}>{errors.miasto}</p>
+                        ) : null}
+                      </>
                     )}
                     <VitalInfoSocket>
                       <VitalInfoText primary>Kod pocztowy:</VitalInfoText>
-                      <VitalInfoText>{currentUser.kodPocztowy}</VitalInfoText>
+                      <VitalInfoText>{userData.kodPocztowy}</VitalInfoText>
                     </VitalInfoSocket>
                     {isEditing && (
-                      <VitalInfoEdit
-                        type='text'
-                        name='kodPocztowy'
-                        placeholder='Kod-pocztowy'
-                        value={values.kodPocztowy}
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                      />
+                      <>
+                        <VitalInfoEdit
+                          type='text'
+                          name='kodPocztowy'
+                          placeholder='Kod-pocztowy'
+                          value={values.kodPocztowy}
+                          onBlur={handleBlur}
+                        />
+                        {errors.kodPocztowy && touched.kodPocztowy ? (
+                          <p style={{ color: 'red' }}>{errors.kodPocztowy}</p>
+                        ) : null}
+                      </>
                     )}
                     <VitalInfoSocket>
                       <VitalInfoText primary>Email:</VitalInfoText>
-                      <VitalInfoText>{currentUser.email}</VitalInfoText>
+                      <VitalInfoText>{userData.email}</VitalInfoText>
                     </VitalInfoSocket>
                     {isEditing && (
-                      <VitalInfoEdit
-                        type='text'
-                        name='email'
-                        placeholder='E-mail'
-                        value={values.email}
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                      />
+                      <>
+                        <VitalInfoEdit
+                          type='text'
+                          name='email'
+                          placeholder='E-mail'
+                          value={values.email}
+                          onBlur={handleBlur}
+                        />
+                        {errors.email && touched.email ? (
+                          <p style={{ color: 'red' }}>{errors.email}</p>
+                        ) : null}
+                      </>
                     )}
                     {isEditing && (
-                      <ButtonVitalInfo>Zapisz zmiany</ButtonVitalInfo>
+                      <ButtonVitalInfo type='submit'>
+                        Zapisz zmiany
+                      </ButtonVitalInfo>
                     )}
                   </Form>
+                  <ButtonsContainer>
+                    <ButtonDashboard
+                      type='button'
+                      onClick={() => {
+                        if (isEditing) {
+                          setIsEditing(false)
+                        } else {
+                          setIsEditing(true)
+                        }
+                        setValues(oldUserValues)
+                      }}
+                    >
+                      {isEditing ? 'Anuluj edycję' : 'Edytuj profil'}
+                    </ButtonDashboard>
+                    <ButtonDashboard
+                      type='button'
+                      onClick={() => setIsChangingPwd(!isChangingPwd)}
+                    >
+                      {isChangingPwd ? 'Anuluj zmianę' : 'Zmień hasło'}
+                    </ButtonDashboard>
+                    <ButtonDashboard onClick={() => setIsDelete(true)}>
+                      Usuń konto
+                    </ButtonDashboard>
+                  </ButtonsContainer>
                 </>
               )}
             </Formik>
-            {isChangingPwd && (
-              <>
-                <PasswordChangeContainer>
-                  <VitalInfoText password>Zmiana hasła</VitalInfoText>
-                  <VitalInfoEdit
-                    type='text'
-                    name='email'
-                    placeholder='E-mail'
-                    onChange={onInputHandle}
-                  />
-                  <VitalInfoEdit
-                    password
-                    type='password'
-                    name='password'
-                    placeholder='Nowe haslo'
-                    onChange={onInputHandle}
-                  />
-                  <ButtonDashboard onClick={onPwdUpdate}>
-                    Zmień hasło
-                  </ButtonDashboard>
-                  {/* <ButtonDashboard
-                    onClick={() => setIsChangingPwd(!isChangingPwd)}
-                  >
-                    Anuluj zmianę hasła
-                  </ButtonDashboard> */}
-                </PasswordChangeContainer>
-              </>
-            )}
-            <ButtonsContainer>
-              <ButtonDashboard onClick={() => setIsEditing(!isEditing)}>
-                {isEditing ? 'Anuluj edycję' : 'Edytuj profil'}
-              </ButtonDashboard>
-              <ButtonDashboard onClick={() => setIsChangingPwd(!isChangingPwd)}>
-                {isChangingPwd ? 'Anuluj zmianę' : 'Zmień hasło'}
-              </ButtonDashboard>
-              <ButtonDashboard onClick={() => setIsDelete(true)}>
-                Usuń konto
-              </ButtonDashboard>
-            </ButtonsContainer>
+            <Formik
+              enableReinitialize
+              initialValues={{ oldPassword: '', newPassword: '' }}
+              validationSchema={signInChangePasswordValidationSchema}
+              onSubmit={(values, actions) => onPwdUpdate(values, actions)}
+            >
+              {({ errors, touched, values }) => (
+                <Form>
+                  {isChangingPwd && (
+                    <>
+                      <PasswordChangeContainer>
+                        <VitalInfoText password>Zmiana hasła</VitalInfoText>
+                        <VitalInfoEdit
+                          type='password'
+                          name='oldPassword'
+                          placeholder='Stare haslo'
+                          value={values.oldPassword}
+                        />
+                        {errors.oldPassword && touched.oldPassword ? (
+                          <p style={{ color: 'red' }}>{errors.oldPassword}</p>
+                        ) : null}
+                        <VitalInfoEdit
+                          type='password'
+                          name='newPassword'
+                          placeholder='Nowe haslo'
+                          value={values.newPassword}
+                        />
+                        {errors.newPassword && touched.newPassword ? (
+                          <p style={{ color: 'red' }}>{errors.newPassword}</p>
+                        ) : null}
+                        <ButtonDashboard type='submit'>
+                          Zmień hasło
+                        </ButtonDashboard>
+                        {message && (
+                          <p style={{ color: 'red', textAlign: 'center' }}>
+                            {message}
+                          </p>
+                        )}
+                      </PasswordChangeContainer>
+                    </>
+                  )}
+                </Form>
+              )}
+            </Formik>
           </VitalInfoContainer>
 
           {(isUser || isDoctor) && (
@@ -395,7 +484,7 @@ const ProfilePage = () => {
                     marginLeft: '5px',
                     cursor: 'pointer',
                   }}
-                  onClick={deleteAccount}
+                  onClick={onAccountDelete}
                 >
                   Tak
                 </button>
