@@ -139,7 +139,7 @@ export const ButtonLink = styled(LinkButton)`
   text-decoration: none;
   width: 100%;
   height: 100%;
-  /* background-color: red; */
+  background-color: red;
   text-align: center;
   line-height: 2rem;
   font-size: 18px;
