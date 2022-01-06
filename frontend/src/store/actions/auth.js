@@ -93,9 +93,6 @@ export const login = (email, password) => (dispatch) => {
 export const changePassword = (data) => (dispatch) => {
   return AuthService.passwordChange(data).then(
     (response) => {
-      dispatch({
-        type: CHANGE_PASSWORD_SUCCESS,
-      })
 
       dispatch({
         type: SET_MESSAGE,
@@ -111,10 +108,6 @@ export const changePassword = (data) => (dispatch) => {
           error.response.data.message) ||
         error.message ||
         error.toString()
-
-      dispatch({
-        type: CHANGE_PASSWORD_FAIL,
-      })
 
       dispatch({
         type: SET_MESSAGE,
