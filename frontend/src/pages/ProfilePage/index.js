@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { Navigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { PageWrapper } from "../../components/PageWrapper";
-import { Formik, Form } from "formik";
-import { Pattern } from "../../components/Pattern";
+import React, { useState, useEffect } from 'react'
+import { Navigate } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { PageWrapper } from '../../components/PageWrapper'
+import { Formik, Form } from 'formik'
+import { Pattern } from '../../components/Pattern'
 
 import {
   Container,
@@ -23,31 +23,31 @@ import {
   DashboardVisitTitle,
   DashboardVisitText,
   DashboardVisitButton,
-} from "./ProfilePageElements";
-import AuthData from "../../services/auth";
-import { logout } from "../../store/actions/auth";
+} from './ProfilePageElements'
+import AuthData from '../../services/auth'
+import { logout } from '../../store/actions/auth'
 const ProfilePage = () => {
   const [initialValues, setInitialValues] = useState({
-    imie: "",
-    nazwisko: "",
-    kodPocztowy: "",
-    telefon: "",
-    miasto: "",
-    email: "",
-    ulica: "",
-  });
-  const { user: currentUser } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
-  const [userPwdData, setUserPwdData] = useState({ email: "", password: "" });
-  const [isEditing, setIsEditing] = useState(false);
-  const [isChangingPwd, setIsChangingPwd] = useState(false);
+    imie: '',
+    nazwisko: '',
+    kodPocztowy: '',
+    telefon: '',
+    miasto: '',
+    email: '',
+    ulica: '',
+  })
+  const { user: currentUser } = useSelector((state) => state.auth)
+  const dispatch = useDispatch()
+  const [userPwdData, setUserPwdData] = useState({ email: '', password: '' })
+  const [isEditing, setIsEditing] = useState(false)
+  const [isChangingPwd, setIsChangingPwd] = useState(false)
 
   useEffect(() => {
     if (!currentUser) {
-      return <Navigate to="/login" />;
+      return <Navigate to='/login' />
     }
     const { imie, nazwisko, kodPocztowy, email, ulica, miasto, telefon } =
-      currentUser;
+      currentUser
     setInitialValues({
       imie,
       nazwisko,
@@ -56,8 +56,8 @@ const ProfilePage = () => {
       ulica,
       miasto,
       telefon,
-    });
-  }, []);
+    })
+  }, [])
 
   // const onUserDelete = () => {
   //   UserData.deleteUser(currentUser.id).then((response) => (
@@ -70,22 +70,27 @@ const ProfilePage = () => {
   // }
 
   const onInputHandle = (e) => {
-    const { name, value } = e.target;
-    setUserPwdData({ ...userPwdData, [name]: value });
-  };
+    const { name, value } = e.target
+    setUserPwdData({ ...userPwdData, [name]: value })
+  }
 
   const onPwdUpdate = () => {
     AuthData.passwordChange(userPwdData).then((response) => {
-      dispatch(logout());
-      return <Navigate to="/login" />;
-    });
-  };
+      dispatch(logout())
+      return <Navigate to='/login' />
+    })
+  }
+
+  const isUser = currentUser.roles[currentUser.roles.length - 1] === 'ROLE_USER'
+  const isDoctor =
+    currentUser.roles[currentUser.roles.length - 1] === 'ROLE_SPEC'
+
   return (
     <PageWrapper>
       <Container>
         <TitleContainer>
           <Title
-            transition={{ type: "spring", bounce: 0.5, duration: 1.2 }}
+            transition={{ type: 'spring', bounce: 0.5, duration: 1.2 }}
             initial={{ y: -100 }}
             animate={{ y: 0 }}
           >
@@ -93,7 +98,7 @@ const ProfilePage = () => {
           </Title>
           <Title
             primary
-            transition={{ type: "spring", bounce: 0.5, duration: 1.7 }}
+            transition={{ type: 'spring', bounce: 0.5, duration: 1.7 }}
             initial={{ y: -100 }}
             animate={{ y: 0 }}
           >
@@ -110,7 +115,7 @@ const ProfilePage = () => {
               enableReinitialize
               initialValues={initialValues}
               onSubmit={(values) => {
-                console.log(values);
+                console.log(values)
               }}
             >
               {({
@@ -124,9 +129,9 @@ const ProfilePage = () => {
                 <>
                   <Form
                     style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      width: "40%",
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: '40%',
                     }}
                   >
                     <VitalInfoSocket>
@@ -135,9 +140,9 @@ const ProfilePage = () => {
                     </VitalInfoSocket>
                     {isEditing && (
                       <VitalInfoEdit
-                        type="text"
-                        name="imie"
-                        placeholder="Imie"
+                        type='text'
+                        name='imie'
+                        placeholder='Imie'
                         value={values.imie}
                         onBlur={handleBlur}
                         onChange={handleChange}
@@ -149,9 +154,9 @@ const ProfilePage = () => {
                     </VitalInfoSocket>
                     {isEditing && (
                       <VitalInfoEdit
-                        type="text"
-                        name="nazwisko"
-                        placeholder="Nazwisko"
+                        type='text'
+                        name='nazwisko'
+                        placeholder='Nazwisko'
                         value={values.nazwisko}
                         onBlur={handleBlur}
                         onChange={handleChange}
@@ -163,9 +168,9 @@ const ProfilePage = () => {
                     </VitalInfoSocket>
                     {isEditing && (
                       <VitalInfoEdit
-                        type="text"
-                        name="telefon"
-                        placeholder="Telefon"
+                        type='text'
+                        name='telefon'
+                        placeholder='Telefon'
                         value={values.telefon}
                         onBlur={handleBlur}
                         onChange={handleChange}
@@ -177,9 +182,9 @@ const ProfilePage = () => {
                     </VitalInfoSocket>
                     {isEditing && (
                       <VitalInfoEdit
-                        type="text"
-                        name="miasto"
-                        placeholder="Miasto"
+                        type='text'
+                        name='miasto'
+                        placeholder='Miasto'
                         value={values.miasto}
                         onBlur={handleBlur}
                         onChange={handleChange}
@@ -188,9 +193,9 @@ const ProfilePage = () => {
                   </Form>
                   <Form
                     style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      width: "40%",
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: '40%',
                     }}
                   >
                     <VitalInfoSocket>
@@ -199,9 +204,9 @@ const ProfilePage = () => {
                     </VitalInfoSocket>
                     {isEditing && (
                       <VitalInfoEdit
-                        type="text"
-                        name="ulica"
-                        placeholder="Ulica"
+                        type='text'
+                        name='ulica'
+                        placeholder='Ulica'
                         value={values.ulica}
                         onBlur={handleBlur}
                         onChange={handleChange}
@@ -213,9 +218,9 @@ const ProfilePage = () => {
                     </VitalInfoSocket>
                     {isEditing && (
                       <VitalInfoEdit
-                        type="text"
-                        name="kodPocztowy"
-                        placeholder="Kod-pocztowy"
+                        type='text'
+                        name='kodPocztowy'
+                        placeholder='Kod-pocztowy'
                         value={values.kodPocztowy}
                         onBlur={handleBlur}
                         onChange={handleChange}
@@ -227,9 +232,9 @@ const ProfilePage = () => {
                     </VitalInfoSocket>
                     {isEditing && (
                       <VitalInfoEdit
-                        type="text"
-                        name="email"
-                        placeholder="E-mail"
+                        type='text'
+                        name='email'
+                        placeholder='E-mail'
                         value={values.email}
                         onBlur={handleBlur}
                         onChange={handleChange}
@@ -247,104 +252,102 @@ const ProfilePage = () => {
                 <PasswordChangeContainer>
                   <VitalInfoText password>Zmiana hasła</VitalInfoText>
                   <VitalInfoEdit
-                    type="text"
-                    name="email"
-                    placeholder="E-mail"
+                    type='text'
+                    name='email'
+                    placeholder='E-mail'
                     onChange={onInputHandle}
                   />
                   <VitalInfoEdit
                     password
-                    type="password"
-                    name="password"
-                    placeholder="Nowe haslo"
+                    type='password'
+                    name='password'
+                    placeholder='Nowe haslo'
                     onChange={onInputHandle}
                   />
                   <ButtonDashboard onClick={onPwdUpdate}>
                     Zmień hasło
                   </ButtonDashboard>
-                  <ButtonDashboard
+                  {/* <ButtonDashboard
                     onClick={() => setIsChangingPwd(!isChangingPwd)}
                   >
                     Anuluj zmianę hasła
-                  </ButtonDashboard>
+                  </ButtonDashboard> */}
                 </PasswordChangeContainer>
               </>
             )}
             <ButtonsContainer>
               <ButtonDashboard onClick={() => setIsEditing(!isEditing)}>
-                {isEditing ? "Zakończ edycję" : "Edytuj profil"}
+                {isEditing ? 'Anuluj edycję' : 'Edytuj profil'}
               </ButtonDashboard>
-              {!isChangingPwd && (
-                <ButtonDashboard
-                  onClick={() => setIsChangingPwd(!isChangingPwd)}
-                >
-                  Zmień hasło
-                </ButtonDashboard>
-              )}
+              <ButtonDashboard onClick={() => setIsChangingPwd(!isChangingPwd)}>
+                {isChangingPwd ? 'Anuluj zmianę' : 'Zmień hasło'}
+              </ButtonDashboard>
               <ButtonDashboard>Usuń konto</ButtonDashboard>
             </ButtonsContainer>
           </VitalInfoContainer>
 
-          <DashboardVisitContainer>
-            <DashboardVisit primary>
-              <DashboardVisitTitle>Najbliższa wizyta</DashboardVisitTitle>
-              <DashboardVisitText primary>Usługa</DashboardVisitText>
-              <DashboardVisitText>
-                Badanie lekarsko-stomatologiczne
-              </DashboardVisitText>
-              <DashboardVisitText primary>Specjalista</DashboardVisitText>
-              <DashboardVisitText>Tosia Dyskretka</DashboardVisitText>
-              <DashboardVisitText primary>Data</DashboardVisitText>
-              <DashboardVisitText>21.03.21</DashboardVisitText>
-              <DashboardVisitText primary>Godzina</DashboardVisitText>
-              <DashboardVisitText>12:30</DashboardVisitText>
-              <DashboardVisitButton
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Przejdź do wizyty
-              </DashboardVisitButton>
-            </DashboardVisit>
-            <DashboardVisit>
-              <DashboardVisitTitle>Ostatnia wizyta</DashboardVisitTitle>
-              <DashboardVisitText primary>Usługa</DashboardVisitText>
-              <DashboardVisitText>
-                Badanie lekarsko-stomatologiczne
-              </DashboardVisitText>
-              <DashboardVisitText primary>Specjalista</DashboardVisitText>
-              <DashboardVisitText>Adrian Kotletka</DashboardVisitText>
-              <DashboardVisitText primary>Data</DashboardVisitText>
-              <DashboardVisitText>06.01.21</DashboardVisitText>
-              <DashboardVisitText primary>Godzina</DashboardVisitText>
-              <DashboardVisitText>11:00</DashboardVisitText>
-              <DashboardVisitButton
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Przejdź do wizyty
-              </DashboardVisitButton>
-            </DashboardVisit>
-          </DashboardVisitContainer>
+          {(isUser || isDoctor) && (
+            <DashboardVisitContainer>
+              <DashboardVisit primary>
+                <DashboardVisitTitle>Najbliższa wizyta</DashboardVisitTitle>
+                <DashboardVisitText primary>Usługa</DashboardVisitText>
+                <DashboardVisitText>
+                  Badanie lekarsko-stomatologiczne
+                </DashboardVisitText>
+                <DashboardVisitText primary>Specjalista</DashboardVisitText>
+                <DashboardVisitText>Tosia Dyskretka</DashboardVisitText>
+                <DashboardVisitText primary>Data</DashboardVisitText>
+                <DashboardVisitText>21.03.21</DashboardVisitText>
+                <DashboardVisitText primary>Godzina</DashboardVisitText>
+                <DashboardVisitText>12:30</DashboardVisitText>
+                <DashboardVisitButton
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Przejdź do wizyty
+                </DashboardVisitButton>
+              </DashboardVisit>
+              <DashboardVisit>
+                <DashboardVisitTitle>Ostatnia wizyta</DashboardVisitTitle>
+                <DashboardVisitText primary>Usługa</DashboardVisitText>
+                <DashboardVisitText>
+                  Badanie lekarsko-stomatologiczne
+                </DashboardVisitText>
+                <DashboardVisitText primary>Specjalista</DashboardVisitText>
+                <DashboardVisitText>Adrian Kotletka</DashboardVisitText>
+                <DashboardVisitText primary>Data</DashboardVisitText>
+                <DashboardVisitText>06.01.21</DashboardVisitText>
+                <DashboardVisitText primary>Godzina</DashboardVisitText>
+                <DashboardVisitText>11:00</DashboardVisitText>
+                <DashboardVisitButton
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Przejdź do wizyty
+                </DashboardVisitButton>
+              </DashboardVisit>
+            </DashboardVisitContainer>
+          )}
         </DashboardContainer>
       </Container>
       <Pattern
-        src="/Pattern.png"
-        top={"70%"}
-        left={"5%"}
-        transition={{ type: "spring", bounce: 0.7, duration: 3, delay: 0.4 }}
+        src='/Pattern.png'
+        top={'70%'}
+        left={'5%'}
+        transition={{ type: 'spring', bounce: 0.7, duration: 3, delay: 0.4 }}
         initial={{ opacity: 0, x: -200, rotate: 60 }}
         animate={{ opacity: 1, x: 0, rotate: 90 }}
       />
       <Pattern
-        src="/Pattern.png"
-        top={"5%"}
-        left={"80%"}
-        transition={{ type: "spring", bounce: 0.5, duration: 2, delay: 0.6 }}
+        src='/Pattern.png'
+        top={'5%'}
+        left={'80%'}
+        transition={{ type: 'spring', bounce: 0.5, duration: 2, delay: 0.6 }}
         initial={{ opacity: 0, rotate: 90, scale: 1 }}
         animate={{ opacity: 1, rotate: 45, scale: 1.2 }}
       />
     </PageWrapper>
-  );
-};
+  )
+}
 
-export default ProfilePage;
+export default ProfilePage
