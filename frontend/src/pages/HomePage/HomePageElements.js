@@ -149,6 +149,7 @@ export const AddVisitButton = styled.button`
   background-color: #01d4bf;
   transition: 0.3s ease;
   cursor: pointer;
+  border-radius: 0 10px 10px 0;
   ${ButtonContainer}:hover & {
     background-color: #333;
   }
@@ -172,6 +173,7 @@ export const ButtonSpan = styled.span`
   justify-content: center;
   align-items: center;
   transition: 0.3s ease;
+  border-radius: 10px 0 0 10px;
   ${ButtonContainer}:hover & {
     background-color: #01d4bf;
     transform: translateX(25%);

@@ -62,6 +62,7 @@ text-decoration: none;
   font-size: 1em;
   padding: 0.5em;
   transition: 0.2s ease;
+  border-radius: 10px;
 
   &:hover {
     background-color: #01d4bf;

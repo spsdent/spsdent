@@ -81,6 +81,7 @@ export const BarIcon = styled.img`
   height: 31px;
   white-space: nowrap;
   transition: 0.2s ease-out;
+  
   @media screen and (max-width: 1280px) {
     height: 21px;
   }
@@ -158,6 +159,7 @@ export const ButtonNav = styled.div`
   margin-right: 20px;
   height: 50px;
   transition: 0.3s ease;
+  border-radius: 10px;
   background-color: ${(props) => (props.primary ? "#01D4BF" : "#333")};
   width: ${(props) => (props.primary ? "200px" : "150px")};
 
