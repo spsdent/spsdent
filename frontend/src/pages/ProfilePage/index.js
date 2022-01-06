@@ -15,12 +15,13 @@ import {
   VitalInfoSocket,
   ButtonDashboard,
   PasswordChangeContainer,
-  ButtonContainer,
+  ButtonsContainer,
+  ButtonVitalInfo,
   DashboardVisitContainer,
   DashboardVisit,
   DashboardVisitTitle,
   DashboardVisitText,
-  DashboardVisitButton
+  DashboardVisitButton,
 } from "./ProfilePageElements";
 import AuthData from "../../services/auth";
 import { logout } from "../../store/actions/auth";
@@ -219,13 +220,41 @@ const ProfilePage = () => {
                       />
                     )}
                     {isEditing && (
-                      <ButtonDashboard>Zapisz zmiany</ButtonDashboard>
+                      <ButtonVitalInfo>Zapisz zmiany</ButtonVitalInfo>
                     )}
                   </Form>
                 </>
               )}
             </Formik>
-            <ButtonContainer>
+            {isChangingPwd && (
+              <>
+                <PasswordChangeContainer>
+                  <VitalInfoText password>Zmiana hasła</VitalInfoText>
+                  <VitalInfoEdit
+                    type="text"
+                    name="email"
+                    placeholder="E-mail"
+                    onChange={onInputHandle}
+                  />
+                  <VitalInfoEdit
+                    password
+                    type="password"
+                    name="password"
+                    placeholder="Nowe haslo"
+                    onChange={onInputHandle}
+                  />
+                  <ButtonDashboard onClick={onPwdUpdate}>
+                    Zmień hasło
+                  </ButtonDashboard>
+                  <ButtonDashboard
+                    onClick={() => setIsChangingPwd(!isChangingPwd)}
+                  >
+                    Anuluj zmianę hasła
+                  </ButtonDashboard>
+                </PasswordChangeContainer>
+              </>
+            )}
+            <ButtonsContainer>
               <ButtonDashboard onClick={() => setIsEditing(!isEditing)}>
                 {isEditing ? "Zakończ edycję" : "Edytuj profil"}
               </ButtonDashboard>
@@ -237,32 +266,7 @@ const ProfilePage = () => {
                 </ButtonDashboard>
               )}
               <ButtonDashboard>Usuń konto</ButtonDashboard>
-            </ButtonContainer>
-            {isChangingPwd && (
-              <PasswordChangeContainer>
-                <VitalInfoText>Zmień hasło</VitalInfoText>
-                <VitalInfoEdit
-                  type="text"
-                  name="email"
-                  placeholder="E-mail"
-                  onChange={onInputHandle}
-                />
-                <VitalInfoEdit
-                  type="password"
-                  name="password"
-                  placeholder="Nowe haslo"
-                  onChange={onInputHandle}
-                />
-                <ButtonDashboard onClick={onPwdUpdate}>
-                  Zmień hasło
-                </ButtonDashboard>
-                <ButtonDashboard
-                  onClick={() => setIsChangingPwd(!isChangingPwd)}
-                >
-                  Anuluj zmianę hasła
-                </ButtonDashboard>
-              </PasswordChangeContainer>
-            )}
+            </ButtonsContainer>
           </VitalInfoContainer>
 
           <DashboardVisitContainer>
