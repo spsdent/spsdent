@@ -6,7 +6,7 @@ export const Container = styled.div`
   height: 75vh;
   margin-top: 2.6em;
   font-size: 24px;
-  marginleft: 0.3rem;
+  margin-left: 0.3rem;
   font-family: 'Poppins';
   // background-color: cadetblue;
   @media screen and (max-width: 1500px) {
@@ -42,8 +42,42 @@ export const Title = styled(motion.h1)`
   }
 `
 
-export const EmptyListHeading = styled(Title)`
-  font-size: 2.5rem;
-  text-decoration: underline;
-  color: salmon;
+// export const EmptyListHeading = styled(Title)`
+//   font-size: 2.5rem;
+//   text-decoration: underline;
+//   color: salmon;
+// `
+
+export const DashboardContainer = styled.div`
+
+`
+export const VitalInfoContainer = styled.div`
+background-color: cadetblue;
+display: flex;
+
+
+`
+export const VitalInfoSocket = styled.div`
+`
+export const VitalInfoText = styled.p`
+
+`
+export const VitalInfoEdit = styled.input`
+
+`
+export const ButtonContainer = styled.div`
+display: flex;
+flex-direction: column;
+justify-content: flex-start;
+align-items: center;
+gap: .5em;
+background-color: #343;
+flex-grow: 1;
+padding: 3em 0;
+`
+export const ButtonDashboard = styled.button`
+
+`
+export const PasswordChangeContainer = styled.div`
+
 `
