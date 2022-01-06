@@ -3,6 +3,7 @@ import { Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { PageWrapper } from "../../components/PageWrapper";
 import { Formik, Form } from "formik";
+import { Pattern } from "../../components/Pattern";
 
 import {
   Container,
@@ -102,7 +103,7 @@ const ProfilePage = () => {
         <DashboardContainer
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.8 }}
         >
           <VitalInfoContainer>
             <Formik
@@ -326,6 +327,22 @@ const ProfilePage = () => {
           </DashboardVisitContainer>
         </DashboardContainer>
       </Container>
+      <Pattern
+        src="/Pattern.png"
+        top={"70%"}
+        left={"5%"}
+        transition={{ type: "spring", bounce: 0.7, duration: 3, delay: 0.4 }}
+        initial={{ opacity: 0, x: -200, rotate: 60 }}
+        animate={{ opacity: 1, x: 0, rotate: 90 }}
+      />
+      <Pattern
+        src="/Pattern.png"
+        top={"5%"}
+        left={"80%"}
+        transition={{ type: "spring", bounce: 0.5, duration: 2, delay: 0.6 }}
+        initial={{ opacity: 0, rotate: 90, scale: 1 }}
+        animate={{ opacity: 1, rotate: 45, scale: 1.2 }}
+      />
     </PageWrapper>
   );
 };
