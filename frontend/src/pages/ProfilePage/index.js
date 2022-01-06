@@ -20,29 +20,10 @@ import {
   DashboardVisit,
   DashboardVisitTitle,
   DashboardVisitText,
+  DashboardVisitButton
 } from "./ProfilePageElements";
 import AuthData from "../../services/auth";
 import { logout } from "../../store/actions/auth";
-
-const styles = {
-  formGroup: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  inputStyle: {
-    backgroundColor: "transparent",
-    border: "2px solid #333",
-    height: "3em",
-    margin: "10px 0",
-    paddingLeft: "1em",
-  },
-  buttonStyle: {
-    backgroundColor: "transparent",
-    border: "2px solid #333",
-    cursor: "pointer",
-    padding: ".5rem 0",
-  },
-};
 
 const ProfilePage = () => {
   const [initialValues, setInitialValues] = useState({
@@ -129,7 +110,6 @@ const ProfilePage = () => {
                       display: "flex",
                       flexDirection: "column",
                       width: "40%",
-                      backgroundColor: "#636",
                     }}
                   >
                     <VitalInfoSocket>
@@ -144,7 +124,6 @@ const ProfilePage = () => {
                         value={values.imie}
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        style={styles.inputStyle}
                       />
                     )}
                     <VitalInfoSocket>
@@ -159,7 +138,6 @@ const ProfilePage = () => {
                         value={values.nazwisko}
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        style={styles.inputStyle}
                       />
                     )}
                     <VitalInfoSocket>
@@ -174,7 +152,6 @@ const ProfilePage = () => {
                         value={values.telefon}
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        style={styles.inputStyle}
                       />
                     )}
                     <VitalInfoSocket>
@@ -189,7 +166,6 @@ const ProfilePage = () => {
                         value={values.miasto}
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        style={styles.inputStyle}
                       />
                     )}
                   </Form>
@@ -198,7 +174,6 @@ const ProfilePage = () => {
                       display: "flex",
                       flexDirection: "column",
                       width: "40%",
-                      backgroundColor: "yellowgreen",
                     }}
                   >
                     <VitalInfoSocket>
@@ -213,7 +188,6 @@ const ProfilePage = () => {
                         value={values.ulica}
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        style={styles.inputStyle}
                       />
                     )}
                     <VitalInfoSocket>
@@ -228,7 +202,6 @@ const ProfilePage = () => {
                         value={values.kodPocztowy}
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        style={styles.inputStyle}
                       />
                     )}
                     <VitalInfoSocket>
@@ -243,7 +216,6 @@ const ProfilePage = () => {
                         value={values.email}
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        style={styles.inputStyle}
                       />
                     )}
                     {isEditing && (
@@ -294,7 +266,7 @@ const ProfilePage = () => {
           </VitalInfoContainer>
 
           <DashboardVisitContainer>
-            <DashboardVisit>
+            <DashboardVisit primary>
               <DashboardVisitTitle>Najbliższa wizyta</DashboardVisitTitle>
               <DashboardVisitText primary>Usługa</DashboardVisitText>
               <DashboardVisitText>
@@ -306,7 +278,7 @@ const ProfilePage = () => {
               <DashboardVisitText>21.03.21</DashboardVisitText>
               <DashboardVisitText primary>Godzina</DashboardVisitText>
               <DashboardVisitText>12:30</DashboardVisitText>
-              <DashboardVisitText>Przejdź do wizyty</DashboardVisitText>
+              <DashboardVisitButton>Przejdź do wizyty</DashboardVisitButton>
             </DashboardVisit>
             <DashboardVisit>
               <DashboardVisitTitle>Ostatnia wizyta</DashboardVisitTitle>
@@ -320,7 +292,7 @@ const ProfilePage = () => {
               <DashboardVisitText>06.01.21</DashboardVisitText>
               <DashboardVisitText primary>Godzina</DashboardVisitText>
               <DashboardVisitText>11:00</DashboardVisitText>
-              <DashboardVisitText>Przejdź do wizyty</DashboardVisitText>
+              <DashboardVisitButton>Przejdź do wizyty</DashboardVisitButton>
             </DashboardVisit>
           </DashboardVisitContainer>
         </DashboardContainer>
