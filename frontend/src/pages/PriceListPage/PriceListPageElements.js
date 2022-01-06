@@ -6,6 +6,7 @@ export const PriceListPageContainer = styled(motion.div)`
   /* background-color: #aaa; */
   margin-top: 3em;
   font-size: 24px;
+  
   @media screen and (max-width: 1500px) {
     font-size: 20px;
   }
@@ -25,6 +26,7 @@ export const PriceListTitle = styled(motion.h1)`
   line-height: 1em;
   letter-spacing: 0.05em;
   z-index: 1;
+
 `
 export const PriceListTable = styled(motion.div)`
   margin-top: 1.5em;
@@ -36,7 +38,7 @@ export const PriceListTable = styled(motion.div)`
   height: fit-content;
   font-family: 'montserrat';
   /* box-shadow: 0px 1px 10px 1px rgba(51, 51, 51, 0.2); */
-`
+  `
 export const PriceTableRow = styled(motion.div)`
   display: flex;
   justify-content: space-around;
@@ -50,6 +52,7 @@ export const PriceTableRow = styled(motion.div)`
   border-bottom: 2px solid rgba(51, 51, 51, 0.2);
   padding: 1.2em 0;
   transition: 0.1s linear;
+  border-radius: 10px;
   z-index: ${(props) => (props.primary ? '2' : '1')};
   &:hover {
     background-color: ${(props) => (props.primary ? '#333' : '#f6f6f6')};
