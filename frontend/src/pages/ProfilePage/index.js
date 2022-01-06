@@ -25,7 +25,6 @@ import {
 } from "./ProfilePageElements";
 import AuthData from "../../services/auth";
 import { logout } from "../../store/actions/auth";
-
 const ProfilePage = () => {
   const [initialValues, setInitialValues] = useState({
     imie: "",
@@ -80,15 +79,31 @@ const ProfilePage = () => {
       return <Navigate to="/login" />;
     });
   };
-
   return (
     <PageWrapper>
       <Container>
         <TitleContainer>
-          <Title>Panel</Title>
-          <Title primary>Pacjenta</Title>
+          <Title
+            transition={{ type: "spring", bounce: 0.5, duration: 1.2 }}
+            initial={{ y: -100 }}
+            animate={{ y: 0 }}
+          >
+            Panel
+          </Title>
+          <Title
+            primary
+            transition={{ type: "spring", bounce: 0.5, duration: 1.7 }}
+            initial={{ y: -100 }}
+            animate={{ y: 0 }}
+          >
+            Pacjenta
+          </Title>
         </TitleContainer>
-        <DashboardContainer>
+        <DashboardContainer
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
           <VitalInfoContainer>
             <Formik
               enableReinitialize
@@ -282,7 +297,12 @@ const ProfilePage = () => {
               <DashboardVisitText>21.03.21</DashboardVisitText>
               <DashboardVisitText primary>Godzina</DashboardVisitText>
               <DashboardVisitText>12:30</DashboardVisitText>
-              <DashboardVisitButton>Przejdź do wizyty</DashboardVisitButton>
+              <DashboardVisitButton
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Przejdź do wizyty
+              </DashboardVisitButton>
             </DashboardVisit>
             <DashboardVisit>
               <DashboardVisitTitle>Ostatnia wizyta</DashboardVisitTitle>
@@ -296,7 +316,12 @@ const ProfilePage = () => {
               <DashboardVisitText>06.01.21</DashboardVisitText>
               <DashboardVisitText primary>Godzina</DashboardVisitText>
               <DashboardVisitText>11:00</DashboardVisitText>
-              <DashboardVisitButton>Przejdź do wizyty</DashboardVisitButton>
+              <DashboardVisitButton
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Przejdź do wizyty
+              </DashboardVisitButton>
             </DashboardVisit>
           </DashboardVisitContainer>
         </DashboardContainer>

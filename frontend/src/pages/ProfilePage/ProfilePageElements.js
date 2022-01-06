@@ -43,7 +43,7 @@ export const Title = styled(motion.h1)`
 //   color: salmon;
 // `
 
-export const DashboardContainer = styled.div`
+export const DashboardContainer = styled(motion.div)`
   background-color: rgba(255, 255, 255, 0.7);
   height: fit-content;
   padding: 2em 3em;
@@ -100,6 +100,10 @@ export const ButtonDashboard = styled(motion.button)`
   border-radius: 8px;
   letter-spacing: 0.05em;
   width: 9em;
+
+  &:active {
+    background-color: #01d4bf;
+  }
 `;
 export const PasswordChangeContainer = styled.div`
   /* background-color: cadetblue; */
@@ -166,4 +170,7 @@ export const ButtonVitalInfo = styled(motion.button)`
   letter-spacing: 0.05em;
   width: 60%;
   margin-top: 1em;
+  &:active {
+    background-color: #01d4bf;
+  }
 `;
