@@ -16,6 +16,10 @@ import {
   ButtonDashboard,
   PasswordChangeContainer,
   ButtonContainer,
+  DashboardVisitContainer,
+  DashboardVisit,
+  DashboardVisitTitle,
+  DashboardVisitText,
 } from "./ProfilePageElements";
 import AuthData from "../../services/auth";
 import { logout } from "../../store/actions/auth";
@@ -288,283 +292,39 @@ const ProfilePage = () => {
               </PasswordChangeContainer>
             )}
           </VitalInfoContainer>
+
+          <DashboardVisitContainer>
+            <DashboardVisit>
+              <DashboardVisitTitle>Najbliższa wizyta</DashboardVisitTitle>
+              <DashboardVisitText primary>Usługa</DashboardVisitText>
+              <DashboardVisitText>
+                Badanie lekarsko-stomatologiczne
+              </DashboardVisitText>
+              <DashboardVisitText primary>Specjalista</DashboardVisitText>
+              <DashboardVisitText>Tosia Dyskretka</DashboardVisitText>
+              <DashboardVisitText primary>Data</DashboardVisitText>
+              <DashboardVisitText>21.03.21</DashboardVisitText>
+              <DashboardVisitText primary>Godzina</DashboardVisitText>
+              <DashboardVisitText>12:30</DashboardVisitText>
+              <DashboardVisitText>Przejdź do wizyty</DashboardVisitText>
+            </DashboardVisit>
+            <DashboardVisit>
+              <DashboardVisitTitle>Ostatnia wizyta</DashboardVisitTitle>
+              <DashboardVisitText primary>Usługa</DashboardVisitText>
+              <DashboardVisitText>
+                Badanie lekarsko-stomatologiczne
+              </DashboardVisitText>
+              <DashboardVisitText primary>Specjalista</DashboardVisitText>
+              <DashboardVisitText>Adrian Kotletka</DashboardVisitText>
+              <DashboardVisitText primary>Data</DashboardVisitText>
+              <DashboardVisitText>06.01.21</DashboardVisitText>
+              <DashboardVisitText primary>Godzina</DashboardVisitText>
+              <DashboardVisitText>11:00</DashboardVisitText>
+              <DashboardVisitText>Przejdź do wizyty</DashboardVisitText>
+            </DashboardVisit>
+          </DashboardVisitContainer>
         </DashboardContainer>
       </Container>
-
-      {/* <Container>
-        <TitleContainer>
-          <Title>Panel</Title>
-          <Title primary>Pacjenta</Title>
-        </TitleContainer>
-        <div
-          style={{
-            backgroundColor: '#fff',
-            width: '100%',
-            padding: '2rem',
-            borderRadius: '10px',
-            display: 'flex',
-            flexDirection: ' column',
-            gap: '30px',
-            margin: '30px 0',
-          }}
-        >
-          <div
-            style={{
-              width: '100%',
-              height: '50%',
-              display: 'grid',
-              gridTemplateColumns: '80% 20%',
-            }}
-          >
-            <Formik
-              enableReinitialize
-              initialValues={initialValues}
-              onSubmit={(values) => {
-                console.log(values)
-              }}
-            >
-              {({
-                errors,
-                touched,
-                values,
-                setValues,
-                handleChange,
-                handleBlur,
-              }) => (
-                <Form
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    width: '300px',
-                  }}
-                >
-                  <p>
-                    <strong>Imie:</strong> {currentUser.imie}
-                  </p>
-                  {isEditing && (
-                    <input
-                      type='text'
-                      name='imie'
-                      placeholder='Imie'
-                      value={values.imie}
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      style={styles.inputStyle}
-                    />
-                  )}
-                  <p>
-                    <strong>Nazwisko:</strong> {currentUser.nazwisko}
-                  </p>
-                  {isEditing && (
-                    <input
-                      type='text'
-                      name='nazwisko'
-                      placeholder='Nazwisko'
-                      value={values.nazwisko}
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      style={styles.inputStyle}
-                    />
-                  )}
-                  <p>
-                    <strong>Telefon:</strong> {currentUser.telefon}
-                  </p>
-                  {isEditing && (
-                    <input
-                      type='text'
-                      name='telefon'
-                      placeholder='Telefon'
-                      value={values.telefon}
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      style={styles.inputStyle}
-                    />
-                  )}
-                  <p>
-                    <strong>Miasto:</strong> {currentUser.miasto}
-                  </p>
-                  {isEditing && (
-                    <input
-                      type='text'
-                      name='miasto'
-                      placeholder='Miasto'
-                      value={values.miasto}
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      style={styles.inputStyle}
-                    />
-                  )}
-                  <p>
-                    <strong>Ulica:</strong> {currentUser.ulica}
-                  </p>
-                  {isEditing && (
-                    <input
-                      type='text'
-                      name='ulica'
-                      placeholder='Ulica'
-                      value={values.ulica}
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      style={styles.inputStyle}
-                    />
-                  )}
-                  <p>
-                    <strong>Kod-pocztowy:</strong> {currentUser.kodPocztowy}
-                  </p>
-                  {isEditing && (
-                    <input
-                      type='text'
-                      name='kodPocztowy'
-                      placeholder='Kod-pocztowy'
-                      value={values.kodPocztowy}
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      style={styles.inputStyle}
-                    />
-                  )}
-                  <p>
-                    <strong>Email:</strong> {currentUser.email}
-                  </p>
-                  {isEditing && (
-                    <input
-                      type='text'
-                      name='email'
-                      placeholder='E-mail'
-                      value={values.email}
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      style={styles.inputStyle}
-                    />
-                  )}
-                  {isEditing && (
-                    <button style={styles.buttonStyle}>Zapisz zmiany</button>
-                  )}
-                </Form>
-              )}
-            </Formik>
-            {isChangingPwd && (
-              <div
-                style={{
-                  width: '200px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                }}
-              >
-                <p>Zmien haslo</p>
-                <input
-                  type='text'
-                  name='email'
-                  placeholder='E-mail'
-                  style={styles.inputStyle}
-                  onChange={onInputHandle}
-                />
-                <input
-                  type='password'
-                  name='password'
-                  placeholder='Nowe haslo'
-                  style={styles.inputStyle}
-                  onChange={onInputHandle}
-                />
-                <button style={styles.buttonStyle} onClick={onPwdUpdate}>
-                  Zmien haslo
-                </button>
-                <button
-                  style={styles.buttonStyle}
-                  onClick={() => setIsChangingPwd(!isChangingPwd)}
-                >
-                  Anuluj zmiane hasla
-                </button>
-              </div>
-            )}
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                rowGap: '5px',
-              }}
-            >
-              <button
-                style={styles.buttonStyle}
-                onClick={() => setIsEditing(!isEditing)}
-              >
-                {isEditing ? 'Zakoncz edycje' : 'Edytuj profil'}
-              </button>
-              {!isChangingPwd && (
-                <button
-                  style={styles.buttonStyle}
-                  onClick={() => setIsChangingPwd(!isChangingPwd)}
-                >
-                  Zmien haslo
-                </button>
-              )}
-              <button style={styles.buttonStyle}>Usun konto</button>
-            </div>
-          </div>
-
-/////////////////////////////////////////////////////////////
-
-
-          <div
-            style={{
-              width: '100%',
-              display: 'flex',
-              justifyContent: 'space-around',
-              alignItems: 'center',
-            }}
-          >
-            <div
-              style={{
-                width: '100%',
-                marginRight: '10px',
-              }}
-            >
-              <p>Najblizsza wizyta</p>
-              <span style={{ color: 'rgba(75,75,75,.75)', fontSize: '.5rem' }}>
-                Usluga
-              </span>
-              <p>Badanie lekarsko-stomatologiczne</p>
-              <span style={{ color: 'rgba(75,75,75,.75)', fontSize: '.5rem' }}>
-                Specjalista
-              </span>
-              <p>Leno Paleno</p>
-              <span style={{ color: 'rgba(75,75,75,.75)', fontSize: '.5rem' }}>
-                Data
-              </span>
-              <p>21.21.21</p>
-              <span style={{ color: 'rgba(75,75,75,.75)', fontSize: '.5rem' }}>
-                Godzina
-              </span>
-              <p>15</p>
-              <p style={{ marginTop: '30px' }}>Przejdz do wizyty</p>
-            </div>
-            <div
-              style={{
-                width: '100%',
-                marginLeft: '10px',
-              }}
-            >
-              <p>Ostatnia wizyta</p>
-              <span style={{ color: 'rgba(75,75,75,.75)', fontSize: '.5rem' }}>
-                Usluga
-              </span>
-              <p>Badanie lekarsko-stomatologiczne</p>
-              <span style={{ color: 'rgba(75,75,75,.75)', fontSize: '.5rem' }}>
-                Specjalista
-              </span>
-              <p>Leno Paleno</p>
-              <span style={{ color: 'rgba(75,75,75,.75)', fontSize: '.5rem' }}>
-                Data
-              </span>
-              <p>21.21.21</p>
-              <span style={{ color: 'rgba(75,75,75,.75)', fontSize: '.5rem' }}>
-                Godzina
-              </span>
-              <p>15</p>
-              <p style={{ marginTop: '30px' }}>Przejdz do wizyty</p>
-            </div>
-          </div>
-        </div>
-      </Container> */}
     </PageWrapper>
   );
 };

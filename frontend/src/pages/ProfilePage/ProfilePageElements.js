@@ -49,7 +49,10 @@ export const Title = styled(motion.h1)`
 // `
 
 export const DashboardContainer = styled.div`
-
+background-color: rgba(255,255,255,.7);
+height: fit-content;
+padding: 1em 3em;
+border-radius: 15px;
 `
 export const VitalInfoContainer = styled.div`
 background-color: cadetblue;
@@ -81,3 +84,11 @@ export const ButtonDashboard = styled.button`
 export const PasswordChangeContainer = styled.div`
 
 `
+
+export const DashboardVisitContainer = styled.div``
+
+export const DashboardVisit = styled.div``
+
+export const DashboardVisitTitle = styled.h2``
+
+export const DashboardVisitText = styled.p``
