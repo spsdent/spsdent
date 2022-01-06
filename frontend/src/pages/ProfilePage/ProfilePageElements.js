@@ -88,6 +88,7 @@ export const ButtonsContainer = styled.div`
   gap: 0.5em;
   flex-grow: 1;
   padding-top: 1em;
+  cursor: pointer;
 `;
 export const ButtonDashboard = styled(motion.button)`
   outline: none;
@@ -100,6 +101,7 @@ export const ButtonDashboard = styled(motion.button)`
   border-radius: 8px;
   letter-spacing: 0.05em;
   width: 9em;
+  cursor: pointer;
 
   &:active {
     background-color: #01d4bf;
@@ -157,6 +159,7 @@ export const DashboardVisitButton = styled(motion.button)`
   min-width: 11em;
   background-color: rgba(0, 0, 0, 0);
   margin-top: 0.2em;
+  cursor: pointer;
 `;
 export const ButtonVitalInfo = styled(motion.button)`
   outline: none;
@@ -170,6 +173,7 @@ export const ButtonVitalInfo = styled(motion.button)`
   letter-spacing: 0.05em;
   width: 60%;
   margin-top: 1em;
+  cursor: pointer;
   &:active {
     background-color: #01d4bf;
   }

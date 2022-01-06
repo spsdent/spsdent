@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Navigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { PageWrapper } from '../../components/PageWrapper'
 import { Formik, Form } from 'formik'
 import { Pattern } from '../../components/Pattern'
+import { useNavigate } from 'react-router'
 
 import {
   Container,
@@ -26,6 +26,8 @@ import {
 } from './ProfilePageElements'
 import AuthData from '../../services/auth'
 import { logout } from '../../store/actions/auth'
+import UserData from '../../services/user'
+
 const ProfilePage = () => {
   const [initialValues, setInitialValues] = useState({
     imie: '',
@@ -41,10 +43,12 @@ const ProfilePage = () => {
   const [userPwdData, setUserPwdData] = useState({ email: '', password: '' })
   const [isEditing, setIsEditing] = useState(false)
   const [isChangingPwd, setIsChangingPwd] = useState(false)
+  const [isDelete, setIsDelete] = useState(false)
+  let navigate = useNavigate()
 
   useEffect(() => {
     if (!currentUser) {
-      return <Navigate to='/login' />
+      navigate('/login')
     }
     const { imie, nazwisko, kodPocztowy, email, ulica, miasto, telefon } =
       currentUser
@@ -59,16 +63,6 @@ const ProfilePage = () => {
     })
   }, [])
 
-  // const onUserDelete = () => {
-  //   UserData.deleteUser(currentUser.id).then((response) => (
-  //     <Navigate to='/login' />
-  //   ))
-  // }
-
-  // const onUserUpdate = () => {
-
-  // }
-
   const onInputHandle = (e) => {
     const { name, value } = e.target
     setUserPwdData({ ...userPwdData, [name]: value })
@@ -77,13 +71,23 @@ const ProfilePage = () => {
   const onPwdUpdate = () => {
     AuthData.passwordChange(userPwdData).then((response) => {
       dispatch(logout())
-      return <Navigate to='/login' />
+      navigate('/login')
     })
   }
 
   const isUser = currentUser.roles[currentUser.roles.length - 1] === 'ROLE_USER'
   const isDoctor =
     currentUser.roles[currentUser.roles.length - 1] === 'ROLE_SPEC'
+
+  const deleteAccount = () => {
+    setIsDelete(false)
+    UserData.deleteUser(currentUser.id)
+      .then((response) => {
+        dispatch(logout())
+        navigate('/login')
+      })
+      .catch((e) => console.log('Blad podczas usuwania konta'))
+  }
 
   return (
     <PageWrapper>
@@ -282,7 +286,9 @@ const ProfilePage = () => {
               <ButtonDashboard onClick={() => setIsChangingPwd(!isChangingPwd)}>
                 {isChangingPwd ? 'Anuluj zmianę' : 'Zmień hasło'}
               </ButtonDashboard>
-              <ButtonDashboard>Usuń konto</ButtonDashboard>
+              <ButtonDashboard onClick={() => setIsDelete(true)}>
+                Usuń konto
+              </ButtonDashboard>
             </ButtonsContainer>
           </VitalInfoContainer>
 
@@ -329,6 +335,74 @@ const ProfilePage = () => {
             </DashboardVisitContainer>
           )}
         </DashboardContainer>
+        {isDelete && (
+          <div
+            style={{
+              width: '100vw',
+              height: '100vh',
+              position: 'absolute',
+              left: '0',
+              top: '0',
+              backgroundColor: 'rgba(3,3,3,.5)',
+              zIndex: '999',
+            }}
+          >
+            <div
+              style={{
+                position: 'relative',
+                width: '50%',
+                height: '50%',
+                backgroundColor: '#fff',
+                left: '0',
+                right: '0',
+                top: '25%',
+                margin: 'auto',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <h2 style={{ marginBottom: '20px' }}>
+                Na pewno chcesz usunąć konto?
+              </h2>
+              <div
+                style={{
+                  position: 'relative',
+                  backgroundColor: '#fff',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <button
+                  style={{
+                    backgroundColor: 'transparent',
+                    border: '2px solid #333',
+                    padding: '.75em 50px',
+                    marginRight: '5px',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => setIsDelete(false)}
+                >
+                  Nie
+                </button>
+                <button
+                  style={{
+                    backgroundColor: '#01d4bf',
+                    border: '2px solid transparent',
+                    padding: '.75em 50px',
+                    marginLeft: '5px',
+                    cursor: 'pointer',
+                  }}
+                  onClick={deleteAccount}
+                >
+                  Tak
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </Container>
       <Pattern
         src='/Pattern.png'
