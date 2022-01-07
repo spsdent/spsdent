@@ -8,12 +8,12 @@ import {
   PageText,
   PageTextColumn,
   ComeBackButton,
-  List,
-  ListText,
+  Container
 } from "./OfferSubPageElements";
 const Pcyfrowa = () => {
   return (
     <PageWrapper>
+      <Container>
       <HeaderImage
         image={'url("../pcyfrowa.png")'}
         initial={{ y: -200 }}
@@ -78,6 +78,7 @@ const Pcyfrowa = () => {
         initial={{ y: -200 }}
         animate={{ y: 0 }}
       />
+      </Container>
     </PageWrapper>
   );
 };

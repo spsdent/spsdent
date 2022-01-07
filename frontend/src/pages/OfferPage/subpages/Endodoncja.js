@@ -10,10 +10,12 @@ import {
   ComeBackButton,
   List,
   ListText,
+  Container
 } from "./OfferSubPageElements";
 const Endodoncja = () => {
   return (
     <PageWrapper>
+      <Container>
       <HeaderImage
         image={'url("../endo.png")'}
         initial={{ y: -200 }}
@@ -60,6 +62,7 @@ const Endodoncja = () => {
         initial={{ y: -200 }}
         animate={{ y: 0 }}
       />
+      </Container>
     </PageWrapper>
   );
 };

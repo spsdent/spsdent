@@ -65,7 +65,6 @@ export const Triangle = styled.div`
 export const VisitsListContainer = styled(motion.div)`
   height: fit-content;
   width: 105%;
-  
 `;
 export const Visit = styled(motion.div)`
   width: 100%;
@@ -79,7 +78,9 @@ export const Visit = styled(motion.div)`
   align-items: center;
   padding-left: .7em;
   cursor: pointer;
-
+&:hover{
+  background-color: rgba(1,212,191,.1);
+}
 `;
 export const VisitContent = styled.p`
   font-family: "poppins";

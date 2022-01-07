@@ -3,9 +3,8 @@ import UserService from "../../services/user";
 import { FaAngleDoubleRight } from "react-icons/fa";
 import { PageWrapper } from "../../components/PageWrapper";
 import { Pattern } from "../../components/Pattern";
-import { ButtonLink } from "../../components/pieces/TopBar/TopBarElements";
 import {
-  HeaderContainer,
+  Container,
   TextContainer,
   HeaderWelcome,
   HeaderText,
@@ -15,6 +14,7 @@ import {
   StyledSpan,
   ButtonSpan,
   ButtonContainer,
+  ButtonLink,
 } from "./HomePageElements";
 
 const Home = () => {
@@ -38,36 +38,58 @@ const Home = () => {
 
   return (
     <PageWrapper primary>
-      <HeaderContainer>
-        <TextContainer
-          transition={{ duration: 0.5 }}
-          initial={{
-            opacity: 0,
-            x: 200,
-            // translateX: "10%",
-            // translateY: "10%",
-          }}
-          animate={{
-            opacity: 1,
-            x: 0,
-            // translateX: "10%",
-            // translateY: "10%",
-          }}
-        >
-          <HeaderWelcome>
+      <Container>
+        <TextContainer>
+          <HeaderWelcome
+            transition={{
+              type: "spring",
+              bounce: 0.6,
+              duration: 2,
+            }}
+            initial={{ opacity: 0, x: -200 }}
+            animate={{ opacity: 1, x: 0 }}
+          >
             Witaj w <br />
-            <StyledSpan primary>
+            <HeaderWelcome
+              primary
+              transition={{
+                type: "spring",
+                bounce: 0.6,
+                duration: 2,
+                delay: 0.1,
+              }}
+              initial={{ opacity: 0, x: -200 }}
+              animate={{ opacity: 1, x: 0 }}
+            >
               SPS<StyledSpan>Dent</StyledSpan>!
-            </StyledSpan>
+            </HeaderWelcome>
           </HeaderWelcome>
-          <HeaderText>
+          <HeaderText
+            transition={{
+              type: "spring",
+              bounce: 0.6,
+              duration: 2,
+              delay: 0.2,
+            }}
+            initial={{ opacity: 0, x: -200 }}
+            animate={{ opacity: 1, x: 0 }}
+          >
             <strong>SPS Dental Clinic</strong> to klinika oferująca kompleksowe
             usługi z zakresu stomatologii: diagnostyki, profilaktyki,
             ortodoncji, chirurgii stomatologicznej czy implantologii. Na rynku
             stomatologicznym działamy od przeszło 8 lat. Znajdziemy idealne
             rozwiązanie dla każdego, nawet najbardziej wymagającego pacjenta.
           </HeaderText>
-          <ButtonContainer>
+          <ButtonContainer
+            transition={{
+              type: "spring",
+              bounce: 0.6,
+              duration: 2,
+              delay: 0.3,
+            }}
+            initial={{ opacity: 0, x: -200 }}
+            animate={{ opacity: 1, x: 0 }}
+          >
             <ButtonSpan>
               <FaAngleDoubleRight />
             </ButtonSpan>
@@ -93,12 +115,17 @@ const Home = () => {
             src="header1.png"
           ></PhotoHeader>
           <PhotoHeader
-            transition={{ type: "spring", bounce: 0.6, duration: 2, delay: .2 }}
+            transition={{
+              type: "spring",
+              bounce: 0.6,
+              duration: 2,
+              delay: 0.2,
+            }}
             initial={{ opacity: 0, x: -200 }}
             animate={{ opacity: 1, x: 0 }}
             drag
-            dragElastic={0.5}
-            dragTransition={{ bounceStiffness: 100, bounceDamping: 20 }}
+            dragElastic={0.2}
+            dragTransition={{ bounceStiffness: 300, bounceDamping: 20 }}
             dragConstraints={{
               top: 0,
               left: 0,
@@ -109,7 +136,7 @@ const Home = () => {
             src="header2.png"
           ></PhotoHeader>
         </HeaderPhotoContainer>
-      </HeaderContainer>
+      </Container>
       <Pattern
         src="Pattern.png"
         top="55%"

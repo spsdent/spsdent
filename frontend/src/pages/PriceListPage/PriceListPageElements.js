@@ -52,7 +52,6 @@ export const PriceTableRow = styled(motion.div)`
   border-bottom: 2px solid rgba(51, 51, 51, 0.2);
   padding: 1.2em 0;
   transition: 0.1s linear;
-  border-radius: 10px;
   z-index: ${(props) => (props.primary ? '2' : '1')};
   &:hover {
     background-color: ${(props) => (props.primary ? '#333' : '#f6f6f6')};

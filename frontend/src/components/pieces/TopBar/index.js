@@ -1,19 +1,20 @@
 import React, { useEffect } from "react";
 import { FaBars } from "react-icons/fa";
+import { HiOutlineLocationMarker } from "react-icons/hi";
+import { BsTelephone } from "react-icons/bs";
 import {
   Nav,
   NavBarContainer,
+  NavLogoContainer,
   NavLogo,
   NavImage,
-  BarPhone,
-  BarIcon,
-  BarAdress,
-  BarText,
-  NavButtons,
+  NavInfoContainer,
+  InfoContainer,
+  InfoText,
   ButtonLink,
   MobileIcon,
-  NavInfo,
   ButtonNav,
+  ButtonsContainer,
 } from "./TopBarElements";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../store/actions/auth";
@@ -33,32 +34,29 @@ const TopBar = () => {
   const logOut = () => {
     dispatch(logout());
   };
-
   return (
     <>
       <Nav>
         <NavBarContainer>
-          <NavLogo to="/">
-            <NavImage src="../logo.png" alt="spsdentLogo" />
-          </NavLogo>
-
+          <NavLogoContainer>
+            <NavLogo to="/">
+              <NavImage src="../logo.png" alt="spsdentLogo" />
+            </NavLogo>
+          </NavLogoContainer>
           <MobileIcon>
             <FaBars />
           </MobileIcon>
-
-          <NavInfo>
-            <BarPhone>
-              <BarIcon src="../phoneIcon.png" alt="phone" />
-              <BarText>607 677 888</BarText>
-            </BarPhone>
-
-            <BarAdress>
-              <BarIcon src="../markerIcon.png" alt="marker" />
-              <BarText>ul.Filaretów 27, lok.4 20-609 Lublin</BarText>
-            </BarAdress>
-          </NavInfo>
-
-          <NavButtons>
+          <NavInfoContainer>
+            <InfoContainer>
+              <BsTelephone/>
+              <InfoText>607 677 888</InfoText>
+            </InfoContainer>
+            <InfoContainer>
+              <HiOutlineLocationMarker />
+              <InfoText>ul.Filaretów 27, lok.4 20-609 Lublin</InfoText>
+            </InfoContainer>
+          </NavInfoContainer>
+          <ButtonsContainer>
             <ButtonNav primary>
               <ButtonLink to="/add-visit">Umów się na wizytę</ButtonLink>
             </ButtonNav>
@@ -73,7 +71,7 @@ const TopBar = () => {
                 <ButtonLink to="/login">Zaloguj się</ButtonLink>
               </ButtonNav>
             )}
-          </NavButtons>
+          </ButtonsContainer>
         </NavBarContainer>
       </Nav>
     </>

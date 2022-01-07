@@ -25,7 +25,6 @@ import ServiceData from '../../../services/service'
 
 import {
   useLocation,
-  NavLink as StyledNavLink,
   useNavigate,
 } from 'react-router-dom'
 import styled from 'styled-components'
@@ -38,19 +37,6 @@ export const NavItemSub = styled.li`
     color: #01d4bf;
   }
   &:selection {
-    color: #01d4bf;
-  }
-`
-export const StyledLinkSub = styled(StyledNavLink)`
-  text-transform: uppercase;
-  text-decoration: none;
-  letter-spacing: 1px;
-  color: rgba(51, 51, 51, 0.75);
-  display: block;
-  transition: 0.2s ease-out;
-  font-size: 14px;
-
-  &:hover {
     color: #01d4bf;
   }
 `
@@ -137,12 +123,12 @@ const NonAuth = (props) => {
               {serviceData.map(
                 (service, i) =>
                   service.uslugi.length > 0 && (
-                    <motion.li
+                    <NavItemSub
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.3, delay: i * 0.1 }}
                     >
-                      <StyledLinkSub
+                      <StyledLink primary
                         to={`/price-list/${service.grupa.split(' ').join('-')}`}
                       >
                         {service.grupa.split(' ').length > 2
@@ -150,8 +136,8 @@ const NonAuth = (props) => {
                               service.grupa.split(' ')[1][0]
                             }${service.grupa.split(' ')[2][0]}`
                           : service.grupa}
-                      </StyledLinkSub>
-                    </motion.li>
+                      </StyledLink>
+                    </NavItemSub>
                   )
               )}
             </>

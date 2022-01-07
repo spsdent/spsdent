@@ -67,7 +67,6 @@ export const ContactInput = styled.input`
   padding-left: 1em;
   margin-top: 2em;
   font-family: 'poppins';
-  border-radius: 10px;
   &:focus {
     box-shadow: 0px 0px 3px 0.1px #333;
     outline: none;
@@ -93,7 +92,6 @@ export const ContactMessage = styled.textarea`
   border: 2px solid #333;
   padding: 1em;
   margin-top: 2em;
-  border-radius: 10px;
   &[type="text"] {
     color: #333;
     font-family: "poppins";
@@ -126,7 +124,6 @@ export const ButtonContact = styled.button`
   height: 50px;
   margin-top: 2em;
   transition: 0.2s ease;
-  border-radius: 10px;
   cursor: pointer;
   &:hover {
     background-color: #333;

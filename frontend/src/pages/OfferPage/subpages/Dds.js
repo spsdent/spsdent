@@ -10,10 +10,12 @@ import {
   ComeBackButton,
   List,
   ListText,
+  Container
 } from "./OfferSubPageElements";
 const Dds = () => {
   return (
     <PageWrapper>
+      <Container>
       <HeaderImage
         image={'url("../dds.png")'}
         initial={{ y: -200 }}
@@ -106,6 +108,7 @@ const Dds = () => {
         initial={{ y: -200 }}
         animate={{ y: 0 }}
       />
+      </Container>
     </PageWrapper>
   );
 };

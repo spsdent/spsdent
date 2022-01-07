@@ -10,10 +10,12 @@ import {
   ComeBackButton,
   List,
   ListText,
+  Container
 } from "./OfferSubPageElements";
 const Diagnostyka = () => {
   return (
     <PageWrapper>
+      <Container>
       <HeaderImage
         image={'url("../diagnostyka.png")'}
         initial={{ y: -200 }}
@@ -114,6 +116,7 @@ const Diagnostyka = () => {
         initial={{ y: -200 }}
         animate={{ y: 0 }}
       />
+      </Container>
     </PageWrapper>
   );
 };

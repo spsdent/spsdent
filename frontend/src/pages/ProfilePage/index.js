@@ -308,30 +308,7 @@ const ProfilePage = () => {
                       </ButtonVitalInfo>
                     )}
                   </Form>
-                  <ButtonsContainer>
-                    <ButtonDashboard
-                      type='button'
-                      onClick={() => {
-                        if (isEditing) {
-                          setIsEditing(false)
-                        } else {
-                          setIsEditing(true)
-                        }
-                        setValues(oldUserValues)
-                      }}
-                    >
-                      {isEditing ? 'Anuluj edycję' : 'Edytuj profil'}
-                    </ButtonDashboard>
-                    <ButtonDashboard
-                      type='button'
-                      onClick={() => setIsChangingPwd(!isChangingPwd)}
-                    >
-                      {isChangingPwd ? 'Anuluj zmianę' : 'Zmień hasło'}
-                    </ButtonDashboard>
-                    <ButtonDashboard onClick={() => setIsDelete(true)}>
-                      Usuń konto
-                    </ButtonDashboard>
-                  </ButtonsContainer>
+               
                 </>
               )}
             </Formik>
@@ -341,7 +318,8 @@ const ProfilePage = () => {
               validationSchema={signInChangePasswordValidationSchema}
               onSubmit={(values, actions) => onPwdUpdate(values, actions)}
             >
-              {({ errors, touched, values }) => (
+              {({ errors, touched, values, setValues }) => (
+                <>
                 <Form>
                   {isChangingPwd && (
                     <>
@@ -376,7 +354,33 @@ const ProfilePage = () => {
                       </PasswordChangeContainer>
                     </>
                   )}
+                  
                 </Form>
+                   <ButtonsContainer>
+                   <ButtonDashboard
+                     type='button'
+                     onClick={() => {
+                       if (isEditing) {
+                         setIsEditing(false)
+                       } else {
+                         setIsEditing(true)
+                       }
+                       setValues(oldUserValues)
+                     }}
+                   >
+                     {isEditing ? 'Anuluj edycję' : 'Edytuj profil'}
+                   </ButtonDashboard>
+                   <ButtonDashboard
+                     type='button'
+                     onClick={() => setIsChangingPwd(!isChangingPwd)}
+                   >
+                     {isChangingPwd ? 'Anuluj zmianę' : 'Zmień hasło'}
+                   </ButtonDashboard>
+                   <ButtonDashboard onClick={() => setIsDelete(true)}>
+                     Usuń konto
+                   </ButtonDashboard>
+                 </ButtonsContainer>
+                 </>
               )}
             </Formik>
           </VitalInfoContainer>

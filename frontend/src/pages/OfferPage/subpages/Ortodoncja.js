@@ -10,10 +10,12 @@ import {
   ComeBackButton,
   List,
   ListText,
+  Container
 } from "./OfferSubPageElements";
 const Ortodoncja = () => {
   return (
     <PageWrapper>
+      <Container>
       <HeaderImage
         image={'url("../ortodoncja.png")'}
         initial={{ y: -200 }}
@@ -236,6 +238,7 @@ const Ortodoncja = () => {
         initial={{ y: -200 }}
         animate={{ y: 0 }}
       />
+      </Container>
     </PageWrapper>
   );
 };

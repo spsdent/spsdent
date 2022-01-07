@@ -10,10 +10,12 @@ import {
   ComeBackButton,
   List,
   ListText,
+  Container
 } from "./OfferSubPageElements";
 const Zachowawcza = () => {
   return (
     <PageWrapper>
+      <Container>
       <HeaderImage
         image={'url("../zachowawcza.png")'}
         initial={{ y: -200 }}
@@ -129,6 +131,7 @@ const Zachowawcza = () => {
         initial={{ y: -200 }}
         animate={{ y: 0 }}
       />
+      </Container>
     </PageWrapper>
   );
 };
