@@ -123,6 +123,14 @@ const RootNavigation = () => {
               }
             />
             <Route
+              path='archive'
+              element={
+                <PrivateRoute>
+                  <ArchiveVisitsPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
               path='visits/:id'
               element={
                 <PrivateRoute>
@@ -131,10 +139,10 @@ const RootNavigation = () => {
               }
             />
             <Route
-              path='archive'
+              path='archive/:id'
               element={
                 <PrivateRoute>
-                  <ArchiveVisitsPage />
+                  <VisitPage />
                 </PrivateRoute>
               }
             />

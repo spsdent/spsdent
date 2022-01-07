@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { PageWrapper } from '../../components/PageWrapper'
 import { FaTrashAlt } from 'react-icons/fa'
 import { Pattern } from '../../components/Pattern'
+
 import {
   VisitsPageContainer,
   VisitsPageTitleContainer,
@@ -19,10 +20,14 @@ import {
   Visit,
   VisitContent,
   VisitDelete,
+  StyledFaTrashAlt,
 } from './VisitsPageElements'
 
 const VisitsPage = () => {
   const [visitsList, setVisitsList] = useState([])
+  const [isHover, setIsHover] = useState(false)
+  const [isDelete, setIsDelete] = useState(false)
+  const [visitId, setVisitId] = useState('')
   const { user: currentUser } = useSelector((state) => state.auth)
   const { refresh: isRefresh } = useSelector((state) => state)
   const dispatch = useDispatch()
@@ -60,17 +65,18 @@ const VisitsPage = () => {
       })
   }
 
-  const deleteVisit = (item) => {
-    VisitDataService.remove(item.id)
+  const goToVisit = (item) => {
+    navigate(`/visits/${item.id}`, { state: item })
+  }
+
+  const onVisitDelete = () => {
+    setIsDelete(false)
+    VisitDataService.remove(visitId.id)
       .then((response) => {
         console.log('Usunieto wizyte pomyslnie!')
         dispatch(refreshApp())
       })
       .catch((e) => console.log(e))
-  }
-
-  const goToVisit = (item) => {
-    navigate(`/visits/${item.id}`, { state: item })
   }
 
   const container = {
@@ -150,7 +156,15 @@ const VisitsPage = () => {
                     <VisitContent>{item.data}</VisitContent>
                     <VisitContent>{item.godzina}:00</VisitContent>
                     <VisitContent>{item.cena}zł</VisitContent>
-                    <VisitDelete onClick={() => deleteVisit(item)}>
+                    <VisitDelete
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setIsDelete(true)
+                        setVisitId(item)
+                      }}
+                      onMouseOver={() => setIsHover(true)}
+                      onMouseOut={() => setIsHover(false)}
+                    >
                       <FaTrashAlt />
                     </VisitDelete>
                   </Visit>
@@ -168,6 +182,74 @@ const VisitsPage = () => {
           )}
         </VisitsContainer>
       </VisitsPageContainer>
+      {isDelete && (
+        <div
+          style={{
+            width: '100vw',
+            height: '100vh',
+            position: 'absolute',
+            left: '0',
+            top: '0',
+            backgroundColor: 'rgba(3,3,3,.5)',
+            zIndex: '999',
+          }}
+        >
+          <div
+            style={{
+              position: 'relative',
+              width: '50%',
+              height: '50%',
+              backgroundColor: '#fff',
+              left: '0',
+              right: '0',
+              top: '25%',
+              margin: 'auto',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <h2 style={{ marginBottom: '20px' }}>
+              Na pewno chcesz usunąć wizytę?
+            </h2>
+            <div
+              style={{
+                position: 'relative',
+                backgroundColor: '#fff',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <button
+                style={{
+                  backgroundColor: 'transparent',
+                  border: '2px solid #333',
+                  padding: '.75em 50px',
+                  marginRight: '5px',
+                  cursor: 'pointer',
+                }}
+                onClick={() => setIsDelete(false)}
+              >
+                Nie
+              </button>
+              <button
+                style={{
+                  backgroundColor: '#01d4bf',
+                  border: '2px solid transparent',
+                  padding: '.75em 50px',
+                  marginLeft: '5px',
+                  cursor: 'pointer',
+                }}
+                onClick={onVisitDelete}
+              >
+                Tak
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <Pattern
         src='Pattern.png'
         top={'12%'}

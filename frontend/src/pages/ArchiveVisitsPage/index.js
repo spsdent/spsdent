@@ -73,7 +73,7 @@ const ArchiveVisitsList = () => {
   }
 
   const goToVisit = (item) => {
-    navigate(`/visits/${item.id}`, { state: item })
+    navigate(`/archive/${item.id}`, { state: item })
   }
 
   const container = {
