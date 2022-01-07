@@ -41,20 +41,56 @@ const Home = () => {
     <PageWrapper primary>
       <Container>
         <TextContainer>
-          <HeaderWelcome>
+          <HeaderWelcome
+            transition={{
+              type: "spring",
+              bounce: 0.6,
+              duration: 2,
+            }}
+            initial={{ opacity: 0, x: -200 }}
+            animate={{ opacity: 1, x: 0 }}
+          >
             Witaj w <br />
-            <StyledSpan primary>
+            <HeaderWelcome
+              primary
+              transition={{
+                type: "spring",
+                bounce: 0.6,
+                duration: 2,
+                delay: 0.1,
+              }}
+              initial={{ opacity: 0, x: -200 }}
+              animate={{ opacity: 1, x: 0 }}
+            >
               SPS<StyledSpan>Dent</StyledSpan>!
-            </StyledSpan>
+            </HeaderWelcome>
           </HeaderWelcome>
-          <HeaderText>
+          <HeaderText
+            transition={{
+              type: "spring",
+              bounce: 0.6,
+              duration: 2,
+              delay: 0.2,
+            }}
+            initial={{ opacity: 0, x: -200 }}
+            animate={{ opacity: 1, x: 0 }}
+          >
             <strong>SPS Dental Clinic</strong> to klinika oferująca kompleksowe
             usługi z zakresu stomatologii: diagnostyki, profilaktyki,
             ortodoncji, chirurgii stomatologicznej czy implantologii. Na rynku
             stomatologicznym działamy od przeszło 8 lat. Znajdziemy idealne
             rozwiązanie dla każdego, nawet najbardziej wymagającego pacjenta.
           </HeaderText>
-          <ButtonContainer>
+          <ButtonContainer
+            transition={{
+              type: "spring",
+              bounce: 0.6,
+              duration: 2,
+              delay: 0.3,
+            }}
+            initial={{ opacity: 0, x: -200 }}
+            animate={{ opacity: 1, x: 0 }}
+          >
             <ButtonSpan>
               <FaAngleDoubleRight />
             </ButtonSpan>
@@ -63,7 +99,6 @@ const Home = () => {
             </AddVisitButton>
           </ButtonContainer>
         </TextContainer>
-
         <HeaderPhotoContainer>
           <PhotoHeader
             transition={{ type: "spring", bounce: 0.6, duration: 1.5 }}
@@ -81,7 +116,12 @@ const Home = () => {
             src="header1.png"
           ></PhotoHeader>
           <PhotoHeader
-            transition={{ type: "spring", bounce: 0.6, duration: 2, delay: .2 }}
+            transition={{
+              type: "spring",
+              bounce: 0.6,
+              duration: 2,
+              delay: 0.2,
+            }}
             initial={{ opacity: 0, x: -200 }}
             animate={{ opacity: 1, x: 0 }}
             drag
@@ -98,79 +138,6 @@ const Home = () => {
           ></PhotoHeader>
         </HeaderPhotoContainer>
       </Container>
-
-      {/* <HeaderContainer>
-        <TextContainer
-          transition={{ duration: 0.5 }}
-          initial={{
-            opacity: 0,
-            x: 200,
-            // translateX: "10%",
-            // translateY: "10%",
-          }}
-          animate={{
-            opacity: 1,
-            x: 0,
-            // translateX: "10%",
-            // translateY: "10%",
-          }}
-        >
-          <HeaderWelcome>
-            Witaj w <br />
-            <StyledSpan primary>
-              SPS<StyledSpan>Dent</StyledSpan>!
-            </StyledSpan>
-          </HeaderWelcome>
-          <HeaderText>
-            <strong>SPS Dental Clinic</strong> to klinika oferująca kompleksowe
-            usługi z zakresu stomatologii: diagnostyki, profilaktyki,
-            ortodoncji, chirurgii stomatologicznej czy implantologii. Na rynku
-            stomatologicznym działamy od przeszło 8 lat. Znajdziemy idealne
-            rozwiązanie dla każdego, nawet najbardziej wymagającego pacjenta.
-          </HeaderText>
-          <ButtonContainer>
-            <ButtonSpan>
-              <FaAngleDoubleRight />
-            </ButtonSpan>
-            <AddVisitButton>
-              <ButtonLink to="/add-visit">Umów się na wizytę</ButtonLink>
-            </AddVisitButton>
-          </ButtonContainer>
-        </TextContainer>
-        <HeaderPhotoContainer>
-          <PhotoHeader
-            transition={{ type: "spring", bounce: 0.6, duration: 1.5 }}
-            initial={{ opacity: 0, x: -200 }}
-            animate={{ opacity: 1, x: 0 }}
-            drag
-            dragElastic={0.1}
-            dragTransition={{ bounceStiffness: 600, bounceDamping: 20 }}
-            dragConstraints={{
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-            }}
-            src="header1.png"
-          ></PhotoHeader>
-          <PhotoHeader
-            transition={{ type: "spring", bounce: 0.6, duration: 2, delay: .2 }}
-            initial={{ opacity: 0, x: -200 }}
-            animate={{ opacity: 1, x: 0 }}
-            drag
-            dragElastic={0.2}
-            dragTransition={{ bounceStiffness: 300, bounceDamping: 20 }}
-            dragConstraints={{
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-            }}
-            primary
-            src="header2.png"
-          ></PhotoHeader>
-        </HeaderPhotoContainer>
-      </HeaderContainer>
       <Pattern
         src="Pattern.png"
         top="55%"
@@ -178,7 +145,7 @@ const Home = () => {
         transition={{ duration: 1 }}
         initial={{ scale: 0, rotate: 45 }}
         animate={{ scale: 1, rotate: 0 }}
-      ></Pattern> */}
+      ></Pattern>
     </PageWrapper>
   );
 };

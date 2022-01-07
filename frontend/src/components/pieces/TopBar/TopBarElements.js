@@ -139,18 +139,10 @@ export const ButtonLink = styled(LinkButton)`
   text-decoration: none;
   width: 100%;
   height: 100%;
-  background-color: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  line-height: 2rem;
-  font-size: 18px;
-  transition: 0.2s ease-out;
-
-  @media screen and (max-width: 1280px) {
-    font-size: 16px;
-  }
-  @media screen and (max-width: 960px) {
-    font-size: 14px;
-  }
 `;
 
 export const ButtonNav = styled.div`
@@ -159,7 +151,6 @@ export const ButtonNav = styled.div`
   margin-right: 20px;
   height: 50px;
   transition: 0.3s ease;
-  border-radius: 10px;
   background-color: ${(props) => (props.primary ? "#01D4BF" : "#333")};
   width: ${(props) => (props.primary ? "200px" : "150px")};
 
@@ -173,7 +164,6 @@ export const ButtonNav = styled.div`
   @media screen and (max-width: 768px) {
     display: none;
   }
-
   &:hover {
     background-color: #01d4bf;
   }
