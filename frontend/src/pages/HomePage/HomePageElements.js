@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import { motion } from "framer-motion";
-
+import { Link as LinkButton } from "react-router-dom";
 export const Container = styled.div`
   width: 75%;
   height: 75vh;
@@ -21,7 +21,13 @@ export const Container = styled.div`
   @media screen and (max-width: 960px) {
     font-size: 10px;
   }
-  @media (orientation: portrait) {
+  @media screen and (orientation: portrait) {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  @media screen and (max-width: 768px) {
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -32,6 +38,12 @@ export const TextContainer = styled.div`
   width: 50%;
   height: fit-content;
   @media screen and (orientation: portrait) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  @media screen and (max-width: 768px) {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -107,4 +119,20 @@ export const PhotoHeader = styled(motion.img)`
   @media screen and (orientation: portrait) {
     display: none;
   }
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+`;
+export const ButtonLink = styled(LinkButton)`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1em;
+  letter-spacing: 0.04em;
+  color: #fff;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
 `;

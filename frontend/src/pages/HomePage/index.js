@@ -3,10 +3,8 @@ import UserService from "../../services/user";
 import { FaAngleDoubleRight } from "react-icons/fa";
 import { PageWrapper } from "../../components/PageWrapper";
 import { Pattern } from "../../components/Pattern";
-import { ButtonLink } from "../../components/pieces/TopBar/TopBarElements";
 import {
   Container,
-  HeaderContainer,
   TextContainer,
   HeaderWelcome,
   HeaderText,
@@ -16,6 +14,7 @@ import {
   StyledSpan,
   ButtonSpan,
   ButtonContainer,
+  ButtonLink,
 } from "./HomePageElements";
 
 const Home = () => {
