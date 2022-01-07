@@ -8,7 +8,7 @@ export const Container = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  font-size: 22px;
+  font-size: 20px;
   @media screen and (max-width: 1600px) {
     font-size: 16px;
   }
