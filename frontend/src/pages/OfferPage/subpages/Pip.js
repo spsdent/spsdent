@@ -10,10 +10,12 @@ import {
   ComeBackButton,
   List,
   ListText,
+  Container
 } from "./OfferSubPageElements";
 const Pip = () => {
   return (
     <PageWrapper>
+      <Container>
       <HeaderImage
         image={'url("../pip.png")'}
         initial={{ y: -200 }}
@@ -90,6 +92,7 @@ const Pip = () => {
         initial={{ y: -200 }}
         animate={{ y: 0 }}
       />
+      </Container>
     </PageWrapper>
   );
 };

@@ -10,10 +10,12 @@ import {
   ComeBackButton,
   List,
   ListText,
+  Container
 } from "./OfferSubPageElements";
 const Znieczulenie = () => {
   return (
     <PageWrapper>
+      <Container>
       <HeaderImage
         image={'url("../znieczulenie.png")'}
         initial={{ y: -200 }}
@@ -100,6 +102,7 @@ const Znieczulenie = () => {
         initial={{ y: -200 }}
         animate={{ y: 0 }}
       />
+      </Container>
     </PageWrapper>
   );
 };

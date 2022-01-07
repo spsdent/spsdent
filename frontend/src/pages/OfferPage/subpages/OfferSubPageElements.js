@@ -1,29 +1,44 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import {motion} from 'framer-motion'
-
+import { motion } from "framer-motion";
+export const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  font-size: 24px;
+  @media screen and (max-width: 1500px) {
+    font-size: 20px;
+  }
+  @media screen and (max-width: 1280px) {
+    font-size: 18px;
+  }
+  @media screen and (max-width: 960px) {
+    font-size: 14.5px;
+  }
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+`;
 export const SubPageContainer = styled(motion.div)`
   width: 75%;
   /* background-color: #aaa; */
   margin-top: 11em;
-  font-size: 20px;
   height: fit-content;
   display: flex;
   flex-direction: column;
+  font-size: 0.8em;
 `;
 export const HeaderImage = styled(motion.div)`
   /* background-color: cadetblue; */
-  position: absolute;
-  left: 10%;
-  top: 100px;
+  position: fixed;
+  left: 7em;
+  top: 1em;
   width: 90%;
   height: 7.9em;
-  z-index: -1;
-  background-image:${props => props.image ? props.image : null};
+  z-index: 1;
+  background-image: ${(props) => (props.image ? props.image : null)};
   background-size: cover;
   @media screen and (max-width: 768px) {
     left: 0%;
-    width: 100%;
   }
 `;
 export const PageTitle = styled.h1`
@@ -37,8 +52,8 @@ export const PageText = styled.div`
   align-items: flex-start;
   color: #333;
   @media screen and (max-width: 768px) {
-   flex-direction: column;
-   align-items: center;
+    flex-direction: column;
+    align-items: center;
   }
 `;
 export const PageTextColumn = styled.ul`
@@ -50,7 +65,7 @@ export const PageTextColumn = styled.ul`
   }
 `;
 export const ComeBackButton = styled(Link)`
-text-decoration: none;
+  text-decoration: none;
   display: block;
   margin: 2em auto;
   border-style: none;

@@ -10,10 +10,12 @@ import {
   ComeBackButton,
   List,
   ListText,
+  Container
 } from "./OfferSubPageElements";
 const OfferRtg = () => {
   return (
     <PageWrapper>
+      <Container>
       <HeaderImage
         image={'url("../rtg.png")'}
         initial={{ y: -200 }}
@@ -96,6 +98,7 @@ const OfferRtg = () => {
         initial={{ y: -200 }}
         animate={{ y: 0 }}
       />
+      </Container>
     </PageWrapper>
   );
 };

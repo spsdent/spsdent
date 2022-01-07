@@ -36,8 +36,9 @@ export const NavLogoContainer = styled.div`
 `;
 export const NavLogo = styled(LinkLogo)`
   position: absolute;
-  top: 0;
-  left: 5%;
+  top: 2.1em;
+  left: 4.25em;
+  transform: translate(-50%, -50%);
   width: 2em;
   height: 2em;
   cursor: pointer;
@@ -46,7 +47,6 @@ export const NavImage = styled.img`
   cursor: pointer;
   width: 2.1em;
   height: 2.1em;
-  transform: translateY(50%);
 `;
 export const MobileIcon = styled.div`
   display: none;

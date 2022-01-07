@@ -10,10 +10,12 @@ import {
   ComeBackButton,
   List,
   ListText,
+  Container
 } from "./OfferSubPageElements";
 const Implanty = () => {
   return (
     <PageWrapper>
+      <Container>
       <HeaderImage
         image={'url("../implanty.png")'}
         initial={{ y: -200 }}
@@ -97,6 +99,7 @@ const Implanty = () => {
         initial={{ y: -200 }}
         animate={{ y: 0 }}
       />
+      </Container>
     </PageWrapper>
   );
 };

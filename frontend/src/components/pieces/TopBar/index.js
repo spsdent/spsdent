@@ -34,7 +34,6 @@ const TopBar = () => {
   const logOut = () => {
     dispatch(logout());
   };
-
   return (
     <>
       <Nav>
@@ -44,11 +43,9 @@ const TopBar = () => {
               <NavImage src="../logo.png" alt="spsdentLogo" />
             </NavLogo>
           </NavLogoContainer>
-
           <MobileIcon>
             <FaBars />
           </MobileIcon>
-
           <NavInfoContainer>
             <InfoContainer>
               <BsTelephone/>
@@ -59,7 +56,6 @@ const TopBar = () => {
               <InfoText>ul.Filaretów 27, lok.4 20-609 Lublin</InfoText>
             </InfoContainer>
           </NavInfoContainer>
-
           <ButtonsContainer>
             <ButtonNav primary>
               <ButtonLink to="/add-visit">Umów się na wizytę</ButtonLink>
