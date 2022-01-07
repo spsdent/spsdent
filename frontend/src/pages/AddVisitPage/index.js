@@ -11,11 +11,11 @@ const AddVisitPage = () => {
   return (
     <>
       {currentUser &&
-        currentUser.roles[currentUser.roles.length - 1] === 'ROLE_ADMIN' && (
+        currentUser.roles.includes('ROLE_ADMIN') && (
           <AddVisitAdmin />
         )}
       {currentUser &&
-        currentUser.roles[currentUser.roles.length - 1] === 'ROLE_USER' && (
+        currentUser.roles.includes('ROLE_USER') && (
           <AddVisitAuthUser />
         )}
       {!currentUser && <AddVisitNonAuth />}

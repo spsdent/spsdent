@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 
-import NewService from './NewService'
-import DeleteService from './DeleteService'
-import UpdateService from './UpdateService'
+import NewService from './Create'
+import DeleteService from './Delete'
+import UpdateService from './Update'
 
 const ServicesControl = () => {
   const [state, setState] = useState({
