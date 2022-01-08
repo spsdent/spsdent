@@ -20,8 +20,8 @@ import {
   Visit,
   VisitContent,
   VisitDelete,
-  StyledFaTrashAlt,
 } from './VisitsPageElements'
+import useFetchAllUsers from '../../hooks/useFetchAllUsers'
 
 const VisitsPage = () => {
   const [visitsList, setVisitsList] = useState([])
@@ -32,13 +32,8 @@ const VisitsPage = () => {
   const { refresh: isRefresh } = useSelector((state) => state)
   const dispatch = useDispatch()
   let navigate = useNavigate()
-
-  useEffect(() => {
-    if (currentUser) {
-      currentUser.roles.includes('ROLE_SPEC')
-      currentUser.roles.includes('ROLE_ADMIN')
-    }
-  }, [currentUser])
+  const allUsers = useFetchAllUsers()
+  const specialistData = (sid) => allUsers.find((user) => user._id === sid)
 
   useEffect(() => {
     retrieveVisits()
@@ -48,14 +43,16 @@ const VisitsPage = () => {
     VisitDataService.getAll()
       .then((response) => {
         const visitsArr = response.data.filter((item) => item.status === false)
-        if (
-          currentUser.roles.includes('ROLE_ADMIN') ||
-          currentUser.roles.includes('ROLE_SPEC')
-        ) {
+        if (currentUser.roles.includes('ROLE_ADMIN')) {
           setVisitsList(visitsArr)
+        } else if (currentUser.roles.includes('ROLE_SPEC')) {
+          const specificDoctorVisits = visitsArr.filter(
+            (visit) => visit.specjalista === currentUser.id
+          )
+          setVisitsList(specificDoctorVisits)
         } else {
-          const userVisitsArr = response.data.filter(
-            (visit) => visit.uid === currentUser.id
+          const userVisitsArr = visitsArr.filter(
+            (visit) => visit.email === currentUser.email
           )
           setVisitsList(userVisitsArr)
         }
@@ -99,157 +96,172 @@ const VisitsPage = () => {
   }
   return (
     <PageWrapper>
-      <VisitsPageContainer>
-        <VisitsPageTitleContainer>
-          <VisitsPageTitle
-            initial={{ y: -50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.1 }}
-          >
-            Aktualne
-          </VisitsPageTitle>
-          <VisitsPageTitle
-            primary
-            initial={{ y: -50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
-          >
-            Rezerwacje
-          </VisitsPageTitle>
-        </VisitsPageTitleContainer>
-        <VisitsContainer>
-          {visitsList.length > 0 ? (
-            <>
-              <Headers variants={container} initial='hidden' animate='show'>
-                <Header primary>
-                  <HeaderText variants={itemOne}>usługa</HeaderText>{' '}
-                  <Triangle />
-                </Header>
-                <Header>
-                  <HeaderText>lekarz</HeaderText> <Triangle />
-                </Header>
-                <Header>
-                  <HeaderText>data</HeaderText> <Triangle />
-                </Header>
-                <Header>
-                  <HeaderText>godzina</HeaderText> <Triangle />
-                </Header>
-                <Header>
-                  <HeaderText>cena</HeaderText> <Triangle />
-                </Header>
-              </Headers>
-              <VisitsListContainer
-                variants={container}
-                initial='hidden'
-                animate='show'
+      {allUsers.length > 0 && (
+        <>
+          <VisitsPageContainer>
+            <VisitsPageTitleContainer>
+              <VisitsPageTitle
+                initial={{ y: -50, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.1 }}
               >
-                {visitsList.map((item, i) => (
-                  <Visit
-                    initial={{ opacity: 0, x: -100 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3, delay: i * 0.2 }}
-                    key={item._id}
-                    onClick={() => goToVisit(item)}
+                Aktualne
+              </VisitsPageTitle>
+              <VisitsPageTitle
+                primary
+                initial={{ y: -50, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.2 }}
+              >
+                Rezerwacje
+              </VisitsPageTitle>
+            </VisitsPageTitleContainer>
+            <VisitsContainer>
+              {visitsList.length > 0 ? (
+                <>
+                  <Headers variants={container} initial='hidden' animate='show'>
+                    <Header primary>
+                      <HeaderText variants={itemOne}>usługa</HeaderText>{' '}
+                      <Triangle />
+                    </Header>
+                    <Header>
+                      <HeaderText>lekarz</HeaderText> <Triangle />
+                    </Header>
+                    <Header>
+                      <HeaderText>data</HeaderText> <Triangle />
+                    </Header>
+                    <Header>
+                      <HeaderText>godzina</HeaderText> <Triangle />
+                    </Header>
+                    <Header>
+                      <HeaderText>cena</HeaderText> <Triangle />
+                    </Header>
+                  </Headers>
+                  <VisitsListContainer
+                    variants={container}
+                    initial='hidden'
+                    animate='show'
                   >
-                    <VisitContent primary>{item.usluga}</VisitContent>
-                    <VisitContent>Leno Paleno</VisitContent>
-                    <VisitContent>{item.data}</VisitContent>
-                    <VisitContent>{item.godzina}:00</VisitContent>
-                    <VisitContent>{item.cena}zł</VisitContent>
-                    <VisitDelete
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        setIsDelete(true)
-                        setVisitId(item)
-                      }}
-                      onMouseOver={() => setIsHover(true)}
-                      onMouseOut={() => setIsHover(false)}
-                    >
-                      <FaTrashAlt />
-                    </VisitDelete>
-                  </Visit>
-                ))}
-              </VisitsListContainer>
-            </>
-          ) : (
-            <VisitsPageTitle
-              initial={{ y: -50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.1 }}
-            >
-              Brak aktualnych wizyt
-            </VisitsPageTitle>
-          )}
-        </VisitsContainer>
-      </VisitsPageContainer>
-      {isDelete && (
-        <div
-          style={{
-            width: '100vw',
-            height: '100vh',
-            position: 'absolute',
-            left: '0',
-            top: '0',
-            backgroundColor: 'rgba(3,3,3,.5)',
-            zIndex: '999',
-          }}
-        >
-          <div
-            style={{
-              position: 'relative',
-              width: '50%',
-              height: '50%',
-              backgroundColor: '#fff',
-              left: '0',
-              right: '0',
-              top: '25%',
-              margin: 'auto',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <h2 style={{ marginBottom: '20px' }}>
-              Na pewno chcesz usunąć wizytę?
-            </h2>
+                    {visitsList.map((item, i) => (
+                      <Visit
+                        initial={{ opacity: 0, x: -100 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.3, delay: i * 0.2 }}
+                        key={item._id}
+                        onClick={() => goToVisit(item)}
+                      >
+                        <VisitContent primary>{item.usluga}</VisitContent>
+                        <VisitContent>
+                          {`${
+                            allUsers.find(
+                              (user) => user._id === item.specjalista
+                            ).imie
+                          } ${
+                            allUsers.find(
+                              (user) => user._id === item.specjalista
+                            ).nazwisko
+                          }`}
+                        </VisitContent>
+                        <VisitContent>{item.data}</VisitContent>
+                        <VisitContent>{item.godzina}:00</VisitContent>
+                        <VisitContent>{item.cena}zł</VisitContent>
+                        <VisitDelete
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            setIsDelete(true)
+                            setVisitId(item)
+                          }}
+                          onMouseOver={() => setIsHover(true)}
+                          onMouseOut={() => setIsHover(false)}
+                        >
+                          <FaTrashAlt />
+                        </VisitDelete>
+                      </Visit>
+                    ))}
+                  </VisitsListContainer>
+                </>
+              ) : (
+                <VisitsPageTitle
+                  initial={{ y: -50, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.1 }}
+                >
+                  Brak aktualnych wizyt
+                </VisitsPageTitle>
+              )}
+            </VisitsContainer>
+          </VisitsPageContainer>
+          {isDelete && (
             <div
               style={{
-                position: 'relative',
-                backgroundColor: '#fff',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+                width: '100vw',
+                height: '100vh',
+                position: 'absolute',
+                left: '0',
+                top: '0',
+                backgroundColor: 'rgba(3,3,3,.5)',
+                zIndex: '999',
               }}
             >
-              <button
+              <div
                 style={{
-                  backgroundColor: 'transparent',
-                  border: '2px solid #333',
-                  padding: '.75em 50px',
-                  marginRight: '5px',
-                  cursor: 'pointer',
+                  position: 'relative',
+                  width: '50%',
+                  height: '50%',
+                  backgroundColor: '#fff',
+                  left: '0',
+                  right: '0',
+                  top: '25%',
+                  margin: 'auto',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
-                onClick={() => setIsDelete(false)}
               >
-                Nie
-              </button>
-              <button
-                style={{
-                  backgroundColor: '#01d4bf',
-                  border: '2px solid transparent',
-                  padding: '.75em 50px',
-                  marginLeft: '5px',
-                  cursor: 'pointer',
-                }}
-                onClick={onVisitDelete}
-              >
-                Tak
-              </button>
+                <h2 style={{ marginBottom: '20px' }}>
+                  Na pewno chcesz usunąć wizytę?
+                </h2>
+                <div
+                  style={{
+                    position: 'relative',
+                    backgroundColor: '#fff',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <button
+                    style={{
+                      backgroundColor: 'transparent',
+                      border: '2px solid #333',
+                      padding: '.75em 50px',
+                      marginRight: '5px',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => setIsDelete(false)}
+                  >
+                    Nie
+                  </button>
+                  <button
+                    style={{
+                      backgroundColor: '#01d4bf',
+                      border: '2px solid transparent',
+                      padding: '.75em 50px',
+                      marginLeft: '5px',
+                      cursor: 'pointer',
+                    }}
+                    onClick={onVisitDelete}
+                  >
+                    Tak
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          )}
+        </>
       )}
+
       <Pattern
         src='Pattern.png'
         top={'12%'}
