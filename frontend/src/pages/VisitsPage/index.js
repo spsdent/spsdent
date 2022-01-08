@@ -82,34 +82,41 @@ const VisitsPage = () => {
   const displayVisits = visitsList
     .slice(pagesVisited, pagesVisited + visitsPerPage)
     .map((visit, i) => {
-      return (
-        <Visit
-          initial={{ opacity: 0, x: -100 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.3, delay: i * 0.2 }}
-          key={visit._id}
-          onClick={() => goToVisit(visit)}
-        >
-          <VisitContent primary>{visit.usluga}</VisitContent>
-          <VisitContent>
-            {`${allUsers.find((user) => user._id === visit.specjalista).imie} ${
-              allUsers.find((user) => user._id === visit.specjalista).nazwisko
-            }`}
-          </VisitContent>
-          <VisitContent>{visit.data}</VisitContent>
-          <VisitContent>{visit.godzina}:00</VisitContent>
-          <VisitContent>{visit.cena}zł</VisitContent>
-          <VisitDelete
-            onClick={(e) => {
-              e.stopPropagation()
-              setIsDelete(true)
-              setVisitId(visit)
-            }}
-          >
-            <FaTrashAlt />
-          </VisitDelete>
-        </Visit>
-      )
+      if (allUsers.length > 0) {
+        return (
+          <>
+            <Visit
+              initial={{ opacity: 0, x: -100 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, delay: i * 0.2 }}
+              key={visit._id}
+              onClick={() => goToVisit(visit)}
+            >
+              <VisitContent primary>{visit.usluga}</VisitContent>
+              <VisitContent>
+                {`${
+                  allUsers.find((user) => user._id === visit.specjalista).imie
+                } ${
+                  allUsers.find((user) => user._id === visit.specjalista)
+                    .nazwisko
+                }`}
+              </VisitContent>
+              <VisitContent>{visit.data}</VisitContent>
+              <VisitContent>{visit.godzina}:00</VisitContent>
+              <VisitContent>{visit.cena}zł</VisitContent>
+              <VisitDelete
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setIsDelete(true)
+                  setVisitId(visit)
+                }}
+              >
+                <FaTrashAlt />
+              </VisitDelete>
+            </Visit>
+          </>
+        )
+      }
     })
 
   const pageCount = Math.ceil(visitsList.length / visitsPerPage)
@@ -137,141 +144,137 @@ const VisitsPage = () => {
   }
   return (
     <PageWrapper>
-      {allUsers.length > 0 && (
-        <>
-          <VisitsPageContainer>
-            <VisitsPageTitleContainer>
-              <VisitsPageTitle
-                initial={{ y: -50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.1 }}
+      <VisitsPageContainer>
+        <VisitsPageTitleContainer>
+          <VisitsPageTitle
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.1 }}
+          >
+            Aktualne
+          </VisitsPageTitle>
+          <VisitsPageTitle
+            primary
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            Rezerwacje
+          </VisitsPageTitle>
+        </VisitsPageTitleContainer>
+        <VisitsContainer>
+          {visitsList.length > 0 ? (
+            <>
+              <Headers variants={container} initial='hidden' animate='show'>
+                <Header primary>
+                  <HeaderText variants={itemOne}>usługa</HeaderText>{' '}
+                  <Triangle />
+                </Header>
+                <Header>
+                  <HeaderText>lekarz</HeaderText> <Triangle />
+                </Header>
+                <Header>
+                  <HeaderText>data</HeaderText> <Triangle />
+                </Header>
+                <Header>
+                  <HeaderText>godzina</HeaderText> <Triangle />
+                </Header>
+                <Header>
+                  <HeaderText>cena</HeaderText> <Triangle />
+                </Header>
+              </Headers>
+              <VisitsListContainer
+                variants={container}
+                initial='hidden'
+                animate='show'
               >
-                Aktualne
-              </VisitsPageTitle>
-              <VisitsPageTitle
-                primary
-                initial={{ y: -50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.2 }}
-              >
-                Rezerwacje
-              </VisitsPageTitle>
-            </VisitsPageTitleContainer>
-            <VisitsContainer>
-              {visitsList.length > 0 ? (
-                <>
-                  <Headers variants={container} initial='hidden' animate='show'>
-                    <Header primary>
-                      <HeaderText variants={itemOne}>usługa</HeaderText>{' '}
-                      <Triangle />
-                    </Header>
-                    <Header>
-                      <HeaderText>lekarz</HeaderText> <Triangle />
-                    </Header>
-                    <Header>
-                      <HeaderText>data</HeaderText> <Triangle />
-                    </Header>
-                    <Header>
-                      <HeaderText>godzina</HeaderText> <Triangle />
-                    </Header>
-                    <Header>
-                      <HeaderText>cena</HeaderText> <Triangle />
-                    </Header>
-                  </Headers>
-                  <VisitsListContainer
-                    variants={container}
-                    initial='hidden'
-                    animate='show'
-                  >
-                    {displayVisits}
-                    <MyPaginate
-                      previousLabel={'Poprzednia strona'}
-                      nextLabel={'Następna strona'}
-                      pageCount={pageCount}
-                      onPageChange={changePage}
-                    />
-                  </VisitsListContainer>
-                </>
-              ) : (
-                <VisitsPageTitle
-                  initial={{ y: -50, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.1 }}
-                >
-                  Brak aktualnych wizyt
-                </VisitsPageTitle>
-              )}
-            </VisitsContainer>
-          </VisitsPageContainer>
-          {isDelete && (
+                {displayVisits}
+                <MyPaginate
+                  previousLabel={'Poprzednia strona'}
+                  nextLabel={'Następna strona'}
+                  pageCount={pageCount}
+                  onPageChange={changePage}
+                />
+              </VisitsListContainer>
+            </>
+          ) : (
+            <VisitsPageTitle
+              initial={{ y: -50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.1 }}
+            >
+              Brak aktualnych wizyt
+            </VisitsPageTitle>
+          )}
+        </VisitsContainer>
+      </VisitsPageContainer>
+      {isDelete && (
+        <div
+          style={{
+            width: '100vw',
+            height: '100vh',
+            position: 'absolute',
+            left: '0',
+            top: '0',
+            backgroundColor: 'rgba(3,3,3,.5)',
+            zIndex: '999',
+          }}
+        >
+          <div
+            style={{
+              position: 'relative',
+              width: '50%',
+              height: '50%',
+              backgroundColor: '#fff',
+              left: '0',
+              right: '0',
+              top: '25%',
+              margin: 'auto',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <h2 style={{ marginBottom: '20px' }}>
+              Na pewno chcesz usunąć wizytę?
+            </h2>
             <div
               style={{
-                width: '100vw',
-                height: '100vh',
-                position: 'absolute',
-                left: '0',
-                top: '0',
-                backgroundColor: 'rgba(3,3,3,.5)',
-                zIndex: '999',
+                position: 'relative',
+                backgroundColor: '#fff',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
             >
-              <div
+              <button
                 style={{
-                  position: 'relative',
-                  width: '50%',
-                  height: '50%',
-                  backgroundColor: '#fff',
-                  left: '0',
-                  right: '0',
-                  top: '25%',
-                  margin: 'auto',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  backgroundColor: 'transparent',
+                  border: '2px solid #333',
+                  padding: '.75em 50px',
+                  marginRight: '5px',
+                  cursor: 'pointer',
                 }}
+                onClick={() => setIsDelete(false)}
               >
-                <h2 style={{ marginBottom: '20px' }}>
-                  Na pewno chcesz usunąć wizytę?
-                </h2>
-                <div
-                  style={{
-                    position: 'relative',
-                    backgroundColor: '#fff',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <button
-                    style={{
-                      backgroundColor: 'transparent',
-                      border: '2px solid #333',
-                      padding: '.75em 50px',
-                      marginRight: '5px',
-                      cursor: 'pointer',
-                    }}
-                    onClick={() => setIsDelete(false)}
-                  >
-                    Nie
-                  </button>
-                  <button
-                    style={{
-                      backgroundColor: '#01d4bf',
-                      border: '2px solid transparent',
-                      padding: '.75em 50px',
-                      marginLeft: '5px',
-                      cursor: 'pointer',
-                    }}
-                    onClick={onVisitDelete}
-                  >
-                    Tak
-                  </button>
-                </div>
-              </div>
+                Nie
+              </button>
+              <button
+                style={{
+                  backgroundColor: '#01d4bf',
+                  border: '2px solid transparent',
+                  padding: '.75em 50px',
+                  marginLeft: '5px',
+                  cursor: 'pointer',
+                }}
+                onClick={onVisitDelete}
+              >
+                Tak
+              </button>
             </div>
-          )}
-        </>
+          </div>
+        </div>
       )}
 
       <Pattern

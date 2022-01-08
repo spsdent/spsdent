@@ -80,30 +80,34 @@ const ArchiveVisitsList = () => {
   const displayVisits = visitsList
     .slice(pagesVisited, pagesVisited + visitsPerPage)
     .map((visit, i) => {
-      return (
-        <Visit
-          initial={{ opacity: 0, x: -100 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.3, delay: i * 0.2 }}
-          key={visit._id}
-          onClick={() => goToVisit(visit)}
-        >
-          <VisitContent primary>{visit.usluga}</VisitContent>
-          <VisitContent>{`${
-            allUsers.find((user) => user._id === visit.specjalista).imie
-          } ${
-            allUsers.find((user) => user._id === visit.specjalista).nazwisko
-          }`}</VisitContent>
-          <VisitContent>{visit.data}</VisitContent>
-          <VisitContent>{visit.godzina}:00</VisitContent>
-          <VisitContent>{visit.cena}zł</VisitContent>
-          <VisitDelete onClick={() => deleteVisit(visit)}>
-            <FaTrashAlt />
-          </VisitDelete>
-        </Visit>
-      )
+      if (allUsers.length > 0) {
+        return (
+          <Visit
+            initial={{ opacity: 0, x: -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3, delay: i * 0.2 }}
+            key={visit._id}
+            onClick={() => goToVisit(visit)}
+          >
+            <VisitContent primary>{visit.usluga}</VisitContent>
+            <VisitContent>
+              {`${
+                allUsers.find((user) => user._id === visit.specjalista).imie
+              } ${
+                allUsers.find((user) => user._id === visit.specjalista).nazwisko
+              }`}
+            </VisitContent>
+            <VisitContent>{visit.data}</VisitContent>
+            <VisitContent>{visit.godzina}:00</VisitContent>
+            <VisitContent>{visit.cena}zł</VisitContent>
+            <VisitDelete onClick={() => deleteVisit(visit)}>
+              <FaTrashAlt />
+            </VisitDelete>
+          </Visit>
+        )
+      }
     })
-    
+
   const pageCount = Math.ceil(visitsList.length / visitsPerPage)
   const changePage = ({ selected }) => {
     setPageNumber(selected)
