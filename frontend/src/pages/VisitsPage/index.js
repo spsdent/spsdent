@@ -178,23 +178,23 @@ const VisitsPage = () => {
               <Headers variants={container} initial='hidden' animate='show'>
                 <Header primary onClick={onPositionSet}>
                   <HeaderText variants={itemOne}>usługa</HeaderText>
-                  <Triangle position={isFiltered} />
+                  <Triangle />
                 </Header>
                 <Header>
                   <HeaderText>lekarz</HeaderText>
-                  <Triangle position={isFiltered} />
+                  <Triangle />
                 </Header>
                 <Header>
                   <HeaderText>data</HeaderText>
-                  <Triangle position={isFiltered} />
+                  <Triangle />
                 </Header>
                 <Header>
                   <HeaderText>godzina</HeaderText>
-                  <Triangle position={isFiltered} />
+                  <Triangle />
                 </Header>
                 <Header>
                   <HeaderText>cena</HeaderText>
-                  <Triangle position={isFiltered} />
+                  <Triangle />
                 </Header>
               </Headers>
               <VisitsListContainer

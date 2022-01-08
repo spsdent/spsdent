@@ -49,6 +49,19 @@ export const Header = styled(motion.div)`
   display: flex;
   align-items: center;
 `
+
+export const Triangle = styled.div`
+  width: 0;
+  height: 0;
+  margin-left: 0.3em;
+  transition: 0.2s;
+  cursor: pointer;
+
+  border-left: 0.35em solid transparent;
+  border-right: 0.35em solid transparent;
+  border-top: 0.35em solid #333;
+`
+
 export const HeaderText = styled.button`
   font-size: 0.8em;
   font-family: 'poppins';
@@ -61,34 +74,11 @@ export const HeaderText = styled.button`
   &:hover {
     color: #01d4bf;
   }
+  &:hover + ${Triangle} {
+    border-top: 0.35em solid #01d4bf;
+  }
 `
-export const Triangle = styled.div`
-  width: 0;
-  height: 0;
-  margin-left: 0.3em;
-  transition: 0.2s;
-  cursor: pointer;
 
-  ${({ position }) =>
-    position === 0 &&
-    `border-left: 0.35em solid transparent;
-border-right: 0.35em solid transparent;
-border-top: 0.35em solid #333;
-`}
-
-  ${({ position }) =>
-    position === 1 &&
-    `border-left: 0.35em solid transparent;
-border-right: 0.35em solid transparent;
-border-top: 0.35em solid #01D4BF;
-`}
-
-${({ position }) =>
-    position === 2 &&
-    `border-left: 0.35em solid transparent;
-border-right: 0.35em solid transparent;
-border-bottom: 0.35em solid #01D4BF;`}
-`
 export const VisitsListContainer = styled(motion.div)`
   height: fit-content;
   width: 105%;
