@@ -22,6 +22,7 @@ import {
   VisitDelete,
 } from '../VisitsPage/VisitsPageElements'
 import useFetchAllUsers from '../../hooks/useFetchAllUsers'
+import { MyPaginate } from '../VisitsPage/VisitsPageElements'
 
 const ArchiveVisitsList = () => {
   const [visitsList, setVisitsList] = useState([])
@@ -32,6 +33,9 @@ const ArchiveVisitsList = () => {
   const dispatch = useDispatch()
   let navigate = useNavigate()
   const allUsers = useFetchAllUsers()
+  const [pageNumber, setPageNumber] = useState(0)
+  const visitsPerPage = 5
+  const pagesVisited = pageNumber * visitsPerPage
 
   useEffect(() => {
     retrieveVisits()
@@ -71,6 +75,38 @@ const ArchiveVisitsList = () => {
 
   const goToVisit = (item) => {
     navigate(`/archive/${item.id}`, { state: item })
+  }
+
+  const displayVisits = visitsList
+    .slice(pagesVisited, pagesVisited + visitsPerPage)
+    .map((visit, i) => {
+      return (
+        <Visit
+          initial={{ opacity: 0, x: -100 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.3, delay: i * 0.2 }}
+          key={visit._id}
+          onClick={() => goToVisit(visit)}
+        >
+          <VisitContent primary>{visit.usluga}</VisitContent>
+          <VisitContent>{`${
+            allUsers.find((user) => user._id === visit.specjalista).imie
+          } ${
+            allUsers.find((user) => user._id === visit.specjalista).nazwisko
+          }`}</VisitContent>
+          <VisitContent>{visit.data}</VisitContent>
+          <VisitContent>{visit.godzina}:00</VisitContent>
+          <VisitContent>{visit.cena}zł</VisitContent>
+          <VisitDelete onClick={() => deleteVisit(visit)}>
+            <FaTrashAlt />
+          </VisitDelete>
+        </Visit>
+      )
+    })
+    
+  const pageCount = Math.ceil(visitsList.length / visitsPerPage)
+  const changePage = ({ selected }) => {
+    setPageNumber(selected)
   }
 
   const container = {
@@ -140,30 +176,13 @@ const ArchiveVisitsList = () => {
                     initial='hidden'
                     animate='show'
                   >
-                    {visitsList.map((item, i) => (
-                      <Visit
-                        initial={{ opacity: 0, x: -100 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.3, delay: i * 0.2 }}
-                        key={item._id}
-                        onClick={() => goToVisit(item)}
-                      >
-                        <VisitContent primary>{item.usluga}</VisitContent>
-                        <VisitContent>{`${
-                          allUsers.find((user) => user._id === item.specjalista)
-                            .imie
-                        } ${
-                          allUsers.find((user) => user._id === item.specjalista)
-                            .nazwisko
-                        }`}</VisitContent>
-                        <VisitContent>{item.data}</VisitContent>
-                        <VisitContent>{item.godzina}:00</VisitContent>
-                        <VisitContent>{item.cena}zł</VisitContent>
-                        <VisitDelete onClick={() => deleteVisit(item)}>
-                          <FaTrashAlt />
-                        </VisitDelete>
-                      </Visit>
-                    ))}
+                    {displayVisits}
+                    <MyPaginate
+                      previousLabel={'Poprzednia strona'}
+                      nextLabel={'Następna strona'}
+                      pageCount={pageCount}
+                      onPageChange={changePage}
+                    />
                   </VisitsListContainer>
                 </>
               ) : (

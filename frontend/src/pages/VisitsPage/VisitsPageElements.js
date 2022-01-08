@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { motion } from 'framer-motion'
-import { FaTrashAlt } from 'react-icons/fa'
+import ReactPaginate from 'react-paginate'
 
 export const VisitsPageContainer = styled.div`
   width: 80%;
@@ -108,4 +108,37 @@ export const VisitDelete = styled.div`
   }
 `
 
-
+export const MyPaginate = styled(ReactPaginate).attrs({
+  // You can redifine classes here, if you want.
+  activeClassName: 'active', // default to "disabled"
+})`
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  list-style-type: none;
+  padding: 0 5rem;
+  li a {
+    padding: 0.1rem 1rem;
+    border: gray 1px solid;
+    cursor: pointer;
+  }
+  li.previous a,
+  li.next a,
+  li.break a {
+    border-color: transparent;
+  }
+  li.active a {
+    background-color: #01D4BF;
+    border-color: transparent;
+    color: white;
+    min-width: 32px;
+  }
+  li.disabled a {
+    color: grey;
+  }
+  li.disable,
+  li.disabled a {
+    cursor: default;
+  }
+`

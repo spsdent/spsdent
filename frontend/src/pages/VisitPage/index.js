@@ -58,7 +58,7 @@ const VisitPage = () => {
   return (
     <PageWrapper>
       <Container>
-        {visitSpecialist && (
+        {allUsers.length > 0 && (
           <>
             <VisitTitleContainer>
               <VisitTitle
@@ -106,7 +106,7 @@ const VisitPage = () => {
                     setIsOpen(true)
                     setActionType('usun')
                   }}
-                  primary={(!isAdmin && !isSpec) && true}
+                  primary={!isAdmin && !isSpec && true}
                 >
                   Usuń wizytę
                 </ButtonVisit>
