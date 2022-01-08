@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom'
 import { PageWrapper } from '../../components/PageWrapper'
 import { FaTrashAlt } from 'react-icons/fa'
 import { Pattern } from '../../components/Pattern'
-import ReactPaginate from 'react-paginate'
 
 import {
   VisitsPageContainer,
@@ -30,6 +29,7 @@ const VisitsPage = () => {
   const [isDelete, setIsDelete] = useState(false)
   const [visitId, setVisitId] = useState('')
   const [pageNumber, setPageNumber] = useState(0)
+  const [isFiltered, setIsFiltered] = useState(0)
   const { user: currentUser } = useSelector((state) => state.auth)
   const { refresh: isRefresh } = useSelector((state) => state)
   const dispatch = useDispatch()
@@ -124,6 +124,16 @@ const VisitsPage = () => {
     setPageNumber(selected)
   }
 
+  const onPositionSet = () => {
+    if (isFiltered === 0) {
+      setIsFiltered(1)
+    } else if (isFiltered === 1) {
+      setIsFiltered(2)
+    } else {
+      setIsFiltered(0)
+    }
+  }
+
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -166,21 +176,25 @@ const VisitsPage = () => {
           {visitsList.length > 0 ? (
             <>
               <Headers variants={container} initial='hidden' animate='show'>
-                <Header primary>
-                  <HeaderText variants={itemOne}>usługa</HeaderText>{' '}
-                  <Triangle />
+                <Header primary onClick={onPositionSet}>
+                  <HeaderText variants={itemOne}>usługa</HeaderText>
+                  <Triangle position={isFiltered} />
                 </Header>
                 <Header>
-                  <HeaderText>lekarz</HeaderText> <Triangle />
+                  <HeaderText>lekarz</HeaderText>
+                  <Triangle position={isFiltered} />
                 </Header>
                 <Header>
-                  <HeaderText>data</HeaderText> <Triangle />
+                  <HeaderText>data</HeaderText>
+                  <Triangle position={isFiltered} />
                 </Header>
                 <Header>
-                  <HeaderText>godzina</HeaderText> <Triangle />
+                  <HeaderText>godzina</HeaderText>
+                  <Triangle position={isFiltered} />
                 </Header>
                 <Header>
-                  <HeaderText>cena</HeaderText> <Triangle />
+                  <HeaderText>cena</HeaderText>
+                  <Triangle position={isFiltered} />
                 </Header>
               </Headers>
               <VisitsListContainer

@@ -49,19 +49,45 @@ export const Header = styled(motion.div)`
   display: flex;
   align-items: center;
 `
-export const HeaderText = styled.p`
+export const HeaderText = styled.button`
   font-size: 0.8em;
   font-family: 'poppins';
   color: #333;
   text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+  transition: 0.2s;
+
+  &:hover {
+    color: #01d4bf;
+  }
 `
 export const Triangle = styled.div`
   width: 0;
   height: 0;
-  border-left: 0.35em solid transparent;
-  border-right: 0.35em solid transparent;
-  border-top: 0.35em solid #333;
   margin-left: 0.3em;
+  transition: 0.2s;
+  cursor: pointer;
+
+  ${({ position }) =>
+    position === 0 &&
+    `border-left: 0.35em solid transparent;
+border-right: 0.35em solid transparent;
+border-top: 0.35em solid #333;
+`}
+
+  ${({ position }) =>
+    position === 1 &&
+    `border-left: 0.35em solid transparent;
+border-right: 0.35em solid transparent;
+border-top: 0.35em solid #01D4BF;
+`}
+
+${({ position }) =>
+    position === 2 &&
+    `border-left: 0.35em solid transparent;
+border-right: 0.35em solid transparent;
+border-bottom: 0.35em solid #01D4BF;`}
 `
 export const VisitsListContainer = styled(motion.div)`
   height: fit-content;
@@ -129,7 +155,7 @@ export const MyPaginate = styled(ReactPaginate).attrs({
     border-color: transparent;
   }
   li.active a {
-    background-color: #01D4BF;
+    background-color: #01d4bf;
     border-color: transparent;
     color: white;
     min-width: 32px;
