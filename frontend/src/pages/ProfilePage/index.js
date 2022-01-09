@@ -81,9 +81,8 @@ const ProfilePage = () => {
     })
   }, [isRefresh])
 
-  const isUser = currentUser.roles[currentUser.roles.length - 1] === 'ROLE_USER'
-  const isDoctor =
-    currentUser.roles[currentUser.roles.length - 1] === 'ROLE_SPEC'
+  const isUser = currentUser.roles.includes('ROLE_USER')
+  const isDoctor = currentUser.roles.includes('ROLE_SPEC')
 
   const onAccountDelete = () => {
     setIsDelete(false)
@@ -308,7 +307,6 @@ const ProfilePage = () => {
                       </ButtonVitalInfo>
                     )}
                   </Form>
-               
                 </>
               )}
             </Formik>
@@ -320,67 +318,66 @@ const ProfilePage = () => {
             >
               {({ errors, touched, values, setValues }) => (
                 <>
-                <Form>
-                  {isChangingPwd && (
-                    <>
-                      <PasswordChangeContainer>
-                        <VitalInfoText password>Zmiana hasła</VitalInfoText>
-                        <VitalInfoEdit
-                          type='password'
-                          name='oldPassword'
-                          placeholder='Stare haslo'
-                          value={values.oldPassword}
-                        />
-                        {errors.oldPassword && touched.oldPassword ? (
-                          <p style={{ color: 'red' }}>{errors.oldPassword}</p>
-                        ) : null}
-                        <VitalInfoEdit
-                          type='password'
-                          name='newPassword'
-                          placeholder='Nowe haslo'
-                          value={values.newPassword}
-                        />
-                        {errors.newPassword && touched.newPassword ? (
-                          <p style={{ color: 'red' }}>{errors.newPassword}</p>
-                        ) : null}
-                        <ButtonDashboard type='submit'>
-                          Zmień hasło
-                        </ButtonDashboard>
-                        {message && (
-                          <p style={{ color: 'red', textAlign: 'center' }}>
-                            {message}
-                          </p>
-                        )}
-                      </PasswordChangeContainer>
-                    </>
-                  )}
-                  
-                </Form>
-                   <ButtonsContainer>
-                   <ButtonDashboard
-                     type='button'
-                     onClick={() => {
-                       if (isEditing) {
-                         setIsEditing(false)
-                       } else {
-                         setIsEditing(true)
-                       }
-                       setValues(oldUserValues)
-                     }}
-                   >
-                     {isEditing ? 'Anuluj edycję' : 'Edytuj profil'}
-                   </ButtonDashboard>
-                   <ButtonDashboard
-                     type='button'
-                     onClick={() => setIsChangingPwd(!isChangingPwd)}
-                   >
-                     {isChangingPwd ? 'Anuluj zmianę' : 'Zmień hasło'}
-                   </ButtonDashboard>
-                   <ButtonDashboard onClick={() => setIsDelete(true)}>
-                     Usuń konto
-                   </ButtonDashboard>
-                 </ButtonsContainer>
-                 </>
+                  <Form>
+                    {isChangingPwd && (
+                      <>
+                        <PasswordChangeContainer>
+                          <VitalInfoText password>Zmiana hasła</VitalInfoText>
+                          <VitalInfoEdit
+                            type='password'
+                            name='oldPassword'
+                            placeholder='Stare haslo'
+                            value={values.oldPassword}
+                          />
+                          {errors.oldPassword && touched.oldPassword ? (
+                            <p style={{ color: 'red' }}>{errors.oldPassword}</p>
+                          ) : null}
+                          <VitalInfoEdit
+                            type='password'
+                            name='newPassword'
+                            placeholder='Nowe haslo'
+                            value={values.newPassword}
+                          />
+                          {errors.newPassword && touched.newPassword ? (
+                            <p style={{ color: 'red' }}>{errors.newPassword}</p>
+                          ) : null}
+                          <ButtonDashboard type='submit'>
+                            Zmień hasło
+                          </ButtonDashboard>
+                          {message && (
+                            <p style={{ color: 'red', textAlign: 'center' }}>
+                              {message}
+                            </p>
+                          )}
+                        </PasswordChangeContainer>
+                      </>
+                    )}
+                  </Form>
+                  <ButtonsContainer>
+                    <ButtonDashboard
+                      type='button'
+                      onClick={() => {
+                        if (isEditing) {
+                          setIsEditing(false)
+                        } else {
+                          setIsEditing(true)
+                        }
+                        setValues(oldUserValues)
+                      }}
+                    >
+                      {isEditing ? 'Anuluj edycję' : 'Edytuj profil'}
+                    </ButtonDashboard>
+                    <ButtonDashboard
+                      type='button'
+                      onClick={() => setIsChangingPwd(!isChangingPwd)}
+                    >
+                      {isChangingPwd ? 'Anuluj zmianę' : 'Zmień hasło'}
+                    </ButtonDashboard>
+                    <ButtonDashboard onClick={() => setIsDelete(true)}>
+                      Usuń konto
+                    </ButtonDashboard>
+                  </ButtonsContainer>
+                </>
               )}
             </Formik>
           </VitalInfoContainer>

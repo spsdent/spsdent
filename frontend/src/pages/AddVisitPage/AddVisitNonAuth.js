@@ -94,7 +94,11 @@ const AddVisitNonAuth = () => {
     let visitData = {
       grupa,
       usluga,
-      specjalista,
+      specjalista: {
+        sid: specjalista,
+        imie: imie,
+        nazwisko: nazwisko,
+      },
       data,
       godzina,
       imie,
@@ -257,7 +261,7 @@ const AddVisitNonAuth = () => {
       .filter(
         (visit) =>
           visit.data.split('.')[0] === values.split('.')[0] &&
-          visit.specjalista === `${selectedDoctorData.doctorId}`
+          visit.specjalista.sid === `${selectedDoctorData.doctorId}`
       )
       .map((item) => +item.godzina)
     const updatedHours = selectedDoctorData.godzinyPracy

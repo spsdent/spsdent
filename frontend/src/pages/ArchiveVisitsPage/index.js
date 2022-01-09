@@ -15,7 +15,9 @@ import {
   Headers,
   Header,
   HeaderText,
-  Triangle,
+  TriangleAsc,
+  TriangleDesc,
+  TriangleDescActive,
   VisitsListContainer,
   Visit,
   VisitContent,
@@ -25,6 +27,13 @@ import useFetchAllUsers from '../../hooks/useFetchAllUsers'
 import { MyPaginate } from '../VisitsPage/VisitsPageElements'
 
 const ArchiveVisitsList = () => {
+  const [filterPosition, setFilterPosition] = useState({
+    usluga: 0,
+    lekarz: 0,
+    data: 0,
+    godzina: 0,
+    cena: 0,
+  })
   const [visitsList, setVisitsList] = useState([])
   const { user: currentUser } = useSelector((state) => state.auth)
   const { refresh: isRefresh } = useSelector((state) => state)
@@ -49,7 +58,7 @@ const ArchiveVisitsList = () => {
           setVisitsList(visitsArr)
         } else if (currentUser.roles.includes('ROLE_SPEC')) {
           const specificDoctorVisits = visitsArr.filter(
-            (visit) => visit.specjalista === currentUser.id
+            (visit) => visit.specjalista.sid === currentUser.id
           )
           setVisitsList(specificDoctorVisits)
         } else {
@@ -91,11 +100,7 @@ const ArchiveVisitsList = () => {
           >
             <VisitContent primary>{visit.usluga}</VisitContent>
             <VisitContent>
-              {`${
-                allUsers.find((user) => user._id === visit.specjalista).imie
-              } ${
-                allUsers.find((user) => user._id === visit.specjalista).nazwisko
-              }`}
+              {`${visit.specjalista.imie} ${visit.specjalista.nazwisko}`}
             </VisitContent>
             <VisitContent>{visit.data}</VisitContent>
             <VisitContent>{visit.godzina}:00</VisitContent>
@@ -111,6 +116,103 @@ const ArchiveVisitsList = () => {
   const pageCount = Math.ceil(visitsList.length / visitsPerPage)
   const changePage = ({ selected }) => {
     setPageNumber(selected)
+  }
+
+  const onFilterByService = () => {
+    if (filterPosition.usluga === 0) {
+      const descArr = visitsList.sort((a, b) =>
+        b.usluga.toLowerCase() > a.usluga.toLowerCase() ? 1 : -1
+      )
+      setVisitsList(descArr)
+      setFilterPosition({ usluga: 1, data: 0, godzina: 0, cena: 0, lekarz: 0 })
+    } else if (filterPosition.usluga === 1) {
+      const ascArr = visitsList.sort((a, b) =>
+        a.usluga.toLowerCase() > b.usluga.toLowerCase() ? 1 : -1
+      )
+      setVisitsList(ascArr)
+      setFilterPosition({ usluga: 2, data: 0, godzina: 0, cena: 0, lekarz: 0 })
+    } else if (filterPosition.usluga === 2) {
+      retrieveVisits()
+      setFilterPosition({ usluga: 0, data: 0, godzina: 0, cena: 0, lekarz: 0 })
+    }
+  }
+
+  const onFilterBySpecialist = () => {
+    if (filterPosition.lekarz === 0) {
+      const descArr = visitsList.sort((a, b) =>
+        b.specjalista.nazwisko.toLowerCase() >
+        a.specjalista.nazwisko.toLowerCase()
+          ? 1
+          : -1
+      )
+      setVisitsList(descArr)
+      setFilterPosition({ usluga: 0, data: 0, godzina: 0, cena: 0, lekarz: 1 })
+    } else if (filterPosition.lekarz === 1) {
+      const ascArr = visitsList.sort((a, b) =>
+        a.specjalista.nazwisko.toLowerCase() >
+        b.specjalista.nazwisko.toLowerCase()
+          ? 1
+          : -1
+      )
+      setVisitsList(ascArr)
+      setFilterPosition({ usluga: 0, data: 0, godzina: 0, cena: 0, lekarz: 2 })
+    } else if (filterPosition.lekarz === 2) {
+      retrieveVisits()
+      setFilterPosition({ usluga: 0, data: 0, godzina: 0, cena: 0, lekarz: 0 })
+    }
+  }
+
+  const onFilterByDate = () => {
+    if (filterPosition.data === 0) {
+      const descArr = visitsList.sort((a, b) => {
+        let aa = a.data.split('.').reverse().join()
+        let bb = b.data.split('.').reverse().join()
+        return aa > bb ? -1 : aa > bb ? 1 : 0
+      })
+      setVisitsList(descArr)
+      setFilterPosition({ usluga: 0, data: 1, godzina: 0, cena: 0, lekarz: 0 })
+    } else if (filterPosition.data === 1) {
+      const ascArr = visitsList.sort((a, b) => {
+        let aa = a.data.split('.').reverse().join()
+        let bb = b.data.split('.').reverse().join()
+        return aa < bb ? -1 : aa > bb ? 1 : 0
+      })
+      setVisitsList(ascArr)
+      setFilterPosition({ usluga: 0, data: 2, godzina: 0, cena: 0, lekarz: 0 })
+    } else if (filterPosition.data === 2) {
+      retrieveVisits()
+      setFilterPosition({ usluga: 0, data: 0, godzina: 0, cena: 0, lekarz: 0 })
+    }
+  }
+
+  const onFilterByHour = () => {
+    if (filterPosition.godzina === 0) {
+      const descArr = visitsList.sort((a, b) => b.godzina - a.godzina)
+      setVisitsList(descArr)
+      setFilterPosition({ usluga: 0, data: 0, godzina: 1, cena: 0, lekarz: 0 })
+    } else if (filterPosition.godzina === 1) {
+      const ascArr = visitsList.sort((a, b) => a.godzina - b.godzina)
+      setVisitsList(ascArr)
+      setFilterPosition({ usluga: 0, data: 0, godzina: 2, cena: 0, lekarz: 0 })
+    } else if (filterPosition.godzina === 2) {
+      retrieveVisits()
+      setFilterPosition({ usluga: 0, data: 0, godzina: 0, cena: 0, lekarz: 0 })
+    }
+  }
+
+  const onFilterByPrice = () => {
+    if (filterPosition.cena === 0) {
+      const descArr = visitsList.sort((a, b) => b.cena - a.cena)
+      setVisitsList(descArr)
+      setFilterPosition({ usluga: 0, data: 0, godzina: 0, cena: 1, lekarz: 0 })
+    } else if (filterPosition.cena === 1) {
+      const ascArr = visitsList.sort((a, b) => a.cena - b.cena)
+      setVisitsList(ascArr)
+      setFilterPosition({ usluga: 0, data: 0, godzina: 0, cena: 2, lekarz: 0 })
+    } else if (filterPosition.cena === 2) {
+      retrieveVisits()
+      setFilterPosition({ usluga: 0, data: 0, godzina: 0, cena: 0, lekarz: 0 })
+    }
   }
 
   const container = {
@@ -158,21 +260,55 @@ const ArchiveVisitsList = () => {
               {visitsList.length > 0 ? (
                 <>
                   <Headers variants={container} initial='hidden' animate='show'>
-                    <Header primary>
-                      <HeaderText variants={itemOne}>usługa</HeaderText>{' '}
-                      <Triangle />
+                    <Header primary onClick={onFilterByService}>
+                      <HeaderText variants={itemOne}>usługa</HeaderText>
+                      {filterPosition.usluga === 0 ? (
+                        <TriangleDesc />
+                      ) : filterPosition.usluga === 1 ? (
+                        <TriangleDescActive />
+                      ) : (
+                        <TriangleAsc />
+                      )}
                     </Header>
-                    <Header>
-                      <HeaderText>lekarz</HeaderText> <Triangle />
+                    <Header onClick={onFilterBySpecialist}>
+                      <HeaderText>lekarz</HeaderText>
+                      {filterPosition.lekarz === 0 ? (
+                        <TriangleDesc />
+                      ) : filterPosition.lekarz === 1 ? (
+                        <TriangleDescActive />
+                      ) : (
+                        <TriangleAsc />
+                      )}
                     </Header>
-                    <Header>
-                      <HeaderText>data</HeaderText> <Triangle />
+                    <Header onClick={onFilterByDate}>
+                      <HeaderText>data</HeaderText>
+                      {filterPosition.data === 0 ? (
+                        <TriangleDesc />
+                      ) : filterPosition.data === 1 ? (
+                        <TriangleDescActive />
+                      ) : (
+                        <TriangleAsc />
+                      )}
                     </Header>
-                    <Header>
-                      <HeaderText>godzina</HeaderText> <Triangle />
+                    <Header onClick={onFilterByHour}>
+                      <HeaderText>godzina</HeaderText>
+                      {filterPosition.godzina === 0 ? (
+                        <TriangleDesc />
+                      ) : filterPosition.godzina === 1 ? (
+                        <TriangleDescActive />
+                      ) : (
+                        <TriangleAsc />
+                      )}
                     </Header>
-                    <Header>
-                      <HeaderText>cena</HeaderText> <Triangle />
+                    <Header onClick={onFilterByPrice}>
+                      <HeaderText>cena</HeaderText>
+                      {filterPosition.cena === 0 ? (
+                        <TriangleDesc />
+                      ) : filterPosition.cena === 1 ? (
+                        <TriangleDescActive />
+                      ) : (
+                        <TriangleAsc />
+                      )}
                     </Header>
                   </Headers>
                   <VisitsListContainer
