@@ -56,7 +56,7 @@ class AboutUsPage extends Component {
           </ButtonsContainer>
           <ContentContainer>
             <AnimatePresence>
-              {this.state.pick === 1 && (
+              {pick === 1 && (
                 <motion.h1
                   key="1"
                   initial={{ y: "100vw" }}
@@ -67,7 +67,7 @@ class AboutUsPage extends Component {
                   siemanko 1
                 </motion.h1>
               )}
-              {this.state.pick === 2 && (
+              {pick === 2 && (
                 <motion.h1
                   key="2"
                   initial={{ y: "100vw" }}
@@ -78,7 +78,7 @@ class AboutUsPage extends Component {
                   siemanko 2
                 </motion.h1>
               )}
-              {this.state.pick === 3 && (
+              {pick === 3 && (
                 <motion.h1
                   key="3"
                   initial={{ y: "100vw" }}
