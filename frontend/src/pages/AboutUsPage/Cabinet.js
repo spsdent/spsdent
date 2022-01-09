@@ -49,3 +49,22 @@
 // };
 
 // export default Cabinet;
+
+import { motion } from "framer-motion";
+import React from "react";
+
+const Cabinet = () => {
+  return (
+    <motion.h1
+      key="3"
+      initial={{ opacity: 0, y: "50vh" }}
+      animate={{ opacity: 1, y: "0" }}
+      exit={{ opacity: 0, y: "-50vh" }}
+      transition={{ duration: 1 }}
+    >
+      siemano 3
+    </motion.h1>
+  );
+};
+
+export default Cabinet;

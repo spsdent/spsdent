@@ -63,3 +63,22 @@
 // };
 
 // export default Default;
+
+import { motion } from "framer-motion";
+import React from "react";
+
+const Default = () => {
+  return (
+    <motion.h1
+      key="1"
+      initial={{ opacity: 0, y: "50vh" }}
+      animate={{ opacity: 1, y: "0" }}
+      exit={{ opacity: 0, y: "-50vh" }}
+      transition={{ duration: 1 }}
+    >
+      siemano 1
+    </motion.h1>
+  );
+};
+
+export default Default;

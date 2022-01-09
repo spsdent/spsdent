@@ -10,7 +10,6 @@
 //   Gallery,
 // } from "./AboutUsPageElements";
 
-
 // class OurStaff extends Component {
 //   state = {
 //     subPage: "",
@@ -23,12 +22,9 @@
 //   //   });
 //   // };
 
-  
 //   render() {
 //     return (
 //       <>
-
-
 
 //         {/* <Title
 //           transition={{ duration: 1 }}
@@ -134,3 +130,22 @@
 // }
 
 // export default OurStaff;
+
+import { motion } from "framer-motion";
+import React from "react";
+
+const OurStaff = () => {
+  return (
+    <motion.h1
+      key="2"
+      initial={{ opacity: 0, y: "50vh" }}
+      animate={{ opacity: 1, y: "0" }}
+      exit={{ opacity: 0, y: "-50vh" }}
+      transition={{ duration: 1 }}
+    >
+      siemano 2
+    </motion.h1>
+  );
+};
+
+export default OurStaff;

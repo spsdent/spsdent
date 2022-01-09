@@ -56,39 +56,9 @@ class AboutUsPage extends Component {
           </ButtonsContainer>
           <ContentContainer>
             <AnimatePresence>
-              {pick === 1 && (
-                <motion.h1
-                  key="1"
-                  initial={{ y: "100vw" }}
-                  animate={{ y: "0" }}
-                  exit={{ y: "100vw" }}
-                  transition={{ duration: 1 }}
-                >
-                  siemanko 1
-                </motion.h1>
-              )}
-              {pick === 2 && (
-                <motion.h1
-                  key="2"
-                  initial={{ y: "100vw" }}
-                  animate={{ y: "0" }}
-                  exit={{ y: "100vw" }}
-                  transition={{ duration: 1 }}
-                >
-                  siemanko 2
-                </motion.h1>
-              )}
-              {pick === 3 && (
-                <motion.h1
-                  key="3"
-                  initial={{ y: "100vw" }}
-                  animate={{ y: "0" }}
-                  exit={{ y: "100vw" }}
-                  transition={{ duration: 1 }}
-                >
-                  siemanko 3
-                </motion.h1>
-              )}
+              {pick === 1 && <Default key="1" />}
+              {pick === 2 && <OurStaff key="2" />}
+              {pick === 3 && <Cabinet key="3" />}
             </AnimatePresence>
           </ContentContainer>
         </Container>
