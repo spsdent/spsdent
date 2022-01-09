@@ -4,17 +4,18 @@ export const PageWrapper = styled.div`
 /* background-color: cadetblue; */
   display: flex;
   justify-content: center;
-  margin-left: 14%;
-  margin-top: 100px;
-  height: 89vh;
+  margin-left: 8.5em;
+  margin-top: 4.2em;
+  height: calc(100vh - 4.2em);
   overflow: ${(props) => (props.primary ? "hidden" : "visible")};
-  @media screen and (min-width: 1570px) {
-    margin-left: 220px;
-  }
+  font-size: 24px;
   @media screen and (max-width: 1500px) {
-    height: 84vh;
+    font-size: 20px;
   }
-  @media screen and (max-width: 768px) {
-    margin-left: 0;
+  @media screen and (max-width: 1280px) {
+    font-size: 18px;
+  }
+  @media screen and (max-width: 960px) {
+    font-size: 14.5px;
   }
 `;
