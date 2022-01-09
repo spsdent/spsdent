@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Field, Form } from 'formik'
 
-import ServiceData from '../../services/service'
-import { refreshApp } from '../../store/actions/refresh'
+import ServiceData from '../../../services/service'
+import { refreshApp } from '../../../store/actions/refresh'
+
+import { updateServiceValidationSchema } from '../../../utils/validationSchemas'
 
 const styles = {
   inputStyles: {
@@ -21,7 +23,7 @@ const UpdateService = () => {
   const [btnType, setBtnType] = useState('')
   const [errorMsg, setErrorMsg] = useState('')
   const { isRefresh } = useSelector((state) => state.refresh)
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
     retrieveServices()
@@ -51,7 +53,7 @@ const UpdateService = () => {
       ServiceData.update(serviceObj._id, serviceObj)
         .then((response) => {
           console.log(response.data)
-          dispatch(refreshApp())
+          setBtnType('')
           values.nazwa = ''
           values.cena = ''
         })
@@ -78,18 +80,30 @@ const UpdateService = () => {
   return (
     <>
       <h1>Zaktualizuj specjalizacje</h1>
-      <Formik initialValues={{ grupa: '', nazwa: '' }}>
-        {({ values, errors, touched }) => (
+      <Formik
+        initialValues={{ grupa: '', nazwa: '', cena: '' }}
+        validationSchema={updateServiceValidationSchema}
+        onSubmit={(values) => {
+          addNewService(values)
+        }}
+      >
+        {({ values, errors, touched, handleBlur }) => (
           <Form style={{ display: 'flex', flexDirection: 'column' }}>
             <label>Wybierz grupe</label>
             <Field
               as='select'
               name='grupa'
+              onBlur={handleBlur}
               style={{
                 backgroundColor: 'transparent',
                 border: '2px solid #333',
                 height: '3em',
                 margin: '10px 0',
+              }}
+              onClick={() => {
+                if(!values.grupa) {
+                  setBtnType('')
+                }
               }}
             >
               <option value=''>Wybierz grupe uslug</option>
@@ -99,9 +113,13 @@ const UpdateService = () => {
                 </option>
               ))}
             </Field>
+            {errors.grupa && touched.grupa ? (
+              <p style={{ color: 'red' }}>{errors.grupa}</p>
+            ) : null}
             {values.grupa && (
               <div style={{ display: 'flex', marginTop: '20px' }}>
                 <button
+                  type='button'
                   style={{
                     height: '40px',
                     border: btnType === 'dodaj' ? 'none' : '2px solid #333',
@@ -130,6 +148,7 @@ const UpdateService = () => {
                     cursor: 'pointer',
                     padding: '10px',
                   }}
+                  type='button'
                   onClick={() => {
                     if (btnType === 'usun') {
                       setBtnType('')
@@ -142,37 +161,40 @@ const UpdateService = () => {
                 </button>
               </div>
             )}
-            {btnType === 'usun' && (
+            {(btnType === 'usun') && (
               <>
                 <label>Wybierz usluge do usuniecia</label>
-                {servicesArr.map((service) =>
-                  service.uslugi.map((usluga, index) => (
-                    <div
-                      style={{
-                        display: 'flex',
-                        backgroundColor: '#333',
-                        marginBottom: '20px',
-                        padding: '10px',
-                      }}
-                      key={index}
-                    >
-                      <p style={{ color: '#fff' }}>Usluga: {usluga.nazwa}</p>
-                      <button
+                {servicesArr
+                  .filter((item) => item.grupa === values.grupa)
+                  .map((service) =>
+                    service.uslugi.map((usluga, index) => (
+                      <div
                         style={{
-                          marginLeft: '10px',
+                          display: 'flex',
                           backgroundColor: 'transparent',
-                          border: '2px solid #fff',
-                          color: '#fff',
-                          padding: '5px 10px',
-                          cursor: 'pointer',
+                          marginBottom: '20px',
+                          padding: '10px',
                         }}
-                        onClick={() => onServiceDelete(service, usluga)}
+                        key={index}
                       >
-                        Usun
-                      </button>
-                    </div>
-                  ))
-                )}
+                        <p style={{ color: '#333' }}>{usluga.nazwa}</p>
+                        <button
+                          style={{
+                            marginLeft: '10px',
+                            backgroundColor: 'transparent',
+                            border: '2px solid #333',
+                            color: '#333',
+                            padding: '5px 10px',
+                            cursor: 'pointer',
+                          }}
+                          type='button'
+                          onClick={() => onServiceDelete(service, usluga)}
+                        >
+                          Usun
+                        </button>
+                      </div>
+                    ))
+                  )}
               </>
             )}
             {btnType === 'dodaj' && (
@@ -182,13 +204,33 @@ const UpdateService = () => {
                   style={styles.inputStyles}
                   placeholder='Nazwa uslugi'
                   name='nazwa'
-                ></Field>
+                  onBlur={handleBlur}
+                />
+                {errors.nazwa && touched.nazwa ? (
+                  <p style={{ color: 'red' }}>{errors.nazwa}</p>
+                ) : null}
                 <Field
                   style={styles.inputStyles}
                   placeholder='Cena uslugi'
                   name='cena'
-                ></Field>
-                <button onClick={() => addNewService(values)}>Dodaj</button>
+                  onBlur={handleBlur}
+                />
+                {errors.cena && touched.cena ? (
+                  <p style={{ color: 'red' }}>{errors.cena}</p>
+                ) : null}
+                <button
+                  style={{
+                    height: '40px',
+                    border: '2px solid #333',
+                    background: 'transparent',
+                    fontSize: '18px',
+                    cursor: 'pointer',
+                    marginTop: '10px',
+                  }}
+                  type='submit'
+                >
+                  Dodaj
+                </button>
                 <p style={{ color: 'red' }}>{errorMsg}</p>
               </>
             )}

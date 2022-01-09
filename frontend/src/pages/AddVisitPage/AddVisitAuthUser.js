@@ -140,6 +140,12 @@ const AddVisitAuthUser = () => {
   const serviceGroupHandler = (values) => {
     // set serviceGroupSelected state with value selected in form field "grupa usluga"
     setServiceGroupSelected(values.grupa)
+    const doctorsSpecArr = allDoctorsFromDb
+      .map((item) => item.specjalnosci)
+      .flat()
+    const servicesToDisplay = allServicesFromDb.filter((service) =>
+      doctorsSpecArr.includes(service._id)
+    )
 
     // this conditon is responsible for clear select form fields when we
     // chose default options in select fields
@@ -157,7 +163,7 @@ const AddVisitAuthUser = () => {
     }
 
     // returns options for select field depends on services fetched from db
-    return allServicesFromDb.map((service) => (
+    return servicesToDisplay.map((service) => (
       <option value={service.grupa}> {service.grupa} </option>
     ))
   }
@@ -303,217 +309,231 @@ const AddVisitAuthUser = () => {
     <PageWrapper>
       <Container>
         <h1> Zarezerwuj wizyte - user </h1>
-        <Formik
-          enableReinitialize
-          initialValues={visit}
-          validationSchema={addVisitUserValidationSchema}
-          onSubmit={() => setIsSubmit(true)}
-          onReset={() => setVisit(initialAddVisitValues)}
-        >
-          {({ errors, touched, values, setValues, resetForm, handleBlur }) => (
-            <Form
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                width: '300px',
-              }}
-            >
-              <label> Grupa uslug </label>
-              <Field
-                as='select'
-                name='grupa'
-                style={styles.selectStyle}
-                onBlur={handleBlur}
+        {allDoctorsFromDb.length > 0 ? (
+          <Formik
+            enableReinitialize
+            initialValues={visit}
+            validationSchema={addVisitUserValidationSchema}
+            onSubmit={() => setIsSubmit(true)}
+            onReset={() => setVisit(initialAddVisitValues)}
+          >
+            {({
+              errors,
+              touched,
+              values,
+              setValues,
+              resetForm,
+              handleBlur,
+            }) => (
+              <Form
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  width: '300px',
+                }}
               >
-                <option value=''> Wybierz grupe uslugi... </option>
-                {serviceGroupHandler(values)}
-              </Field>
-              {errors.grupa && touched.grupa ? (
-                <p style={styles.errorStyle}> {errors.grupa} </p>
-              ) : null}
-              {serviceGroupSelected && (
-                <>
-                  <label> Usluga </label>
-                  <Field
-                    as='select'
-                    name='usluga'
-                    style={styles.inputStyle}
-                    onBlur={handleBlur}
-                  >
-                    <option value=''> Wybierz usluge... </option>
-                    {serviceHandler(values)}
-                  </Field>
-                  {errors.usluga && touched.usluga ? (
-                    <p style={styles.errorStyle}> {errors.usluga} </p>
-                  ) : null}
-                  {serviceSelected && (
-                    <>
-                      <label> Specjalista </label>
-                      <Field
-                        as='select'
-                        name='specjalista'
-                        style={styles.selectStyle}
-                        onBlur={handleBlur}
-                      >
-                        <option value=''> Wybierz specjaliste... </option>
-                        {doctorHandler(values)}
-                      </Field>
-                      {errors.specjalista && touched.specjalista ? (
-                        <p style={styles.errorStyle}> {errors.specjalista} </p>
-                      ) : null}
-                      {doctorSelected && (
-                        <>
-                          <label>Data</label>
-                          <DatePicker
-                            selected={startDate}
-                            dateFormat='dd/MM/yyyy'
-                            onChange={(date) => {
-                              setStartDate(date)
-                              values.data = `${date.getDate()}.${
-                                date.getMonth() + 1
-                              }.${date.getFullYear()}`
-                              setValues(values)
-                            }}
-                            minDate={minDate}
-                            placeholderText='Wybierz termin wizyty'
-                            filterDate={isWeekday}
-                            excludeDates={datesToExclude}
-                            name='data'
-                            onBlur={handleBlur}
-                          />
-                          {errors.data && touched.data ? (
-                            <p style={styles.errorStyle}>{errors.data}</p>
-                          ) : null}
-                          {values.data && (
-                            <>
-                              <label> Godzina </label>
-                              <Field
-                                as='select'
-                                name='godzina'
-                                style={styles.inputStyle}
-                                onBlur={handleBlur}
-                              >
-                                <option value=''> Wybierz godzine... </option>
-                                {pickingHours(values.data)}
-                              </Field>
-                              {errors.godzina && touched.godzina ? (
-                                <p style={styles.errorStyle}>
-                                  {errors.godzina}
-                                </p>
-                              ) : null}
-                              {/* {setChoseHour(values.godzina)} */}
-                            </>
-                          )}
-                        </>
-                      )}
-                    </>
-                  )}
-                </>
-              )}
-              <button type='submit' style={styles.buttonStyle}>
-                Podsumowanie
-              </button>
-              <button type='reset' style={styles.buttonStyle}>
-                Wyczysc formularz
-              </button>
-              {isSubmit && (
-                <div
-                  style={{
-                    width: '100vw',
-                    height: '100vh',
-                    position: 'absolute',
-                    left: '0',
-                    top: '0',
-                    backgroundColor: 'rgba(3,3,3,.5)',
-                    zIndex: '999',
-                  }}
+                <label> Grupa uslug </label>
+                <Field
+                  as='select'
+                  name='grupa'
+                  style={styles.selectStyle}
+                  onBlur={handleBlur}
                 >
+                  <option value=''> Wybierz grupe uslugi... </option>
+                  {serviceGroupHandler(values)}
+                </Field>
+                {errors.grupa && touched.grupa ? (
+                  <p style={styles.errorStyle}> {errors.grupa} </p>
+                ) : null}
+                {serviceGroupSelected && (
+                  <>
+                    <label> Usluga </label>
+                    <Field
+                      as='select'
+                      name='usluga'
+                      style={styles.inputStyle}
+                      onBlur={handleBlur}
+                    >
+                      <option value=''> Wybierz usluge... </option>
+                      {serviceHandler(values)}
+                    </Field>
+                    {errors.usluga && touched.usluga ? (
+                      <p style={styles.errorStyle}> {errors.usluga} </p>
+                    ) : null}
+                    {serviceSelected && (
+                      <>
+                        <label> Specjalista </label>
+                        <Field
+                          as='select'
+                          name='specjalista'
+                          style={styles.selectStyle}
+                          onBlur={handleBlur}
+                        >
+                          <option value=''> Wybierz specjaliste... </option>
+                          {doctorHandler(values)}
+                        </Field>
+                        {errors.specjalista && touched.specjalista ? (
+                          <p style={styles.errorStyle}>
+                            {' '}
+                            {errors.specjalista}{' '}
+                          </p>
+                        ) : null}
+                        {doctorSelected && (
+                          <>
+                            <label>Data</label>
+                            <DatePicker
+                              selected={startDate}
+                              dateFormat='dd/MM/yyyy'
+                              onChange={(date) => {
+                                setStartDate(date)
+                                values.data = `${date.getDate()}.${
+                                  date.getMonth() + 1
+                                }.${date.getFullYear()}`
+                                setValues(values)
+                              }}
+                              minDate={minDate}
+                              placeholderText='Wybierz termin wizyty'
+                              filterDate={isWeekday}
+                              excludeDates={datesToExclude}
+                              name='data'
+                              onBlur={handleBlur}
+                            />
+                            {errors.data && touched.data ? (
+                              <p style={styles.errorStyle}>{errors.data}</p>
+                            ) : null}
+                            {values.data && (
+                              <>
+                                <label> Godzina </label>
+                                <Field
+                                  as='select'
+                                  name='godzina'
+                                  style={styles.inputStyle}
+                                  onBlur={handleBlur}
+                                >
+                                  <option value=''> Wybierz godzine... </option>
+                                  {pickingHours(values.data)}
+                                </Field>
+                                {errors.godzina && touched.godzina ? (
+                                  <p style={styles.errorStyle}>
+                                    {errors.godzina}
+                                  </p>
+                                ) : null}
+                                {/* {setChoseHour(values.godzina)} */}
+                              </>
+                            )}
+                          </>
+                        )}
+                      </>
+                    )}
+                  </>
+                )}
+                <button type='submit' style={styles.buttonStyle}>
+                  Podsumowanie
+                </button>
+                <button type='reset' style={styles.buttonStyle}>
+                  Wyczysc formularz
+                </button>
+                {isSubmit && (
                   <div
                     style={{
-                      position: 'relative',
-                      width: '50%',
-                      height: '50%',
-                      backgroundColor: '#fff',
+                      width: '100vw',
+                      height: '100vh',
+                      position: 'absolute',
                       left: '0',
-                      right: '0',
-                      top: '25%',
-                      margin: 'auto',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      justifyContent: 'center',
+                      top: '0',
+                      backgroundColor: 'rgba(3,3,3,.5)',
+                      zIndex: '999',
                     }}
                   >
-                    <h2 style={{ marginBottom: '20px' }}>Podsumowanie</h2>
                     <div
                       style={{
                         position: 'relative',
+                        width: '50%',
+                        height: '50%',
                         backgroundColor: '#fff',
+                        left: '0',
+                        right: '0',
+                        top: '25%',
+                        margin: 'auto',
                         display: 'flex',
+                        flexDirection: 'column',
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
                     >
+                      <h2 style={{ marginBottom: '20px' }}>Podsumowanie</h2>
                       <div
                         style={{
+                          position: 'relative',
+                          backgroundColor: '#fff',
                           display: 'flex',
-                          flexDirection: 'column',
-                          width: '50%',
+                          alignItems: 'center',
+                          justifyContent: 'center',
                         }}
                       >
-                        <h3>Twoje dane</h3>
-                        <p>
-                          {currentUser.imie} {currentUser.nazwisko}
-                        </p>
-                        <p>{currentUser.email}</p>
-                        <p>{currentUser.telefon}</p>
-                        <p>{currentUser.miasto}</p>
-                        <p>{currentUser.ulica}</p>
-                        <p>{currentUser.kodPocztowy}</p>
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            width: '50%',
+                          }}
+                        >
+                          <h3>Twoje dane</h3>
+                          <p>
+                            {currentUser.imie} {currentUser.nazwisko}
+                          </p>
+                          <p>{currentUser.email}</p>
+                          <p>{currentUser.telefon}</p>
+                          <p>{currentUser.miasto}</p>
+                          <p>{currentUser.ulica}</p>
+                          <p>{currentUser.kodPocztowy}</p>
+                        </div>
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            width: '50%',
+                          }}
+                        >
+                          <h3>Umówiona wizyta</h3>
+                          <p>{values.grupa}</p>
+                          <p>{values.usluga}</p>
+                          <p>{values.data}r.</p>
+                          <p>{values.godzina}:00</p>
+                        </div>
                       </div>
                       <div
                         style={{
                           display: 'flex',
-                          flexDirection: 'column',
-                          width: '50%',
+                          justifyContent: 'space-between',
                         }}
                       >
-                        <h3>Umówiona wizyta</h3>
-                        <p>{values.grupa}</p>
-                        <p>{values.usluga}</p>
-                        <p>{values.data}r.</p>
-                        <p>{values.godzina}:00</p>
+                        <button
+                          onClick={() => setIsSubmit(false)}
+                          style={styles.buttonStyle}
+                        >
+                          Anuluj
+                        </button>
+                        <button
+                          style={styles.buttonBook}
+                          onClick={() => {
+                            createVisit(values)
+                            resetForm()
+                            setIsSubmit(false)
+                          }}
+                        >
+                          Potwierdz rezerwacje
+                        </button>
                       </div>
-                    </div>
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                      }}
-                    >
-                      <button
-                        onClick={() => setIsSubmit(false)}
-                        style={styles.buttonStyle}
-                      >
-                        Anuluj
-                      </button>
-                      <button
-                        style={styles.buttonBook}
-                        onClick={() => {
-                          createVisit(values)
-                          resetForm()
-                          setIsSubmit(false)
-                        }}
-                      >
-                        Potwierdz rezerwacje
-                      </button>
                     </div>
                   </div>
-                </div>
-              )}
-            </Form>
-          )}
-        </Formik>
+                )}
+              </Form>
+            )}
+          </Formik>
+        ) : (
+          <p>Przykro nam, ale nie oferujemy żadnych usług</p>
+        )}
       </Container>
     </PageWrapper>
   )

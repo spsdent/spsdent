@@ -211,9 +211,13 @@ export const updateUserDataValidationSchema = Yup.object().shape({
     .required('E-mail jest wymagany')
     .email('E-mail jest wymagany')
     .label('E-mail'),
-  telefon: Yup.string()
-    .required('Numer telefonu jest wymagany')
-    .matches(/^\d{9}$/, 'Numer telefonu jest wymagany (9 cyfr)'),
+  telefon: Yup.number()
+    .test(
+      'len',
+      'Numer telefonu musi miec 9 cyfr',
+      (val) => val && val.toString().length === 9
+    )
+    .required('Numer telefonu jest wymagany'),
   miasto: Yup.string()
     .min(3, 'Miasto musi miec co najmniej 3 znaki')
     .max(50, 'Miasto moze miec maksymalnie 50 znakow')
@@ -222,9 +226,13 @@ export const updateUserDataValidationSchema = Yup.object().shape({
     .min(3, 'Ulica musi miec co najmniej 3 znaki')
     .max(50, 'Ulica moze miec maksymalnie 50 znakow')
     .required('Ulica jest wymagana'),
-  kodPocztowy: Yup.string()
-    .required('Kod-pocztowy jest wymagany')
-    .matches(/^\d{5}$/, 'Kod-pocztowy jest wymagany (5 cyfr) - bez(-)'),
+  kodPocztowy: Yup.number()
+    .test(
+      'len',
+      'Kod pocztowy musi miec 5 cyf',
+      (val) => val && val.toString().length === 5
+    )
+    .required('Kod pocztowy jest wymagany'),
 })
 
 export const signInChangePasswordValidationSchema = Yup.object().shape({
@@ -242,4 +250,120 @@ export const signInChangePasswordValidationSchema = Yup.object().shape({
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
       'Haslo musi zawierac min. 8 znakow w tym: litere, cyfre i znak specjalny'
     ),
+})
+
+export const createServiceValidationSchema = Yup.object().shape({
+  grupa: Yup.string()
+    .min(3, 'Grupa musi miec co najmniej 3 znaki')
+    .max(25, 'Grupa moze miec maksymalnie 25 znakow')
+    .required('Grupa jest wymagana'),
+  u1nazwa: Yup.string()
+    .min(3, 'Usluga musi miec co najmniej 3 znaki')
+    .max(25, 'Usluga moze miec maksymalnie 25 znakow')
+    .required('Podanie przynajmniej jednej uslugi jest wymagane'),
+  u1cena: Yup.string()
+    .min(1, 'Cena musi miec co najmniej 3 znaki')
+    .max(25, 'Cena moze miec maksymalnie 25 znakow')
+    .required('Podanie ceny uslugi jest wymagane'),
+  u2nazwa: Yup.string()
+    .min(3, 'Usluga musi miec co najmniej 3 znaki')
+    .max(25, 'Usluga moze miec maksymalnie 25 znakow'),
+  u2cena: Yup.string()
+    .min(1, 'Cena musi miec co najmniej 3 znaki')
+    .max(25, 'Cena moze miec maksymalnie 25 znakow'),
+  u3nazwa: Yup.string()
+    .min(3, 'Usluga musi miec co najmniej 3 znaki')
+    .max(25, 'Usluga moze miec maksymalnie 25 znakow'),
+  u3cena: Yup.string()
+    .min(1, 'Cena musi miec co najmniej 3 znaki')
+    .max(25, 'Cena moze miec maksymalnie 25 znakow'),
+  u4nazwa: Yup.string()
+    .min(3, 'Usluga musi miec co najmniej 3 znaki')
+    .max(25, 'Usluga moze miec maksymalnie 25 znakow'),
+  u4cena: Yup.string()
+    .min(1, 'Cena musi miec co najmniej 3 znaki')
+    .max(25, 'Cena moze miec maksymalnie 25 znakow'),
+  u5nazwa: Yup.string()
+    .min(3, 'Usluga musi miec co najmniej 3 znaki')
+    .max(25, 'Usluga moze miec maksymalnie 25 znakow'),
+  u5cena: Yup.string()
+    .min(1, 'Cena musi miec co najmniej 3 znaki')
+    .max(25, 'Cena moze miec maksymalnie 25 znakow'),
+})
+
+export const updateServiceValidationSchema = Yup.object().shape({
+  grupa: Yup.string()
+    .min(3, 'Grupa musi miec co najmniej 3 znaki')
+    .max(50, 'Grupa moze miec maksymalnie 50 znakow'),
+  nazwa: Yup.string()
+    .min(3, 'Usluga musi miec co najmniej 3 znaki')
+    .max(50, 'Usluga moze miec maksymalnie 50 znakow')
+    .required('Podanie nazwy uslugi jest wymagane'),
+  cena: Yup.string()
+    .min(1, 'Cena musi miec co najmniej 3 znaki')
+    .max(25, 'Cena moze miec maksymalnie 25 znakow')
+    .required('Podanie ceny uslugi jest wymagane'),
+})
+
+function startBigger(ref, msg) {
+  return this.test({
+    name: 'startBigger',
+    exclusive: false,
+    message: msg || 'Godzina rozpoczecia musi byc mniejsza niz zakonczenia',
+    params: {
+      reference: ref.path,
+    },
+    test: function (value) {
+      return value > this.resolve(ref)
+    },
+  })
+}
+
+function endBigger(ref, msg) {
+  return this.test({
+    name: 'endBigger',
+    exclusive: false,
+    message: msg || 'Godzina zakonczenia musi byc wieksza niz rozpoczecia',
+    params: {
+      reference: ref.path,
+    },
+    test: function (value) {
+      return value < this.resolve(ref)
+    },
+  })
+}
+
+Yup.addMethod(Yup.number, 'startBigger', startBigger)
+Yup.addMethod(Yup.number, 'endBigger', endBigger)
+
+export const updateRoleValidationSchema = Yup.object().shape({
+  rola: Yup.object().shape({
+    label: Yup.string(),
+    value: Yup.string(),
+  }),
+})
+
+export const updatePermissionsValidationSchema = Yup.object().shape({
+  rola: Yup.object().shape({
+    label: Yup.string(),
+    value: Yup.string(),
+  }),
+  godzinyStart: Yup.number()
+    .integer()
+    .moreThan(7, 'Godzina rozpoczecia to min. 8')
+    .lessThan(17, 'Godzina zakonczenia to max. 16')
+    .endBigger(Yup.ref('godzinyKoniec')),
+  godzinyKoniec: Yup.number()
+    .integer()
+    .moreThan(8, 'Godzina zakonczenia to min. 9')
+    .lessThan(17, 'Godzina zakonczenia to max. 16')
+    .startBigger(Yup.ref('godzinyStart')),
+  specjalizacja: Yup.array()
+    .of(
+      Yup.object().shape({
+        label: Yup.string(),
+        value: Yup.string(),
+      })
+    )
+    .min(1, 'Wybierz min. 1 specjalizacje'),
 })

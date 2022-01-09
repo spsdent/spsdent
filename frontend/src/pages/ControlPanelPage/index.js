@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { PageWrapper } from '../../components/PageWrapper'
-import DoctorsControl from './DoctorsControl'
-import ServicesControl from './ServicesControl'
+import DoctorsControl from './User'
+import ServicesControl from './Service'
 
 const ControlPanel = () => {
   const [btnType, setBtnType] = useState('')

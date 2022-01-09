@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Field, Form } from 'formik'
 import Select from 'react-select'
 
-import { refreshApp } from '../../store/actions/refresh'
-import DoctorService from '../../services/doctor'
-import UserService from '../../services/user'
-import RoleService from '../../services/role'
-import ServiceData from '../../services/service'
+import { refreshApp } from '../../../store/actions/refresh'
+import DoctorService from '../../../services/doctor'
+import UserService from '../../../services/user'
+import RoleService from '../../../services/role'
+import ServiceData from '../../../services/service'
 
-const UpdateDoctor = () => {
+const UpdateUser = () => {
   let initialState = {
     userId: '',
     imie: '',
@@ -476,4 +476,4 @@ const UpdateDoctor = () => {
   )
 }
 
-export default UpdateDoctor
+export default UpdateUser
