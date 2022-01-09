@@ -112,7 +112,7 @@ export const PasswordChangeContainer = styled.div`
   /* background-color: cadetblue; */
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center;c
   justify-content: flex-start;
   gap: 0.6em;
   border: 2px solid black;

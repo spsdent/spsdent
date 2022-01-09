@@ -47,6 +47,10 @@ export const NavImage = styled.img`
   cursor: pointer;
   width: 2.1em;
   height: 2.1em;
+  transition: 0.2s ease;
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 export const MobileIcon = styled.div`
   display: none;
