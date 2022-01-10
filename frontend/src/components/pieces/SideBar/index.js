@@ -23,10 +23,7 @@ import { motion } from 'framer-motion'
 
 import ServiceData from '../../../services/service'
 
-import {
-  useLocation,
-  useNavigate,
-} from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 export const NavItemSub = styled.li`
@@ -59,31 +56,14 @@ const NonAuth = (props) => {
     ServiceData.getAll().then((response) => setServiceData(response.data))
   }
 
-  // const dispatch = useDispatch()
-
-  // useEffect(() => {
-  //   history.listen((location) => {
-  //     dispatch(clearMessage()) // clear message when changing location
-  //   })
-  // }, [dispatch])
-
   useEffect(() => {
     if (currentUser) {
-      setShowSpecBoard(
-        currentUser.roles[currentUser.roles.length - 1] === 'ROLE_SPEC'
-      )
-      setShowAdminBoard(
-        currentUser.roles[currentUser.roles.length - 1] === 'ROLE_ADMIN'
-      )
-      setShowUserBoard(
-        currentUser.roles[currentUser.roles.length - 1] === 'ROLE_USER'
-      )
+      setShowSpecBoard(currentUser.roles.includes('ROLE_SPEC'))
+      setShowAdminBoard(currentUser.roles.includes('ROLE_ADMIN'))
+      setShowUserBoard(currentUser.roles.includes('ROLE_USER'))
     }
   }, [currentUser])
-
-  // const logOut = () => {
-  //   dispatch(logout())
-  // }
+  
   return (
     <SideBarContainer>
       <NavTriangle />
@@ -128,7 +108,8 @@ const NonAuth = (props) => {
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.3, delay: i * 0.1 }}
                     >
-                      <StyledLink primary
+                      <StyledLink
+                        primary
                         to={`/price-list/${service.grupa.split(' ').join('-')}`}
                       >
                         {service.grupa.split(' ').length > 2

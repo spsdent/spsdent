@@ -64,18 +64,19 @@ const LoginPage = () => {
           initialValues={initialValues}
           validationSchema={loginValidationSchema}
         >
-          {({ errors, values }) => (
+          {({ errors, values, touched, handleBlur }) => (
             <Form style={{ display: 'flex', flexDirection: 'column' }}>
               <Field
-                type='text'
+                type='email'
                 name='email'
                 value={values.email}
                 style={styles.inputStyle}
                 placeholder='E-mail'
+                onBlur={handleBlur}
               />
-              <p style={{ color: 'red', textAlign: 'center' }}>
-                {errors.email}
-              </p>
+              {errors.email && touched.email ? (
+                <p style={{ color: 'red' }}>{errors.email}</p>
+              ) : null}
 
               <Field
                 type='password'
@@ -83,10 +84,11 @@ const LoginPage = () => {
                 value={values.password}
                 style={styles.inputStyle}
                 placeholder='Haslo'
+                onBlur={handleBlur}
               />
-              <p style={{ color: 'red', textAlign: 'center' }}>
-                {errors.password}
-              </p>
+              {errors.password && touched.password ? (
+                <p style={{ color: 'red' }}>{errors.password}</p>
+              ) : null}
 
               <button style={styles.buttonStyle}>
                 {loading && <span></span>}

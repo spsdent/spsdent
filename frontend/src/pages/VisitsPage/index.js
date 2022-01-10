@@ -74,7 +74,7 @@ const VisitsPage = () => {
   }
 
   const goToVisit = (item) => {
-    navigate(`/visits/${item.id}`, { state: item })
+    navigate(`/visits/${item.id}`, { state: { item } })
   }
 
   const onVisitDelete = () => {

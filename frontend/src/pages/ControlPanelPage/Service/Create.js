@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Formik, Form, Field } from 'formik'
+import { Formik, Form, Field, setIn } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { createServiceValidationSchema } from '../../../utils/validationSchemas'
 
 import ServiceData from '../../../services/service'
+import { SET_MESSAGE } from '../../../store/actions/types'
+import { clearMessage } from '../../../store/actions/message'
 
 const styles = {
   inputStyles: {
@@ -23,8 +25,9 @@ const NewService = () => {
   }
   const [inputArr, setInputArr] = useState([{}])
   const [services, setServices] = useState(initialState)
-  const [errorMsg, setErrorMsg] = useState('')
   const [servicesArr, setServicesArr] = useState([])
+  const { message } = useSelector((state) => state.message)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     retrieveSpecializations()
@@ -40,10 +43,17 @@ const NewService = () => {
 
   const newServiceInput = () => {
     if (inputArr.length > 4) {
-      setErrorMsg('Maksymalna liczba uslug to 5.')
+      dispatch({
+        type: SET_MESSAGE,
+        payload: 'Maksymalna liczba uslug do dodania za jednym razem to 5.',
+      })
     } else {
       setInputArr([...inputArr, {}])
     }
+  }
+
+  const deleteInputService = () => {
+    setInputArr(inputArr.slice(0, -1))
   }
 
   const onSubmitHandle = (values) => {
@@ -67,39 +77,36 @@ const NewService = () => {
     }
     let servicesObj = { grupa: grupa, uslugi: [...obj] }
     if (servicesToUpdate.length) {
-      setErrorMsg('Ta pozycja znajduje sie juz w kolekcji!')
+      dispatch({
+        type: SET_MESSAGE,
+        payload: 'Ta specjalizacja znajduje się w kolekcji',
+      })
       setInputArr([{}])
       setServices({
-        grupa: '',
-        u1nazwa: '',
-        u1cena: '',
-        u2nazwa: '',
-        u2cena: '',
-        u3nazwa: '',
-        u3cena: '',
-        u4nazwa: '',
-        u4cena: '',
-        u5nazwa: '',
-        u5cena: '',
+        ...values,
       })
     } else {
       ServiceData.create(servicesObj)
-        .then((response) => console.log('Dodano pomyslnie'))
+        .then((response) => {
+          dispatch({
+            type: SET_MESSAGE,
+            payload: 'Specjalizacja została utworzona!',
+          })
+        })
         .catch((e) => console.log(e))
       setInputArr([{}])
-      setErrorMsg(null)
       setServices({
         grupa: '',
         u1nazwa: '',
-        u1cena: '',
+        u1cena: null,
         u2nazwa: '',
-        u2cena: '',
+        u2cena: null,
         u3nazwa: '',
-        u3cena: '',
+        u3cena: null,
         u4nazwa: '',
-        u4cena: '',
+        u4cena: null,
         u5nazwa: '',
-        u5cena: '',
+        u5cena: null,
       })
     }
   }
@@ -116,7 +123,7 @@ const NewService = () => {
           actions.resetForm()
         }}
       >
-        {({ errors, touched, values, handleBlur }) => (
+        {({ errors, touched, values, handleBlur, setValues }) => (
           <Form
             style={{
               width: '350px',
@@ -130,11 +137,11 @@ const NewService = () => {
               placeholder='Nazwa grupy uslug'
               name='grupa'
               onBlur={handleBlur}
+              type='text'
             />
             {errors.grupa && touched.grupa ? (
               <p style={{ color: 'red' }}>{errors.grupa}</p>
             ) : null}
-
             {values.grupa && (
               <>
                 {inputArr.map((item, index) => (
@@ -142,6 +149,7 @@ const NewService = () => {
                     <label> Usluga {index + 1} </label>
                     <Field
                       style={styles.inputStyles}
+                      type='text'
                       placeholder='Nazwa uslugi'
                       name={`u${index + 1}nazwa`}
                       onBlur={handleBlur}
@@ -153,6 +161,7 @@ const NewService = () => {
                       </p>
                     ) : null}
                     <Field
+                      type='number'
                       style={styles.inputStyles}
                       placeholder='Cena uslugi'
                       name={`u${index + 1}cena`}
@@ -166,45 +175,58 @@ const NewService = () => {
                     ) : null}
                   </React.Fragment>
                 ))}
-
-                <button
-                  type='button'
-                  style={{
-                    height: '40px',
-                    border: '2px solid #333',
-                    background: 'transparent',
-                    fontSize: '18px',
-                    cursor: 'pointer',
-                    marginTop: '10px',
-                  }}
-                  onClick={newServiceInput}
-                >
-                  Dodaj kolejna usluge
-                </button>
+                {inputArr.length !== 5 && (
+                  <button
+                    type='button'
+                    style={{
+                      height: '40px',
+                      border: '2px solid #333',
+                      background: 'transparent',
+                      fontSize: '18px',
+                      cursor: 'pointer',
+                      marginTop: '10px',
+                    }}
+                    onClick={newServiceInput}
+                  >
+                    Dodaj kolejna usluge
+                  </button>
+                )}
+                {inputArr.length > 1 && (
+                  <button
+                    type='button'
+                    style={{
+                      height: '40px',
+                      border: '2px solid #333',
+                      background: 'transparent',
+                      fontSize: '18px',
+                      cursor: 'pointer',
+                      marginTop: '10px',
+                    }}
+                    onClick={deleteInputService}
+                  >
+                    Usun ostatnia usluge
+                  </button>
+                )}
               </>
             )}
-            {errorMsg !== '' && (
-              <p
+            {values.grupa && (
+              <button
+                type='submit'
                 style={{
-                  color: 'red',
+                  height: '40px',
+                  border: '2px solid #333',
+                  background: 'transparent',
+                  fontSize: '18px',
+                  cursor: 'pointer',
+                  marginTop: '10px',
                 }}
               >
-                {errorMsg}
-              </p>
+                Dodaj
+              </button>
             )}
-            <button
-              type='submit'
-              style={{
-                height: '40px',
-                border: '2px solid #333',
-                background: 'transparent',
-                fontSize: '18px',
-                cursor: 'pointer',
-                marginTop: '10px',
-              }}
-            >
-              Dodaj
-            </button>
+            {message && (
+              <p style={{ color: 'red', textAlign: 'center' }}>{message}</p>
+            )}
           </Form>
         )}
       </Formik>

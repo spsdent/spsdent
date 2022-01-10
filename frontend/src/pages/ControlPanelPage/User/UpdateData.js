@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { Formik, Field, Form } from 'formik'
-
+import { useSelector, useDispatch } from 'react-redux'
 import UserService from '../../../services/user'
 
 import { updateUserDataValidationSchema } from '../../../utils/validationSchemas'
+import { clearMessage } from '../../../store/actions/message'
+import { SET_MESSAGE } from '../../../store/actions/types'
 
 const UpdateUser = ({ setBtnType, selectedUser }) => {
   let initialState = {
@@ -18,7 +20,8 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
   }
   const [user, setUser] = useState(initialState)
   const [userOld, setUserOld] = useState('')
-  const [errorMsg, setErrorMsg] = useState('')
+  const { message } = useSelector((state) => state.message)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     UserService.getAll()
@@ -67,16 +70,16 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
       return keys.every((k) => equals(a[k], b[k]))
     }
     if (equals(userObj, userOld)) {
-      setErrorMsg('Musisz wprowadzic jakies zmiany')
+      dispatch({type: SET_MESSAGE, payload: 'Musisz wprowadzic jakies zmiany'})
     } else {
-      setErrorMsg(null)
+      dispatch(clearMessage())
       UserService.updateUser(selectedUser, userObj)
         .then((response) => {
           setBtnType('')
           setUser({
             roles: [{}],
           })
-          setErrorMsg('')
+          dispatch({type: SET_MESSAGE, payload: 'Dane użytkownika zostały zaktualizowane!'})
         })
         .catch((e) => console.log(e))
     }
@@ -114,6 +117,7 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
                     paddingLeft: '1em',
                   }}
                   placeholder='Imie'
+                  type='text'
                 />
                 {errors.imie && touched.imie ? (
                   <p style={{ color: 'red' }}>{errors.imie}</p>
@@ -121,6 +125,7 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
                 <label>Nazwisko</label>
                 <Field
                   name='nazwisko'
+                  type='text'
                   style={{
                     backgroundColor: 'transparent',
                     border: '2px solid #333',
@@ -168,6 +173,7 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
                 <label>Miasto</label>
                 <Field
                   name='miasto'
+                  type='text'
                   style={{
                     backgroundColor: 'transparent',
                     border: '2px solid #333',
@@ -183,6 +189,7 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
                 <label>Ulica</label>
                 <Field
                   name='ulica'
+                  type='text'
                   style={{
                     backgroundColor: 'transparent',
                     border: '2px solid #333',
@@ -222,7 +229,6 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
                 >
                   Aktualizuj dane
                 </button>
-                {errorMsg && <p style={{ color: 'red' }}>{errorMsg}</p>}
               </>
             </Form>
           )}

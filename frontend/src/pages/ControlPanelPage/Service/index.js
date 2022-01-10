@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 
 import NewService from './Create'
 import DeleteService from './Delete'
 import UpdateService from './Update'
+import { clearMessage } from '../../../store/actions/message'
 
 const ServicesControl = () => {
+  const dispatch = useDispatch()
   const [state, setState] = useState({
     addNewService: false,
     deleteService: false,
@@ -17,6 +20,7 @@ const ServicesControl = () => {
       deleteService: false,
       updateService: false,
     })
+    dispatch(clearMessage())
   }
 
   const deleteServiceHandler = () => {
@@ -25,6 +29,7 @@ const ServicesControl = () => {
       deleteService: !state.deleteService,
       updateService: false,
     })
+    dispatch(clearMessage())
   }
 
   const updateServiceHandler = () => {
@@ -33,6 +38,7 @@ const ServicesControl = () => {
       deleteService: false,
       updateService: !state.updateService,
     })
+    dispatch(clearMessage())
   }
 
   const { addNewService, deleteService, updateService } = state

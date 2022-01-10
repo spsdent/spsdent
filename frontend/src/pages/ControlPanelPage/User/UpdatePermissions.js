@@ -1,22 +1,21 @@
-import React, { useState, useEffect, isValidElement } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Field, Form } from 'formik'
 import Select from 'react-select'
 
-import { refreshApp } from '../../../store/actions/refresh'
 import DoctorService from '../../../services/doctor'
 import UserService from '../../../services/user'
 import RoleService from '../../../services/role'
 import ServiceData from '../../../services/service'
 import {
   updatePermissionsValidationSchema,
-  godzinyKoniec,
-  godzinyStart,
-  specjalizacja,
   updateRoleValidationSchema,
 } from '../../../utils/validationSchemas'
 
 import useFetchAllUsers from '../../../hooks/useFetchAllUsers'
+import { SET_MESSAGE } from '../../../store/actions/types'
+import { clearMessage } from '../../../store/actions/message'
+import UserData from '../../../services/user'
 
 const UpdateUser = ({ setBtnType, selectedUser }) => {
   let initialState = {
@@ -32,24 +31,35 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
   const [doctorsArr, setDoctorsArr] = useState([])
   const [rolesArr, setRolesArr] = useState([])
   const [specsArr, setSpecsArr] = useState([])
+  const [users, setUsers] = useState([])
   const [selectedSpecs, setSelectedSpecs] = useState(null)
   const [selectedOption, setSelectedOption] = useState(null)
   const [errorMsg, setErrorMsg] = useState('')
+  const [currUserRole, setCurrUserRole] = useState('')
   const { isRefresh } = useSelector((state) => state.refresh)
   const { user: currentUser } = useSelector((state) => state.auth)
+  const { message } = useSelector((state) => state.message)
   const dispatch = useDispatch()
-  const allUsers = useFetchAllUsers()
 
   useEffect(() => {
     retrieveDoctors()
     retrieveRoles()
     retrieveSpecs()
+    retrieveUsers()
   }, [isRefresh])
 
   const retrieveDoctors = () => {
     DoctorService.getAll()
       .then((response) => {
         setDoctorsArr(response.data)
+      })
+      .catch((e) => console.log(e))
+  }
+
+  const retrieveUsers = () => {
+    UserData.getAll()
+      .then((response) => {
+        setUsers(response.data)
       })
       .catch((e) => console.log(e))
   }
@@ -75,7 +85,7 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
     let userObj = {
       roles: rolesIdArr,
     }
-    const currentSelectedUser = allUsers.filter(
+    const currentSelectedUser = users.filter(
       (user) => user._id === selectedUser
     )[0]
     const selectedUserIsSpec = currentSelectedUser.roles.includes(
@@ -99,7 +109,10 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
             roles: [{}],
           })
           setSelectedOption(null)
-          setErrorMsg('')
+          dispatch({
+            type: SET_MESSAGE,
+            payload: 'Zmiany zostały wprowadzone!',
+          })
         })
         .catch((e) => console.log(e))
     }
@@ -110,7 +123,7 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
           roles: [{}],
         })
         setSelectedOption(null)
-        setErrorMsg('')
+        dispatch({ type: SET_MESSAGE, payload: 'Zmiany zostały wprowadzone!' })
       })
       .catch((e) => console.log(e))
   }
@@ -140,7 +153,10 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
             godzinyKoniec: '',
           })
           setSelectedSpecs(null)
-          setErrorMsg('')
+          dispatch({
+            type: SET_MESSAGE,
+            payload: 'Zmiany w profilu doktora zostały wprowadzone!',
+          })
         })
         .catch((e) => console.log(e))
     } else {
@@ -152,7 +168,10 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
             godzinyKoniec: '',
           })
           setSelectedSpecs(null)
-          setErrorMsg('')
+          dispatch({
+            type: SET_MESSAGE,
+            payload: 'Profil doktora został utworzony!',
+          })
           console.log(response)
         })
         .catch((e) => console.log(e))
@@ -168,13 +187,26 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
     } else if (selectedSpecs) {
       handleDoctor(values)
     } else {
-      setErrorMsg('Jesli chcesz zaktualizowac wprowadz dane')
+      dispatch({
+        type: SET_MESSAGE,
+        payload:
+          'Jeśli chcesz wprowadzić zmiany musisz wprowadzić poprawne dane',
+      })
     }
   }
 
+  const userRole =
+    rolesArr.length > 0 &&
+    users.length > 0 &&
+    selectedUser &&
+    rolesArr.find(
+      (role) =>
+        role._id === users.find((user) => user._id === selectedUser).roles[0]
+    ).name
+
   return (
     <>
-      {selectedUser && (
+      {selectedUser && users && users.length > 0 && (
         <Formik
           enableReinitialize={true}
           initialValues={user}
@@ -196,21 +228,28 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
               }}
             >
               <>
-                <label>Role</label>
-                <Select
-                  isClearable
-                  onChange={(value) => {
-                    setSelectedOption(value)
-                    setValues({ ...values, rola: value })
-                  }}
-                  placeholder='Wybierz role...'
-                  options={rolesArr.map((role) => ({
-                    value: role._id,
-                    label: role.name,
-                  }))}
-                  name='rola'
-                  onBlur={handleBlur}
-                />
+                <>
+                  <label>Role</label>
+                  <Select
+                    isClearable
+                    onChange={(value) => {
+                      setSelectedOption(value)
+                      setValues({ ...values, rola: value })
+                    }}
+                    defaultValue={{
+                      value: userRole,
+                      label: userRole,
+                    }}
+                    placeholder='Wybierz role...'
+                    options={rolesArr.map((role) => ({
+                      value: role._id,
+                      label: role.name,
+                    }))}
+                    name='rola'
+                    onBlur={handleBlur}
+                  />
+                </>
+
                 {values.rola && values.rola.label === 'spec' && (
                   <>
                     <label>Specjalizacja</label>
@@ -274,7 +313,6 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
                     </div>
                   </>
                 )}
-                {errorMsg && <p style={{ color: 'red' }}>{errorMsg}</p>}
                 {values.rola && values.rola.label !== '' && (
                   <button
                     type='submit'

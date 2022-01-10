@@ -28,22 +28,6 @@ import {
 } from '../../hooks'
 import {
   Container,
-  Title,
-  TitleContainer,
-  DashboardContainer,
-  VitalInfoContainer,
-  VitalInfoText,
-  VitalInfoEdit,
-  VitalInfoSocket,
-  ButtonDashboard,
-  PasswordChangeContainer,
-  ButtonsContainer,
-  ButtonVitalInfo,
-  DashboardVisitContainer,
-  DashboardVisit,
-  DashboardVisitTitle,
-  DashboardVisitText,
-  DashboardVisitButton,
 } from '../ProfilePage/ProfilePageElements'
 
 const styles = {

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, Field } from 'formik'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -27,11 +27,12 @@ import {
   useFetchAllServices,
   useFetchAllVisits,
   useFetchAllUsers,
-  useCreateDates,
 } from '../../hooks'
 import UserData from '../../services/user'
 
 import { register } from '../../store/actions/auth'
+import { SET_MESSAGE } from '../../store/actions/types'
+import { clearMessage } from '../../store/actions/message'
 
 const styles = {
   inputStyle: {
@@ -42,10 +43,20 @@ const styles = {
     paddingLeft: '1em',
   },
   buttonStyle: {
-    backgroundColor: 'none',
+    backgroundColor: 'transparent',
     border: '2px solid #333',
     height: '3em',
-    margin: '10px 0',
+    margin: '10px 5px',
+    padding: '5px 10px',
+    cursor: 'pointer',
+  },
+  buttonBook: {
+    backgroundColor: '#01D4BF',
+    border: 'none',
+    height: '3em',
+    margin: '10px 5px',
+    padding: '5px 10px',
+    cursor: 'pointer',
   },
   selectStyle: {
     backgroundColor: 'transparent',
@@ -54,7 +65,9 @@ const styles = {
     margin: '10px 0',
     paddingLeft: '1em',
   },
-  errorStyle: { color: 'red' },
+  errorStyle: {
+    color: 'red',
+  },
 }
 
 const AddVisitAdmin = () => {
@@ -67,6 +80,9 @@ const AddVisitAdmin = () => {
   const [foundUsers, setFoundUsers] = useState([])
   const [errorMsg, setErrorMsg] = useState('')
   const [startDate, setStartDate] = useState(null)
+  const [isSuccessful, setIsSuccessful] = useState(false)
+  const [isSubmit, setIsSubmit] = useState(false)
+  const { message } = useSelector((state) => state.message)
 
   const { user: currentUser } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
@@ -101,7 +117,7 @@ const AddVisitAdmin = () => {
       specjalista: {
         sid: specjalista,
         imie: imie,
-        nazwisko: nazwisko
+        nazwisko: nazwisko,
       },
       data,
       godzina,
@@ -120,11 +136,19 @@ const AddVisitAdmin = () => {
     //Create new visit based on provide visitData object
     VisitData.create(visitData)
       .then((response) => {
+        setIsSuccessful(true)
         dispatch(refreshApp())
-        navigate('/visits')
+        dispatch({
+          type: SET_MESSAGE,
+          payload: 'Wizyta została utworzona!',
+        })
       })
       .catch((e) => {
-        console.log(e)
+        setIsSuccessful(false)
+        dispatch({
+          type: SET_MESSAGE,
+          payload: 'Wystapił błąd podczas tworzenia rezerwacji, przepraszamy.',
+        })
       })
     if (values.password) {
       // Create new visit based on provide visitData object
@@ -141,10 +165,10 @@ const AddVisitAdmin = () => {
         )
       )
         .then((e) => {
-          console.log(e)
+          setIsSuccessful(true)
         })
         .catch((e) => {
-          console.log(e)
+          setIsSuccessful(false)
         })
     }
   }
@@ -335,334 +359,468 @@ const AddVisitAdmin = () => {
     ])
     .flat()
 
+  const onVisitSubmit = (values) => {
+    setIsSubmit(false)
+    createVisit(values)
+  }
+
   return (
     <PageWrapper>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <h1>Zarezerwuj wizyte</h1>
         {allDoctorsFromDb.length > 0 ? (
-          <Formik
-            enableReinitialize={true}
-            initialValues={visit}
-            validationSchema={addVisitAdminValidationSchema}
-            onSubmit={(values, actions) => {
-              createVisit(values)
-              actions.resetForm()
-            }}
-            onReset={() => setVisit(initialAddVisitValues)}
-          >
-            {({ errors, touched, values, setValues, handleBlur }) => (
-              <>
-                <Form
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    width: '300px',
-                  }}
-                >
-                  <label>Grupa uslug</label>
-                  <Field
-                    as='select'
-                    name='grupa'
-                    style={styles.selectStyle}
-                    onBlur={handleBlur}
-                  >
-                    <option value=''>Wybierz grupe uslugi...</option>
-                    {serviceGroupHandler(values)}
-                  </Field>
-                  {errors.grupa && touched.grupa ? (
-                    <p style={styles.errorStyle}>{errors.grupa}</p>
-                  ) : null}
-                  {serviceGroupSelected && (
-                    <>
-                      <label>Usluga</label>
+          !isSuccessful ? (
+            <>
+              <h1>Zarezerwuj wizyte</h1>
+              <Formik
+                enableReinitialize={true}
+                initialValues={visit}
+                validationSchema={addVisitAdminValidationSchema}
+                onSubmit={(values, actions) => setIsSubmit(true)}
+                onReset={() => setVisit(initialAddVisitValues)}
+              >
+                {({
+                  errors,
+                  touched,
+                  values,
+                  setValues,
+                  handleBlur,
+                  resetForm,
+                }) => (
+                  <>
+                    <Form
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        width: '300px',
+                      }}
+                    >
+                      <label>Grupa uslug</label>
                       <Field
                         as='select'
-                        name='usluga'
-                        style={styles.inputStyle}
+                        name='grupa'
+                        style={styles.selectStyle}
                         onBlur={handleBlur}
                       >
-                        <option value=''>Wybierz usluge...</option>
-                        {serviceHandler(values)}
+                        <option value=''>Wybierz grupe uslugi...</option>
+                        {serviceGroupHandler(values)}
                       </Field>
-                      {errors.usluga && touched.usluga ? (
-                        <p style={styles.errorStyle}>{errors.usluga}</p>
+                      {errors.grupa && touched.grupa ? (
+                        <p style={styles.errorStyle}>{errors.grupa}</p>
                       ) : null}
-                      {serviceSelected && (
+                      {serviceGroupSelected && (
                         <>
-                          <label>Specjalista</label>
+                          <label>Usluga</label>
                           <Field
                             as='select'
-                            name='specjalista'
-                            style={styles.selectStyle}
+                            name='usluga'
+                            style={styles.inputStyle}
                             onBlur={handleBlur}
                           >
-                            <option value=''>Wybierz specjaliste...</option>
-                            {doctorHandler(values)}
+                            <option value=''>Wybierz usluge...</option>
+                            {serviceHandler(values)}
                           </Field>
-                          {errors.specjalista && touched.specjalista ? (
-                            <p style={styles.errorStyle}>
-                              {errors.specjalista}
-                            </p>
+                          {errors.usluga && touched.usluga ? (
+                            <p style={styles.errorStyle}>{errors.usluga}</p>
                           ) : null}
-                          {doctorSelected && (
+                          {serviceSelected && (
                             <>
-                              <label>Data</label>
-                              <DatePicker
-                                selected={startDate}
-                                dateFormat='dd/MM/yyyy'
-                                onChange={(date) => {
-                                  setStartDate(date)
-                                  values.data = `${date.getDate()}.${
-                                    date.getMonth() + 1
-                                  }.${date.getFullYear()}`
-                                  setValues(values)
-                                }}
-                                minDate={minDate}
-                                placeholderText='Wybierz termin wizyty'
-                                filterDate={isWeekday}
-                                excludeDates={datesToExclude}
-                                name='data'
+                              <label>Specjalista</label>
+                              <Field
+                                as='select'
+                                name='specjalista'
+                                style={styles.selectStyle}
                                 onBlur={handleBlur}
-                              />
-                              {errors.data && touched.data ? (
-                                <p style={styles.errorStyle}>{errors.data}</p>
+                              >
+                                <option value=''>Wybierz specjaliste...</option>
+                                {doctorHandler(values)}
+                              </Field>
+                              {errors.specjalista && touched.specjalista ? (
+                                <p style={styles.errorStyle}>
+                                  {errors.specjalista}
+                                </p>
                               ) : null}
-                              {values.data && (
+                              {doctorSelected && (
                                 <>
-                                  <label>Godzina</label>
-                                  <Field
-                                    as='select'
-                                    name='godzina'
-                                    style={styles.inputStyle}
+                                  <label>Data</label>
+                                  <DatePicker
+                                    selected={startDate}
+                                    dateFormat='dd/MM/yyyy'
+                                    onChange={(date) => {
+                                      setStartDate(date)
+                                      values.data = `${date.getDate()}.${
+                                        date.getMonth() + 1
+                                      }.${date.getFullYear()}`
+                                      setValues(values)
+                                    }}
+                                    minDate={minDate}
+                                    placeholderText='Wybierz termin wizyty'
+                                    filterDate={isWeekday}
+                                    excludeDates={datesToExclude}
+                                    name='data'
                                     onBlur={handleBlur}
-                                  >
-                                    <option value=''>Wybierz godzine...</option>
-                                    {pickingHours(values.data)}
-                                  </Field>
-                                  {errors.godzina && touched.godzina ? (
+                                  />
+                                  {errors.data && touched.data ? (
                                     <p style={styles.errorStyle}>
-                                      {errors.godzina}
+                                      {errors.data}
                                     </p>
                                   ) : null}
-                                  {/* {setChoseHour(values.godzina)} */}
+                                  {values.data && (
+                                    <>
+                                      <label>Godzina</label>
+                                      <Field
+                                        as='select'
+                                        name='godzina'
+                                        style={styles.inputStyle}
+                                        onBlur={handleBlur}
+                                      >
+                                        <option value=''>
+                                          Wybierz godzine...
+                                        </option>
+                                        {pickingHours(values.data)}
+                                      </Field>
+                                      {errors.godzina && touched.godzina ? (
+                                        <p style={styles.errorStyle}>
+                                          {errors.godzina}
+                                        </p>
+                                      ) : null}
+                                      {/* {setChoseHour(values.godzina)} */}
+                                    </>
+                                  )}
                                 </>
                               )}
                             </>
                           )}
                         </>
                       )}
-                    </>
-                  )}
-                  <label>Imie</label>
-                  <Field
-                    name='imie'
-                    style={styles.inputStyle}
-                    placeholder='Imie'
-                    onBlur={handleBlur}
-                  />
-                  {errors.imie && touched.imie ? (
-                    <p style={styles.errorStyle}>{errors.imie}</p>
-                  ) : null}
-                  <label>Nazwisko</label>
-                  <Field
-                    name='nazwisko'
-                    style={styles.inputStyle}
-                    placeholder='Nazwisko'
-                    onBlur={handleBlur}
-                  />
-                  {errors.nazwisko && touched.nazwisko ? (
-                    <p style={styles.errorStyle}>{errors.nazwisko}</p>
-                  ) : null}
-                  <label>E-mail</label>
-                  <Field
-                    name='email'
-                    type='email'
-                    style={styles.inputStyle}
-                    placeholder='E-mail'
-                    onBlur={handleBlur}
-                  />
-                  {errors.email && touched.email ? (
-                    <p style={styles.errorStyle}>{errors.email}</p>
-                  ) : null}
-                  <label>Telefon</label>
-                  <Field
-                    name='telefon'
-                    style={styles.inputStyle}
-                    placeholder='Telefon'
-                    onBlur={handleBlur}
-                  />
-                  {errors.telefon && touched.telefon ? (
-                    <p style={styles.errorStyle}>{errors.telefon}</p>
-                  ) : null}
-                  <label>Miasto</label>
-                  <Field
-                    name='miasto'
-                    style={styles.inputStyle}
-                    placeholder='Miasto'
-                    onBlur={handleBlur}
-                  />
-                  {errors.miasto && touched.miasto ? (
-                    <p style={styles.errorStyle}>{errors.miasto}</p>
-                  ) : null}
-                  <label>Ulica</label>
-                  <Field
-                    name='ulica'
-                    style={styles.inputStyle}
-                    placeholder='Ulica'
-                    onBlur={handleBlur}
-                  />
-                  {errors.ulica && touched.ulica ? (
-                    <p style={styles.errorStyle}>{errors.ulica}</p>
-                  ) : null}
-                  <label>Kod-pocztowy</label>
-                  <Field
-                    name='kodPocztowy'
-                    style={styles.inputStyle}
-                    placeholder='Kod-pocztowy'
-                    onBlur={handleBlur}
-                  />
-                  {errors.kodPocztowy && touched.kodPocztowy ? (
-                    <p style={styles.errorStyle}>{errors.kodPocztowy}</p>
-                  ) : null}
-                  {!allUsersFromDb.filter((user) => user.email === values.email)
-                    .length ? (
-                    <>
-                      {isCreateAccount ? (
+                      <label>Imie</label>
+                      <Field
+                        name='imie'
+                        style={styles.inputStyle}
+                        placeholder='Imie'
+                        onBlur={handleBlur}
+                      />
+                      {errors.imie && touched.imie ? (
+                        <p style={styles.errorStyle}>{errors.imie}</p>
+                      ) : null}
+                      <label>Nazwisko</label>
+                      <Field
+                        name='nazwisko'
+                        style={styles.inputStyle}
+                        placeholder='Nazwisko'
+                        onBlur={handleBlur}
+                      />
+                      {errors.nazwisko && touched.nazwisko ? (
+                        <p style={styles.errorStyle}>{errors.nazwisko}</p>
+                      ) : null}
+                      <label>E-mail</label>
+                      <Field
+                        name='email'
+                        type='email'
+                        style={styles.inputStyle}
+                        placeholder='E-mail'
+                        onBlur={handleBlur}
+                      />
+                      {errors.email && touched.email ? (
+                        <p style={styles.errorStyle}>{errors.email}</p>
+                      ) : null}
+                      <label>Telefon</label>
+                      <Field
+                        name='telefon'
+                        style={styles.inputStyle}
+                        placeholder='Telefon'
+                        onBlur={handleBlur}
+                      />
+                      {errors.telefon && touched.telefon ? (
+                        <p style={styles.errorStyle}>{errors.telefon}</p>
+                      ) : null}
+                      <label>Miasto</label>
+                      <Field
+                        name='miasto'
+                        style={styles.inputStyle}
+                        placeholder='Miasto'
+                        onBlur={handleBlur}
+                      />
+                      {errors.miasto && touched.miasto ? (
+                        <p style={styles.errorStyle}>{errors.miasto}</p>
+                      ) : null}
+                      <label>Ulica</label>
+                      <Field
+                        name='ulica'
+                        style={styles.inputStyle}
+                        placeholder='Ulica'
+                        onBlur={handleBlur}
+                      />
+                      {errors.ulica && touched.ulica ? (
+                        <p style={styles.errorStyle}>{errors.ulica}</p>
+                      ) : null}
+                      <label>Kod-pocztowy</label>
+                      <Field
+                        name='kodPocztowy'
+                        style={styles.inputStyle}
+                        placeholder='Kod-pocztowy'
+                        onBlur={handleBlur}
+                      />
+                      {errors.kodPocztowy && touched.kodPocztowy ? (
+                        <p style={styles.errorStyle}>{errors.kodPocztowy}</p>
+                      ) : null}
+                      {!allUsersFromDb.filter(
+                        (user) => user.email === values.email
+                      ).length ? (
                         <>
-                          <p style={{ fontSize: '.75em' }}>
-                            Jednak nie chcesz tworzyc konta?
-                            <span
+                          {isCreateAccount ? (
+                            <>
+                              <p style={{ fontSize: '.75em' }}>
+                                Jednak nie chcesz tworzyc konta?
+                                <span
+                                  style={{
+                                    color: '#01D4BF',
+                                    cursor: 'pointer',
+                                  }}
+                                  onClick={() => {
+                                    const { password, ...oldValues } = values
+                                    setIsCreateAccount(false)
+                                    setValues(oldValues)
+                                  }}
+                                >
+                                  Kliknij tutaj
+                                </span>
+                              </p>
+                              <label>Haslo</label>
+                              <Field
+                                name='password'
+                                type='password'
+                                style={{
+                                  backgroundColor: 'transparent',
+                                  border: '2px solid #333',
+                                  height: '3em',
+                                  margin: '10px 0',
+                                  paddingLeft: '1em',
+                                }}
+                                placeholder='Haslo do konta'
+                                onBlur={handleBlur}
+                              />
+                              {errors.password && touched.password ? (
+                                <p style={{ color: 'red' }}>
+                                  {errors.password}
+                                </p>
+                              ) : null}
+                            </>
+                          ) : (
+                            <p style={{ fontSize: '.75em' }}>
+                              Chcesz utworzyć konto?
+                              <span
+                                style={{
+                                  color: '#01D4BF',
+                                  cursor: 'pointer',
+                                }}
+                                onClick={() => setIsCreateAccount(true)}
+                              >
+                                Kliknij tutaj
+                              </span>
+                            </p>
+                          )}
+                        </>
+                      ) : null}
+                      <button type='submit' style={styles.buttonStyle}>
+                        Podsumowanie
+                      </button>
+                      <button type='reset' style={styles.buttonStyle}>
+                        Wyczysc formularz
+                      </button>
+                      {currentUser &&
+                        currentUser.roles[currentUser.roles.length - 1] ===
+                          'ROLE_ADMIN' && (
+                          <>
+                            <label>Wyszukaj uzytkownika w bazie</label>
+                            <Field
+                              name='pacjent'
                               style={{
-                                color: '#01D4BF',
-                                cursor: 'pointer',
+                                backgroundColor: 'transparent',
+                                border: '2px solid #333',
+                                height: '3em',
+                                margin: '10px 0',
+                                paddingLeft: '1em',
                               }}
-                              onClick={() => {
-                                const { password, ...oldValues } = values
-                                setIsCreateAccount(false)
-                                setValues(oldValues)
+                              placeholder='Wyszukaj pacjenta...'
+                            />
+                            <button
+                              onClick={() => searchUser(values)}
+                              type='button'
+                              style={{
+                                backgroundColor: 'none',
+                                border: '2px solid #333',
+                                height: '3em',
+                                margin: '10px 0',
                               }}
                             >
-                              Kliknij tutaj
-                            </span>
-                          </p>
-                          <label>Haslo</label>
-                          <Field
-                            name='password'
-                            type='password'
-                            style={{
-                              backgroundColor: 'transparent',
-                              border: '2px solid #333',
-                              height: '3em',
-                              margin: '10px 0',
-                              paddingLeft: '1em',
-                            }}
-                            placeholder='Haslo do konta'
-                            onBlur={handleBlur}
-                          />
-                          {errors.password && touched.password ? (
-                            <p style={{ color: 'red' }}>{errors.password}</p>
-                          ) : null}
+                              Wyszukaj
+                            </button>
+                            {errors.pacjent && touched.pacjent ? (
+                              <p style={{ color: 'red' }}>{errors.pacjent}</p>
+                            ) : null}
+                          </>
+                        )}
+
+                      {foundUsers.length > 0 ? (
+                        <>
+                          {foundUsers.map((user) => (
+                            <div
+                              style={{
+                                backgroundColor: '#333',
+                                width: '300px',
+                                padding: '15px',
+                                color: 'white',
+                              }}
+                              key={user._id}
+                            >
+                              <p>Imie: {user.imie}</p>
+                              <p>Nazwisko: {user.nazwisko}</p>
+                              <p>Telefon: {user.telefon}</p>
+                              <p>Miasto: {user.miasto}</p>
+                              <p>Ulica: {user.ulica}</p>
+                              <p>Kod-pocztowy: {user.kodPocztowy}</p>
+                              <button
+                                onClick={() => {
+                                  fillFormHandler(user, setValues)
+                                }}
+                                type='submit'
+                                style={{
+                                  backgroundColor: 'none',
+                                  border: '2px solid #333',
+                                  height: '3em',
+                                  margin: '10px 0',
+                                  padding: '10px',
+                                  cursor: 'pointer',
+                                }}
+                              >
+                                Wybierz tego pacjenta
+                              </button>
+                            </div>
+                          ))}
                         </>
                       ) : (
-                        <p style={{ fontSize: '.75em' }}>
-                          Chcesz utworzyć konto?
-                          <span
-                            style={{
-                              color: '#01D4BF',
-                              cursor: 'pointer',
-                            }}
-                            onClick={() => setIsCreateAccount(true)}
-                          >
-                            Kliknij tutaj
-                          </span>
-                        </p>
+                        <p style={{ color: 'red' }}>{errorMsg}</p>
                       )}
-                    </>
-                  ) : null}
-                  <button type='submit' style={styles.buttonStyle}>
-                    Zarezerwuj
-                  </button>
-                  <button type='reset' style={styles.buttonStyle}>
-                    Wyczysc formularz
-                  </button>
-                  {currentUser &&
-                    currentUser.roles[currentUser.roles.length - 1] ===
-                      'ROLE_ADMIN' && (
-                      <>
-                        <label>Wyszukaj uzytkownika w bazie</label>
-                        <Field
-                          name='pacjent'
-                          style={{
-                            backgroundColor: 'transparent',
-                            border: '2px solid #333',
-                            height: '3em',
-                            margin: '10px 0',
-                            paddingLeft: '1em',
-                          }}
-                          placeholder='Wyszukaj pacjenta...'
-                        />
-                        <button
-                          onClick={() => searchUser(values)}
-                          type='button'
-                          style={{
-                            backgroundColor: 'none',
-                            border: '2px solid #333',
-                            height: '3em',
-                            margin: '10px 0',
-                          }}
-                        >
-                          Wyszukaj
-                        </button>
-                        {errors.pacjent && touched.pacjent ? (
-                          <p style={{ color: 'red' }}>{errors.pacjent}</p>
-                        ) : null}
-                      </>
-                    )}
-
-                  {foundUsers.length > 0 ? (
-                    <>
-                      {foundUsers.map((user) => (
+                      {isSubmit && (
                         <div
                           style={{
-                            backgroundColor: '#333',
-                            width: '300px',
-                            padding: '15px',
-                            color: 'white',
+                            width: '100vw',
+                            height: '100vh',
+                            position: 'absolute',
+                            left: '0',
+                            top: '0',
+                            backgroundColor: 'rgba(3,3,3,.5)',
+                            zIndex: '999',
                           }}
-                          key={user._id}
                         >
-                          <p>Imie: {user.imie}</p>
-                          <p>Nazwisko: {user.nazwisko}</p>
-                          <p>Telefon: {user.telefon}</p>
-                          <p>Miasto: {user.miasto}</p>
-                          <p>Ulica: {user.ulica}</p>
-                          <p>Kod-pocztowy: {user.kodPocztowy}</p>
-                          <button
-                            onClick={() => {
-                              fillFormHandler(user, setValues)
-                            }}
-                            type='submit'
+                          <div
                             style={{
-                              backgroundColor: 'none',
-                              border: '2px solid #333',
-                              height: '3em',
-                              margin: '10px 0',
-                              padding: '10px',
-                              cursor: 'pointer',
+                              position: 'relative',
+                              width: '50%',
+                              height: '50%',
+                              backgroundColor: '#fff',
+                              left: '0',
+                              right: '0',
+                              top: '25%',
+                              margin: 'auto',
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'center',
+                              justifyContent: 'center',
                             }}
                           >
-                            Wybierz tego pacjenta
-                          </button>
+                            <h2 style={{ marginBottom: '20px' }}>
+                              Podsumowanie
+                            </h2>
+                            <div
+                              style={{
+                                position: 'relative',
+                                backgroundColor: '#fff',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                              }}
+                            >
+                              <div
+                                style={{
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                  width: '50%',
+                                }}
+                              >
+                                <h3>Twoje dane</h3>
+                                <p>
+                                  {currentUser.imie} {currentUser.nazwisko}
+                                </p>
+                                <p>{currentUser.email}</p>
+                                <p>{currentUser.telefon}</p>
+                                <p>{currentUser.miasto}</p>
+                                <p>{currentUser.ulica}</p>
+                                <p>{currentUser.kodPocztowy}</p>
+                              </div>
+                              <div
+                                style={{
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                  width: '50%',
+                                }}
+                              >
+                                <h3>Umówiona wizyta</h3>
+                                <p>{values.grupa}</p>
+                                <p>{values.usluga}</p>
+                                <p>{values.data}r.</p>
+                                <p>{values.godzina}:00</p>
+                              </div>
+                            </div>
+                            <div
+                              style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                              }}
+                            >
+                              <button
+                                onClick={() => setIsSubmit(false)}
+                                style={styles.buttonStyle}
+                              >
+                                Anuluj
+                              </button>
+                              <button
+                                style={styles.buttonBook}
+                                onClick={() => {
+                                  onVisitSubmit(values)
+                                  resetForm()
+                                  setIsSubmit(false)
+                                }}
+                              >
+                                Potwierdz rezerwacje
+                              </button>
+                            </div>
+                          </div>
                         </div>
-                      ))}
-                    </>
-                  ) : (
-                    <p style={{ color: 'red' }}>{errorMsg}</p>
-                  )}
-                </Form>
-              </>
-            )}
-          </Formik>
+                      )}
+                    </Form>
+                  </>
+                )}
+              </Formik>
+            </>
+          ) : (
+            <div
+              style={{
+                width: '100%',
+                height: '100vh',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                color: '#333',
+                fontSize: '24px',
+              }}
+            >
+              {message && (
+                <p style={{ color: 'red', textAlign: 'center' }}>{message}</p>
+              )}
+            </div>
+          )
         ) : (
           <p>Przykro nam, ale nie oferujemy żadnych usług</p>
         )}

@@ -5,6 +5,7 @@ import { changePassword, logout } from '../../store/actions/auth'
 import { Formik, Field, Form } from 'formik'
 import { passwordChangeValidationSchema } from '../../utils/validationSchemas'
 import { Link } from 'react-router-dom'
+import { clearMessage } from '../../store/actions/message'
 
 const styles = {
   inputStyle: {
@@ -94,11 +95,23 @@ const PwdChangePage = () => {
             </Form>
           )}
         </Formik>
-        <div style={{ display: 'flex', color: '#333' }}>
+        <div
+          style={{
+            width: '100%',
+            height: '100vh',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            color: '#333',
+            fontSize: '24px',
+          }}
+        >
           <p style={{ marginRight: '5px' }}>Chcesz utworzyć konto?</p>
           <Link
             style={{ textDecoration: 'none', color: '#01D4BF' }}
             to='/register'
+            onClick={() => dispatch(clearMessage())}
           >
             Kliknij tutaj!
           </Link>
