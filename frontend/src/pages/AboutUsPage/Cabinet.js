@@ -57,12 +57,12 @@ const Cabinet = () => {
   return (
     <motion.h1
       key="3"
-      initial={{ opacity: 0, y: "50vh" }}
-      animate={{ opacity: 1, y: "0" }}
-      exit={{ opacity: 0, y: "-50vh" }}
-      transition={{ duration: 1 }}
+      initial={{ opacity: 0, x: "25vw" }}
+      animate={{ opacity: 1, x: "0" }}
+      exit={{ opacity: 0, x: "-25vw" }}
+      transition={{ duration: 0.3 }}
     >
-      siemano 3
+      
     </motion.h1>
   );
 };
