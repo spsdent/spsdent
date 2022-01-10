@@ -50,7 +50,7 @@ export const Header = styled(motion.div)`
   align-items: center;
 `
 
-export const Triangle = styled.div`
+export const TriangleDesc = styled.div`
   width: 0;
   height: 0;
   margin-left: 0.3em;
@@ -60,6 +60,30 @@ export const Triangle = styled.div`
   border-left: 0.35em solid transparent;
   border-right: 0.35em solid transparent;
   border-top: 0.35em solid #333;
+`
+
+export const TriangleDescActive = styled.div`
+  width: 0;
+  height: 0;
+  margin-left: 0.3em;
+  transition: 0.2s;
+  cursor: pointer;
+
+  border-left: 0.35em solid transparent;
+  border-right: 0.35em solid transparent;
+  border-top: 0.35em solid #01d4bf;
+`
+
+export const TriangleAsc = styled.div`
+  width: 0;
+  height: 0;
+  margin-left: 0.3em;
+  transition: 0.2s;
+  cursor: pointer;
+
+  border-left: 0.35em solid transparent;
+  border-right: 0.35em solid transparent;
+  border-bottom: 0.35em solid #01d4bf;
 `
 
 export const HeaderText = styled.button`
@@ -74,7 +98,8 @@ export const HeaderText = styled.button`
   &:hover {
     color: #01d4bf;
   }
-  &:hover + ${Triangle} {
+
+  &:hover + ${TriangleDesc} {
     border-top: 0.35em solid #01d4bf;
   }
 `

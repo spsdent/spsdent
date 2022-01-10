@@ -28,9 +28,6 @@ const VisitPage = () => {
   const location = useLocation()
   const backRoute = location.pathname.split('/')[1]
   const allUsers = useFetchAllUsers()
-  const visitSpecialist = allUsers.filter(
-    (user) => user._id === state.specjalista
-  )[0]
 
   const onHandleAction = () => {
     if (actionType === 'usun') {
@@ -84,8 +81,8 @@ const VisitPage = () => {
             >
               <VisitText>Usługa: {state.usluga}</VisitText>
               <VisitText>
-                Specjalista:{' '}
-                {`${visitSpecialist.imie} ${visitSpecialist.nazwisko}`}
+                Specjalista:
+                {`${state.specjalista.imie} ${state.specjalista.nazwisko}`}
               </VisitText>
               <VisitText>Data: {state.data}</VisitText>
               <VisitText>Godzina: {state.godzina}</VisitText>

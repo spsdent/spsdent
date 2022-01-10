@@ -98,7 +98,11 @@ const AddVisitAdmin = () => {
     let visitData = {
       grupa,
       usluga,
-      specjalista,
+      specjalista: {
+        sid: specjalista,
+        imie: imie,
+        nazwisko: nazwisko
+      },
       data,
       godzina,
       imie,

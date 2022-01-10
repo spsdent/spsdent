@@ -3,7 +3,11 @@ module.exports = (mongoose) => {
     {
       grupa: String,
       usluga: String,
-      specjalista: String,
+      specjalista: {
+        sid: String,
+        imie: String,
+        nazwisko: String,
+      },
       data: String,
       godzina: String,
       imie: String,
