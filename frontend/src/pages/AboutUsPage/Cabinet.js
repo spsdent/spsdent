@@ -62,7 +62,7 @@ const Cabinet = () => {
       exit={{ opacity: 0, x: "-25vw" }}
       transition={{ duration: 0.3 }}
     >
-      siemano 3
+      
     </motion.h1>
   );
 };

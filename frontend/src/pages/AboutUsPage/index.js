@@ -4,14 +4,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import OurStaff from "./OurStaff";
 import Cabinet from "./Cabinet";
 import Default from "./Default";
-import { Pattern } from "../../components/Pattern";
 import {
   Container,
   ButtonsContainer,
-  ContentContainer,
   CircleButton,
   ButtonContainer,
   ButtonText,
+  ContentContainer
 } from "./AboutUsPageElements";
 
 class AboutUsPage extends Component {

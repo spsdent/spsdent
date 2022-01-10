@@ -2,18 +2,13 @@ import { motion } from "framer-motion";
 import React from "react";
 import { Pattern } from "../../components/Pattern";
 import {
-  ColumnContainer,
   Title,
   TextContainer,
-  Content,
-  Gallery,
-  ContentText,
-  DoctorName,
-  LineAboutUs,
   PictureContainer,
   Text,
   TextWrap,
-} from "./AboutUsPageElements";
+  
+} from "./DefaultPageElements";
 
 const Default = () => {
   return (
@@ -30,7 +25,7 @@ const Default = () => {
         initial={{ opacity: 0, y: -200, scale: 0 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: -200, scale: 0 }}
-        transition={{delay: .2}}
+        transition={{ delay: 0.2 }}
       >
         <Text>
           Naszym celem jest oferowanie najlepszej jakości usług, co zapewnia
@@ -45,7 +40,7 @@ const Default = () => {
         initial={{ opacity: 0, y: 200, scale: 0 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 200, scale: 0 }}
-        transition={{delay: .4}}
+        transition={{ delay: 0.4 }}
       >
         <Text>
           <Title primary color>
@@ -61,11 +56,11 @@ const Default = () => {
         </Text>
       </TextContainer>
 
-      <TextWrap 
+      <TextWrap
         initial={{ y: 300, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 300, opacity: 0 }}
-        transition={{delay: .6}}
+        transition={{ delay: 0.6 }}
       >
         <Title primary>Co nas wyróżnia?</Title>
         <Text></Text>

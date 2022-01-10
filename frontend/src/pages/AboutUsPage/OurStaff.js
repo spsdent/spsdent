@@ -143,7 +143,6 @@ const OurStaff = () => {
       exit={{ opacity: 0, x: "-25vw" }}
       transition={{ duration: 0.3 }}
     >
-      siemano 2
     </motion.h1>
   );
 };
