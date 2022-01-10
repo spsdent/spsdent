@@ -55,7 +55,7 @@ class AboutUsPage extends Component {
             </ButtonContainer>
           </ButtonsContainer>
           <ContentContainer>
-            <AnimatePresence>
+            <AnimatePresence exitBeforeEnter>
               {pick === 1 && <Default key="1" />}
               {pick === 2 && <OurStaff key="2" />}
               {pick === 3 && <Cabinet key="3" />}
