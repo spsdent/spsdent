@@ -177,7 +177,7 @@ const DoctorTimesheetPage = () => {
             Grafik
           </TimesheetTitle>
         </TimesheetTitleContainer>
-        {selectedDoctorVisits  && (
+        {selectedDoctorVisits.length > 0  && (
           <TimesheetContainer style={state.timesheet ? enabled : disabled}>
             <button onClick={onPreviousWeek}>Wcześniejszy tydzień</button>
             <button onClick={onNextWeek}>Następny tydzień</button>
