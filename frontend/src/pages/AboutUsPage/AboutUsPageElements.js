@@ -70,4 +70,5 @@ export const ContentContainer = styled(motion.div)`
   height: 100%;
   display: flex;
   background-color: ${(props) => (props.primary ? "#333" : "#eee")};
-`;
+  z-index: 1;
+  `;
