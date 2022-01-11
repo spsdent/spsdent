@@ -162,21 +162,13 @@ class DoctorTimesheetPage extends Component {
                   transition={{ duration: 0.5 }}
                 >
                   <Hour>8:00</Hour>
-                  <Hour>8:30</Hour>
                   <Hour>9:00</Hour>
-                  <Hour>9:30</Hour>
                   <Hour>10:00</Hour>
-                  <Hour>10:30</Hour>
                   <Hour>11:00</Hour>
-                  <Hour>11:30</Hour>
                   <Hour>12:00</Hour>
-                  <Hour>12:30</Hour>
                   <Hour>13:00</Hour>
-                  <Hour>13:30</Hour>
                   <Hour>14:00</Hour>
-                  <Hour>14:30</Hour>
                   <Hour>15:00</Hour>
-                  <Hour>15:30</Hour>
                   <Hour>16:00</Hour>
                 </TimesheetHoursContainer>
 

@@ -177,11 +177,15 @@ const DoctorTimesheetPage = () => {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5 }}
               >
-                {doctors
-                  .filter((doctor) => doctor.doctorId === state.input)[0]
-                  .godzinyPracy.map((hour) => (
-                    <Hour>{hour}</Hour>
-                  ))}
+                <Hour>8:00</Hour>
+                <Hour>9:00</Hour>
+                <Hour>10:00</Hour>
+                <Hour>11:00</Hour>
+                <Hour>12:00</Hour>
+                <Hour>13:00</Hour>
+                <Hour>14:00</Hour>
+                <Hour>15:00</Hour>
+                <Hour>16:00</Hour>
               </TimesheetHoursContainer>
 
               <Timesheet
