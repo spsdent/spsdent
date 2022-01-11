@@ -53,7 +53,7 @@ const ArchiveVisitsList = () => {
   const retrieveVisits = () => {
     VisitDataService.getAll()
       .then((response) => {
-        const visitsArr = response.data.filter((item) => item.status !== false)
+        const visitsArr = response.data.filter((item) => item.status === true)
         if (currentUser.roles.includes('ROLE_ADMIN')) {
           setVisitsList(visitsArr)
         } else if (currentUser.roles.includes('ROLE_SPEC')) {
@@ -62,7 +62,7 @@ const ArchiveVisitsList = () => {
           )
           setVisitsList(specificDoctorVisits)
         } else {
-          const userVisitsArr = response.data.filter(
+          const userVisitsArr = visitsArr.filter(
             (visit) => visit.email === currentUser.email
           )
           setVisitsList(userVisitsArr)
@@ -83,7 +83,7 @@ const ArchiveVisitsList = () => {
   }
 
   const goToVisit = (item) => {
-    navigate(`/archive/${item.id}`, { state: item })
+    navigate(`/archive/${item.id}`, { state: { item } })
   }
 
   const displayVisits = visitsList

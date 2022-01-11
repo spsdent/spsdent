@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
-import { FaBars } from "react-icons/fa";
-import { HiOutlineLocationMarker } from "react-icons/hi";
-import { BsTelephone } from "react-icons/bs";
+import React, { useEffect } from 'react'
+import { FaBars } from 'react-icons/fa'
+import { HiOutlineLocationMarker } from 'react-icons/hi'
+import { BsTelephone } from 'react-icons/bs'
 import {
   Nav,
   NavBarContainer,
@@ -15,32 +15,32 @@ import {
   MobileIcon,
   ButtonNav,
   ButtonsContainer,
-} from "./TopBarElements";
-import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../../store/actions/auth";
-import { history } from "../../../helpers/history";
-import { clearMessage } from "../../../store/actions/message";
+} from './TopBarElements'
+import { useDispatch, useSelector } from 'react-redux'
+import { logout } from '../../../store/actions/auth'
+import { history } from '../../../helpers/history'
+import { clearMessage } from '../../../store/actions/message'
 
 const TopBar = () => {
-  const { user: currentUser } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
+  const { user: currentUser } = useSelector((state) => state.auth)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     history.listen((location) => {
-      dispatch(clearMessage()); // clear message when changing location
-    });
-  }, [dispatch]);
+      dispatch(clearMessage()) // clear message when changing location
+    })
+  }, [dispatch])
 
   const logOut = () => {
-    dispatch(logout());
-  };
+    dispatch(logout())
+  }
   return (
     <>
       <Nav>
         <NavBarContainer>
           <NavLogoContainer>
-            <NavLogo to="/">
-              <NavImage src="../logo.png" alt="spsdentLogo" />
+            <NavLogo to='/'>
+              <NavImage src='../logo.png' alt='spsdentLogo' />
             </NavLogo>
           </NavLogoContainer>
           <MobileIcon>
@@ -48,7 +48,7 @@ const TopBar = () => {
           </MobileIcon>
           <NavInfoContainer>
             <InfoContainer>
-              <BsTelephone/>
+              <BsTelephone />
               <InfoText>607 677 888</InfoText>
             </InfoContainer>
             <InfoContainer>
@@ -58,24 +58,40 @@ const TopBar = () => {
           </NavInfoContainer>
           <ButtonsContainer>
             <ButtonNav primary>
-              <ButtonLink to="/add-visit">Umów się na wizytę</ButtonLink>
+              <ButtonLink
+                to='/add-visit'
+                onClick={() => dispatch(clearMessage())}
+              >
+                Umów się na wizytę
+              </ButtonLink>
             </ButtonNav>
             {currentUser ? (
               <ButtonNav>
-                <ButtonLink to="/login" onClick={logOut}>
+                <ButtonLink
+                  to='/login'
+                  onClick={() => {
+                    logOut()
+                    dispatch(clearMessage())
+                  }}
+                >
                   Wyloguj się
                 </ButtonLink>
               </ButtonNav>
             ) : (
               <ButtonNav>
-                <ButtonLink to="/login">Zaloguj się</ButtonLink>
+                <ButtonLink
+                  to='/login'
+                  onClick={() => dispatch(clearMessage())}
+                >
+                  Zaloguj się
+                </ButtonLink>
               </ButtonNav>
             )}
           </ButtonsContainer>
         </NavBarContainer>
       </Nav>
     </>
-  );
-};
+  )
+}
 
-export default TopBar;
+export default TopBar

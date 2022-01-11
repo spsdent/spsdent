@@ -12,7 +12,17 @@ import {
 import AuthService from '../../services/auth'
 
 export const register =
-  (imie, nazwisko, telefon, miasto, kodPocztowy, ulica, email, password) =>
+  (
+    imie,
+    nazwisko,
+    telefon,
+    miasto,
+    kodPocztowy,
+    ulica,
+    email,
+    password,
+    accountCreated
+  ) =>
   (dispatch) => {
     return AuthService.register(
       imie,
@@ -31,7 +41,9 @@ export const register =
 
         dispatch({
           type: SET_MESSAGE,
-          payload: response.data.message,
+          payload: password
+            ? 'Wizyta oraz konto zostały utworzone!'
+            : response.data.message,
         })
 
         return Promise.resolve()
@@ -93,7 +105,6 @@ export const login = (email, password) => (dispatch) => {
 export const changePassword = (data) => (dispatch) => {
   return AuthService.passwordChange(data).then(
     (response) => {
-
       dispatch({
         type: SET_MESSAGE,
         payload: response.data.message,

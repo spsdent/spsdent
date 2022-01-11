@@ -29,6 +29,24 @@ export const passwordChangeValidationSchema = Yup.object().shape({
     ),
 })
 
+export const passwordChangeAdminValidationSchema = Yup.object().shape({
+  password: Yup.string()
+    .required('Nowe haslo jest wymagane')
+    .label('Nowe haslo')
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      'Haslo musi zawierac min. 8 znakow w tym: litere, cyfre i znak specjalny'
+    ),
+  repeatPassword: Yup.string()
+    .required('Powtorzenie hasla jest wymagane')
+    .label('Powtorz haslo')
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      'Haslo musi zawierac min. 8 znakow w tym: litere, cyfre i znak specjalny'
+    )
+    .oneOf([Yup.ref('password'), null], 'Hasła muszą być takie same'),
+})
+
 export const signupValidationSchema = Yup.object().shape({
   imie: Yup.string()
     .min(3, 'Imie musi miec co najmniej 3 znaki')
@@ -49,20 +67,28 @@ export const signupValidationSchema = Yup.object().shape({
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
       'Haslo musi zawierac min. 8 znakow w tym: litere, cyfre i znak specjalny'
     ),
-  telefon: Yup.string()
-    .required('Numer telefonu jest wymagany')
-    .matches(/^\d{9}$/, 'Numer telefonu jest wymagany (9 cyfr)'),
+  telefon: Yup.number()
+    .test(
+      'len',
+      'Numer telefonu musi miec 9 cyfr',
+      (val) => val && val.toString().length === 9
+    )
+    .required('Numer telefonu jest wymagany'),
   miasto: Yup.string()
     .min(3, 'Miasto musi miec co najmniej 3 znaki')
     .max(50, 'Miasto moze miec maksymalnie 50 znakow')
-    .required('Miasto jest wymagana'),
+    .required('Miasto jest wymagane'),
   ulica: Yup.string()
     .min(3, 'Ulica musi miec co najmniej 3 znaki')
     .max(50, 'Ulica moze miec maksymalnie 50 znakow')
     .required('Ulica jest wymagana'),
-  kodPocztowy: Yup.string()
-    .required('Kod-pocztowy jest wymagany')
-    .matches(/^\d{5}$/, 'Kod-pocztowy jest wymagany (5 cyfr) - bez(-)'),
+  kodPocztowy: Yup.number()
+    .test(
+      'len',
+      'Kod pocztowy musi miec 5 cyfr',
+      (val) => val && val.toString().length === 5
+    )
+    .required('Kod pocztowy jest wymagany'),
 })
 
 export const addVisitValidationSchema = Yup.object().shape({
@@ -82,8 +108,12 @@ export const addVisitValidationSchema = Yup.object().shape({
   email: Yup.string()
     .email('Invalid email')
     .required('Wprowadz adres e-mail...'),
-  telefon: Yup.string()
-    .matches(/^\d{9}$/, 'Wprowadz prawidlowy numer telefonu')
+  telefon: Yup.number()
+    .test(
+      'len',
+      'Numer telefonu musi miec 9 cyfr',
+      (val) => val && val.toString().length === 9
+    )
     .required('Numer telefonu jest wymagany'),
   miasto: Yup.string()
     .min(3, 'Miejscowosc musi miec co najmniej 3 znaki')
@@ -93,9 +123,13 @@ export const addVisitValidationSchema = Yup.object().shape({
     .min(3, 'Ulica musi miec co najmniej 3 znaki')
     .max(50, 'Ulica moze miec maksymalnie 50 znakow')
     .required('Wprowadz ulice...'),
-  kodPocztowy: Yup.string()
-    .matches(/^\d{5}$/, 'Wprowadz prawidlowy kod pocztowy')
-    .required('Wprowadz kod pocztowy'),
+  kodPocztowy: Yup.number()
+    .test(
+      'len',
+      'Kod pocztowy musi miec 5 cyfr',
+      (val) => val && val.toString().length === 5
+    )
+    .required('Kod pocztowy jest wymagany'),
   password: Yup.string()
     .required('Haslo jest wymagane')
     .label('Password')
@@ -130,8 +164,12 @@ export const addVisitNonAuthValidationSchema = Yup.object().shape({
   email: Yup.string()
     .email('Invalid email')
     .required('Wprowadz adres e-mail...'),
-  telefon: Yup.string()
-    .matches(/^\d{9}$/, 'Wprowadz prawidlowy numer telefonu')
+  telefon: Yup.number()
+    .test(
+      'len',
+      'Numer telefonu musi miec 9 cyfr',
+      (val) => val && val.toString().length === 9
+    )
     .required('Numer telefonu jest wymagany'),
   miasto: Yup.string()
     .min(3, 'Miejscowosc musi miec co najmniej 3 znaki')
@@ -141,9 +179,13 @@ export const addVisitNonAuthValidationSchema = Yup.object().shape({
     .min(3, 'Ulica musi miec co najmniej 3 znaki')
     .max(50, 'Ulica moze miec maksymalnie 50 znakow')
     .required('Wprowadz ulice...'),
-  kodPocztowy: Yup.string()
-    .matches(/^\d{5}$/, 'Wprowadz prawidlowy kod pocztowy')
-    .required('Wprowadz kod pocztowy'),
+  kodPocztowy: Yup.number()
+    .test(
+      'len',
+      'Kod pocztowy musi miec 5 cyfr',
+      (val) => val && val.toString().length === 5
+    )
+    .required('Kod pocztowy jest wymagany'),
   password: Yup.string()
     .label('Password')
     .matches(
@@ -169,8 +211,12 @@ export const addVisitAdminValidationSchema = Yup.object().shape({
   email: Yup.string()
     .email('Invalid email')
     .required('Wprowadz adres e-mail...'),
-  telefon: Yup.string()
-    .matches(/^\d{9}$/, 'Wprowadz prawidlowy numer telefonu')
+  telefon: Yup.number()
+    .test(
+      'len',
+      'Numer telefonu musi miec 9 cyfr',
+      (val) => val && val.toString().length === 9
+    )
     .required('Numer telefonu jest wymagany'),
   miasto: Yup.string()
     .min(3, 'Miejscowosc musi miec co najmniej 3 znaki')
@@ -180,9 +226,13 @@ export const addVisitAdminValidationSchema = Yup.object().shape({
     .min(3, 'Ulica musi miec co najmniej 3 znaki')
     .max(50, 'Ulica moze miec maksymalnie 50 znakow')
     .required('Wprowadz ulice...'),
-  kodPocztowy: Yup.string()
-    .matches(/^\d{5}$/, 'Wprowadz prawidlowy kod pocztowy')
-    .required('Wprowadz kod pocztowy'),
+  kodPocztowy: Yup.number()
+    .test(
+      'len',
+      'Kod pocztowy musi miec 5 cyfr',
+      (val) => val && val.toString().length === 5
+    )
+    .required('Kod pocztowy jest wymagany'),
   password: Yup.string()
     .label('Password')
     .matches(
@@ -229,7 +279,7 @@ export const updateUserDataValidationSchema = Yup.object().shape({
   kodPocztowy: Yup.number()
     .test(
       'len',
-      'Kod pocztowy musi miec 5 cyf',
+      'Kod pocztowy musi miec 5 cyfr',
       (val) => val && val.toString().length === 5
     )
     .required('Kod pocztowy jest wymagany'),
@@ -252,6 +302,10 @@ export const signInChangePasswordValidationSchema = Yup.object().shape({
     ),
 })
 
+Yup.addMethod(Yup.string, 'integer', function () {
+  return this.matches(/^\d+$/, 'To pole wymaga podania cyfr')
+})
+
 export const createServiceValidationSchema = Yup.object().shape({
   grupa: Yup.string()
     .min(3, 'Grupa musi miec co najmniej 3 znaki')
@@ -262,33 +316,24 @@ export const createServiceValidationSchema = Yup.object().shape({
     .max(25, 'Usluga moze miec maksymalnie 25 znakow')
     .required('Podanie przynajmniej jednej uslugi jest wymagane'),
   u1cena: Yup.string()
-    .min(1, 'Cena musi miec co najmniej 3 znaki')
-    .max(25, 'Cena moze miec maksymalnie 25 znakow')
-    .required('Podanie ceny uslugi jest wymagane'),
+    .integer(Yup.ref('u1cena'))
+    .required('Cena jest wymagana'),
   u2nazwa: Yup.string()
     .min(3, 'Usluga musi miec co najmniej 3 znaki')
     .max(25, 'Usluga moze miec maksymalnie 25 znakow'),
-  u2cena: Yup.string()
-    .min(1, 'Cena musi miec co najmniej 3 znaki')
-    .max(25, 'Cena moze miec maksymalnie 25 znakow'),
+  u2cena: Yup.string().integer(Yup.ref('u1cena')),
   u3nazwa: Yup.string()
     .min(3, 'Usluga musi miec co najmniej 3 znaki')
     .max(25, 'Usluga moze miec maksymalnie 25 znakow'),
-  u3cena: Yup.string()
-    .min(1, 'Cena musi miec co najmniej 3 znaki')
-    .max(25, 'Cena moze miec maksymalnie 25 znakow'),
+  u3cena: Yup.string().integer(Yup.ref('u1cena')),
   u4nazwa: Yup.string()
     .min(3, 'Usluga musi miec co najmniej 3 znaki')
     .max(25, 'Usluga moze miec maksymalnie 25 znakow'),
-  u4cena: Yup.string()
-    .min(1, 'Cena musi miec co najmniej 3 znaki')
-    .max(25, 'Cena moze miec maksymalnie 25 znakow'),
+  u4cena: Yup.string().integer(Yup.ref('u1cena')),
   u5nazwa: Yup.string()
     .min(3, 'Usluga musi miec co najmniej 3 znaki')
     .max(25, 'Usluga moze miec maksymalnie 25 znakow'),
-  u5cena: Yup.string()
-    .min(1, 'Cena musi miec co najmniej 3 znaki')
-    .max(25, 'Cena moze miec maksymalnie 25 znakow'),
+  u5cena: Yup.string().integer(Yup.ref('u1cena')),
 })
 
 export const updateServiceValidationSchema = Yup.object().shape({
@@ -299,9 +344,12 @@ export const updateServiceValidationSchema = Yup.object().shape({
     .min(3, 'Usluga musi miec co najmniej 3 znaki')
     .max(50, 'Usluga moze miec maksymalnie 50 znakow')
     .required('Podanie nazwy uslugi jest wymagane'),
-  cena: Yup.string()
-    .min(1, 'Cena musi miec co najmniej 3 znaki')
-    .max(25, 'Cena moze miec maksymalnie 25 znakow')
+  cena: Yup.number()
+    .test(
+      'len',
+      'Cena musi byc podana',
+      (val) => val && val.toString().length > 0
+    )
     .required('Podanie ceny uslugi jest wymagane'),
 })
 

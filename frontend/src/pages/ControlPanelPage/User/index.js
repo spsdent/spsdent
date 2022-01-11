@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 // import NewDoctor from './NewDoctor'
 import UpdateDoctor from './UpdateMain'
 import DeleteDoctor from './DeleteUser'
 import { PageWrapper } from '../../../components/PageWrapper'
 import { Container } from '../../ProfilePage/ProfilePageElements'
+import { clearMessage } from '../../../store/actions/message'
 
 const DoctorsControl = () => {
   const [state, setState] = useState({
@@ -11,6 +13,7 @@ const DoctorsControl = () => {
     updateDoctor: false,
     deleteDoctor: false,
   })
+  const dispatch = useDispatch()
 
   // const addNewDoctorHandler = () => {
   //   setState({
@@ -26,6 +29,7 @@ const DoctorsControl = () => {
       updateDoctor: !state.updateDoctor,
       deleteDoctor: false,
     })
+    dispatch(clearMessage())
   }
 
   const deleteDoctorHandler = () => {
@@ -34,6 +38,7 @@ const DoctorsControl = () => {
       updateDoctor: false,
       deleteDoctor: !state.deleteDoctor,
     })
+    dispatch(clearMessage())
   }
 
   const { updateDoctor, deleteDoctor } = state

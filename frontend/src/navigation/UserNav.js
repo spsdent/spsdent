@@ -2,7 +2,7 @@ import React from 'react'
 import {
   NavItem,
   StyledLink,
-} from "../components/pieces/SideBar/SideBarElements";
+} from '../components/pieces/SideBar/SideBarElements'
 
 const UserNav = () => (
   <>
@@ -14,9 +14,6 @@ const UserNav = () => (
     </NavItem>
     <NavItem>
       <StyledLink to='/archive'>Historia wizyt</StyledLink>
-    </NavItem>
-    <NavItem>
-      <StyledLink to='/user'>Panel pacjenta</StyledLink>
     </NavItem>
     <NavItem>
       <StyledLink to='/settings'>Ustawienia</StyledLink>

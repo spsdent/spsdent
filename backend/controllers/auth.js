@@ -42,7 +42,7 @@ exports.signup = (req, res) => {
               return
             }
 
-            res.send({ message: 'Uztkownik zostal zarejestrowany!' })
+            res.send({ message: 'Uzytkownik zostal zarejestrowany!' })
           })
         }
       )

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { PageWrapper } from '../../components/PageWrapper'
-import { Formik, Form, Field } from 'formik'
+import { Formik, Form } from 'formik'
 import { Pattern } from '../../components/Pattern'
 import { useNavigate } from 'react-router'
 
@@ -32,7 +32,9 @@ import {
 import { logout, changePassword } from '../../store/actions/auth'
 import { refreshApp } from '../../store/actions/refresh'
 import UserData from '../../services/user'
-import { useFetchAllUsers } from '../../hooks'
+import VisitData from '../../services/visit'
+import { SET_MESSAGE } from '../../store/actions/types'
+import { clearMessage } from '../../store/actions/message'
 
 const ProfilePage = () => {
   const [initialValues, setInitialValues] = useState({
@@ -45,15 +47,16 @@ const ProfilePage = () => {
     ulica: '',
   })
   const [oldUserValues, setOldUserValues] = useState()
-  const { user: currentUser } = useSelector((state) => state.auth)
-  const { isRefresh } = useSelector((state) => state.refresh)
-  const { message } = useSelector((state) => state.message)
   const [isEditing, setIsEditing] = useState(false)
   const [isChangingPwd, setIsChangingPwd] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
   const [userData, setUserData] = useState('')
+  const [visitsArr, setVisitsArr] = useState([])
+  const [archiveVisits, setArchiveVisits] = useState([])
   const [isLoading, setIsLoading] = useState(false)
-  const allUsers = useFetchAllUsers()
+  const { user: currentUser } = useSelector((state) => state.auth)
+  const { isRefresh } = useSelector((state) => state.refresh)
+  const { message } = useSelector((state) => state.message)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -79,6 +82,27 @@ const ProfilePage = () => {
       setInitialValues(obj)
       setOldUserValues(obj)
     })
+
+    VisitData.getAll().then((response) => {
+      const actualVisits = response.data.filter(
+        (visit) => visit.status === false && visit.email === currentUser.email
+      )
+      const ascArr = actualVisits.sort((a, b) => {
+        let aa = a.data.split('.').reverse().join()
+        let bb = b.data.split('.').reverse().join()
+        return aa < bb ? -1 : aa > bb ? 1 : 0
+      })
+      const archVisits = response.data.filter(
+        (visit) => visit.status === true && visit.email === currentUser.email
+      )
+      const descArr = archVisits.sort((a, b) => {
+        let aa = a.data.split('.').reverse().join()
+        let bb = b.data.split('.').reverse().join()
+        return aa > bb ? -1 : aa > bb ? 1 : 0
+      })
+      setVisitsArr(ascArr)
+      setArchiveVisits(descArr)
+    })
   }, [isRefresh])
 
   const isUser = currentUser.roles.includes('ROLE_USER')
@@ -88,6 +112,10 @@ const ProfilePage = () => {
     setIsDelete(false)
     UserData.deleteUser(currentUser.id)
       .then((response) => {
+        dispatch({
+          type: SET_MESSAGE,
+          payload: 'Konto zostało usunięte, przykro nam, że nas opuszczasz',
+        })
         dispatch(logout())
         navigate('/login')
       })
@@ -98,6 +126,10 @@ const ProfilePage = () => {
     let updateObj = { ...values, email: currentUser.email }
     dispatch(changePassword(updateObj))
       .then((response) => {
+        dispatch({
+          type: SET_MESSAGE,
+          payload: 'Hasło zostało zmienione, zaloguj się używając nowego hasła',
+        })
         dispatch(logout())
         actions.resetForm()
       })
@@ -110,11 +142,24 @@ const ProfilePage = () => {
     UserData.updateUser(currentUser.id, values)
       .then((response) => {
         setIsEditing(false)
+        dispatch({ type: SET_MESSAGE, payload: 'Dane zostały zmienione!' })
         dispatch(refreshApp())
       })
       .catch((e) => {
         console.log(e)
       })
+  }
+
+  const goToVisit = (item) => {
+    navigate(`/visits/${item.id}`, {
+      state: { item: item, bRoute: 'settings' },
+    })
+  }
+
+  const goToArchiveVisit = (item) => {
+    navigate(`/archive/${item.id}`, {
+      state: { item: item, bRoute: 'settings' },
+    })
   }
 
   return (
@@ -344,11 +389,6 @@ const ProfilePage = () => {
                           <ButtonDashboard type='submit'>
                             Zmień hasło
                           </ButtonDashboard>
-                          {message && (
-                            <p style={{ color: 'red', textAlign: 'center' }}>
-                              {message}
-                            </p>
-                          )}
                         </PasswordChangeContainer>
                       </>
                     )}
@@ -382,49 +422,62 @@ const ProfilePage = () => {
             </Formik>
           </VitalInfoContainer>
 
-          {(isUser || isDoctor) && (
+          {isUser || isDoctor ? (
             <DashboardVisitContainer>
-              <DashboardVisit primary>
-                <DashboardVisitTitle>Najbliższa wizyta</DashboardVisitTitle>
-                <DashboardVisitText primary>Usługa</DashboardVisitText>
-                <DashboardVisitText>
-                  Badanie lekarsko-stomatologiczne
-                </DashboardVisitText>
-                <DashboardVisitText primary>Specjalista</DashboardVisitText>
-                <DashboardVisitText>Tosia Dyskretka</DashboardVisitText>
-                <DashboardVisitText primary>Data</DashboardVisitText>
-                <DashboardVisitText>21.03.21</DashboardVisitText>
-                <DashboardVisitText primary>Godzina</DashboardVisitText>
-                <DashboardVisitText>12:30</DashboardVisitText>
-                <DashboardVisitButton
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Przejdź do wizyty
-                </DashboardVisitButton>
-              </DashboardVisit>
-              <DashboardVisit>
-                <DashboardVisitTitle>Ostatnia wizyta</DashboardVisitTitle>
-                <DashboardVisitText primary>Usługa</DashboardVisitText>
-                <DashboardVisitText>
-                  Badanie lekarsko-stomatologiczne
-                </DashboardVisitText>
-                <DashboardVisitText primary>Specjalista</DashboardVisitText>
-                <DashboardVisitText>Adrian Kotletka</DashboardVisitText>
-                <DashboardVisitText primary>Data</DashboardVisitText>
-                <DashboardVisitText>06.01.21</DashboardVisitText>
-                <DashboardVisitText primary>Godzina</DashboardVisitText>
-                <DashboardVisitText>11:00</DashboardVisitText>
-                <DashboardVisitButton
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Przejdź do wizyty
-                </DashboardVisitButton>
-              </DashboardVisit>
+              {visitsArr.length > 0 && (
+                <DashboardVisit primary>
+                  <DashboardVisitTitle>Najbliższa wizyta</DashboardVisitTitle>
+                  <DashboardVisitText primary>Usługa</DashboardVisitText>
+                  <DashboardVisitText>{visitsArr[0].usluga}</DashboardVisitText>
+                  <DashboardVisitText primary>Specjalista</DashboardVisitText>
+                  <DashboardVisitText>{`${visitsArr[0].specjalista.imie} ${visitsArr[0].specjalista.nazwisko}`}</DashboardVisitText>
+                  <DashboardVisitText primary>Data</DashboardVisitText>
+                  <DashboardVisitText>{visitsArr[0].data}</DashboardVisitText>
+                  <DashboardVisitText primary>Godzina</DashboardVisitText>
+                  <DashboardVisitText>
+                    {visitsArr[0].godzina}
+                  </DashboardVisitText>
+                  <DashboardVisitButton
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => goToVisit(visitsArr[0])}
+                  >
+                    Przejdź do wizyty
+                  </DashboardVisitButton>
+                </DashboardVisit>
+              )}
+              {archiveVisits.length > 0 && (
+                <DashboardVisit>
+                  <DashboardVisitTitle>Ostatnia wizyta</DashboardVisitTitle>
+                  <DashboardVisitText primary>Usługa</DashboardVisitText>
+                  <DashboardVisitText>
+                    {archiveVisits[0].usluga}
+                  </DashboardVisitText>
+                  <DashboardVisitText primary>Specjalista</DashboardVisitText>
+                  <DashboardVisitText>{`${archiveVisits[0].specjalista.imie} ${archiveVisits[0].specjalista.nazwisko}`}</DashboardVisitText>
+                  <DashboardVisitText primary>Data</DashboardVisitText>
+                  <DashboardVisitText>
+                    {archiveVisits[0].data}
+                  </DashboardVisitText>
+                  <DashboardVisitText primary>Godzina</DashboardVisitText>
+                  <DashboardVisitText>
+                    {archiveVisits[0].godzina}
+                  </DashboardVisitText>
+                  <DashboardVisitButton
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => goToArchiveVisit(archiveVisits[0])}
+                  >
+                    Przejdź do wizyty
+                  </DashboardVisitButton>
+                </DashboardVisit>
+              )}
             </DashboardVisitContainer>
-          )}
+          ) : null}
         </DashboardContainer>
+        {message && (
+          <p style={{ color: 'red', textAlign: 'center' }}>{message}</p>
+        )}
         {isDelete && (
           <div
             style={{

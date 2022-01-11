@@ -6,7 +6,8 @@ import UserService from '../../../services/user'
 import { PageWrapper } from '../../../components/PageWrapper'
 import { Container } from '../../ProfilePage/ProfilePageElements'
 import useDebounce from '../../../hooks/useDebounce'
-
+import { SET_MESSAGE } from '../../../store/actions/types'
+import { clearMessage } from '../../../store/actions/message'
 const styles = {
   inputStyle: {
     backgroundColor: 'transparent',
@@ -39,6 +40,7 @@ const DeleteUser = () => {
   const [searchBySurname, setSearchBySurname] = useState('')
   const debouncedSearchTerm = useDebounce(searchBySurname, 500)
   const { isRefresh } = useSelector((state) => state.refresh)
+  const { message } = useSelector((state) => state.message)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -60,7 +62,7 @@ const DeleteUser = () => {
     const { _id: userId } = user
     UserService.deleteUser(userId)
       .then((response) => {
-        console.log(response.data)
+        dispatch({ type: SET_MESSAGE, payload: 'Użytkownik został usunięty!' })
         dispatch(refreshApp())
         setIsDelete(false)
       })
@@ -78,6 +80,9 @@ const DeleteUser = () => {
           name='nazwisko'
           style={styles.inputStyle}
         />
+        {message && (
+          <p style={{ color: 'red', textAlign: 'center' }}>{message}</p>
+        )}
         {debouncedSearchTerm ? (
           <>
             {usersArr.filter(
@@ -115,6 +120,7 @@ const DeleteUser = () => {
                       <p>Kod-pocztowy: {user.kodPocztowy}</p>
                       <button
                         onClick={() => {
+                          dispatch(clearMessage())
                           setIsDelete(true)
                           setUserToDelete(user)
                         }}

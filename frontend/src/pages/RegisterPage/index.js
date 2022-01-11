@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { PageWrapper } from '../../components/PageWrapper'
 import { Formik, Form, Field } from 'formik'
-import { useNavigate } from 'react-router-dom'
-
+import { useNavigate, Link } from 'react-router-dom'
 import { register } from '../../store/actions/auth'
 import { signupValidationSchema } from '../../utils/validationSchemas'
+import { clearMessage } from '../../store/actions/message'
 
 const styles = {
   inputStyle: {
@@ -40,7 +40,7 @@ const Register = () => {
   const [successful, setSuccessful] = useState(false)
   const { message } = useSelector((state) => state.message)
   const dispatch = useDispatch()
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
   const handleRegister = (values, actions) => {
     const {
@@ -69,7 +69,7 @@ const Register = () => {
       .then(() => {
         setSuccessful(true)
         actions.resetForm()
-        navigate('/login')
+        // navigate('/login')
       })
       .catch(() => {
         setSuccessful(false)
@@ -79,106 +79,137 @@ const Register = () => {
   return (
     <PageWrapper>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <h1>Zarejestruj sie</h1>
-
-        {!successful && (
-          <Formik
-            initialValues={initialValues}
-            onSubmit={(values, actions) => {
-              handleRegister(values, actions)
-            }}
-            validationSchema={signupValidationSchema}
+        {!successful ? (
+          <>
+            <h1>Zarejestruj sie</h1>
+            <Formik
+              enableReinitialize
+              initialValues={initialValues}
+              onSubmit={(values, actions) => {
+                handleRegister(values, actions)
+              }}
+              validationSchema={signupValidationSchema}
+            >
+              {({ values, errors, touched, handleBlur }) => (
+                <Form style={{ display: 'flex', flexDirection: 'column' }}>
+                  <Field
+                    type='text'
+                    name='imie'
+                    value={values.imie}
+                    style={styles.inputStyle}
+                    placeholder='Imie'
+                    onBlur={handleBlur}
+                  />
+                  {errors.imie && touched.imie ? (
+                    <p style={{ color: 'red' }}>{errors.imie}</p>
+                  ) : null}
+                  <Field
+                    type='text'
+                    name='nazwisko'
+                    value={values.nazwisko}
+                    style={styles.inputStyle}
+                    placeholder='Nazwisko'
+                    onBlur={handleBlur}
+                  />
+                  {errors.nazwisko && touched.nazwisko ? (
+                    <p style={{ color: 'red' }}>{errors.nazwisko}</p>
+                  ) : null}
+                  <Field
+                    type='number'
+                    name='telefon'
+                    value={values.telefon}
+                    style={styles.inputStyle}
+                    placeholder='Telefon'
+                    onBlur={handleBlur}
+                  />
+                  {errors.telefon && touched.telefon ? (
+                    <p style={{ color: 'red' }}>{errors.telefon}</p>
+                  ) : null}
+                  <Field
+                    type='text'
+                    name='miasto'
+                    value={values.miasto}
+                    style={styles.inputStyle}
+                    placeholder='Miasto'
+                    onBlur={handleBlur}
+                  />
+                  {errors.miasto && touched.miasto ? (
+                    <p style={{ color: 'red' }}>{errors.miasto}</p>
+                  ) : null}
+                  <Field
+                    type='text'
+                    name='ulica'
+                    value={values.ulica}
+                    style={styles.inputStyle}
+                    placeholder='Ulica'
+                    onBlur={handleBlur}
+                  />
+                  {errors.ulica && touched.ulica ? (
+                    <p style={{ color: 'red' }}>{errors.ulica}</p>
+                  ) : null}
+                  <Field
+                    type='number'
+                    name='kodPocztowy'
+                    value={values.kodPocztowy}
+                    style={styles.inputStyle}
+                    placeholder='Kod-pocztowy'
+                    onBlur={handleBlur}
+                  />
+                  {errors.kodPocztowy && touched.kodPocztowy ? (
+                    <p style={{ color: 'red' }}>{errors.kodPocztowy}</p>
+                  ) : null}
+                  <Field
+                    type='text'
+                    name='email'
+                    value={values.email}
+                    style={styles.inputStyle}
+                    placeholder='E-mail'
+                    onBlur={handleBlur}
+                  />
+                  {errors.email && touched.email ? (
+                    <p style={{ color: 'red' }}>{errors.email}</p>
+                  ) : null}
+                  <Field
+                    type='password'
+                    name='password'
+                    value={values.password}
+                    style={styles.inputStyle}
+                    placeholder='Haslo'
+                    onBlur={handleBlur}
+                  />
+                  {errors.password && touched.password ? (
+                    <p style={{ color: 'red' }}>{errors.password}</p>
+                  ) : null}
+                  <button style={styles.buttonStyle} type='submit'>
+                    Zarejestruj
+                  </button>
+                  <button style={styles.buttonStyle} type='reset'>
+                    Wyczysc pola
+                  </button>
+                  {message && (
+                    <p style={{ color: 'red', textAlign: 'center' }}>
+                      {message}
+                    </p>
+                  )}
+                </Form>
+              )}
+            </Formik>
+          </>
+        ) : (
+          <div
+            style={{ display: 'flex', flexDirection: 'column', color: '#333' }}
           >
-            {({ values, errors }) => (
-              <Form style={{ display: 'flex', flexDirection: 'column' }}>
-                <Field
-                  type='text'
-                  name='imie'
-                  value={values.imie}
-                  style={styles.inputStyle}
-                  placeholder='Imie'
-                />
-                <p style={{ color: 'red', textAlign: 'center' }}>
-                  {errors.imie}
-                </p>
-                <Field
-                  type='text'
-                  name='nazwisko'
-                  value={values.nazwisko}
-                  style={styles.inputStyle}
-                  placeholder='Nazwisko'
-                />
-                <p style={{ color: 'red', textAlign: 'center' }}>
-                  {errors.nazwisko}
-                </p>
-                <Field
-                  type='text'
-                  name='telefon'
-                  value={values.telefon}
-                  style={styles.inputStyle}
-                  placeholder='Telefon'
-                />
-                <p style={{ color: 'red', textAlign: 'center' }}>
-                  {errors.telefon}
-                </p>
-                <Field
-                  type='text'
-                  name='miasto'
-                  value={values.miasto}
-                  style={styles.inputStyle}
-                  placeholder='Miasto'
-                />
-                <p style={{ color: 'red', textAlign: 'center' }}>
-                  {errors.miasto}
-                </p>
-                <Field
-                  type='text'
-                  name='ulica'
-                  value={values.ulica}
-                  style={styles.inputStyle}
-                  placeholder='Ulica'
-                />
-                <p style={{ color: 'red', textAlign: 'center' }}>
-                  {errors.ulica}
-                </p>
-                <Field
-                  type='text'
-                  name='kodPocztowy'
-                  value={values.kodPocztowy}
-                  style={styles.inputStyle}
-                  placeholder='Kod-pocztowy'
-                />
-                <p style={{ color: 'red', textAlign: 'center' }}>
-                  {errors.kodPocztowy}
-                </p>
-                <Field
-                  type='text'
-                  name='email'
-                  value={values.email}
-                  style={styles.inputStyle}
-                  placeholder='E-mail'
-                />
-                <p style={{ color: 'red', textAlign: 'center' }}>
-                  {errors.email}
-                </p>
-                <Field
-                  type='password'
-                  name='password'
-                  value={values.password}
-                  style={styles.inputStyle}
-                  placeholder='Haslo'
-                />
-                <p style={{ color: 'red', textAlign: 'center' }}>
-                  {errors.password}
-                </p>
-                <button style={styles.buttonStyle}>Zarejestruj</button>
-                <button style={styles.buttonStyle} type='reset'>
-                  Wyczysc pola
-                </button>
-                {message && <p>{message}</p>}
-              </Form>
+            {message && (
+              <p style={{ color: 'red', textAlign: 'center' }}>{message}</p>
             )}
-          </Formik>
+            <Link
+              style={{ textDecoration: 'none', color: '#01D4BF' }}
+              to='/login'
+              onClick={() => dispatch(clearMessage())}
+            >
+              Przejdź do logowania!
+            </Link>
+          </div>
         )}
       </div>
     </PageWrapper>

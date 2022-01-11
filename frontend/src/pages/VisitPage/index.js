@@ -17,7 +17,9 @@ import { Pattern } from '../../components/Pattern'
 import useFetchAllUsers from '../../hooks/useFetchAllUsers'
 
 const VisitPage = () => {
-  let { state } = useLocation()
+  let {
+    state: { item: state, bRoute },
+  } = useLocation()
   let navigate = useNavigate()
   const dispatch = useDispatch()
   const { user: currentUser } = useSelector((state) => state.auth)
@@ -125,9 +127,11 @@ const VisitPage = () => {
                 <ButtonVisit
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => navigate(`/${backRoute}`)}
+                  onClick={() => navigate(`/${bRoute ? bRoute : backRoute}`)}
                 >
-                  {state.status === false
+                  {bRoute
+                    ? 'Wróć do ustawień konta'
+                    : state.status === false
                     ? 'Wróć do aktualnych wizyt'
                     : 'Wróć do archiwum wizyt'}
                 </ButtonVisit>
