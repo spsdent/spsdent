@@ -27,9 +27,8 @@ import ContactPage from '../pages/ContactPage/'
 // import AddVisitPage from '../pages/AddVisitPage/'
 import ArchiveVisitsPage from '../pages/ArchiveVisitsPage'
 import ControlPanelPage from '../pages/ControlPanelPage'
-// import DoctorTimesheetPage from '../pages/DoctorTimesheetPage'
-import DoctorTimesheetPage from '../pages/DoctorTimesheetPage/timesheet-pacjent'
-import DoctorTimesheet from '../pages/DoctorTimesheetPage'
+import DoctorTimesheetPage from '../pages/DoctorTimesheetPage'
+// import DoctorTimesheetPage from '../pages/DoctorTimesheetPage/timesheet-pacjent'
 import VisitsPage from '../pages/VisitsPage'
 import ProfilePage from '../pages/ProfilePage'
 import PwdChangePage from '../pages/PwdChangePage'
@@ -83,7 +82,7 @@ const RootNavigation = () => {
               element={
                 <PrivateRoute>
                   <DoctorPrivateRoute>
-                    <DoctorTimesheet />
+                    <DoctorTimesheetPage />
                   </DoctorPrivateRoute>
                 </PrivateRoute>
               }
@@ -153,16 +152,6 @@ const RootNavigation = () => {
                   <AdminPrivateRoute>
                     <ControlPanelPage />
                   </AdminPrivateRoute>
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path='doctor-timesheet'
-              element={
-                <PrivateRoute>
-                  <DoctorPrivateRoute>
-                    <DoctorTimesheetPage />
-                  </DoctorPrivateRoute>
                 </PrivateRoute>
               }
             />
