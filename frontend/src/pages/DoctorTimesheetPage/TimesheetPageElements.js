@@ -44,7 +44,6 @@ export const TimesheetPickContainer = styled.div`
   justify-content: space-evenly;
   align-items: center;
   height: 15%;
-  /* background-color: #999; */
 `;
 export const TimesheetPick = styled(motion.select)`
   width: 47%;
