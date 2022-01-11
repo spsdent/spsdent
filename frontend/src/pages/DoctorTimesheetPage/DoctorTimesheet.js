@@ -63,7 +63,6 @@ const DoctorTimesheetPage = () => {
   const [week, setWeek] = useState([])
   const hours = [8, 9, 10, 11, 12, 13, 14, 15, 16]
   const [firstDay, setFirstDay] = useState('')
-  const [isAvailable, setIsAvailable] = useState(false)
 
   useEffect(() => {
     retrieveDoctors()
@@ -178,7 +177,7 @@ const DoctorTimesheetPage = () => {
             Grafik
           </TimesheetTitle>
         </TimesheetTitleContainer>
-        {selectedDoctorVisits.length > 0 && (
+        {selectedDoctorVisits  && (
           <TimesheetContainer style={state.timesheet ? enabled : disabled}>
             <button onClick={onPreviousWeek}>Wcześniejszy tydzień</button>
             <button onClick={onNextWeek}>Następny tydzień</button>
