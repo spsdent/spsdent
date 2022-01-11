@@ -24,11 +24,9 @@ import Zachowawcza from '../pages/OfferPage/subpages/Zachowawcza'
 
 import PriceListPage from '../pages/PriceListPage/'
 import ContactPage from '../pages/ContactPage/'
-// import AddVisitPage from '../pages/AddVisitPage/'
 import ArchiveVisitsPage from '../pages/ArchiveVisitsPage'
 import ControlPanelPage from '../pages/ControlPanelPage'
 import DoctorTimesheetPage from '../pages/DoctorTimesheetPage'
-// import DoctorTimesheetPage from '../pages/DoctorTimesheetPage/timesheet-pacjent'
 import VisitsPage from '../pages/VisitsPage'
 import ProfilePage from '../pages/ProfilePage'
 import PwdChangePage from '../pages/PwdChangePage'
@@ -77,13 +75,10 @@ const RootNavigation = () => {
               <Route path=':group' element={<PriceListSubPage />} />
             </Route>
             <Route
-              exact
               path='/timesheet'
               element={
                 <PrivateRoute>
-                  <DoctorPrivateRoute>
-                    <DoctorTimesheetPage />
-                  </DoctorPrivateRoute>
+                  <DoctorTimesheetPage />
                 </PrivateRoute>
               }
             />
