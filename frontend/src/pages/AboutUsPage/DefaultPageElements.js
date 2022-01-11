@@ -6,10 +6,11 @@ export const Title = styled(motion.h1)`
   letter-spacing: 0.05em;
   color: ${(props) => (props.color ? "#fff" : "#333")};
   line-height: 0.9em;
-  padding-top: ${(props) => (props.primary ? "0" : ".2em")};
+  padding-top: ${(props) => (props.primary ? "0" : "1em")};
   padding-bottom: ${(props) => (props.primary ? ".2em" : "0")};
   white-space: nowrap;
   font-family: ${(props) => (props.primary ? "poppins" : "bebas neue")};
+  padding-left: ${props => props.primary ? "0" : "2em"};
 `;
 export const TextContainer = styled(motion.div)`
   display: flex;

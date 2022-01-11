@@ -133,17 +133,14 @@
 
 import { motion } from "framer-motion";
 import React from "react";
-
+import {Title, OurStaffContainer} from './OurStaffPageElements'
 const OurStaff = () => {
   return (
-    <motion.h1
-      key="2"
-      initial={{ opacity: 0, x: "25vw" }}
-      animate={{ opacity: 1, x: "0" }}
-      exit={{ opacity: 0, x: "-25vw" }}
-      transition={{ duration: 0.3 }}
-    >
-    </motion.h1>
+    <>
+    <OurStaffContainer>
+    <Title>Nasz zespół</Title>
+    </OurStaffContainer>
+    </>
   );
 };
 

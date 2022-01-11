@@ -1,69 +1,69 @@
-// import React from "react";
-// import {
-//   Title,
-//   Content,
-//   ContentText,
-//   LineAboutUs,
-//   CabinetImage,
-//   Gallery,
-// } from "./AboutUsPageElements";
-// const Cabinet = () => {
-//   return (
-//     <>
-//       <Title
-//         transition={{ duration: 1 }}
-//         initial={{ opacity: 0, x: -200 }}
-//         animate={{ opacity: 1, x: 0 }}
-//       >
-//         Gabinet
-//       </Title>
-//       <Content
-//         transition={{ duration: 0.5 }}
-//         initial={{ opacity: 0, x: -200 }}
-//         animate={{ opacity: 1, x: 0 }}
-//       >
-//         <LineAboutUs />
-//         <ContentText>
-//           SPS Dental Clinic to miejsce, gdzie czeka na państwa profesjonalny
-//           zespół specjalistów.
-//         </ContentText>
-//         <Gallery>
-//           <CabinetImage primary src="cabinet1.png" />
-//           {/* <LineAboutUs primary /> */}
-//           <CabinetImage src="cabinet2.png" />
-//           {/* <LineAboutUs primary /> */}
-//           <CabinetImage primary src="cabinet3.png" />
-//           {/* <LineAboutUs primary /> */}
-//           <CabinetImage src="cabinet4.png" />
-//           <LineAboutUs />
-//           <ContentText>
-//             Do Państwa dyspozycji jest ambitny zespół – doświadczeni
-//             specjaliści, którzy stale się doszkalają, biorąc udział w kursach,
-//             sympozjach i konferencjach, aby oferować Pacjentom jak najlepszą
-//             obsługę. Jakość obsługi wyróżnia nas na tle innych gabinetów.
-//           </ContentText>
-//         </Gallery>
-//       </Content>
-//     </>
-//   );
-// };
-
-// export default Cabinet;
-
 import { motion } from "framer-motion";
 import React from "react";
+import {
+  Title,
+  CabinetColumn,
+  PhotoCabinet,
+  VideoCoverage,
+  Rectangle,
+  RectangleContainer,
+} from "./CabinetPageElements";
 
+const style = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  height: "100%",
+  width: "100%",
+  position: "fixed",
+  top: "3.2em",
+  left: "3.5em",
+  filter: "blur(10px)",
+};
 const Cabinet = () => {
   return (
-    <motion.h1
-      key="3"
-      initial={{ opacity: 0, x: "25vw" }}
-      animate={{ opacity: 1, x: "0" }}
-      exit={{ opacity: 0, x: "-25vw" }}
-      transition={{ duration: 0.3 }}
-    >
-      
-    </motion.h1>
+    <>
+      <CabinetColumn>
+        <Title
+          initial={{ y: "-100vh" }}
+          animate={{ y: 0 }}
+          exit={{ y: "100vh" }}
+          transition={{ duration: 0.5, bounce: 0.9,
+            mass: 0.8 }}
+        >
+          Gabinet
+        </Title>
+        <Rectangle
+          initial={{ y: "-100vh" }}
+          animate={{ y: 0 }}
+          exit={{ y: "100vh" }}
+          transition={{
+            delay: 0.4,
+            duration: 0.4,
+            type: "spring",
+            bounce: 0.8,
+            mass: 0.8
+          }}
+        />
+      </CabinetColumn>
+      <CabinetColumn
+        primary
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        <PhotoCabinet src="url('./cabinet4.jpg')" />
+        <PhotoCabinet src="url('./cabinet2.jpg')" />
+        <PhotoCabinet src="url('./cabinet3.jpg')" />
+        <PhotoCabinet src="url('./cabinet1.jpg')" />
+        <PhotoCabinet src="url('./cabinet5.jpg')" />
+        <PhotoCabinet src="url('./cabinet6.jpg')" />
+        <PhotoCabinet src="url('./cabinet7.jpg')" />
+        <PhotoCabinet src="url('./cabinet8.jpg')" />
+        <PhotoCabinet src="url('./cabinet9.jpg')" />
+      </CabinetColumn>
+    </>
   );
 };
 

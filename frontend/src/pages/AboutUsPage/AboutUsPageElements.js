@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { motion } from "framer-motion";
 
 export const Container = styled(motion.div)`
-  width: 85%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   font-size: 27px;
@@ -27,13 +27,16 @@ export const Container = styled(motion.div)`
 `;
 export const ButtonsContainer = styled.div`
   display: flex;
+  justify-content: flex-start;
   align-items: center;
   gap: 1.5em;
   padding-left: 1em;
   height: 3em;
-  padding: 1em;
+  padding: 1em 1em 1em 6em;
+  position: fixed;
+  z-index: 100;
 `;
-export const ButtonContainer = styled.div`
+export const ButtonContainer = styled(motion.div)`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -46,7 +49,7 @@ export const ButtonContainer = styled.div`
     background-color: #fdfdfd;
   }
 `;
-export const CircleButton = styled.button`
+export const CircleButton = styled.div`
   border-radius: 50%;
   border: none;
   outline: none;
@@ -55,6 +58,7 @@ export const CircleButton = styled.button`
   background-color: #333;
   transition: 0.2s ease;
   cursor: pointer;
+  font-size: .45em;
 `;
 export const ButtonText = styled.p`
   font-family: "poppins";
@@ -65,4 +69,5 @@ export const ContentContainer = styled(motion.div)`
   width: 100%;
   height: 100%;
   display: flex;
+  background-color: ${(props) => (props.primary ? "#333" : "#eee")};
 `;

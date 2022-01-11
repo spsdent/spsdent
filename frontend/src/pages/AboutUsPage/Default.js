@@ -44,7 +44,7 @@ const Default = () => {
       >
         <Text>
           <Title primary color>
-            Nasz zespół
+            Nasza kadra
           </Title>
           Zespół <strong>SPS Dental Clinic</strong> tworzą doświadczeni
           specjaliści – doktorzy nauk medycznych oraz lekarze dentyści, a także

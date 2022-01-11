@@ -10,7 +10,7 @@ import {
   CircleButton,
   ButtonContainer,
   ButtonText,
-  ContentContainer
+  ContentContainer,
 } from "./AboutUsPageElements";
 
 class AboutUsPage extends Component {
@@ -36,17 +36,34 @@ class AboutUsPage extends Component {
       <PageWrapper>
         <Container>
           <ButtonsContainer>
-            <ButtonContainer onClick={() => this.handleClick(1)}>
+            <ButtonContainer
+              initial={{ y: -200 }}
+              animate={{ y: 0 }}
+              exit={{ y: -200 }}
+              onClick={() => this.handleClick(1)}
+            >
               <CircleButton style={pick === 1 ? active : deactive} />
               <ButtonText>O nas</ButtonText>
             </ButtonContainer>
-            <ButtonContainer onClick={() => this.handleClick(2)}>
+            <ButtonContainer
+              initial={{ y: -200 }}
+              animate={{ y: 0 }}
+              exit={{ y: -200 }}
+              transition={{ delay: 0.2 }}
+              onClick={() => this.handleClick(2)}
+            >
               <CircleButton
                 style={pick === 2 ? active : deactive}
               ></CircleButton>
-              <ButtonText>Nasza kadra</ButtonText>
+              <ButtonText>Nasz zespół</ButtonText>
             </ButtonContainer>
-            <ButtonContainer onClick={() => this.handleClick(3)}>
+            <ButtonContainer
+              initial={{ y: -200 }}
+              animate={{ y: 0 }}
+              exit={{ y: -200 }}
+              transition={{ delay: 0.4 }}
+              onClick={() => this.handleClick(3)}
+            >
               <CircleButton
                 style={pick === 3 ? active : deactive}
               ></CircleButton>
