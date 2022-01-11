@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { PageWrapper } from '../../components/PageWrapper'
 import { Pattern } from '../../components/Pattern'
 import '../../styles/index.css'
@@ -48,50 +49,43 @@ const container = {
   },
 }
 
-const itemOne = {
-  hidden: { x: 100, opacity: 0 },
-  visible: {
-    x: 0,
-    opacity: 1,
-    transition: { type: 'spring', duration: 0.5, damping: 7, stiffness: 50 },
-  },
-}
-const itemTwo = {
-  hidden: { x: -100, opacity: 0 },
-  visible: {
-    x: 0,
-    opacity: 1,
-    transition: { type: 'spring', duration: 0.5, damping: 7, stiffness: 50 },
-  },
-}
-
 const DoctorTimesheetPage = () => {
   const [state, setState] = useState({
     input: '',
     timesheet: true,
   })
+  const { user: currentUser } = useSelector((state) => state.auth)
   const [doctors, setDoctors] = useState([])
   const [users, setUsers] = useState([])
   const [visits, setVisits] = useState([])
+  const [selectedDoctorVisits, setSelectedDoctorVisits] = useState([])
   const daysOfWeek = ['Poniedzialek', 'Wtorek', 'Sroda', 'Czwartek', 'Piatek']
   const [week, setWeek] = useState([])
+  const hours = [8, 9, 10, 11, 12, 13, 14, 15, 16]
+  const [firstDay, setFirstDay] = useState('')
+  const [isAvailable, setIsAvailable] = useState(false)
 
   useEffect(() => {
     retrieveDoctors()
     retrieveUsers()
     retrieveVisits()
+    const visitsArr = visits.filter(
+      (visit) => visit.specjalista.sid === currentUser.id
+    )
+    setSelectedDoctorVisits(visitsArr)
     let curr = new Date()
-    const daysOfWeek = ['Pon', 'Wt', 'Sr', 'Czw', 'Pt']
     let week = []
 
+    let first = curr.getDate() - curr.getDay()
+    setFirstDay(first)
     for (let i = 1; i <= 5; i++) {
-      let first = curr.getDate() - curr.getDay() + i
-      let day = new Date(curr.setDate(first)).toISOString().slice(0, 10)
-      week.push(
-        `${daysOfWeek[i - 1]}, ${day.split('-')[2]}.${day.split('-')[1]}.${
-          day.split('-')[0]
-        }`
-      )
+      let day = new Date(curr.setDate(first + i))
+        .toLocaleDateString('en-US')
+        .slice(0, 10)
+      week.push({
+        dayOfWeek: `${daysOfWeek[i - 1]}`,
+        data: `${day.split('/')[1]}.${day.split('/')[0]}.${day.split('/')[2]}`,
+      })
     }
     setWeek(week)
   }, [])
@@ -114,13 +108,58 @@ const DoctorTimesheetPage = () => {
     })
   }
 
-  const handleChange = (e) => {
-    setState({ ...state, [e.target.name]: e.target.value })
-  }
-
   const filteredUsers = users.filter((user) =>
     doctors.some((doctor) => doctor.doctorId === user._id)
   )
+
+  const itemOne = {
+    hidden: { x: 100, opacity: 0 },
+    visible: {
+      x: 0,
+      opacity: 1,
+      transition: { type: 'spring', duration: 0.5, damping: 7, stiffness: 50 },
+    },
+  }
+  const itemTwo = {
+    hidden: { x: -100, opacity: 0 },
+    visible: {
+      x: 0,
+      opacity: 1,
+      transition: { type: 'spring', duration: 0.5, damping: 7, stiffness: 50 },
+    },
+  }
+
+  const onPreviousWeek = () => {
+    let curr = new Date()
+    let week = []
+    for (let i = 1; i <= 5; i++) {
+      let day = new Date(curr.setDate(firstDay - 7 + i))
+        .toLocaleDateString('en-US')
+        .slice(0, 10)
+      week.push({
+        dayOfWeek: `${daysOfWeek[i - 1]}`,
+        data: `${day.split('/')[1]}.${day.split('/')[0]}.${day.split('/')[2]}`,
+      })
+    }
+    setFirstDay(firstDay - 7)
+    setWeek(week)
+  }
+
+  const onNextWeek = () => {
+    let curr = new Date()
+    let week = []
+    for (let i = 1; i <= 5; i++) {
+      let day = new Date(curr.setDate(firstDay + 7 + i))
+        .toLocaleDateString('en-US')
+        .slice(0, 10)
+      week.push({
+        dayOfWeek: `${daysOfWeek[i - 1]}`,
+        data: `${day.split('/')[1]}.${day.split('/')[0]}.${day.split('/')[2]}`,
+      })
+    }
+    setFirstDay(firstDay + 7)
+    setWeek(week)
+  }
 
   return (
     <PageWrapper>
@@ -139,36 +178,17 @@ const DoctorTimesheetPage = () => {
             Grafik
           </TimesheetTitle>
         </TimesheetTitleContainer>
-        <TimesheetPickContainer>
-          <TimesheetPick
-            name='input'
-            value={state.input}
-            onChange={handleChange}
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Option value='true' selected>
-              Wybierz lekarza
-            </Option>
-            {filteredUsers.map((user) => (
-              <Option value={user._id}>
-                {user.imie} {user.nazwisko}
-              </Option>
-            ))}
-          </TimesheetPick>
-        </TimesheetPickContainer>
-        {state.input && (
-          <TimesheetContainer
-            style={typeof state.timesheet === 'string' ? enabled : disabled}
-          >
+        {selectedDoctorVisits.length > 0 && (
+          <TimesheetContainer style={state.timesheet ? enabled : disabled}>
+            <button onClick={onPreviousWeek}>Wcześniejszy tydzień</button>
+            <button onClick={onNextWeek}>Następny tydzień</button>
             <TimesheetDaysContainer
               initial={{ x: 50, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              {week.map((day) => (
-                <Day>{day}</Day>
+              {week.map((day, i) => (
+                <Day key={day.dayOfWeek}>{day.dayOfWeek}</Day>
               ))}
             </TimesheetDaysContainer>
             <TimesheetWrap>
@@ -177,34 +197,195 @@ const DoctorTimesheetPage = () => {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5 }}
               >
-                <Hour>8:00</Hour>
-                <Hour>9:00</Hour>
-                <Hour>10:00</Hour>
-                <Hour>11:00</Hour>
-                <Hour>12:00</Hour>
-                <Hour>13:00</Hour>
-                <Hour>14:00</Hour>
-                <Hour>15:00</Hour>
-                <Hour>16:00</Hour>
+                {hours.map((hour) => (
+                  <Hour>{hour}</Hour>
+                ))}
               </TimesheetHoursContainer>
-
               <Timesheet
                 variants={container}
                 initial='hidden'
                 animate='visible'
               >
-                {/* {doctors
-                  .filter((doctor) => doctor.doctorId === state.input)[0]
-                  .godzinyPracy.map((hour) => (
-                    <VisitRow variants={itemOne}>
-                      <Visit></Visit>
-                      <Visit></Visit>
-                      <Visit available></Visit>
-                      <Visit></Visit>
-                      <Visit></Visit>
-                    </VisitRow>
-                  ))} */}
-                {console.log('czy to id lekarza?', state.input)}
+                <VisitRow variants={itemOne}>
+                  {week.map((day) => (
+                    <Visit
+                      available={selectedDoctorVisits.find(
+                        (visit) =>
+                          visit.godzina === '8' && visit.data === day.data
+                      )}
+                    >
+                      {selectedDoctorVisits.find(
+                        (visit) =>
+                          visit.godzina === '8' && visit.data === day.data
+                      )
+                        ? selectedDoctorVisits.find(
+                            (visit) =>
+                              visit.godzina === '8' && visit.data === day.data
+                          ).usluga
+                        : null}
+                    </Visit>
+                  ))}
+                </VisitRow>
+                <VisitRow variants={itemOne}>
+                  {week.map((day) => (
+                    <Visit
+                      available={selectedDoctorVisits.find(
+                        (visit) =>
+                          visit.godzina === '9' && visit.data === day.data
+                      )}
+                    >
+                      {selectedDoctorVisits.find(
+                        (visit) =>
+                          visit.godzina === '9' && visit.data === day.data
+                      )
+                        ? selectedDoctorVisits.find(
+                            (visit) =>
+                              visit.godzina === '9' && visit.data === day.data
+                          ).usluga
+                        : null}
+                    </Visit>
+                  ))}
+                </VisitRow>
+                <VisitRow variants={itemOne}>
+                  {week.map((day) => (
+                    <Visit
+                      available={selectedDoctorVisits.find(
+                        (visit) =>
+                          visit.godzina === '10' && visit.data === day.data
+                      )}
+                    >
+                      {selectedDoctorVisits.find(
+                        (visit) =>
+                          visit.godzina === '10' && visit.data === day.data
+                      )
+                        ? selectedDoctorVisits.find(
+                            (visit) =>
+                              visit.godzina === '10' && visit.data === day.data
+                          ).usluga
+                        : null}
+                    </Visit>
+                  ))}
+                </VisitRow>
+                <VisitRow variants={itemOne}>
+                  {week.map((day) => (
+                    <Visit
+                      available={selectedDoctorVisits.find(
+                        (visit) =>
+                          visit.godzina === '11' && visit.data === day.data
+                      )}
+                    >
+                      {selectedDoctorVisits.find(
+                        (visit) =>
+                          visit.godzina === '11' && visit.data === day.data
+                      )
+                        ? selectedDoctorVisits.find(
+                            (visit) =>
+                              visit.godzina === '11' && visit.data === day.data
+                          ).usluga
+                        : null}
+                    </Visit>
+                  ))}
+                </VisitRow>
+                <VisitRow variants={itemOne}>
+                  {week.map((day) => (
+                    <Visit
+                      available={selectedDoctorVisits.find(
+                        (visit) =>
+                          visit.godzina === '12' && visit.data === day.data
+                      )}
+                    >
+                      {selectedDoctorVisits.find(
+                        (visit) =>
+                          visit.godzina === '12' && visit.data === day.data
+                      )
+                        ? selectedDoctorVisits.find(
+                            (visit) =>
+                              visit.godzina === '12' && visit.data === day.data
+                          ).usluga
+                        : null}
+                    </Visit>
+                  ))}
+                </VisitRow>
+                <VisitRow variants={itemOne}>
+                  {week.map((day) => (
+                    <Visit
+                      available={selectedDoctorVisits.find(
+                        (visit) =>
+                          visit.godzina === '13' && visit.data === day.data
+                      )}
+                    >
+                      {selectedDoctorVisits.find(
+                        (visit) =>
+                          visit.godzina === '13' && visit.data === day.data
+                      )
+                        ? selectedDoctorVisits.find(
+                            (visit) =>
+                              visit.godzina === '13' && visit.data === day.data
+                          ).usluga
+                        : null}
+                    </Visit>
+                  ))}
+                </VisitRow>
+                <VisitRow variants={itemOne}>
+                  {week.map((day) => (
+                    <Visit
+                      available={selectedDoctorVisits.find(
+                        (visit) =>
+                          visit.godzina === '14' && visit.data === day.data
+                      )}
+                    >
+                      {selectedDoctorVisits.find(
+                        (visit) =>
+                          visit.godzina === '14' && visit.data === day.data
+                      )
+                        ? selectedDoctorVisits.find(
+                            (visit) =>
+                              visit.godzina === '14' && visit.data === day.data
+                          ).usluga
+                        : null}
+                    </Visit>
+                  ))}
+                </VisitRow>
+                <VisitRow variants={itemOne}>
+                  {week.map((day) => (
+                    <Visit
+                      available={selectedDoctorVisits.find(
+                        (visit) =>
+                          visit.godzina === '15' && visit.data === day.data
+                      )}
+                    >
+                      {selectedDoctorVisits.find(
+                        (visit) =>
+                          visit.godzina === '15' && visit.data === day.data
+                      )
+                        ? selectedDoctorVisits.find(
+                            (visit) =>
+                              visit.godzina === '15' && visit.data === day.data
+                          ).usluga
+                        : null}
+                    </Visit>
+                  ))}
+                </VisitRow>
+                <VisitRow variants={itemOne}>
+                  {week.map((day) => (
+                    <Visit
+                      available={selectedDoctorVisits.find(
+                        (visit) =>
+                          visit.godzina === '16' && visit.data === day.data
+                      )}
+                    >
+                      {selectedDoctorVisits.find(
+                        (visit) =>
+                          visit.godzina === '16' && visit.data === day.data
+                      )
+                        ? selectedDoctorVisits.find(
+                            (visit) =>
+                              visit.godzina === '16' && visit.data === day.data
+                          ).usluga
+                        : null}
+                    </Visit>
+                  ))}
+                </VisitRow>
               </Timesheet>
             </TimesheetWrap>
           </TimesheetContainer>
