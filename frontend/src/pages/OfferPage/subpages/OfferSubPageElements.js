@@ -21,7 +21,7 @@ export const Container = styled.div`
 export const SubPageContainer = styled(motion.div)`
   width: 75%;
   /* background-color: #aaa; */
-  margin-top: 11em;
+  margin-top: 7em;
   height: fit-content;
   display: flex;
   flex-direction: column;
