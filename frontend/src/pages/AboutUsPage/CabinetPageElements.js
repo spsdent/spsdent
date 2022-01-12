@@ -34,6 +34,7 @@ export const PhotoCabinet = styled(motion.div)`
   border: ${(props) =>
     props.primary ? ".6em solid #01d4bf" : ".6em solid #333"};
   align-self: ${(props) => (props.primary ? "flex-start" : "flex-end")};
+  border-radius: .5em;
 `;
 export const RectangleContainer = styled.div``;
 export const Rectangle = styled(motion.div)`
@@ -41,6 +42,7 @@ export const Rectangle = styled(motion.div)`
   width: 8em;
   height: 15em;
   position: fixed;
+  border-radius: .5em;
 `;
 export const Scroll = styled(CgScrollV)`
   color: #333;
