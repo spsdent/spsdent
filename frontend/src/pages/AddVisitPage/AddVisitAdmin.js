@@ -110,14 +110,16 @@ const AddVisitAdmin = () => {
       status,
     } = values
 
+    const doctor = allUsersFromDb.find((user) => user._id === specjalista)
+
     // Create object with values from form
     let visitData = {
       grupa,
       usluga,
       specjalista: {
         sid: specjalista,
-        imie: imie,
-        nazwisko: nazwisko,
+        imie: doctor.imie,
+        nazwisko: doctor.nazwisko,
       },
       data,
       godzina,
@@ -273,7 +275,7 @@ const AddVisitAdmin = () => {
       .filter(
         (visit) =>
           visit.data.split('.')[0] === values.split('.')[0] &&
-          visit.specjalista === `${selectedDoctorData.doctorId}`
+          visit.specjalista.sid === `${selectedDoctorData.doctorId}`
       )
       .map((item) => +item.godzina)
     const updatedHours = selectedDoctorData.godzinyPracy

@@ -90,14 +90,16 @@ const AddVisitAuthUser = () => {
       currentUser
     const { grupa, usluga, specjalista, data, godzina, status } = values
 
+    const doctor = allUsersFromDb.find((user) => user._id === specjalista)
+
     // Create object with values from form
     let visitData = {
       grupa,
       usluga,
       specjalista: {
         sid: specjalista,
-        imie: imie,
-        nazwisko: nazwisko,
+        imie: doctor.imie,
+        nazwisko: doctor.nazwisko,
       },
       data,
       godzina,
