@@ -133,13 +133,44 @@
 
 import { motion } from "framer-motion";
 import React from "react";
-import {Title, OurStaffContainer} from './OurStaffPageElements'
+import {
+  OurStaffContainer,
+  TitleContainer,
+  Title,
+  CardsContainer,
+  Card,
+  CardPicture,
+  CardText,
+} from "./OurStaffPageElements";
 const OurStaff = () => {
   return (
     <>
-    <OurStaffContainer>
-    <Title>Nasz zespół</Title>
-    </OurStaffContainer>
+      <OurStaffContainer>
+        <TitleContainer>
+          <Title>Nasz</Title> <Title primary>zespół</Title>
+        </TitleContainer>
+        <CardsContainer>
+          <Card
+            drag={true}
+            dragConstraints={{
+              left: 0,
+              right: 0,
+              top: 0,
+              bottom: 0,
+            }}
+            dragSnapToOrigin={false}
+            dragElastic={1}
+          >
+            <CardPicture />
+            <CardText primary>lek.dent. Tomasz Sulenta</CardText>
+            <CardText>
+              Absolwent Uniwersytetu Medycznego w Lublinie w roku 2010. Staż
+              podyplomowy odbywał w Wojewódzkiej Przychodni Stomatologicznej W
+              Lublinie. W 2013 roku uzyskał tytuł doktora nauk medycznych.
+            </CardText>
+          </Card>
+        </CardsContainer>
+      </OurStaffContainer>
     </>
   );
 };
