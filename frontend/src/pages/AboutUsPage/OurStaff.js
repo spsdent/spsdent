@@ -8,7 +8,9 @@ import {
   Card,
   CardPicture,
   CardText,
+  MoveCardIcon
 } from "./OurStaffPageElements";
+
 import { Pattern } from "../../components/Pattern";
 const OurStaff = () => {
   return (
@@ -47,6 +49,7 @@ const OurStaff = () => {
             drag={true}
             whileDrag={{
               zIndex: "10",
+              
             }}
             dragConstraints={{
               left: 0,
@@ -58,6 +61,8 @@ const OurStaff = () => {
             dragElastic={1}
             dragTransition={{ bounceStiffness: 0.1 }}
           >
+            <MoveCardIcon top=".3em" left=".3em"/>
+            <MoveCardIcon top="18.5em" left="13.5em"/>
             <CardPicture pic="url('./doctor1.png')" />
             <CardText primary>mgr Agnieszka Krawat</CardText>
             <CardText>
@@ -90,6 +95,8 @@ const OurStaff = () => {
             dragElastic={1}
             dragTransition={{ bounceStiffness: 0.1 }}
           >
+            <MoveCardIcon top=".3em" left=".3em"/>
+            <MoveCardIcon top="18.5em" left="13.5em"/>
             <CardPicture pic="url('./doctor4.png')" />
             <CardText primary>Dr n.med. Monika Perec</CardText>
             <CardText>
@@ -122,6 +129,8 @@ const OurStaff = () => {
             dragElastic={1}
             dragTransition={{ bounceStiffness: 0.1 }}
           >
+            <MoveCardIcon top=".3em" left=".3em"/>
+            <MoveCardIcon top="18.5em" left="13.5em"/>
             <CardPicture pic="url('./doctor3.jpg')" />
             <CardText primary>Dr n.med. Gabriel Szalast</CardText>
             <CardText>
@@ -154,6 +163,8 @@ const OurStaff = () => {
             dragElastic={1}
             dragTransition={{ bounceStiffness: 0.1 }}
           >
+            <MoveCardIcon top=".3em" left=".3em"/>
+            <MoveCardIcon top="18.5em" left="13.5em"/>
             <CardPicture pic="url('./doctor2.png')" />
             <CardText primary>lek.dent. Tomasz Sulenta</CardText>
             <CardText>

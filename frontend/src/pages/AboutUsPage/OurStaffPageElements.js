@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
-
+import { BsArrowsMove } from "react-icons/bs";
 export const Title = styled(motion.h1)`
   font-size: 5em;
   letter-spacing: 0.06em;
@@ -39,6 +39,7 @@ export const Card = styled(motion.div)`
   border: 1px solid #333;
   border-radius: 0.6em;
   box-shadow: 0px 1px 15px #333;
+  cursor: grab;
 `;
 export const CardPicture = styled.div`
   width: 10em;
@@ -63,4 +64,12 @@ export const CardText = styled.p`
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+`;
+export const MoveCardIcon = styled(BsArrowsMove)`
+  width: 1em;
+  height: 1em;
+  position: fixed;
+  top: ${(props) => props.top};
+  left: ${(props) => props.left};
+  color: rgba(51, 51, 51, 0.7);
 `;
