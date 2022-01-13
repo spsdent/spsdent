@@ -13,9 +13,6 @@ const SpecNav = () => (
       <StyledLink to='/archive'>Historia wizyt</StyledLink>
     </NavItem>
     <NavItem>
-      <StyledLink to='add-visit'>Zarezerwuj</StyledLink>
-    </NavItem>
-    <NavItem>
       <StyledLink to='/settings'>Ustawienia</StyledLink>
     </NavItem>
   </>
