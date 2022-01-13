@@ -56,6 +56,7 @@ const DoctorTimesheetPage = () => {
   })
   const { user: currentUser } = useSelector((state) => state.auth)
   const [visits, setVisits] = useState([])
+  const [isSelected, setIsSelected] = useState(false)
   const [selectedDoctorVisits, setSelectedDoctorVisits] = useState([])
   const daysOfWeek = ['Poniedzialek', 'Wtorek', 'Sroda', 'Czwartek', 'Piatek']
   const [week, setWeek] = useState([])
@@ -192,7 +193,11 @@ const DoctorTimesheetPage = () => {
                         (visit) =>
                           visit.godzina === '8' && visit.data === day.data
                       ) ? (
-                        <Visit available>
+                        <Visit
+                          available
+                          onClick={() => setIsSelected(!isSelected)}
+                          selected={isSelected}
+                        >
                           {
                             selectedDoctorVisits.find(
                               (visit) =>
@@ -201,7 +206,10 @@ const DoctorTimesheetPage = () => {
                           }
                         </Visit>
                       ) : (
-                        <Visit></Visit>
+                        <Visit
+                          onClick={() => setIsSelected(!isSelected)}
+                          selected={isSelected}
+                        ></Visit>
                       )}
                     </React.Fragment>
                   ))}
@@ -214,7 +222,11 @@ const DoctorTimesheetPage = () => {
                         (visit) =>
                           visit.godzina === '9' && visit.data === day.data
                       ) ? (
-                        <Visit available>
+                        <Visit
+                          available
+                          onClick={() => setIsSelected(!isSelected)}
+                          selected={isSelected}
+                        >
                           {
                             selectedDoctorVisits.find(
                               (visit) =>
@@ -223,7 +235,10 @@ const DoctorTimesheetPage = () => {
                           }
                         </Visit>
                       ) : (
-                        <Visit></Visit>
+                        <Visit
+                          onClick={() => setIsSelected(!isSelected)}
+                          selected={isSelected}
+                        ></Visit>
                       )}
                     </React.Fragment>
                   ))}
@@ -235,7 +250,11 @@ const DoctorTimesheetPage = () => {
                         (visit) =>
                           visit.godzina === '10' && visit.data === day.data
                       ) ? (
-                        <Visit available>
+                        <Visit
+                          available
+                          onClick={() => setIsSelected(!isSelected)}
+                          selected={isSelected}
+                        >
                           {
                             selectedDoctorVisits.find(
                               (visit) =>
@@ -245,7 +264,10 @@ const DoctorTimesheetPage = () => {
                           }
                         </Visit>
                       ) : (
-                        <Visit></Visit>
+                        <Visit
+                          onClick={() => setIsSelected(!isSelected)}
+                          selected={isSelected}
+                        ></Visit>
                       )}
                     </React.Fragment>
                   ))}
@@ -257,7 +279,11 @@ const DoctorTimesheetPage = () => {
                         (visit) =>
                           visit.godzina === '11' && visit.data === day.data
                       ) ? (
-                        <Visit available>
+                        <Visit
+                          available
+                          selected={isSelected}
+                          onClick={() => setIsSelected(!isSelected)}
+                        >
                           {
                             selectedDoctorVisits.find(
                               (visit) =>
@@ -267,7 +293,10 @@ const DoctorTimesheetPage = () => {
                           }
                         </Visit>
                       ) : (
-                        <Visit></Visit>
+                        <Visit
+                          onClick={() => setIsSelected(!isSelected)}
+                          selected={isSelected}
+                        ></Visit>
                       )}
                     </React.Fragment>
                   ))}
@@ -279,7 +308,11 @@ const DoctorTimesheetPage = () => {
                         (visit) =>
                           visit.godzina === '12' && visit.data === day.data
                       ) ? (
-                        <Visit available>
+                        <Visit
+                          available
+                          onClick={() => setIsSelected(!isSelected)}
+                          selected={isSelected}
+                        >
                           {
                             selectedDoctorVisits.find(
                               (visit) =>
@@ -289,7 +322,10 @@ const DoctorTimesheetPage = () => {
                           }
                         </Visit>
                       ) : (
-                        <Visit></Visit>
+                        <Visit
+                          onClick={() => setIsSelected(!isSelected)}
+                          selected={isSelected}
+                        ></Visit>
                       )}
                     </React.Fragment>
                   ))}
@@ -301,7 +337,11 @@ const DoctorTimesheetPage = () => {
                         (visit) =>
                           visit.godzina === '13' && visit.data === day.data
                       ) ? (
-                        <Visit available>
+                        <Visit
+                          available
+                          onClick={() => setIsSelected(!isSelected)}
+                          selected={isSelected}
+                        >
                           {
                             selectedDoctorVisits.find(
                               (visit) =>
@@ -311,7 +351,10 @@ const DoctorTimesheetPage = () => {
                           }
                         </Visit>
                       ) : (
-                        <Visit></Visit>
+                        <Visit
+                          onClick={() => setIsSelected(!isSelected)}
+                          selected={isSelected}
+                        ></Visit>
                       )}
                     </React.Fragment>
                   ))}
@@ -323,7 +366,11 @@ const DoctorTimesheetPage = () => {
                         (visit) =>
                           visit.godzina === '14' && visit.data === day.data
                       ) ? (
-                        <Visit available>
+                        <Visit
+                          available
+                          onClick={() => setIsSelected(!isSelected)}
+                          selected={isSelected}
+                        >
                           {
                             selectedDoctorVisits.find(
                               (visit) =>
@@ -333,7 +380,10 @@ const DoctorTimesheetPage = () => {
                           }
                         </Visit>
                       ) : (
-                        <Visit></Visit>
+                        <Visit
+                          onClick={() => setIsSelected(!isSelected)}
+                          selected={isSelected}
+                        ></Visit>
                       )}
                     </React.Fragment>
                   ))}
@@ -345,7 +395,11 @@ const DoctorTimesheetPage = () => {
                         (visit) =>
                           visit.godzina === '15' && visit.data === day.data
                       ) ? (
-                        <Visit available>
+                        <Visit
+                          available
+                          onClick={() => setIsSelected(!isSelected)}
+                          selected={isSelected}
+                        >
                           {
                             selectedDoctorVisits.find(
                               (visit) =>
@@ -355,7 +409,10 @@ const DoctorTimesheetPage = () => {
                           }
                         </Visit>
                       ) : (
-                        <Visit></Visit>
+                        <Visit
+                          onClick={() => setIsSelected(!isSelected)}
+                          selected={isSelected}
+                        ></Visit>
                       )}
                     </React.Fragment>
                   ))}
@@ -367,7 +424,11 @@ const DoctorTimesheetPage = () => {
                         (visit) =>
                           visit.godzina === '16' && visit.data === day.data
                       ) ? (
-                        <Visit available>
+                        <Visit
+                          available
+                          onClick={() => setIsSelected(!isSelected)}
+                          selected={isSelected}
+                        >
                           {
                             selectedDoctorVisits.find(
                               (visit) =>
@@ -377,7 +438,10 @@ const DoctorTimesheetPage = () => {
                           }
                         </Visit>
                       ) : (
-                        <Visit></Visit>
+                        <Visit
+                          onClick={() => setIsSelected(!isSelected)}
+                          selected={isSelected}
+                        ></Visit>
                       )}
                     </React.Fragment>
                   ))}
@@ -385,6 +449,33 @@ const DoctorTimesheetPage = () => {
               </Timesheet>
             </TimesheetWrap>
           </TimesheetContainer>
+        )}
+        {isSelected && (
+          <div
+            style={{
+              width: '100vw',
+              height: 'calc(100vh - 4.2em)',
+              position: 'absolute',
+              left: '75%',
+              top: '4.2em',
+              zIndex: '999',
+            }}
+          >
+            <div
+              style={{
+                position: 'relative',
+                width: '25%',
+                height: '100%',
+                backgroundColor: '#fff',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <h2 style={{ marginBottom: '20px' }}>Wizyta</h2>
+            </div>
+          </div>
         )}
       </TimesheetPageContainer>
 
