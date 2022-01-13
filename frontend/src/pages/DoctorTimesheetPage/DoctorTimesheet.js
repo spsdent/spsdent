@@ -55,8 +55,6 @@ const DoctorTimesheetPage = () => {
     timesheet: true,
   })
   const { user: currentUser } = useSelector((state) => state.auth)
-  const [doctors, setDoctors] = useState([])
-  const [users, setUsers] = useState([])
   const [visits, setVisits] = useState([])
   const [selectedDoctorVisits, setSelectedDoctorVisits] = useState([])
   const daysOfWeek = ['Poniedzialek', 'Wtorek', 'Sroda', 'Czwartek', 'Piatek']
@@ -65,13 +63,7 @@ const DoctorTimesheetPage = () => {
   const [firstDay, setFirstDay] = useState('')
 
   useEffect(() => {
-    retrieveDoctors()
-    retrieveUsers()
     retrieveVisits()
-    const visitsArr = visits.filter(
-      (visit) => visit.specjalista.sid === currentUser.id
-    )
-    setSelectedDoctorVisits(visitsArr)
     let curr = new Date()
     let week = []
 
@@ -89,27 +81,15 @@ const DoctorTimesheetPage = () => {
     setWeek(week)
   }, [])
 
-  const retrieveDoctors = () => {
-    DoctorData.getAll().then((response) => {
-      setDoctors(response.data)
-    })
-  }
-
-  const retrieveUsers = () => {
-    UserData.getAll().then((response) => {
-      setUsers(response.data)
-    })
-  }
-
   const retrieveVisits = () => {
     VisitData.getAll().then((response) => {
       setVisits(response.data)
+      const visitsArr = response.data.filter(
+        (visit) => visit.specjalista.sid === currentUser.id
+      )
+      setSelectedDoctorVisits(visitsArr)
     })
   }
-
-  const filteredUsers = users.filter((user) =>
-    doctors.some((doctor) => doctor.doctorId === user._id)
-  )
 
   const itemOne = {
     hidden: { x: 100, opacity: 0 },
@@ -177,7 +157,7 @@ const DoctorTimesheetPage = () => {
             Grafik
           </TimesheetTitle>
         </TimesheetTitleContainer>
-        {selectedDoctorVisits.length > 0  && (
+        {selectedDoctorVisits.length > 0 && (
           <TimesheetContainer style={state.timesheet ? enabled : disabled}>
             <button onClick={onPreviousWeek}>Wcześniejszy tydzień</button>
             <button onClick={onNextWeek}>Następny tydzień</button>
@@ -207,182 +187,199 @@ const DoctorTimesheetPage = () => {
               >
                 <VisitRow variants={itemOne}>
                   {week.map((day) => (
-                    <Visit
-                      available={selectedDoctorVisits.find(
-                        (visit) =>
-                          visit.godzina === '8' && visit.data === day.data
-                      )}
-                    >
+                    <React.Fragment key={day}>
                       {selectedDoctorVisits.find(
                         (visit) =>
                           visit.godzina === '8' && visit.data === day.data
-                      )
-                        ? selectedDoctorVisits.find(
-                            (visit) =>
-                              visit.godzina === '8' && visit.data === day.data
-                          ).usluga
-                        : null}
-                    </Visit>
+                      ) ? (
+                        <Visit available>
+                          {
+                            selectedDoctorVisits.find(
+                              (visit) =>
+                                visit.godzina === '8' && visit.data === day.data
+                            ).usluga
+                          }
+                        </Visit>
+                      ) : (
+                        <Visit></Visit>
+                      )}
+                    </React.Fragment>
                   ))}
                 </VisitRow>
                 <VisitRow variants={itemOne}>
                   {week.map((day) => (
-                    <Visit
-                      available={selectedDoctorVisits.find(
+                    <React.Fragment key={day}>
+                      {visits.length > 0 &&
+                      selectedDoctorVisits.find(
                         (visit) =>
                           visit.godzina === '9' && visit.data === day.data
+                      ) ? (
+                        <Visit available>
+                          {
+                            selectedDoctorVisits.find(
+                              (visit) =>
+                                visit.godzina === '9' && visit.data === day.data
+                            ).usluga
+                          }
+                        </Visit>
+                      ) : (
+                        <Visit></Visit>
                       )}
-                    >
-                      {selectedDoctorVisits.find(
-                        (visit) =>
-                          visit.godzina === '9' && visit.data === day.data
-                      )
-                        ? selectedDoctorVisits.find(
-                            (visit) =>
-                              visit.godzina === '9' && visit.data === day.data
-                          ).usluga
-                        : null}
-                    </Visit>
+                    </React.Fragment>
                   ))}
                 </VisitRow>
                 <VisitRow variants={itemOne}>
                   {week.map((day) => (
-                    <Visit
-                      available={selectedDoctorVisits.find(
-                        (visit) =>
-                          visit.godzina === '10' && visit.data === day.data
-                      )}
-                    >
+                    <React.Fragment key={day}>
                       {selectedDoctorVisits.find(
                         (visit) =>
                           visit.godzina === '10' && visit.data === day.data
-                      )
-                        ? selectedDoctorVisits.find(
-                            (visit) =>
-                              visit.godzina === '10' && visit.data === day.data
-                          ).usluga
-                        : null}
-                    </Visit>
+                      ) ? (
+                        <Visit available>
+                          {
+                            selectedDoctorVisits.find(
+                              (visit) =>
+                                visit.godzina === '10' &&
+                                visit.data === day.data
+                            ).usluga
+                          }
+                        </Visit>
+                      ) : (
+                        <Visit></Visit>
+                      )}
+                    </React.Fragment>
                   ))}
                 </VisitRow>
                 <VisitRow variants={itemOne}>
                   {week.map((day) => (
-                    <Visit
-                      available={selectedDoctorVisits.find(
-                        (visit) =>
-                          visit.godzina === '11' && visit.data === day.data
-                      )}
-                    >
+                    <React.Fragment key={day}>
                       {selectedDoctorVisits.find(
                         (visit) =>
                           visit.godzina === '11' && visit.data === day.data
-                      )
-                        ? selectedDoctorVisits.find(
-                            (visit) =>
-                              visit.godzina === '11' && visit.data === day.data
-                          ).usluga
-                        : null}
-                    </Visit>
+                      ) ? (
+                        <Visit available>
+                          {
+                            selectedDoctorVisits.find(
+                              (visit) =>
+                                visit.godzina === '11' &&
+                                visit.data === day.data
+                            ).usluga
+                          }
+                        </Visit>
+                      ) : (
+                        <Visit></Visit>
+                      )}
+                    </React.Fragment>
                   ))}
                 </VisitRow>
                 <VisitRow variants={itemOne}>
                   {week.map((day) => (
-                    <Visit
-                      available={selectedDoctorVisits.find(
-                        (visit) =>
-                          visit.godzina === '12' && visit.data === day.data
-                      )}
-                    >
+                    <React.Fragment key={day}>
                       {selectedDoctorVisits.find(
                         (visit) =>
                           visit.godzina === '12' && visit.data === day.data
-                      )
-                        ? selectedDoctorVisits.find(
-                            (visit) =>
-                              visit.godzina === '12' && visit.data === day.data
-                          ).usluga
-                        : null}
-                    </Visit>
+                      ) ? (
+                        <Visit available>
+                          {
+                            selectedDoctorVisits.find(
+                              (visit) =>
+                                visit.godzina === '12' &&
+                                visit.data === day.data
+                            ).usluga
+                          }
+                        </Visit>
+                      ) : (
+                        <Visit></Visit>
+                      )}
+                    </React.Fragment>
                   ))}
                 </VisitRow>
                 <VisitRow variants={itemOne}>
                   {week.map((day) => (
-                    <Visit
-                      available={selectedDoctorVisits.find(
-                        (visit) =>
-                          visit.godzina === '13' && visit.data === day.data
-                      )}
-                    >
+                    <React.Fragment key={day}>
                       {selectedDoctorVisits.find(
                         (visit) =>
                           visit.godzina === '13' && visit.data === day.data
-                      )
-                        ? selectedDoctorVisits.find(
-                            (visit) =>
-                              visit.godzina === '13' && visit.data === day.data
-                          ).usluga
-                        : null}
-                    </Visit>
+                      ) ? (
+                        <Visit available>
+                          {
+                            selectedDoctorVisits.find(
+                              (visit) =>
+                                visit.godzina === '13' &&
+                                visit.data === day.data
+                            ).usluga
+                          }
+                        </Visit>
+                      ) : (
+                        <Visit></Visit>
+                      )}
+                    </React.Fragment>
                   ))}
                 </VisitRow>
                 <VisitRow variants={itemOne}>
                   {week.map((day) => (
-                    <Visit
-                      available={selectedDoctorVisits.find(
-                        (visit) =>
-                          visit.godzina === '14' && visit.data === day.data
-                      )}
-                    >
+                    <React.Fragment key={day}>
                       {selectedDoctorVisits.find(
                         (visit) =>
                           visit.godzina === '14' && visit.data === day.data
-                      )
-                        ? selectedDoctorVisits.find(
-                            (visit) =>
-                              visit.godzina === '14' && visit.data === day.data
-                          ).usluga
-                        : null}
-                    </Visit>
+                      ) ? (
+                        <Visit available>
+                          {
+                            selectedDoctorVisits.find(
+                              (visit) =>
+                                visit.godzina === '14' &&
+                                visit.data === day.data
+                            ).usluga
+                          }
+                        </Visit>
+                      ) : (
+                        <Visit></Visit>
+                      )}
+                    </React.Fragment>
                   ))}
                 </VisitRow>
                 <VisitRow variants={itemOne}>
                   {week.map((day) => (
-                    <Visit
-                      available={selectedDoctorVisits.find(
-                        (visit) =>
-                          visit.godzina === '15' && visit.data === day.data
-                      )}
-                    >
+                    <React.Fragment key={day}>
                       {selectedDoctorVisits.find(
                         (visit) =>
                           visit.godzina === '15' && visit.data === day.data
-                      )
-                        ? selectedDoctorVisits.find(
-                            (visit) =>
-                              visit.godzina === '15' && visit.data === day.data
-                          ).usluga
-                        : null}
-                    </Visit>
+                      ) ? (
+                        <Visit available>
+                          {
+                            selectedDoctorVisits.find(
+                              (visit) =>
+                                visit.godzina === '15' &&
+                                visit.data === day.data
+                            ).usluga
+                          }
+                        </Visit>
+                      ) : (
+                        <Visit></Visit>
+                      )}
+                    </React.Fragment>
                   ))}
                 </VisitRow>
                 <VisitRow variants={itemOne}>
                   {week.map((day) => (
-                    <Visit
-                      available={selectedDoctorVisits.find(
-                        (visit) =>
-                          visit.godzina === '16' && visit.data === day.data
-                      )}
-                    >
+                    <React.Fragment key={day}>
                       {selectedDoctorVisits.find(
                         (visit) =>
                           visit.godzina === '16' && visit.data === day.data
-                      )
-                        ? selectedDoctorVisits.find(
-                            (visit) =>
-                              visit.godzina === '16' && visit.data === day.data
-                          ).usluga
-                        : null}
-                    </Visit>
+                      ) ? (
+                        <Visit available>
+                          {
+                            selectedDoctorVisits.find(
+                              (visit) =>
+                                visit.godzina === '16' &&
+                                visit.data === day.data
+                            ).usluga
+                          }
+                        </Visit>
+                      ) : (
+                        <Visit></Visit>
+                      )}
+                    </React.Fragment>
                   ))}
                 </VisitRow>
               </Timesheet>
