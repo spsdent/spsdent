@@ -4,10 +4,8 @@ import {Link} from "react-router-dom";
 export const OfferPageContainer = styled.div`
   width: 75%;
   height: 70vh;
-  /* background-color: #aaa; */
   margin-top: 3em;
   font-size: 24px;
-  /* overflow: hidden; */
   @media screen and (max-width: 1500px) {
     font-size: 20px;
   }
@@ -40,15 +38,10 @@ export const OfferPageTitle = styled(motion.h1)`
 export const OfferPageContent = styled(motion.div)`
   width: 100%;
   height: 70%;
-  /* background-color: cadetblue; */
   margin: 1em 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-
-  @media screen and (max-width: 1280px) {
-    /* height: 50%; */
-  }
 
   @media (orientation: portrait) {
     flex-direction: row;
@@ -61,7 +54,6 @@ export const OfferPageButtonRow = styled(motion.div)`
   justify-content: space-between;
   align-items: center;
   height: 50%;
-  /* background-color: ${(props) => (props.primary ? "#444" : "#666")}; */
 
   @media (orientation: portrait) {
     flex-grow: 1;
