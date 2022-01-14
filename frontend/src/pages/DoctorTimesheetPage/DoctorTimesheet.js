@@ -7,8 +7,6 @@ import {
   TimesheetPageContainer,
   TimesheetTitleContainer,
   TimesheetTitle,
-  TimesheetPickContainer,
-  TimesheetPick,
   TimesheetContainer,
   TimesheetDaysContainer,
   Day,
@@ -18,7 +16,6 @@ import {
   Timesheet,
   VisitRow,
   Visit,
-  Option,
   TimesheetLegend,
   LegendItemWrap,
   CircleFree,
@@ -81,6 +78,7 @@ const DoctorTimesheetPage = () => {
       })
     }
     setWeek(week)
+
   }, [])
 
   const retrieveVisits = () => {
@@ -164,6 +162,7 @@ const DoctorTimesheetPage = () => {
             Grafik
           </TimesheetTitle>
         </TimesheetTitleContainer>
+        {console.log('test', week)}
         {selectedDoctorVisits.length > 0 && (
           <TimesheetContainer style={state.timesheet ? enabled : disabled}>
             <button onClick={onPreviousWeek}>Poprzedni tydzień</button>
@@ -235,7 +234,7 @@ const DoctorTimesheetPage = () => {
           >
             <div
               style={{
-                position: 'relative',
+                position: 'fixed',
                 width: '400px',
                 height: '100%',
                 padding: '0 20px',
@@ -246,7 +245,6 @@ const DoctorTimesheetPage = () => {
                 justifyContent: 'center',
               }}
             >
-              {console.log(selectedVisit)}
               {selectedVisit !== null ? (
                 <>
                   <h2 style={{ marginBottom: '20px' }}>Podsumowanie</h2>
