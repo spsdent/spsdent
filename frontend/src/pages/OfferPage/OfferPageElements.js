@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 export const OfferPageContainer = styled.div`
   width: 75%;
   height: 70vh;
@@ -11,13 +11,12 @@ export const OfferPageContainer = styled.div`
   }
   @media screen and (max-width: 1280px) {
     font-size: 16px;
-    margin-left: 4em;
-    margin-top: 5em;
+    /* margin-left: 4em;
+    margin-top: 5em; */
   }
   @media screen and (max-width: 960px) {
     font-size: 13px;
-    margin-left: 6em;
-    margin-top: 7em;
+    width: 85%;
   }
   @media screen and (max-width: 768px) {
     text-align: center;
@@ -42,8 +41,12 @@ export const OfferPageContent = styled(motion.div)`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-
+  gap: 1em;
   @media (orientation: portrait) {
+    flex-direction: row;
+    height: 100%;
+  }
+  @media screen and (max-width: 768px) {
     flex-direction: row;
     height: 100%;
   }
@@ -54,8 +57,13 @@ export const OfferPageButtonRow = styled(motion.div)`
   justify-content: space-between;
   align-items: center;
   height: 50%;
-
+  gap: 1em;
   @media (orientation: portrait) {
+    flex-grow: 1;
+    flex-direction: column;
+    height: 100%;
+  }
+  @media screen and (max-width: 768px) {
     flex-grow: 1;
     flex-direction: column;
     height: 100%;
@@ -80,22 +88,6 @@ export const OfferButtonContainer = styled(motion.div)`
     width: 8em;
     height: 7em;
   }
-  @media screen and (max-width: 1500px) {
-    width: 7em;
-    height: 6em;
-  }
-  @media screen and (max-width: 1280px) {
-    /* width: 6em;
-    height: 5em; */
-  }
-  @media screen and (max-width: 960px) {
-    width: 6em;
-    height: 5em;
-  }
-  @media (orientation: portrait) {
-    width: 8em;
-    height: 7em;
-  }
 `;
 export const OfferButtonImg = styled.img`
   width: 2.5em;
@@ -107,9 +99,9 @@ export const OfferButtonImg = styled.img`
   user-select: none;
 `;
 export const OfferButtonText = styled.p`
-text-align: center;
-  font-size: .9em;
-  padding: .2em;
+  text-align: center;
+  font-size: 0.9em;
+  padding: 0.2em;
   letter-spacing: 1px;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -120,5 +112,4 @@ text-align: center;
 `;
 export const LinkButton = styled(Link)`
   text-decoration: none;
-  
-`
+`;
