@@ -3,7 +3,6 @@ import UserService from "../../services/user";
 import { FaAngleDoubleRight } from "react-icons/fa";
 import { PageWrapper } from "../../components/PageWrapper";
 import { Pattern } from "../../components/Pattern";
-import { AnimatePresence } from "framer-motion";
 import {
   Container,
   TextContainer,
@@ -47,10 +46,8 @@ const Home = () => {
               bounce: 0.6,
               duration: 2,
             }}
-            key="siema"
             initial={{ opacity: 0, x: -200 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -200 }}
           >
             Witaj w <br />
             <HeaderWelcome
@@ -61,7 +58,6 @@ const Home = () => {
                 duration: 2,
                 delay: 0.1,
               }}
-              key="elo"
               initial={{ opacity: 0, x: -200 }}
               animate={{ opacity: 1, x: 0 }}
             >

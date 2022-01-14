@@ -18,4 +18,7 @@ export const PageWrapper = styled.div`
   @media screen and (max-width: 960px) {
     font-size: 14.5px;
   }
+  @media screen and (max-width: 768px) {
+    margin-left: 0;
+  }
 `;
