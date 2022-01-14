@@ -27,8 +27,6 @@ import {
   LegendText,
 } from './TimesheetPageElements'
 
-import DoctorData from '../../services/doctor'
-import UserData from '../../services/user'
 import VisitData from '../../services/visit'
 
 const disabled = {
@@ -55,16 +53,19 @@ const DoctorTimesheetPage = () => {
     timesheet: true,
   })
   const { user: currentUser } = useSelector((state) => state.auth)
-  const [visits, setVisits] = useState([])
   const [isSelected, setIsSelected] = useState(false)
   const [selectedDoctorVisits, setSelectedDoctorVisits] = useState([])
   const daysOfWeek = ['Poniedzialek', 'Wtorek', 'Sroda', 'Czwartek', 'Piatek']
   const [week, setWeek] = useState([])
   const hours = [8, 9, 10, 11, 12, 13, 14, 15, 16]
   const [firstDay, setFirstDay] = useState('')
+  const [selectedVisit, setSelectedVisit] = useState(null)
 
   useEffect(() => {
     retrieveVisits()
+  }, [])
+
+  useEffect(() => {
     let curr = new Date()
     let week = []
 
@@ -84,7 +85,6 @@ const DoctorTimesheetPage = () => {
 
   const retrieveVisits = () => {
     VisitData.getAll().then((response) => {
-      setVisits(response.data)
       const visitsArr = response.data.filter(
         (visit) => visit.specjalista.sid === currentUser.id
       )
@@ -111,34 +111,40 @@ const DoctorTimesheetPage = () => {
 
   const onPreviousWeek = () => {
     let curr = new Date()
-    let week = []
+    let updateWeek = []
     for (let i = 1; i <= 5; i++) {
       let day = new Date(curr.setDate(firstDay - 7 + i))
         .toLocaleDateString('en-US')
         .slice(0, 10)
-      week.push({
+      updateWeek.push({
         dayOfWeek: `${daysOfWeek[i - 1]}`,
         data: `${day.split('/')[1]}.${day.split('/')[0]}.${day.split('/')[2]}`,
       })
     }
+    setWeek(updateWeek)
     setFirstDay(firstDay - 7)
-    setWeek(week)
   }
 
   const onNextWeek = () => {
     let curr = new Date()
-    let week = []
+    let updateWeek = []
     for (let i = 1; i <= 5; i++) {
       let day = new Date(curr.setDate(firstDay + 7 + i))
         .toLocaleDateString('en-US')
         .slice(0, 10)
-      week.push({
+      updateWeek.push({
         dayOfWeek: `${daysOfWeek[i - 1]}`,
         data: `${day.split('/')[1]}.${day.split('/')[0]}.${day.split('/')[2]}`,
       })
     }
     setFirstDay(firstDay + 7)
-    setWeek(week)
+    setWeek(updateWeek)
+  }
+
+  const checkIfExists = (hour, day) => {
+    return selectedDoctorVisits.find(
+      (visit) => visit.godzina === `${hour}` && visit.data === day.data
+    )
   }
 
   return (
@@ -160,7 +166,7 @@ const DoctorTimesheetPage = () => {
         </TimesheetTitleContainer>
         {selectedDoctorVisits.length > 0 && (
           <TimesheetContainer style={state.timesheet ? enabled : disabled}>
-            <button onClick={onPreviousWeek}>Wcześniejszy tydzień</button>
+            <button onClick={onPreviousWeek}>Poprzedni tydzień</button>
             <button onClick={onNextWeek}>Następny tydzień</button>
             <TimesheetDaysContainer
               initial={{ x: 50, opacity: 0 }}
@@ -168,7 +174,7 @@ const DoctorTimesheetPage = () => {
               transition={{ duration: 0.5 }}
             >
               {week.map((day, i) => (
-                <Day key={day.dayOfWeek}>{day.dayOfWeek}</Day>
+                <Day key={i}>{day.dayOfWeek}</Day>
               ))}
             </TimesheetDaysContainer>
             <TimesheetWrap>
@@ -186,266 +192,32 @@ const DoctorTimesheetPage = () => {
                 initial='hidden'
                 animate='visible'
               >
-                <VisitRow variants={itemOne}>
-                  {week.map((day) => (
-                    <React.Fragment key={day}>
-                      {selectedDoctorVisits.find(
-                        (visit) =>
-                          visit.godzina === '8' && visit.data === day.data
-                      ) ? (
-                        <Visit
-                          available
-                          onClick={() => setIsSelected(!isSelected)}
-                          selected={isSelected}
-                        >
-                          {
-                            selectedDoctorVisits.find(
-                              (visit) =>
-                                visit.godzina === '8' && visit.data === day.data
-                            ).usluga
-                          }
-                        </Visit>
-                      ) : (
-                        <Visit
-                          onClick={() => setIsSelected(!isSelected)}
-                          selected={isSelected}
-                        ></Visit>
-                      )}
-                    </React.Fragment>
-                  ))}
-                </VisitRow>
-                <VisitRow variants={itemOne}>
-                  {week.map((day) => (
-                    <React.Fragment key={day}>
-                      {visits.length > 0 &&
-                      selectedDoctorVisits.find(
-                        (visit) =>
-                          visit.godzina === '9' && visit.data === day.data
-                      ) ? (
-                        <Visit
-                          available
-                          onClick={() => setIsSelected(!isSelected)}
-                          selected={isSelected}
-                        >
-                          {
-                            selectedDoctorVisits.find(
-                              (visit) =>
-                                visit.godzina === '9' && visit.data === day.data
-                            ).usluga
-                          }
-                        </Visit>
-                      ) : (
-                        <Visit
-                          onClick={() => setIsSelected(!isSelected)}
-                          selected={isSelected}
-                        ></Visit>
-                      )}
-                    </React.Fragment>
-                  ))}
-                </VisitRow>
-                <VisitRow variants={itemOne}>
-                  {week.map((day) => (
-                    <React.Fragment key={day}>
-                      {selectedDoctorVisits.find(
-                        (visit) =>
-                          visit.godzina === '10' && visit.data === day.data
-                      ) ? (
-                        <Visit
-                          available
-                          onClick={() => setIsSelected(!isSelected)}
-                          selected={isSelected}
-                        >
-                          {
-                            selectedDoctorVisits.find(
-                              (visit) =>
-                                visit.godzina === '10' &&
-                                visit.data === day.data
-                            ).usluga
-                          }
-                        </Visit>
-                      ) : (
-                        <Visit
-                          onClick={() => setIsSelected(!isSelected)}
-                          selected={isSelected}
-                        ></Visit>
-                      )}
-                    </React.Fragment>
-                  ))}
-                </VisitRow>
-                <VisitRow variants={itemOne}>
-                  {week.map((day) => (
-                    <React.Fragment key={day}>
-                      {selectedDoctorVisits.find(
-                        (visit) =>
-                          visit.godzina === '11' && visit.data === day.data
-                      ) ? (
-                        <Visit
-                          available
-                          selected={isSelected}
-                          onClick={() => setIsSelected(!isSelected)}
-                        >
-                          {
-                            selectedDoctorVisits.find(
-                              (visit) =>
-                                visit.godzina === '11' &&
-                                visit.data === day.data
-                            ).usluga
-                          }
-                        </Visit>
-                      ) : (
-                        <Visit
-                          onClick={() => setIsSelected(!isSelected)}
-                          selected={isSelected}
-                        ></Visit>
-                      )}
-                    </React.Fragment>
-                  ))}
-                </VisitRow>
-                <VisitRow variants={itemOne}>
-                  {week.map((day) => (
-                    <React.Fragment key={day}>
-                      {selectedDoctorVisits.find(
-                        (visit) =>
-                          visit.godzina === '12' && visit.data === day.data
-                      ) ? (
-                        <Visit
-                          available
-                          onClick={() => setIsSelected(!isSelected)}
-                          selected={isSelected}
-                        >
-                          {
-                            selectedDoctorVisits.find(
-                              (visit) =>
-                                visit.godzina === '12' &&
-                                visit.data === day.data
-                            ).usluga
-                          }
-                        </Visit>
-                      ) : (
-                        <Visit
-                          onClick={() => setIsSelected(!isSelected)}
-                          selected={isSelected}
-                        ></Visit>
-                      )}
-                    </React.Fragment>
-                  ))}
-                </VisitRow>
-                <VisitRow variants={itemOne}>
-                  {week.map((day) => (
-                    <React.Fragment key={day}>
-                      {selectedDoctorVisits.find(
-                        (visit) =>
-                          visit.godzina === '13' && visit.data === day.data
-                      ) ? (
-                        <Visit
-                          available
-                          onClick={() => setIsSelected(!isSelected)}
-                          selected={isSelected}
-                        >
-                          {
-                            selectedDoctorVisits.find(
-                              (visit) =>
-                                visit.godzina === '13' &&
-                                visit.data === day.data
-                            ).usluga
-                          }
-                        </Visit>
-                      ) : (
-                        <Visit
-                          onClick={() => setIsSelected(!isSelected)}
-                          selected={isSelected}
-                        ></Visit>
-                      )}
-                    </React.Fragment>
-                  ))}
-                </VisitRow>
-                <VisitRow variants={itemOne}>
-                  {week.map((day) => (
-                    <React.Fragment key={day}>
-                      {selectedDoctorVisits.find(
-                        (visit) =>
-                          visit.godzina === '14' && visit.data === day.data
-                      ) ? (
-                        <Visit
-                          available
-                          onClick={() => setIsSelected(!isSelected)}
-                          selected={isSelected}
-                        >
-                          {
-                            selectedDoctorVisits.find(
-                              (visit) =>
-                                visit.godzina === '14' &&
-                                visit.data === day.data
-                            ).usluga
-                          }
-                        </Visit>
-                      ) : (
-                        <Visit
-                          onClick={() => setIsSelected(!isSelected)}
-                          selected={isSelected}
-                        ></Visit>
-                      )}
-                    </React.Fragment>
-                  ))}
-                </VisitRow>
-                <VisitRow variants={itemOne}>
-                  {week.map((day) => (
-                    <React.Fragment key={day}>
-                      {selectedDoctorVisits.find(
-                        (visit) =>
-                          visit.godzina === '15' && visit.data === day.data
-                      ) ? (
-                        <Visit
-                          available
-                          onClick={() => setIsSelected(!isSelected)}
-                          selected={isSelected}
-                        >
-                          {
-                            selectedDoctorVisits.find(
-                              (visit) =>
-                                visit.godzina === '15' &&
-                                visit.data === day.data
-                            ).usluga
-                          }
-                        </Visit>
-                      ) : (
-                        <Visit
-                          onClick={() => setIsSelected(!isSelected)}
-                          selected={isSelected}
-                        ></Visit>
-                      )}
-                    </React.Fragment>
-                  ))}
-                </VisitRow>
-                <VisitRow variants={itemOne}>
-                  {week.map((day) => (
-                    <React.Fragment key={day}>
-                      {selectedDoctorVisits.find(
-                        (visit) =>
-                          visit.godzina === '16' && visit.data === day.data
-                      ) ? (
-                        <Visit
-                          available
-                          onClick={() => setIsSelected(!isSelected)}
-                          selected={isSelected}
-                        >
-                          {
-                            selectedDoctorVisits.find(
-                              (visit) =>
-                                visit.godzina === '16' &&
-                                visit.data === day.data
-                            ).usluga
-                          }
-                        </Visit>
-                      ) : (
-                        <Visit
-                          onClick={() => setIsSelected(!isSelected)}
-                          selected={isSelected}
-                        ></Visit>
-                      )}
-                    </React.Fragment>
-                  ))}
-                </VisitRow>
+                {hours.map((hour) => (
+                  <VisitRow variants={itemOne} key={hour}>
+                    {week.map((day, i) => (
+                      <React.Fragment key={i}>
+                        {checkIfExists(hour, day) ? (
+                          <Visit
+                            available
+                            onClick={() => {
+                              setIsSelected(!isSelected)
+                              setSelectedVisit(checkIfExists(hour, day))
+                            }}
+                          >
+                            {checkIfExists(hour, day).usluga}
+                          </Visit>
+                        ) : (
+                          <Visit
+                            onClick={() => {
+                              setIsSelected(!isSelected)
+                              setSelectedVisit(null)
+                            }}
+                          ></Visit>
+                        )}
+                      </React.Fragment>
+                    ))}
+                  </VisitRow>
+                ))}
               </Timesheet>
             </TimesheetWrap>
           </TimesheetContainer>
@@ -456,7 +228,7 @@ const DoctorTimesheetPage = () => {
               width: '100vw',
               height: 'calc(100vh - 4.2em)',
               position: 'absolute',
-              left: '75%',
+              left: '73%',
               top: '4.2em',
               zIndex: '999',
             }}
@@ -464,8 +236,9 @@ const DoctorTimesheetPage = () => {
             <div
               style={{
                 position: 'relative',
-                width: '25%',
+                width: '400px',
                 height: '100%',
+                padding: '0 20px',
                 backgroundColor: '#fff',
                 display: 'flex',
                 flexDirection: 'column',
@@ -473,7 +246,54 @@ const DoctorTimesheetPage = () => {
                 justifyContent: 'center',
               }}
             >
-              <h2 style={{ marginBottom: '20px' }}>Wizyta</h2>
+              {console.log(selectedVisit)}
+              {selectedVisit !== null ? (
+                <>
+                  <h2 style={{ marginBottom: '20px' }}>Podsumowanie</h2>
+                  <div
+                    style={{
+                      position: 'relative',
+                      backgroundColor: '#fff',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        width: '50%',
+                      }}
+                    >
+                      <h3>Twoje dane</h3>
+                      <p>
+                        {selectedVisit.imie} {selectedVisit.nazwisko}
+                      </p>
+                      <p>{selectedVisit.email}</p>
+                      <p>{selectedVisit.telefon}</p>
+                      <p>{selectedVisit.miasto}</p>
+                      <p>{selectedVisit.ulica}</p>
+                      <p>{selectedVisit.kodPocztowy}</p>
+                    </div>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        width: '50%',
+                      }}
+                    >
+                      <h3>Umówiona wizyta</h3>
+                      <p>{selectedVisit.grupa}</p>
+                      <p>{selectedVisit.usluga}</p>
+                      <p>{selectedVisit.data}r.</p>
+                      <p>{selectedVisit.godzina}:00</p>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <h2>Tutaj bedzie formularz do rezerwacji wizyty</h2>
+              )}
             </div>
           </div>
         )}
