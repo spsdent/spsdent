@@ -9,6 +9,7 @@ export const Container = styled.div`
   justify-content: space-around;
   align-items: center;
   font-size: 20px;
+  /* background-color: red; */
   @media screen and (max-width: 1600px) {
     font-size: 16px;
   }
@@ -26,12 +27,14 @@ export const Container = styled.div`
     align-items: center;
     justify-content: center;
     text-align: center;
+  
   }
   @media screen and (max-width: 768px) {
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
+
   }
 `;
 export const TextContainer = styled.div`
@@ -42,12 +45,15 @@ export const TextContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    font-size: 1.3em;
   }
   @media screen and (max-width: 768px) {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    font-size: 1.3em;
+    width: 90%;
   }
 `;
 export const HeaderWelcome = styled(motion.h2)`
@@ -55,6 +61,9 @@ export const HeaderWelcome = styled(motion.h2)`
   letter-spacing: 0.07em;
   color: #333;
   line-height: 0.85em;
+  @media screen and (max-width: 450px) {
+    font-size: 2em;
+  }
 `;
 export const StyledSpan = styled.span`
   color: ${(props) => (props.primary ? "#333" : "#01d4bf")};
@@ -66,6 +75,12 @@ export const HeaderText = styled(motion.p)`
   font-size: 0.9em;
   margin: 1em 0 1.5em 0;
   line-height: 1.3em;
+
+  @media screen and (max-width: 450px) {
+    margin: 1em 0;
+    width: 100%;
+    font-size: .7em;
+  }
 `;
 export const ButtonContainer = styled(motion.div)`
   display: flex;

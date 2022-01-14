@@ -9,6 +9,9 @@ export const Container = styled(motion.div)`
   @media screen and (max-width: 1700px) {
     font-size: 24px;
   }
+  @media screen and (max-width: 1600px) {
+    font-size: 22px;
+  }
   @media screen and (max-width: 1500px) {
     font-size: 20px;
   }
@@ -16,13 +19,13 @@ export const Container = styled(motion.div)`
     font-size: 18px;
   }
   @media screen and (max-width: 1280px) {
-    font-size: 16px;
+    font-size: 15px;
   }
   @media screen and (max-width: 960px) {
-    font-size: 14.5px;
+    font-size: 14px;
   }
-  @media screen and (max-width: 768px) {
-    display: none;
+  @media screen and (max-width: 500px) {
+    font-size: 10px;
   }
 `;
 export const ButtonsContainer = styled.div`
@@ -71,4 +74,7 @@ export const ContentContainer = styled(motion.div)`
   display: flex;
   background-color: ${(props) => (props.primary ? "#333" : "#eee")};
   z-index: 1;
+  @media screen and (max-width: 768px) {
+    justify-content: center;
+  }
   `;

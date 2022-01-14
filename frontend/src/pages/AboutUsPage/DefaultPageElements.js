@@ -11,6 +11,9 @@ export const Title = styled(motion.h1)`
   white-space: nowrap;
   font-family: ${(props) => (props.primary ? "poppins" : "bebas neue")};
   padding-left: ${props => props.primary ? "0" : "2em"};
+  @media screen and (max-width: 960px) {
+    padding-left: ${props => props.primary ? "0" : "1em"};
+  }
 `;
 export const TextContainer = styled(motion.div)`
   display: flex;
@@ -25,6 +28,12 @@ export const TextContainer = styled(motion.div)`
   left: ${(props) => (props.primary ? "17em" : "45em")};
   z-index: 2;
   padding: 1em;
+  
+  @media screen and (max-width: 960px) {
+    width: ${(props) => (props.primary ? "18em" : "10em")};
+    height: ${(props) => (props.primary ? "12em" : "14em")};
+    left: ${(props) => (props.primary ? "13em" : "42em")};
+  }
 `;
 export const Text = styled(motion.p)`
   font-size: 0.7em;
@@ -37,21 +46,31 @@ export const PictureContainer = styled(motion.div)`
   background-image: url("./aboutus.jpg");
   background-size: cover;
   background-position: bottom;
-  width: 75%;
-  height: 35%;
+  width: 55em;
+  height: 12em;
   position: absolute;
-  top: calc(40% + 4.2em);
-  left: calc(44% + 8.5em);
+  top: 18em;
+  left: calc(50% + 4.25em);
   transform: translate(-50%, -50%);
   border-radius: 15px;
   z-index: 1;
+  @media screen and (max-width: 1280px) {
+    width: 50em;
+  }
+  @media screen and (max-width: 960px) {
+    width: 42em;
+  }
 `;
 export const TextWrap = styled(motion.div)`
   position: fixed;
-  top: 36.5em;
-  right: 10em;
+  top: 36em;
+  left: 60em;
   width: 30em;
   font-family: "poppins";
   font-size: 0.7em;
   z-index: 2;
+  @media screen and (max-width: 960px) {
+    width: 23em;
+    left: 53em;
+  }
 `;

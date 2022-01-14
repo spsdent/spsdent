@@ -12,7 +12,6 @@ export const OurStaffContainer = styled(motion.div)`
   justify-content: center;
   align-items: center;
   width: 100%;
-  /* background-color: #333; */
   overflow: hidden;
 `;
 export const TitleContainer = styled.div`
@@ -26,7 +25,6 @@ export const TitleContainer = styled.div`
 export const CardsContainer = styled.div`
   width: 50%;
   height: 100%;
-  /* background-color: #666; */
   position: relative;
 `;
 export const Card = styled(motion.div)`
@@ -45,7 +43,6 @@ export const CardPicture = styled.div`
   width: 10em;
   height: 10em;
   border: 1px solid #333;
-  /* box-shadow: 1px 1px 5px; */
   border-radius: 0.5em;
   margin: 1.5em auto 0 auto;
   background-image: ${(props) => props.pic};

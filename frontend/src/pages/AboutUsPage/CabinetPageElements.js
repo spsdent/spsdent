@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import { CgScrollV } from "react-icons/cg";
+import { CgArrowsVAlt } from "react-icons/cg";
 import { keyframes } from "styled-components";
 
 const scrollAnimation = keyframes`
@@ -16,7 +16,7 @@ export const Title = styled(motion.h1)`
   z-index: 3;
 `;
 export const CabinetColumn = styled(motion.div)`
-  width: ${(props) => (props.primary ? "50%" : "50%")};
+  width: ${(props) => (props.primary ? "60%" : "40%")};
   height: ${(props) => (props.primary ? "fit-content" : "100%")};
   display: flex;
   flex-direction: column;
@@ -24,6 +24,10 @@ export const CabinetColumn = styled(motion.div)`
   align-items: ${(props) => (props.primary ? "flex-start" : "center")};
   padding: ${(props) => (props.primary ? "3em 2em" : "0")};
   gap: 3em;
+
+  @media screen and (max-width: 768px) {
+    display: ${(props) => (props.primary ? "flex" : "none")};
+  }
 `;
 export const PhotoCabinet = styled(motion.div)`
   background-image: ${(props) => props.src};
@@ -34,7 +38,7 @@ export const PhotoCabinet = styled(motion.div)`
   border: ${(props) =>
     props.primary ? ".6em solid #01d4bf" : ".6em solid #333"};
   align-self: ${(props) => (props.primary ? "flex-start" : "flex-end")};
-  border-radius: .5em;
+  border-radius: 0.5em;
 `;
 export const RectangleContainer = styled.div``;
 export const Rectangle = styled(motion.div)`
@@ -42,17 +46,16 @@ export const Rectangle = styled(motion.div)`
   width: 8em;
   height: 15em;
   position: fixed;
-  border-radius: .5em;
+  border-radius: 0.5em;
 `;
-export const Scroll = styled(CgScrollV)`
+export const Scroll = styled(CgArrowsVAlt)`
   color: #333;
   font-size: 2em;
   animation: ${scrollAnimation} 2s ease infinite;
 `;
 export const ScrollContainer = styled(motion.div)`
+  bottom: 2em;
   position: fixed;
-  bottom: 10%;
-  left: 50%;
-  transform: translateX(-50%);
-  
+  z-index: 20;
+  align-self: flex-end;
 `;
