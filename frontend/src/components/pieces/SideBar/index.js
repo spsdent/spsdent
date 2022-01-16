@@ -15,7 +15,6 @@ import {
 import AdminNav from '../../../navigation/AdminNav'
 import UserNav from '../../../navigation/UserNav'
 import SpecNav from '../../../navigation/SpecNav'
-// import TopBar from '../TopBar'
 import { motion } from 'framer-motion'
 
 // import { logout } from '../../../store/actions/auth'
