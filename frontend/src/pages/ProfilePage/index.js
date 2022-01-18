@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { PageWrapper } from '../../components/PageWrapper'
-import { Formik, Form } from 'formik'
-import { Pattern } from '../../components/Pattern'
-import { useNavigate } from 'react-router'
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { PageWrapper } from "../../components/PageWrapper";
+import { Formik, Form } from "formik";
+import { Pattern } from "../../components/Pattern";
+import { useNavigate } from "react-router";
 
 import {
   updateUserDataValidationSchema,
   signInChangePasswordValidationSchema,
-} from '../../utils/validationSchemas'
+} from "../../utils/validationSchemas";
 
 import {
   Container,
@@ -19,6 +19,7 @@ import {
   VitalInfoText,
   VitalInfoEdit,
   VitalInfoSocket,
+  VitalInfoEditContainer,
   ButtonDashboard,
   PasswordChangeContainer,
   ButtonsContainer,
@@ -28,47 +29,48 @@ import {
   DashboardVisitTitle,
   DashboardVisitText,
   DashboardVisitButton,
-} from './ProfilePageElements'
-import { logout, changePassword } from '../../store/actions/auth'
-import { refreshApp } from '../../store/actions/refresh'
-import UserData from '../../services/user'
-import VisitData from '../../services/visit'
-import { SET_MESSAGE } from '../../store/actions/types'
-import { clearMessage } from '../../store/actions/message'
+} from "./ProfilePageElements";
+import { logout, changePassword } from "../../store/actions/auth";
+import { refreshApp } from "../../store/actions/refresh";
+import UserData from "../../services/user";
+import VisitData from "../../services/visit";
+import { SET_MESSAGE } from "../../store/actions/types";
+import { clearMessage } from "../../store/actions/message";
+import { AnimatePresence } from "framer-motion";
 
 const ProfilePage = () => {
   const [initialValues, setInitialValues] = useState({
-    imie: '',
-    nazwisko: '',
-    kodPocztowy: '',
-    telefon: '',
-    miasto: '',
-    email: '',
-    ulica: '',
-  })
-  const [oldUserValues, setOldUserValues] = useState()
-  const [isEditing, setIsEditing] = useState(false)
-  const [isChangingPwd, setIsChangingPwd] = useState(false)
-  const [isDelete, setIsDelete] = useState(false)
-  const [userData, setUserData] = useState('')
-  const [visitsArr, setVisitsArr] = useState([])
-  const [archiveVisits, setArchiveVisits] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
-  const { user: currentUser } = useSelector((state) => state.auth)
-  const { isRefresh } = useSelector((state) => state.refresh)
-  const { message } = useSelector((state) => state.message)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+    imie: "",
+    nazwisko: "",
+    kodPocztowy: "",
+    telefon: "",
+    miasto: "",
+    email: "",
+    ulica: "",
+  });
+  const [oldUserValues, setOldUserValues] = useState();
+  const [isEditing, setIsEditing] = useState(false);
+  const [isChangingPwd, setIsChangingPwd] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
+  const [userData, setUserData] = useState("");
+  const [visitsArr, setVisitsArr] = useState([]);
+  const [archiveVisits, setArchiveVisits] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const { user: currentUser } = useSelector((state) => state.auth);
+  const { isRefresh } = useSelector((state) => state.refresh);
+  const { message } = useSelector((state) => state.message);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     UserData.getAll().then((response) => {
-      setIsLoading(false)
+      setIsLoading(false);
       const signInUser = response.data.filter(
         (user) => user._id === currentUser.id
-      )[0]
+      )[0];
       const { imie, nazwisko, kodPocztowy, email, ulica, miasto, telefon } =
-        signInUser
+        signInUser;
       const obj = {
         imie,
         nazwisko,
@@ -77,97 +79,97 @@ const ProfilePage = () => {
         ulica,
         miasto,
         telefon,
-      }
-      setUserData(obj)
-      setInitialValues(obj)
-      setOldUserValues(obj)
-    })
+      };
+      setUserData(obj);
+      setInitialValues(obj);
+      setOldUserValues(obj);
+    });
 
     VisitData.getAll().then((response) => {
       const actualVisits = response.data.filter(
         (visit) => visit.status === false && visit.email === currentUser.email
-      )
+      );
       const ascArr = actualVisits.sort((a, b) => {
-        let aa = a.data.split('.').reverse().join()
-        let bb = b.data.split('.').reverse().join()
-        return aa < bb ? -1 : aa > bb ? 1 : 0
-      })
+        let aa = a.data.split(".").reverse().join();
+        let bb = b.data.split(".").reverse().join();
+        return aa < bb ? -1 : aa > bb ? 1 : 0;
+      });
       const archVisits = response.data.filter(
         (visit) => visit.status === true && visit.email === currentUser.email
-      )
+      );
       const descArr = archVisits.sort((a, b) => {
-        let aa = a.data.split('.').reverse().join()
-        let bb = b.data.split('.').reverse().join()
-        return aa > bb ? -1 : aa > bb ? 1 : 0
-      })
-      setVisitsArr(ascArr)
-      setArchiveVisits(descArr)
-    })
-  }, [isRefresh])
+        let aa = a.data.split(".").reverse().join();
+        let bb = b.data.split(".").reverse().join();
+        return aa > bb ? -1 : aa > bb ? 1 : 0;
+      });
+      setVisitsArr(ascArr);
+      setArchiveVisits(descArr);
+    });
+  }, [isRefresh]);
 
-  const isUser = currentUser.roles.includes('ROLE_USER')
-  const isDoctor = currentUser.roles.includes('ROLE_SPEC')
+  const isUser = currentUser.roles.includes("ROLE_USER");
+  const isDoctor = currentUser.roles.includes("ROLE_SPEC");
 
   const onAccountDelete = () => {
-    setIsDelete(false)
+    setIsDelete(false);
     UserData.deleteUser(currentUser.id)
       .then((response) => {
         dispatch({
           type: SET_MESSAGE,
-          payload: 'Konto zostało usunięte, przykro nam, że nas opuszczasz',
-        })
-        dispatch(logout())
-        navigate('/login')
+          payload: "Konto zostało usunięte, przykro nam, że nas opuszczasz",
+        });
+        dispatch(logout());
+        navigate("/login");
       })
-      .catch((e) => console.log('Blad podczas usuwania'))
-  }
+      .catch((e) => console.log("Blad podczas usuwania"));
+  };
 
   const onPwdUpdate = (values, actions) => {
-    let updateObj = { ...values, email: currentUser.email }
+    let updateObj = { ...values, email: currentUser.email };
     dispatch(changePassword(updateObj))
       .then((response) => {
         dispatch({
           type: SET_MESSAGE,
-          payload: 'Hasło zostało zmienione, zaloguj się używając nowego hasła',
-        })
-        dispatch(logout())
-        actions.resetForm()
+          payload: "Hasło zostało zmienione, zaloguj się używając nowego hasła",
+        });
+        dispatch(logout());
+        actions.resetForm();
       })
       .catch((e) => {
-        console.log(e)
-      })
-  }
+        console.log(e);
+      });
+  };
 
   const onUserUpdate = (values, actions) => {
     UserData.updateUser(currentUser.id, values)
       .then((response) => {
-        setIsEditing(false)
-        dispatch({ type: SET_MESSAGE, payload: 'Dane zostały zmienione!' })
-        dispatch(refreshApp())
+        setIsEditing(false);
+        dispatch({ type: SET_MESSAGE, payload: "Dane zostały zmienione!" });
+        dispatch(refreshApp());
       })
       .catch((e) => {
-        console.log(e)
-      })
-  }
+        console.log(e);
+      });
+  };
 
   const goToVisit = (item) => {
     navigate(`/visits/${item.id}`, {
-      state: { item: item, bRoute: 'settings' },
-    })
-  }
+      state: { item: item, bRoute: "settings" },
+    });
+  };
 
   const goToArchiveVisit = (item) => {
     navigate(`/archive/${item.id}`, {
-      state: { item: item, bRoute: 'settings' },
-    })
-  }
+      state: { item: item, bRoute: "settings" },
+    });
+  };
 
   return (
     <PageWrapper>
       <Container>
         <TitleContainer>
           <Title
-            transition={{ type: 'spring', bounce: 0.5, duration: 1.2 }}
+            transition={{ type: "spring", bounce: 0.5, duration: 1.2 }}
             initial={{ y: -100 }}
             animate={{ y: 0 }}
           >
@@ -175,7 +177,7 @@ const ProfilePage = () => {
           </Title>
           <Title
             primary
-            transition={{ type: 'spring', bounce: 0.5, duration: 1.7 }}
+            transition={{ type: "spring", bounce: 0.5, duration: 1.7 }}
             initial={{ y: -100 }}
             animate={{ y: 0 }}
           >
@@ -193,7 +195,7 @@ const ProfilePage = () => {
               initialValues={initialValues}
               validationSchema={updateUserDataValidationSchema}
               onSubmit={(values, actions) => {
-                onUserUpdate(values, actions)
+                onUserUpdate(values, actions);
               }}
             >
               {({
@@ -207,211 +209,280 @@ const ProfilePage = () => {
                 <>
                   <Form
                     style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      width: '40%',
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "40%",
                     }}
                   >
                     <VitalInfoSocket>
                       <VitalInfoText primary>Imię:</VitalInfoText>
                       <VitalInfoText>{userData.imie}</VitalInfoText>
                     </VitalInfoSocket>
-                    {isEditing && (
-                      <>
-                        <VitalInfoEdit
-                          type='text'
-                          name='imie'
-                          placeholder='Imie'
-                          value={values.imie}
-                          onBlur={handleBlur}
-                        />
-                        {errors.imie && touched.imie ? (
-                          <p style={{ color: 'red' }}>{errors.imie}</p>
-                        ) : null}
-                      </>
-                    )}
+                    <AnimatePresence>
+                      {isEditing && (
+                        <>
+                          <VitalInfoEditContainer
+                            initial={{ x: -50, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            exit={{ x: -50, opacity: 0 }}
+                          >
+                            <VitalInfoEdit
+                              type="text"
+                              name="imie"
+                              placeholder="Imię"
+                              value={values.imie}
+                              onBlur={handleBlur}
+                            />
+                            {errors.imie && touched.imie ? (
+                              <p style={{ color: "red" }}>{errors.imie}</p>
+                            ) : null}
+                          </VitalInfoEditContainer>
+                        </>
+                      )}
+                    </AnimatePresence>
                     <VitalInfoSocket>
                       <VitalInfoText primary>Nazwisko:</VitalInfoText>
                       <VitalInfoText>{userData.nazwisko}</VitalInfoText>
                     </VitalInfoSocket>
-                    {isEditing && (
-                      <>
-                        <VitalInfoEdit
-                          type='text'
-                          name='nazwisko'
-                          placeholder='Nazwisko'
-                          value={values.nazwisko}
-                          onBlur={handleBlur}
-                        />
-                        {errors.nazwisko && touched.nazwisko ? (
-                          <p style={{ color: 'red' }}>{errors.nazwisko}</p>
-                        ) : null}
-                      </>
-                    )}
+                    <AnimatePresence>
+                      {isEditing && (
+                        <>
+                          <VitalInfoEditContainer
+                            initial={{ x: -50, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            exit={{ x: -50, opacity: 0 }}
+                          >
+                            <VitalInfoEdit
+                              type="text"
+                              name="nazwisko"
+                              placeholder="Nazwisko"
+                              value={values.nazwisko}
+                              onBlur={handleBlur}
+                            />
+                            {errors.nazwisko && touched.nazwisko ? (
+                              <p style={{ color: "red" }}>{errors.nazwisko}</p>
+                            ) : null}
+                          </VitalInfoEditContainer>
+                        </>
+                      )}
+                    </AnimatePresence>
                     <VitalInfoSocket>
                       <VitalInfoText primary>Telefon:</VitalInfoText>
                       <VitalInfoText>{userData.telefon}</VitalInfoText>
                     </VitalInfoSocket>
-                    {isEditing && (
-                      <>
-                        <VitalInfoEdit
-                          type='text'
-                          name='telefon'
-                          placeholder='Telefon'
-                          value={values.telefon}
-                          onBlur={handleBlur}
-                        />
-                        {errors.telefon && touched.telefon ? (
-                          <p style={{ color: 'red' }}>{errors.telefon}</p>
-                        ) : null}
-                      </>
-                    )}
+                    <AnimatePresence>
+                      {isEditing && (
+                        <>
+                          <VitalInfoEditContainer
+                            initial={{ x: -50, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            exit={{ x: -50, opacity: 0 }}
+                          >
+                            <VitalInfoEdit
+                              type="text"
+                              name="telefon"
+                              placeholder="Telefon"
+                              value={values.telefon}
+                              onBlur={handleBlur}
+                            />
+                            {errors.telefon && touched.telefon ? (
+                              <p style={{ color: "red" }}>{errors.telefon}</p>
+                            ) : null}
+                          </VitalInfoEditContainer>
+                        </>
+                      )}
+                    </AnimatePresence>
                     <VitalInfoSocket>
                       <VitalInfoText primary>Miasto:</VitalInfoText>
                       <VitalInfoText>{userData.miasto}</VitalInfoText>
                     </VitalInfoSocket>
-                    {isEditing && (
-                      <>
-                        <VitalInfoEdit
-                          type='text'
-                          name='miasto'
-                          placeholder='Miasto'
-                          value={values.miasto}
-                          onBlur={handleBlur}
-                        />
-                        {errors.miasto && touched.miasto ? (
-                          <p style={{ color: 'red' }}>{errors.miasto}</p>
-                        ) : null}
-                      </>
-                    )}
+                    <AnimatePresence>
+                      {isEditing && (
+                        <>
+                          <VitalInfoEditContainer
+                            initial={{ x: -50, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            exit={{ x: -50, opacity: 0 }}
+                          >
+                            <VitalInfoEdit
+                              type="text"
+                              name="miasto"
+                              placeholder="Miasto"
+                              value={values.miasto}
+                              onBlur={handleBlur}
+                            />
+                            {errors.miasto && touched.miasto ? (
+                              <p style={{ color: "red" }}>{errors.miasto}</p>
+                            ) : null}
+                          </VitalInfoEditContainer>
+                        </>
+                      )}
+                    </AnimatePresence>
                   </Form>
                   <Form
                     style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      width: '40%',
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "40%",
                     }}
                   >
                     <VitalInfoSocket>
                       <VitalInfoText primary>Ulica:</VitalInfoText>
                       <VitalInfoText>{userData.ulica}</VitalInfoText>
                     </VitalInfoSocket>
-                    {isEditing && (
-                      <>
-                        <VitalInfoEdit
-                          type='text'
-                          name='ulica'
-                          placeholder='Ulica'
-                          value={values.ulica}
-                          onBlur={handleBlur}
-                        />
-                        {errors.miasto && touched.miasto ? (
-                          <p style={{ color: 'red' }}>{errors.miasto}</p>
-                        ) : null}
-                      </>
-                    )}
+                    <AnimatePresence>
+                      {isEditing && (
+                        <>
+                          <VitalInfoEditContainer
+                            initial={{ x: -50, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            exit={{ x: -50, opacity: 0 }}
+                          >
+                            <VitalInfoEdit
+                              type="text"
+                              name="ulica"
+                              placeholder="Ulica"
+                              value={values.ulica}
+                              onBlur={handleBlur}
+                            />
+                            {errors.miasto && touched.miasto ? (
+                              <p style={{ color: "red" }}>{errors.miasto}</p>
+                            ) : null}
+                          </VitalInfoEditContainer>
+                        </>
+                      )}
+                    </AnimatePresence>
                     <VitalInfoSocket>
                       <VitalInfoText primary>Kod pocztowy:</VitalInfoText>
                       <VitalInfoText>{userData.kodPocztowy}</VitalInfoText>
                     </VitalInfoSocket>
-                    {isEditing && (
-                      <>
-                        <VitalInfoEdit
-                          type='text'
-                          name='kodPocztowy'
-                          placeholder='Kod-pocztowy'
-                          value={values.kodPocztowy}
-                          onBlur={handleBlur}
-                        />
-                        {errors.kodPocztowy && touched.kodPocztowy ? (
-                          <p style={{ color: 'red' }}>{errors.kodPocztowy}</p>
-                        ) : null}
-                      </>
-                    )}
+                    <AnimatePresence>
+                      {isEditing && (
+                        <>
+                          <VitalInfoEditContainer
+                            initial={{ x: -50, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            exit={{ x: -50, opacity: 0 }}
+                          >
+                            <VitalInfoEdit
+                              type="text"
+                              name="kodPocztowy"
+                              placeholder="Kod-pocztowy"
+                              value={values.kodPocztowy}
+                              onBlur={handleBlur}
+                            />
+                            {errors.kodPocztowy && touched.kodPocztowy ? (
+                              <p style={{ color: "red" }}>
+                                {errors.kodPocztowy}
+                              </p>
+                            ) : null}
+                          </VitalInfoEditContainer>
+                        </>
+                      )}
+                    </AnimatePresence>
                     <VitalInfoSocket>
                       <VitalInfoText primary>Email:</VitalInfoText>
                       <VitalInfoText>{userData.email}</VitalInfoText>
                     </VitalInfoSocket>
-                    {isEditing && (
-                      <>
-                        <VitalInfoEdit
-                          type='text'
-                          name='email'
-                          placeholder='E-mail'
-                          value={values.email}
-                          onBlur={handleBlur}
-                        />
-                        {errors.email && touched.email ? (
-                          <p style={{ color: 'red' }}>{errors.email}</p>
-                        ) : null}
-                      </>
-                    )}
-                    {isEditing && (
-                      <ButtonVitalInfo type='submit'>
-                        Zapisz zmiany
-                      </ButtonVitalInfo>
-                    )}
+                    <AnimatePresence>
+                      {isEditing && (
+                        <>
+                          <VitalInfoEditContainer
+                            initial={{ x: -50, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            exit={{ x: -50, opacity: 0 }}
+                          >
+                            <VitalInfoEdit
+                              type="text"
+                              name="email"
+                              placeholder="E-mail"
+                              value={values.email}
+                              onBlur={handleBlur}
+                            />
+                            {errors.email && touched.email ? (
+                              <p style={{ color: "red" }}>{errors.email}</p>
+                            ) : null}
+                          </VitalInfoEditContainer>
+                        </>
+                      )}
+                    </AnimatePresence>
+                    <AnimatePresence>
+                      {isEditing && (
+                        <ButtonVitalInfo
+                          type="submit"
+                          initial={{ scale: 0, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          exit={{ scale: 0, opacity: 0 }}
+                        >
+                          Zapisz zmiany
+                        </ButtonVitalInfo>
+                      )}
+                    </AnimatePresence>
                   </Form>
                 </>
               )}
             </Formik>
             <Formik
               enableReinitialize
-              initialValues={{ oldPassword: '', newPassword: '' }}
+              initialValues={{ oldPassword: "", newPassword: "" }}
               validationSchema={signInChangePasswordValidationSchema}
               onSubmit={(values, actions) => onPwdUpdate(values, actions)}
             >
               {({ errors, touched, values, setValues }) => (
                 <>
                   <Form>
+                    <AnimatePresence>
                     {isChangingPwd && (
                       <>
-                        <PasswordChangeContainer>
+                        <PasswordChangeContainer initial={{scale: 0, opacity: 0}} animate={{scale: 1, opacity: 1}} exit={{scale: 0, opacity: 0}}
+                        transition={{duration: .5}}>
                           <VitalInfoText password>Zmiana hasła</VitalInfoText>
                           <VitalInfoEdit
-                            type='password'
-                            name='oldPassword'
-                            placeholder='Stare haslo'
+                          
+                            type="password"
+                            name="oldPassword"
+                            placeholder="Stare haslo"
                             value={values.oldPassword}
                           />
                           {errors.oldPassword && touched.oldPassword ? (
-                            <p style={{ color: 'red' }}>{errors.oldPassword}</p>
+                            <p style={{ color: "red" }}>{errors.oldPassword}</p>
                           ) : null}
                           <VitalInfoEdit
-                            type='password'
-                            name='newPassword'
-                            placeholder='Nowe haslo'
+                            type="password"
+                            name="newPassword"
+                            placeholder="Nowe haslo"
                             value={values.newPassword}
                           />
                           {errors.newPassword && touched.newPassword ? (
-                            <p style={{ color: 'red' }}>{errors.newPassword}</p>
+                            <p style={{ color: "red" }}>{errors.newPassword}</p>
                           ) : null}
-                          <ButtonDashboard type='submit'>
+                          <ButtonDashboard type="submit">
                             Zmień hasło
                           </ButtonDashboard>
                         </PasswordChangeContainer>
                       </>
                     )}
+                    </AnimatePresence>
                   </Form>
                   <ButtonsContainer>
                     <ButtonDashboard
-                      type='button'
+                      type="button"
                       onClick={() => {
                         if (isEditing) {
-                          setIsEditing(false)
+                          setIsEditing(false);
                         } else {
-                          setIsEditing(true)
+                          setIsEditing(true);
                         }
-                        setValues(oldUserValues)
+                        setValues(oldUserValues);
                       }}
                     >
-                      {isEditing ? 'Anuluj edycję' : 'Edytuj profil'}
+                      {isEditing ? "Anuluj edycję" : "Edytuj profil"}
                     </ButtonDashboard>
                     <ButtonDashboard
-                      type='button'
+                      type="button"
                       onClick={() => setIsChangingPwd(!isChangingPwd)}
                     >
-                      {isChangingPwd ? 'Anuluj zmianę' : 'Zmień hasło'}
+                      {isChangingPwd ? "Anuluj zmianę" : "Zmień hasło"}
                     </ButtonDashboard>
                     <ButtonDashboard onClick={() => setIsDelete(true)}>
                       Usuń konto
@@ -476,55 +547,55 @@ const ProfilePage = () => {
           ) : null}
         </DashboardContainer>
         {message && (
-          <p style={{ color: 'red', textAlign: 'center' }}>{message}</p>
+          <p style={{ color: "red", textAlign: "center" }}>{message}</p>
         )}
         {isDelete && (
           <div
             style={{
-              width: '100vw',
-              height: '100vh',
-              position: 'absolute',
-              left: '0',
-              top: '0',
-              backgroundColor: 'rgba(3,3,3,.5)',
-              zIndex: '999',
+              width: "100vw",
+              height: "100vh",
+              position: "absolute",
+              left: "0",
+              top: "0",
+              backgroundColor: "rgba(3,3,3,.5)",
+              zIndex: "999",
             }}
           >
             <div
               style={{
-                position: 'relative',
-                width: '50%',
-                height: '50%',
-                backgroundColor: '#fff',
-                left: '0',
-                right: '0',
-                top: '25%',
-                margin: 'auto',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
+                position: "relative",
+                width: "50%",
+                height: "50%",
+                backgroundColor: "#fff",
+                left: "0",
+                right: "0",
+                top: "25%",
+                margin: "auto",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
-              <h2 style={{ marginBottom: '20px' }}>
+              <h2 style={{ marginBottom: "20px" }}>
                 Na pewno chcesz usunąć konto?
               </h2>
               <div
                 style={{
-                  position: 'relative',
-                  backgroundColor: '#fff',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  position: "relative",
+                  backgroundColor: "#fff",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
                 <button
                   style={{
-                    backgroundColor: 'transparent',
-                    border: '2px solid #333',
-                    padding: '.75em 50px',
-                    marginRight: '5px',
-                    cursor: 'pointer',
+                    backgroundColor: "transparent",
+                    border: "2px solid #333",
+                    padding: ".75em 50px",
+                    marginRight: "5px",
+                    cursor: "pointer",
                   }}
                   onClick={() => setIsDelete(false)}
                 >
@@ -532,11 +603,11 @@ const ProfilePage = () => {
                 </button>
                 <button
                   style={{
-                    backgroundColor: '#01d4bf',
-                    border: '2px solid transparent',
-                    padding: '.75em 50px',
-                    marginLeft: '5px',
-                    cursor: 'pointer',
+                    backgroundColor: "#01d4bf",
+                    border: "2px solid transparent",
+                    padding: ".75em 50px",
+                    marginLeft: "5px",
+                    cursor: "pointer",
                   }}
                   onClick={onAccountDelete}
                 >
@@ -548,23 +619,23 @@ const ProfilePage = () => {
         )}
       </Container>
       <Pattern
-        src='/Pattern.png'
-        top={'70%'}
-        left={'5%'}
-        transition={{ type: 'spring', bounce: 0.7, duration: 3, delay: 0.4 }}
+        src="/Pattern.png"
+        top={"70%"}
+        left={"5%"}
+        transition={{ type: "spring", bounce: 0.7, duration: 3, delay: 0.4 }}
         initial={{ opacity: 0, x: -200, rotate: 60 }}
         animate={{ opacity: 1, x: 0, rotate: 90 }}
       />
       <Pattern
-        src='/Pattern.png'
-        top={'5%'}
-        left={'80%'}
-        transition={{ type: 'spring', bounce: 0.5, duration: 2, delay: 0.6 }}
+        src="/Pattern.png"
+        top={"5%"}
+        left={"80%"}
+        transition={{ type: "spring", bounce: 0.5, duration: 2, delay: 0.6 }}
         initial={{ opacity: 0, rotate: 90, scale: 1 }}
         animate={{ opacity: 1, rotate: 45, scale: 1.2 }}
       />
     </PageWrapper>
-  )
-}
+  );
+};
 
-export default ProfilePage
+export default ProfilePage;

@@ -53,8 +53,9 @@ export const DashboardContainer = styled(motion.div)`
 export const VitalInfoContainer = styled.div`
   display: flex;
   margin-bottom: 1em;
+  transition: 1s ease;
 `;
-export const VitalInfoSocket = styled.div`
+export const VitalInfoSocket = styled(motion.div)`
   padding: 0.4em 0 0.1em 0;
 `;
 export const VitalInfoText = styled.p`
@@ -64,18 +65,23 @@ export const VitalInfoText = styled.p`
   line-height: 1.2em;
   margin-bottom: ${(props) => (props.password ? "1em" : "0")};
 `;
-export const VitalInfoEdit = styled(Field)`
+export const VitalInfoEditContainer = styled(motion.div)`
   width: 60%;
   border: none;
-  font-family: "poppins";
+  
+`;
+export const VitalInfoEdit = styled(Field)`
+  width: 100%;
+  height: 100%;
+  padding: 0.4em;
   background-color: rgba(51, 51, 51, 0.1);
   border-radius: 5px;
-  padding: 0.4em;
   margin-bottom: ${(props) => (props.password ? "2.5em" : "0")};
+  font-family: "poppins";
   font-size: 0.7em;
   color: rgba(51, 51, 51, 0.7);
   outline: none;
-
+  border: none;
   &:focus {
     color: #333;
     background-color: rgba(51, 51, 51, 0.2);
@@ -108,7 +114,7 @@ export const ButtonDashboard = styled(motion.button)`
     background-color: #01d4bf;
   }
 `;
-export const PasswordChangeContainer = styled.div`
+export const PasswordChangeContainer = styled(motion.div)`
   /* background-color: cadetblue; */
   display: flex;
   flex-direction: column;
