@@ -68,15 +68,15 @@ export const VitalInfoText = styled.p`
 export const VitalInfoEditContainer = styled(motion.div)`
   width: 60%;
   border: none;
-  
+  height: 2em;
 `;
 export const VitalInfoEdit = styled(Field)`
   width: 100%;
-  height: 100%;
+  height: ${props => props.password ? "2em" : "100%"};
   padding: 0.4em;
   background-color: rgba(51, 51, 51, 0.1);
   border-radius: 5px;
-  margin-bottom: ${(props) => (props.password ? "2.5em" : "0")};
+  margin-bottom: ${(props) => (props.primary ? "2.5em" : "0")};
   font-family: "poppins";
   font-size: 0.7em;
   color: rgba(51, 51, 51, 0.7);

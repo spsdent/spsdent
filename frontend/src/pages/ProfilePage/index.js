@@ -432,36 +432,46 @@ const ProfilePage = () => {
                 <>
                   <Form>
                     <AnimatePresence>
-                    {isChangingPwd && (
-                      <>
-                        <PasswordChangeContainer initial={{scale: 0, opacity: 0}} animate={{scale: 1, opacity: 1}} exit={{scale: 0, opacity: 0}}
-                        transition={{duration: .5}}>
-                          <VitalInfoText password>Zmiana hasła</VitalInfoText>
-                          <VitalInfoEdit
-                          
-                            type="password"
-                            name="oldPassword"
-                            placeholder="Stare haslo"
-                            value={values.oldPassword}
-                          />
-                          {errors.oldPassword && touched.oldPassword ? (
-                            <p style={{ color: "red" }}>{errors.oldPassword}</p>
-                          ) : null}
-                          <VitalInfoEdit
-                            type="password"
-                            name="newPassword"
-                            placeholder="Nowe haslo"
-                            value={values.newPassword}
-                          />
-                          {errors.newPassword && touched.newPassword ? (
-                            <p style={{ color: "red" }}>{errors.newPassword}</p>
-                          ) : null}
-                          <ButtonDashboard type="submit">
-                            Zmień hasło
-                          </ButtonDashboard>
-                        </PasswordChangeContainer>
-                      </>
-                    )}
+                      {isChangingPwd && (
+                        <>
+                          <PasswordChangeContainer
+                            initial={{ scale: 0, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0, opacity: 0 }}
+                            transition={{ duration: 0.5 }}
+                          >
+                            <VitalInfoText password>Zmiana hasła</VitalInfoText>
+                            <VitalInfoEdit
+                            password
+                              type="password"
+                              name="oldPassword"
+                              placeholder="Stare hasło"
+                              value={values.oldPassword}
+                            />
+                            {errors.oldPassword && touched.oldPassword ? (
+                              <p style={{ color: "red", fontSize: ".6em" }}>
+                                {errors.oldPassword}
+                              </p>
+                            ) : null}
+                            <VitalInfoEdit
+                            password
+                            primary
+                              type="password"
+                              name="newPassword"
+                              placeholder="Nowe haslo"
+                              value={values.newPassword}
+                            />
+                            {errors.newPassword && touched.newPassword ? (
+                              <p style={{ color: "red", fontSize: ".6em" }}>
+                                {errors.newPassword}
+                              </p>
+                            ) : null}
+                            <ButtonDashboard type="submit">
+                              Zmień hasło
+                            </ButtonDashboard>
+                          </PasswordChangeContainer>
+                        </>
+                      )}
                     </AnimatePresence>
                   </Form>
                   <ButtonsContainer>
