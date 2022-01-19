@@ -43,6 +43,7 @@ const PriceListSubPage = () => {
         (item) =>
           item.grupa.toLowerCase() === group.split('-').join(' ').toLowerCase()
       )
+      console.log(filteredResult);
       setCurrentPathServices(filteredResult[0].uslugi)
     })
   }

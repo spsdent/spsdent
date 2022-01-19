@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { FaInstagram } from 'react-icons/fa'
-import { FiFacebook, FiTwitter } from 'react-icons/fi'
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { FaInstagram } from "react-icons/fa";
+import { FiFacebook, FiTwitter } from "react-icons/fi";
 import {
   SideBarContainer,
   SideNav,
@@ -11,19 +11,19 @@ import {
   NavSocials,
   SocialLink,
   NavTriangle,
-} from './SideBarElements'
-import AdminNav from '../../../navigation/AdminNav'
-import UserNav from '../../../navigation/UserNav'
-import SpecNav from '../../../navigation/SpecNav'
-import { motion } from 'framer-motion'
+} from "./SideBarElements";
+import AdminNav from "../../../navigation/AdminNav";
+import UserNav from "../../../navigation/UserNav";
+import SpecNav from "../../../navigation/SpecNav";
+import { motion } from "framer-motion";
 
 // import { logout } from '../../../store/actions/auth'
 // import { clearMessage } from '../../../store/actions/message'
 
-import ServiceData from '../../../services/service'
+import ServiceData from "../../../services/service";
 
-import { useLocation, useNavigate } from 'react-router-dom'
-import styled from 'styled-components'
+import { useLocation, useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
 export const NavItemSub = styled.li`
   position: relative;
@@ -35,34 +35,34 @@ export const NavItemSub = styled.li`
   &:selection {
     color: #01d4bf;
   }
-`
+`;
 
 const NonAuth = (props) => {
-  const { user: currentUser } = useSelector((state) => state.auth)
-  const [showSpecBoard, setShowSpecBoard] = useState(false)
-  const [showAdminBoard, setShowAdminBoard] = useState(false)
-  const [showUserBoard, setShowUserBoard] = useState(false)
-  const [serviceData, setServiceData] = useState([])
-  let location = useLocation()
-  let navigate = useNavigate()
-  let currentLocation = location.pathname.split('/')[1]
+  const { user: currentUser } = useSelector((state) => state.auth);
+  const [showSpecBoard, setShowSpecBoard] = useState(false);
+  const [showAdminBoard, setShowAdminBoard] = useState(false);
+  const [showUserBoard, setShowUserBoard] = useState(false);
+  const [serviceData, setServiceData] = useState([]);
+  let location = useLocation();
+  let navigate = useNavigate();
+  let currentLocation = location.pathname.split("/")[1];
 
   useEffect(() => {
-    retrieveServices()
-  }, [])
+    retrieveServices();
+  }, []);
 
   const retrieveServices = () => {
-    ServiceData.getAll().then((response) => setServiceData(response.data))
-  }
+    ServiceData.getAll().then((response) => setServiceData(response.data));
+  };
 
   useEffect(() => {
     if (currentUser) {
-      setShowSpecBoard(currentUser.roles.includes('ROLE_SPEC'))
-      setShowAdminBoard(currentUser.roles.includes('ROLE_ADMIN'))
-      setShowUserBoard(currentUser.roles.includes('ROLE_USER'))
+      setShowSpecBoard(currentUser.roles.includes("ROLE_SPEC"));
+      setShowAdminBoard(currentUser.roles.includes("ROLE_ADMIN"));
+      setShowUserBoard(currentUser.roles.includes("ROLE_USER"));
     }
-  }, [currentUser])
-  
+  }, [currentUser]);
+
   return (
     <SideBarContainer>
       <NavTriangle />
@@ -75,29 +75,27 @@ const NonAuth = (props) => {
               {showUserBoard && <UserNav />}
               <hr
                 style={{
-                  width: '100%',
-                  backgroundColor: '#333',
-                  border: 'none',
-                  height: '1px',
+                  width: "100%",
+                  backgroundColor: "#333",
+                  border: "none",
+                  height: "1px",
                 }}
               />
             </>
           )}
           <NavItem>
-            <StyledLink to='/'>Strona Główna</StyledLink>
+            <StyledLink to="/">Strona Główna</StyledLink>
           </NavItem>
           <NavItem>
-            <StyledLink to='/about-us'>O nas</StyledLink>
+            <StyledLink to="/about-us">O nas</StyledLink>
           </NavItem>
           <NavItem>
-            <StyledLink to='/offer'>Oferta</StyledLink>
+            <StyledLink to="/offer">Oferta</StyledLink>
           </NavItem>
-          <NavItem
-            onClick={() => navigate('/price-list/stomatologia-zachowawcza')}
-          >
-            <StyledLink to='/price-list'>Cennik</StyledLink>
+          <NavItem onClick={() => navigate("/price-list/Wizyta")}>
+            <StyledLink to="/price-list">Cennik</StyledLink>
           </NavItem>
-          {currentLocation === 'price-list' && (
+          {currentLocation === "price-list" && (
             <>
               {serviceData.map(
                 (service, i) =>
@@ -109,12 +107,12 @@ const NonAuth = (props) => {
                     >
                       <StyledLink
                         primary
-                        to={`/price-list/${service.grupa.split(' ').join('-')}`}
+                        to={`/price-list/${service.grupa.split(" ").join("-")}`}
                       >
-                        {service.grupa.split(' ').length > 2
-                          ? `${service.grupa.split(' ')[0][0]}${
-                              service.grupa.split(' ')[1][0]
-                            }${service.grupa.split(' ')[2][0]}`
+                        {service.grupa.split(" ").length > 2
+                          ? `${service.grupa.split(" ")[0][0]}${
+                              service.grupa.split(" ")[1][0]
+                            }${service.grupa.split(" ")[2][0]}`
                           : service.grupa}
                       </StyledLink>
                     </NavItemSub>
@@ -123,35 +121,35 @@ const NonAuth = (props) => {
             </>
           )}
           <NavItem>
-            <StyledLink to='/contact'>Kontakt</StyledLink>
+            <StyledLink to="/contact">Kontakt</StyledLink>
           </NavItem>
         </NavWrap>
       </SideNav>
       <NavSocials>
         <SocialLink
-          href='//www.facebook.com'
-          target='_blank'
-          aria-label='facebook'
+          href="//www.facebook.com"
+          target="_blank"
+          aria-label="facebook"
         >
           <FiFacebook />
         </SocialLink>
         <SocialLink
-          href='//www.instagram.com'
-          target='_blank'
-          aria-label='instagram'
+          href="//www.instagram.com"
+          target="_blank"
+          aria-label="instagram"
         >
           <FaInstagram />
         </SocialLink>
         <SocialLink
-          href='//www.twitter.com'
-          target='_blank'
-          aria-label='twitter'
+          href="//www.twitter.com"
+          target="_blank"
+          aria-label="twitter"
         >
           <FiTwitter />
         </SocialLink>
       </NavSocials>
     </SideBarContainer>
-  )
-}
+  );
+};
 
-export default NonAuth
+export default NonAuth;

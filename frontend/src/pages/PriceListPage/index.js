@@ -48,7 +48,8 @@ const PriceListPage = () => {
           item.grupa.toLowerCase() ===
           priceGroup.split('-').join(' ').toLowerCase()
       )
-      setCurrentPathServices(filteredResult[0].uslugi)
+      console.log(filteredResult)
+      // setCurrentPathServices(filteredResult[0].uslugi)
     })
   }
 
