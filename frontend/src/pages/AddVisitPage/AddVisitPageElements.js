@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const AddVisitContainer = styled.div`
-background-color: cadetblue;
+/* background-color: cadetblue; */
 width: 90%;
 height: fit-content;
 `
