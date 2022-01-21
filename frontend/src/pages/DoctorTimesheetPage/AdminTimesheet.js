@@ -52,15 +52,6 @@ const StyledContainer = styled.section`
 `
 
 const AdminTimesheetPage = () => {
-  const [state, setState] = useState({
-    input: false,
-    timesheet: true,
-  })
-  const [doctors, setDoctors] = useState([])
-  const [users, setUsers] = useState([])
-  const [visits, setVisits] = useState([])
-  const daysOfWeek = ['Poniedzialek', 'Wtorek', 'Sroda', 'Czwartek', 'Piatek']
-  const [week, setWeek] = useState([])
   const [filterPosition, setFilterPosition] = useState({
     usluga: 0,
     lekarz: 0,
@@ -68,11 +59,19 @@ const AdminTimesheetPage = () => {
     godzina: 0,
     cena: 0,
   })
+  const { user: currentUser } = useSelector((state) => state.auth)
+  const [selectedDoctor, setSelectedDoctor] = useState(null)
+  const [doctors, setDoctors] = useState([])
+  const [users, setUsers] = useState([])
+  const [visits, setVisits] = useState([])
+  const [updatedVisits, setUpdatedVisits] = useState([])
   const [selectedDate, setSelectedDate] = useState(null)
   const [selectedDateVisits, setSelectedDateVisits] = useState([])
   const [isDelete, setIsDelete] = useState(false)
   const [visitId, setVisitId] = useState('')
   const [pageNumber, setPageNumber] = useState(0)
+  const [bookingInfo, setBookingInfo] = useState({})
+  const [isSelected, setIsSelected] = useState(false)
   const visitsPerPage = 5
   const pagesVisited = pageNumber * visitsPerPage
   const allUsers = useFetchAllUsers()
@@ -83,6 +82,20 @@ const AdminTimesheetPage = () => {
     retrieveDoctors()
     retrieveUsers()
     retrieveVisits()
+    let helperArr = []
+    let today = new Date()
+    for (let i = 8; i <= 16; i++) {
+      helperArr = [
+        ...helperArr,
+        {
+          data: `${today.getDate()}.${
+            today.getMonth() + 1
+          }.${today.getFullYear()}`,
+          godzina: `${i}`,
+        },
+      ]
+    }
+    setUpdatedVisits(helperArr)
   }, [])
 
   const retrieveDoctors = () => {
@@ -103,13 +116,13 @@ const AdminTimesheetPage = () => {
     })
   }
 
-  const handleChange = (e) => {
-    setState({ ...state, [e.target.name]: e.target.value })
-  }
-
   const filteredUsers = users.filter((user) =>
     doctors.some((doctor) => doctor.doctorId === user._id)
   )
+
+  const handleChange = (e) => {
+    setSelectedDoctor(filteredUsers[e.target.value])
+  }
 
   const isWeekday = (date) => {
     const day = getDay(date)
@@ -124,7 +137,11 @@ const AdminTimesheetPage = () => {
     const selectedDateVisitsArr = visits.filter(
       (visit) => visit.data === selectedDate
     )
-    setSelectedDateVisits(selectedDateVisitsArr)
+    const updatedArr = updatedVisits.filter((el) =>
+      selectedDateVisitsArr.some((f) => f.godzina !== el.godzina)
+    )
+    const arrToDisplay = [...updatedArr, ...selectedDateVisitsArr]
+    setSelectedDateVisits(arrToDisplay)
   }
 
   const goToVisit = (item) => {
@@ -149,30 +166,58 @@ const AdminTimesheetPage = () => {
       if (allUsers.length > 0) {
         return (
           <>
-            <Visit
-              initial={{ opacity: 0, x: -100 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3, delay: i * 0.2 }}
-              key={visit._id}
-              onClick={() => goToVisit(visit)}
-            >
-              <VisitContent primary>{visit.usluga}</VisitContent>
-              <VisitContent>
-                {`${visit.specjalista.imie} ${visit.specjalista.nazwisko}`}
-              </VisitContent>
-              <VisitContent>{visit.data}</VisitContent>
-              <VisitContent>{visit.godzina}:00</VisitContent>
-              <VisitContent>{visit.cena}zł</VisitContent>
-              <VisitDelete
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setIsDelete(true)
-                  setVisitId(visit)
+            {visit.usluga ? (
+              <Visit
+                initial={{ opacity: 0, x: -100 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: i * 0.2 }}
+                key={visit._id}
+                onClick={() => goToVisit(visit)}
+              >
+                <VisitContent primary>{visit.usluga}</VisitContent>
+                <VisitContent>
+                  {`${visit.specjalista.imie} ${visit.specjalista.nazwisko}`}
+                </VisitContent>
+                <VisitContent>{visit.data}</VisitContent>
+                <VisitContent>{visit.godzina}:00</VisitContent>
+                <VisitContent>{visit.cena}zł</VisitContent>
+                <VisitDelete
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setIsDelete(true)
+                    setVisitId(visit)
+                  }}
+                >
+                  <FaTrashAlt />
+                </VisitDelete>
+              </Visit>
+            ) : (
+              <Visit
+                initial={{ opacity: 0, x: -100 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: i * 0.2 }}
+                onClick={() => {
+                  if (isSelected) {
+                    setIsSelected(false)
+                  } else {
+                    setIsSelected(true)
+                    setBookingInfo({
+                      data: visit.data,
+                      godzina: visit.godzina,
+                      specjalista: {
+                        sid: selectedDoctor._id,
+                        imie: selectedDoctor.imie,
+                        nazwisko: selectedDoctor.nazwisko,
+                      },
+                    })
+                  }
                 }}
               >
-                <FaTrashAlt />
-              </VisitDelete>
-            </Visit>
+                <VisitContent primary>
+                  Zarezerwuj godzinę {visit.godzina}
+                </VisitContent>
+              </Visit>
+            )}
           </>
         )
       }
@@ -181,73 +226,6 @@ const AdminTimesheetPage = () => {
   const pageCount = Math.ceil(selectedDateVisits.length / visitsPerPage)
   const changePage = ({ selected }) => {
     setPageNumber(selected)
-  }
-
-  const onFilterByService = () => {
-    if (filterPosition.usluga === 0) {
-      const descArr = selectedDateVisits.sort((a, b) =>
-        b.usluga.toLowerCase() > a.usluga.toLowerCase() ? 1 : -1
-      )
-      setSelectedDateVisits(descArr)
-      setFilterPosition({ usluga: 1, data: 0, godzina: 0, cena: 0, lekarz: 0 })
-    } else if (filterPosition.usluga === 1) {
-      const ascArr = selectedDateVisits.sort((a, b) =>
-        a.usluga.toLowerCase() > b.usluga.toLowerCase() ? 1 : -1
-      )
-      setSelectedDateVisits(ascArr)
-      setFilterPosition({ usluga: 2, data: 0, godzina: 0, cena: 0, lekarz: 0 })
-    } else if (filterPosition.usluga === 2) {
-      retrieveVisits()
-      setFilterPosition({ usluga: 0, data: 0, godzina: 0, cena: 0, lekarz: 0 })
-    }
-  }
-
-  const onFilterBySpecialist = () => {
-    if (filterPosition.lekarz === 0) {
-      const descArr = selectedDateVisits.sort((a, b) =>
-        b.specjalista.nazwisko.toLowerCase() >
-        a.specjalista.nazwisko.toLowerCase()
-          ? 1
-          : -1
-      )
-      setSelectedDateVisits(descArr)
-      setFilterPosition({ usluga: 0, data: 0, godzina: 0, cena: 0, lekarz: 1 })
-    } else if (filterPosition.lekarz === 1) {
-      const ascArr = selectedDateVisits.sort((a, b) =>
-        a.specjalista.nazwisko.toLowerCase() >
-        b.specjalista.nazwisko.toLowerCase()
-          ? 1
-          : -1
-      )
-      setSelectedDateVisits(ascArr)
-      setFilterPosition({ usluga: 0, data: 0, godzina: 0, cena: 0, lekarz: 2 })
-    } else if (filterPosition.lekarz === 2) {
-      retrieveVisits()
-      setFilterPosition({ usluga: 0, data: 0, godzina: 0, cena: 0, lekarz: 0 })
-    }
-  }
-
-  const onFilterByDate = () => {
-    if (filterPosition.data === 0) {
-      const descArr = selectedDateVisits.sort((a, b) => {
-        let aa = a.data.split('.').reverse().join()
-        let bb = b.data.split('.').reverse().join()
-        return aa > bb ? -1 : aa > bb ? 1 : 0
-      })
-      setSelectedDateVisits(descArr)
-      setFilterPosition({ usluga: 0, data: 1, godzina: 0, cena: 0, lekarz: 0 })
-    } else if (filterPosition.data === 1) {
-      const ascArr = selectedDateVisits.sort((a, b) => {
-        let aa = a.data.split('.').reverse().join()
-        let bb = b.data.split('.').reverse().join()
-        return aa < bb ? -1 : aa > bb ? 1 : 0
-      })
-      setSelectedDateVisits(ascArr)
-      setFilterPosition({ usluga: 0, data: 2, godzina: 0, cena: 0, lekarz: 0 })
-    } else if (filterPosition.data === 2) {
-      retrieveVisits()
-      setFilterPosition({ usluga: 0, data: 0, godzina: 0, cena: 0, lekarz: 0 })
-    }
   }
 
   const onFilterByHour = () => {
@@ -260,21 +238,6 @@ const AdminTimesheetPage = () => {
       setSelectedDateVisits(ascArr)
       setFilterPosition({ usluga: 0, data: 0, godzina: 2, cena: 0, lekarz: 0 })
     } else if (filterPosition.godzina === 2) {
-      retrieveVisits()
-      setFilterPosition({ usluga: 0, data: 0, godzina: 0, cena: 0, lekarz: 0 })
-    }
-  }
-
-  const onFilterByPrice = () => {
-    if (filterPosition.cena === 0) {
-      const descArr = selectedDateVisits.sort((a, b) => b.cena - a.cena)
-      setSelectedDateVisits(descArr)
-      setFilterPosition({ usluga: 0, data: 0, godzina: 0, cena: 1, lekarz: 0 })
-    } else if (filterPosition.cena === 1) {
-      const ascArr = selectedDateVisits.sort((a, b) => a.cena - b.cena)
-      setSelectedDateVisits(ascArr)
-      setFilterPosition({ usluga: 0, data: 0, godzina: 0, cena: 2, lekarz: 0 })
-    } else if (filterPosition.cena === 2) {
       retrieveVisits()
       setFilterPosition({ usluga: 0, data: 0, godzina: 0, cena: 0, lekarz: 0 })
     }
@@ -312,8 +275,8 @@ const AdminTimesheetPage = () => {
           </VisitsPageTitle>
         </VisitsPageTitleContainer>
         <TimesheetPick
-          name='input'
-          value={state.input}
+          name='selectedDoctor'
+          value={selectedDoctor}
           onChange={handleChange}
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
@@ -322,14 +285,14 @@ const AdminTimesheetPage = () => {
           <Option value='true' selected>
             Wybierz lekarza
           </Option>
-          {filteredUsers.map((user) => (
-            <Option value={user._id}>
+          {filteredUsers.map((user, i) => (
+            <Option value={i}>
               {user.imie} {user.nazwisko}
             </Option>
           ))}
         </TimesheetPick>
 
-        {state.input ? (
+        {selectedDoctor ? (
           <>
             <DatePicker
               selected={false}
@@ -349,51 +312,11 @@ const AdminTimesheetPage = () => {
                         initial='hidden'
                         animate='show'
                       >
-                        <Header primary onClick={onFilterByService}>
-                          <HeaderText variants={itemOne}>usługa</HeaderText>
-                          {filterPosition.usluga === 0 ? (
-                            <TriangleDesc />
-                          ) : filterPosition.usluga === 1 ? (
-                            <TriangleDescActive />
-                          ) : (
-                            <TriangleAsc />
-                          )}
-                        </Header>
-                        <Header onClick={onFilterBySpecialist}>
-                          <HeaderText>lekarz</HeaderText>
-                          {filterPosition.lekarz === 0 ? (
-                            <TriangleDesc />
-                          ) : filterPosition.lekarz === 1 ? (
-                            <TriangleDescActive />
-                          ) : (
-                            <TriangleAsc />
-                          )}
-                        </Header>
-                        <Header onClick={onFilterByDate}>
-                          <HeaderText>data</HeaderText>
-                          {filterPosition.data === 0 ? (
-                            <TriangleDesc />
-                          ) : filterPosition.data === 1 ? (
-                            <TriangleDescActive />
-                          ) : (
-                            <TriangleAsc />
-                          )}
-                        </Header>
                         <Header onClick={onFilterByHour}>
                           <HeaderText>godzina</HeaderText>
                           {filterPosition.godzina === 0 ? (
                             <TriangleDesc />
                           ) : filterPosition.godzina === 1 ? (
-                            <TriangleDescActive />
-                          ) : (
-                            <TriangleAsc />
-                          )}
-                        </Header>
-                        <Header onClick={onFilterByPrice}>
-                          <HeaderText>cena</HeaderText>
-                          {filterPosition.cena === 0 ? (
-                            <TriangleDesc />
-                          ) : filterPosition.cena === 1 ? (
                             <TriangleDescActive />
                           ) : (
                             <TriangleAsc />
@@ -456,6 +379,35 @@ const AdminTimesheetPage = () => {
               </ModalButtonsContainer>
             </ModalContainer>
           </ModalShadow>
+        )}
+        {console.log('test', bookingInfo)}
+        {isSelected && (
+          <div
+            style={{
+              width: '100vw',
+              height: 'calc(100vh - 4.2em)',
+              position: 'absolute',
+              left: '73%',
+              top: '4.2em',
+              zIndex: '999',
+            }}
+          >
+            <div
+              style={{
+                position: 'fixed',
+                width: '400px',
+                height: '100%',
+                padding: '0 20px',
+                backgroundColor: '#fff',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <h2>Tutaj bedzie formularz do rezerwacji wizyty</h2>
+            </div>
+          </div>
         )}
       </StyledContainer>
 
