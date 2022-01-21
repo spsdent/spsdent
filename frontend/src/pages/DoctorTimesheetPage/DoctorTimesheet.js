@@ -1,372 +1,402 @@
 import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import styled from 'styled-components'
+
+import { useSelector, useDispatch } from 'react-redux'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+import 'react-datepicker/dist/react-datepicker-cssmodules.css'
+import { addDays, getDay } from 'date-fns'
+import { useNavigate } from 'react-router'
+
 import { PageWrapper } from '../../components/PageWrapper'
-import { Pattern } from '../../components/Pattern'
-import '../../styles/index.css'
-import {
-  TimesheetPageContainer,
-  TimesheetTitleContainer,
-  TimesheetTitle,
-  TimesheetContainer,
-  TimesheetDaysContainer,
-  Day,
-  TimesheetWrap,
-  TimesheetHoursContainer,
-  Hour,
-  Timesheet,
-  VisitRow,
-  Visit,
-  TimesheetLegend,
-  LegendItemWrap,
-  CircleFree,
-  CircleReserved,
-  CircleActive,
-  LegendText,
-} from './TimesheetPageElements'
-
+import styles from './style.css'
 import VisitData from '../../services/visit'
+import { FaTrashAlt } from 'react-icons/fa'
+import { Pattern } from '../../components/Pattern'
+import {
+  VisitsPageContainer,
+  VisitsPageTitleContainer,
+  VisitsPageTitle,
+  VisitsContainer,
+  Headers,
+  Header,
+  HeaderText,
+  TriangleAsc,
+  TriangleDesc,
+  TriangleDescActive,
+  VisitsListContainer,
+  Visit,
+  VisitContent,
+  VisitDelete,
+  MyPaginate,
+} from '../VisitsPage/VisitsPageElements'
+import {
+  ModalShadow,
+  ModalContainer,
+  ModalText,
+  ModalButtonsContainer,
+  ModalButton,
+} from '../VisitPage/VisitPageElements'
+import useFetchAllUsers from '../../hooks/useFetchAllUsers'
+import { refreshApp } from '../../store/actions/refresh'
 
-const disabled = {
-  opacity: 0.4,
-  pointerEvents: 'none',
-}
-const enabled = {
-  opacity: 1,
-}
-const container = {
-  hidden: { opacity: 0.99 },
-  visible: {
-    opacity: 0.99,
-    transition: {
-      delayChildren: 0.2,
-      staggerChildren: 0.15,
-    },
-  },
-}
+const StyledContainer = styled.section`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
 
 const DoctorTimesheetPage = () => {
-  const [state, setState] = useState({
-    input: '',
-    timesheet: true,
+  const [filterPosition, setFilterPosition] = useState({
+    usluga: 0,
+    lekarz: 0,
+    data: 0,
+    godzina: 0,
+    cena: 0,
   })
+  const [selectedDate, setSelectedDate] = useState(null)
+  const [visits, setVisits] = useState([])
+  const [selectedDateVisits, setSelectedDateVisits] = useState([])
   const { user: currentUser } = useSelector((state) => state.auth)
-  const [isSelected, setIsSelected] = useState(false)
-  const [selectedDoctorVisits, setSelectedDoctorVisits] = useState([])
-  const daysOfWeek = ['Poniedzialek', 'Wtorek', 'Sroda', 'Czwartek', 'Piatek']
-  const [week, setWeek] = useState([])
-  const hours = [8, 9, 10, 11, 12, 13, 14, 15, 16]
-  const [firstDay, setFirstDay] = useState('')
-  const [selectedVisit, setSelectedVisit] = useState(null)
+  const [isDelete, setIsDelete] = useState(false)
+  const [visitId, setVisitId] = useState('')
+  const [pageNumber, setPageNumber] = useState(0)
+  const visitsPerPage = 5
+  const pagesVisited = pageNumber * visitsPerPage
+  const allUsers = useFetchAllUsers()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   useEffect(() => {
     retrieveVisits()
   }, [])
 
-  useEffect(() => {
-    let curr = new Date()
-    let week = []
-
-    let first = curr.getDate() - curr.getDay()
-    setFirstDay(first)
-    for (let i = 1; i <= 5; i++) {
-      let day = new Date(curr.setDate(first + i))
-        .toLocaleDateString('en-US')
-        .slice(0, 10)
-      week.push({
-        dayOfWeek: `${daysOfWeek[i - 1]}`,
-        data: `${day.split('/')[1]}.${day.split('/')[0]}.${day.split('/')[2]}`,
-      })
-    }
-    setWeek(week)
-
-  }, [])
-
   const retrieveVisits = () => {
     VisitData.getAll().then((response) => {
-      const visitsArr = response.data.filter(
-        (visit) => visit.specjalista.sid === currentUser.id
+      const currentUserVisits = response.data.filter(
+        (visit) =>
+          visit.specjalista.sid === currentUser.id && visit.status === false
       )
-      setSelectedDoctorVisits(visitsArr)
+      setVisits(currentUserVisits)
     })
   }
 
-  const itemOne = {
-    hidden: { x: 100, opacity: 0 },
-    visible: {
-      x: 0,
-      opacity: 1,
-      transition: { type: 'spring', duration: 0.5, damping: 7, stiffness: 50 },
-    },
-  }
-  const itemTwo = {
-    hidden: { x: -100, opacity: 0 },
-    visible: {
-      x: 0,
-      opacity: 1,
-      transition: { type: 'spring', duration: 0.5, damping: 7, stiffness: 50 },
-    },
+  const isWeekday = (date) => {
+    const day = getDay(date)
+    return day !== 0 && day !== 6
   }
 
-  const onPreviousWeek = () => {
-    let curr = new Date()
-    let updateWeek = []
-    for (let i = 1; i <= 5; i++) {
-      let day = new Date(curr.setDate(firstDay - 7 + i))
-        .toLocaleDateString('en-US')
-        .slice(0, 10)
-      updateWeek.push({
-        dayOfWeek: `${daysOfWeek[i - 1]}`,
-        data: `${day.split('/')[1]}.${day.split('/')[0]}.${day.split('/')[2]}`,
-      })
-    }
-    setWeek(updateWeek)
-    setFirstDay(firstDay - 7)
-  }
-
-  const onNextWeek = () => {
-    let curr = new Date()
-    let updateWeek = []
-    for (let i = 1; i <= 5; i++) {
-      let day = new Date(curr.setDate(firstDay + 7 + i))
-        .toLocaleDateString('en-US')
-        .slice(0, 10)
-      updateWeek.push({
-        dayOfWeek: `${daysOfWeek[i - 1]}`,
-        data: `${day.split('/')[1]}.${day.split('/')[0]}.${day.split('/')[2]}`,
-      })
-    }
-    setFirstDay(firstDay + 7)
-    setWeek(updateWeek)
-  }
-
-  const checkIfExists = (hour, day) => {
-    return selectedDoctorVisits.find(
-      (visit) => visit.godzina === `${hour}` && visit.data === day.data
+  const onDateSelect = (date) => {
+    setSelectedDate(date)
+    let selectedDate = `${date.getDate()}.${
+      date.getMonth() + 1
+    }.${date.getFullYear()}`
+    const selectedDateVisitsArr = visits.filter(
+      (visit) => visit.data === selectedDate
     )
+    setSelectedDateVisits(selectedDateVisitsArr)
+  }
+
+  const goToVisit = (item) => {
+    navigate(`/visits/${item.id}`, {
+      state: { item: item, bRoute: 'timesheet' },
+    })
+  }
+
+  const onVisitDelete = () => {
+    setIsDelete(false)
+    VisitData.remove(visitId.id)
+      .then((response) => {
+        console.log('Usunieto wizyte pomyslnie!')
+        dispatch(refreshApp())
+      })
+      .catch((e) => console.log(e))
+  }
+
+  const displayVisits = selectedDateVisits
+    .slice(pagesVisited, pagesVisited + visitsPerPage)
+    .map((visit, i) => {
+      if (allUsers.length > 0) {
+        return (
+          <>
+            <Visit
+              initial={{ opacity: 0, x: -100 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, delay: i * 0.2 }}
+              key={visit._id}
+              onClick={() => goToVisit(visit)}
+            >
+              <VisitContent primary>{visit.usluga}</VisitContent>
+              <VisitContent>
+                {`${visit.specjalista.imie} ${visit.specjalista.nazwisko}`}
+              </VisitContent>
+              <VisitContent>{visit.data}</VisitContent>
+              <VisitContent>{visit.godzina}:00</VisitContent>
+              <VisitContent>{visit.cena}zł</VisitContent>
+              <VisitDelete
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setIsDelete(true)
+                  setVisitId(visit)
+                }}
+              >
+                <FaTrashAlt />
+              </VisitDelete>
+            </Visit>
+          </>
+        )
+      }
+    })
+
+  const pageCount = Math.ceil(selectedDateVisits.length / visitsPerPage)
+  const changePage = ({ selected }) => {
+    setPageNumber(selected)
+  }
+
+  const onFilterByService = () => {
+    if (filterPosition.usluga === 0) {
+      const descArr = selectedDateVisits.sort((a, b) =>
+        b.usluga.toLowerCase() > a.usluga.toLowerCase() ? 1 : -1
+      )
+      setSelectedDateVisits(descArr)
+      setFilterPosition({ usluga: 1, data: 0, godzina: 0, cena: 0, lekarz: 0 })
+    } else if (filterPosition.usluga === 1) {
+      const ascArr = selectedDateVisits.sort((a, b) =>
+        a.usluga.toLowerCase() > b.usluga.toLowerCase() ? 1 : -1
+      )
+      setSelectedDateVisits(ascArr)
+      setFilterPosition({ usluga: 2, data: 0, godzina: 0, cena: 0, lekarz: 0 })
+    } else if (filterPosition.usluga === 2) {
+      retrieveVisits()
+      setFilterPosition({ usluga: 0, data: 0, godzina: 0, cena: 0, lekarz: 0 })
+    }
+  }
+
+  const onFilterBySpecialist = () => {
+    if (filterPosition.lekarz === 0) {
+      const descArr = selectedDateVisits.sort((a, b) =>
+        b.specjalista.nazwisko.toLowerCase() >
+        a.specjalista.nazwisko.toLowerCase()
+          ? 1
+          : -1
+      )
+      setSelectedDateVisits(descArr)
+      setFilterPosition({ usluga: 0, data: 0, godzina: 0, cena: 0, lekarz: 1 })
+    } else if (filterPosition.lekarz === 1) {
+      const ascArr = selectedDateVisits.sort((a, b) =>
+        a.specjalista.nazwisko.toLowerCase() >
+        b.specjalista.nazwisko.toLowerCase()
+          ? 1
+          : -1
+      )
+      setSelectedDateVisits(ascArr)
+      setFilterPosition({ usluga: 0, data: 0, godzina: 0, cena: 0, lekarz: 2 })
+    } else if (filterPosition.lekarz === 2) {
+      retrieveVisits()
+      setFilterPosition({ usluga: 0, data: 0, godzina: 0, cena: 0, lekarz: 0 })
+    }
+  }
+
+  const onFilterByDate = () => {
+    if (filterPosition.data === 0) {
+      const descArr = selectedDateVisits.sort((a, b) => {
+        let aa = a.data.split('.').reverse().join()
+        let bb = b.data.split('.').reverse().join()
+        return aa > bb ? -1 : aa > bb ? 1 : 0
+      })
+      setSelectedDateVisits(descArr)
+      setFilterPosition({ usluga: 0, data: 1, godzina: 0, cena: 0, lekarz: 0 })
+    } else if (filterPosition.data === 1) {
+      const ascArr = selectedDateVisits.sort((a, b) => {
+        let aa = a.data.split('.').reverse().join()
+        let bb = b.data.split('.').reverse().join()
+        return aa < bb ? -1 : aa > bb ? 1 : 0
+      })
+      setSelectedDateVisits(ascArr)
+      setFilterPosition({ usluga: 0, data: 2, godzina: 0, cena: 0, lekarz: 0 })
+    } else if (filterPosition.data === 2) {
+      retrieveVisits()
+      setFilterPosition({ usluga: 0, data: 0, godzina: 0, cena: 0, lekarz: 0 })
+    }
+  }
+
+  const onFilterByHour = () => {
+    if (filterPosition.godzina === 0) {
+      const descArr = selectedDateVisits.sort((a, b) => b.godzina - a.godzina)
+      setSelectedDateVisits(descArr)
+      setFilterPosition({ usluga: 0, data: 0, godzina: 1, cena: 0, lekarz: 0 })
+    } else if (filterPosition.godzina === 1) {
+      const ascArr = selectedDateVisits.sort((a, b) => a.godzina - b.godzina)
+      setSelectedDateVisits(ascArr)
+      setFilterPosition({ usluga: 0, data: 0, godzina: 2, cena: 0, lekarz: 0 })
+    } else if (filterPosition.godzina === 2) {
+      retrieveVisits()
+      setFilterPosition({ usluga: 0, data: 0, godzina: 0, cena: 0, lekarz: 0 })
+    }
+  }
+
+  const onFilterByPrice = () => {
+    if (filterPosition.cena === 0) {
+      const descArr = selectedDateVisits.sort((a, b) => b.cena - a.cena)
+      setSelectedDateVisits(descArr)
+      setFilterPosition({ usluga: 0, data: 0, godzina: 0, cena: 1, lekarz: 0 })
+    } else if (filterPosition.cena === 1) {
+      const ascArr = selectedDateVisits.sort((a, b) => a.cena - b.cena)
+      setSelectedDateVisits(ascArr)
+      setFilterPosition({ usluga: 0, data: 0, godzina: 0, cena: 2, lekarz: 0 })
+    } else if (filterPosition.cena === 2) {
+      retrieveVisits()
+      setFilterPosition({ usluga: 0, data: 0, godzina: 0, cena: 0, lekarz: 0 })
+    }
+  }
+
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        delayChildren: 1,
+        staggerChildren: 1,
+      },
+    },
+  }
+  const itemOne = {
+    hidden: { y: -100, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+    },
   }
 
   return (
     <PageWrapper>
-      <TimesheetPageContainer>
-        <TimesheetTitleContainer>
-          <TimesheetTitle
-            initial={{ x: 300, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{
-              type: 'spring',
-              damping: 7,
-              stiffness: 50,
-              duration: 0.5,
-            }}
+      <StyledContainer>
+        <VisitsPageTitleContainer>
+          <VisitsPageTitle
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.1 }}
           >
             Grafik
-          </TimesheetTitle>
-        </TimesheetTitleContainer>
-        {console.log('test', week)}
-        {selectedDoctorVisits.length > 0 && (
-          <TimesheetContainer style={state.timesheet ? enabled : disabled}>
-            <button onClick={onPreviousWeek}>Poprzedni tydzień</button>
-            <button onClick={onNextWeek}>Następny tydzień</button>
-            <TimesheetDaysContainer
-              initial={{ x: 50, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.5 }}
-            >
-              {week.map((day, i) => (
-                <Day key={i}>{day.dayOfWeek}</Day>
-              ))}
-            </TimesheetDaysContainer>
-            <TimesheetWrap>
-              <TimesheetHoursContainer
-                initial={{ y: 50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.5 }}
-              >
-                {hours.map((hour) => (
-                  <Hour>{hour}</Hour>
-                ))}
-              </TimesheetHoursContainer>
-              <Timesheet
-                variants={container}
-                initial='hidden'
-                animate='visible'
-              >
-                {hours.map((hour) => (
-                  <VisitRow variants={itemOne} key={hour}>
-                    {week.map((day, i) => (
-                      <React.Fragment key={i}>
-                        {checkIfExists(hour, day) ? (
-                          <Visit
-                            available
-                            onClick={() => {
-                              setIsSelected(!isSelected)
-                              setSelectedVisit(checkIfExists(hour, day))
-                            }}
-                          >
-                            {checkIfExists(hour, day).usluga}
-                          </Visit>
-                        ) : (
-                          <Visit
-                            onClick={() => {
-                              setIsSelected(!isSelected)
-                              setSelectedVisit(null)
-                            }}
-                          ></Visit>
-                        )}
-                      </React.Fragment>
-                    ))}
-                  </VisitRow>
-                ))}
-              </Timesheet>
-            </TimesheetWrap>
-          </TimesheetContainer>
-        )}
-        {isSelected && (
-          <div
-            style={{
-              width: '100vw',
-              height: 'calc(100vh - 4.2em)',
-              position: 'absolute',
-              left: '73%',
-              top: '4.2em',
-              zIndex: '999',
-            }}
-          >
-            <div
-              style={{
-                position: 'fixed',
-                width: '400px',
-                height: '100%',
-                padding: '0 20px',
-                backgroundColor: '#fff',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              {selectedVisit !== null ? (
+          </VisitsPageTitle>
+        </VisitsPageTitleContainer>
+        <DatePicker
+          selected={false}
+          dateFormat='dd/MM/yyyy'
+          onChange={(date) => onDateSelect(date)}
+          filterDate={isWeekday}
+          name='data'
+          calendarClassName={styles.datePicker}
+          inline
+        />
+        <VisitsPageContainer>
+          <VisitsContainer>
+            {selectedDate !== null ? (
+              selectedDateVisits.length > 0 ? (
                 <>
-                  <h2 style={{ marginBottom: '20px' }}>Podsumowanie</h2>
-                  <div
-                    style={{
-                      position: 'relative',
-                      backgroundColor: '#fff',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
+                  <Headers variants={container} initial='hidden' animate='show'>
+                    <Header primary onClick={onFilterByService}>
+                      <HeaderText variants={itemOne}>usługa</HeaderText>
+                      {filterPosition.usluga === 0 ? (
+                        <TriangleDesc />
+                      ) : filterPosition.usluga === 1 ? (
+                        <TriangleDescActive />
+                      ) : (
+                        <TriangleAsc />
+                      )}
+                    </Header>
+                    <Header onClick={onFilterBySpecialist}>
+                      <HeaderText>lekarz</HeaderText>
+                      {filterPosition.lekarz === 0 ? (
+                        <TriangleDesc />
+                      ) : filterPosition.lekarz === 1 ? (
+                        <TriangleDescActive />
+                      ) : (
+                        <TriangleAsc />
+                      )}
+                    </Header>
+                    <Header onClick={onFilterByDate}>
+                      <HeaderText>data</HeaderText>
+                      {filterPosition.data === 0 ? (
+                        <TriangleDesc />
+                      ) : filterPosition.data === 1 ? (
+                        <TriangleDescActive />
+                      ) : (
+                        <TriangleAsc />
+                      )}
+                    </Header>
+                    <Header onClick={onFilterByHour}>
+                      <HeaderText>godzina</HeaderText>
+                      {filterPosition.godzina === 0 ? (
+                        <TriangleDesc />
+                      ) : filterPosition.godzina === 1 ? (
+                        <TriangleDescActive />
+                      ) : (
+                        <TriangleAsc />
+                      )}
+                    </Header>
+                    <Header onClick={onFilterByPrice}>
+                      <HeaderText>cena</HeaderText>
+                      {filterPosition.cena === 0 ? (
+                        <TriangleDesc />
+                      ) : filterPosition.cena === 1 ? (
+                        <TriangleDescActive />
+                      ) : (
+                        <TriangleAsc />
+                      )}
+                    </Header>
+                  </Headers>
+                  <VisitsListContainer
+                    variants={container}
+                    initial='hidden'
+                    animate='show'
                   >
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        width: '50%',
-                      }}
-                    >
-                      <h3>Twoje dane</h3>
-                      <p>
-                        {selectedVisit.imie} {selectedVisit.nazwisko}
-                      </p>
-                      <p>{selectedVisit.email}</p>
-                      <p>{selectedVisit.telefon}</p>
-                      <p>{selectedVisit.miasto}</p>
-                      <p>{selectedVisit.ulica}</p>
-                      <p>{selectedVisit.kodPocztowy}</p>
-                    </div>
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        width: '50%',
-                      }}
-                    >
-                      <h3>Umówiona wizyta</h3>
-                      <p>{selectedVisit.grupa}</p>
-                      <p>{selectedVisit.usluga}</p>
-                      <p>{selectedVisit.data}r.</p>
-                      <p>{selectedVisit.godzina}:00</p>
-                    </div>
-                  </div>
+                    {displayVisits}
+                    <MyPaginate
+                      previousLabel={'Poprzednia strona'}
+                      nextLabel={'Następna strona'}
+                      pageCount={pageCount}
+                      onPageChange={changePage}
+                    />
+                  </VisitsListContainer>
                 </>
               ) : (
-                <h2>Tutaj bedzie formularz do rezerwacji wizyty</h2>
-              )}
-            </div>
-          </div>
+                <VisitsPageTitle
+                  initial={{ y: -50, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.1 }}
+                >
+                  Brak wizyt tego dnia
+                </VisitsPageTitle>
+              )
+            ) : (
+              <VisitsPageTitle
+                initial={{ y: -50, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.1 }}
+              >
+                Wybierz datę
+              </VisitsPageTitle>
+            )}
+          </VisitsContainer>
+        </VisitsPageContainer>
+        {isDelete && (
+          <ModalShadow>
+            <ModalContainer>
+              <ModalText>Na pewno chcesz usunąć wizytę?</ModalText>
+              <ModalButtonsContainer>
+                <ModalButton primary onClick={() => setIsDelete(false)}>
+                  Nie
+                </ModalButton>
+                <ModalButton onClick={onVisitDelete}>Tak</ModalButton>
+              </ModalButtonsContainer>
+            </ModalContainer>
+          </ModalShadow>
         )}
-      </TimesheetPageContainer>
-
-      <Pattern
-        initial={{ x: 300, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{
-          type: 'spring',
-          damping: 7,
-          stiffness: 50,
-          duration: 0.5,
-          delay: 0.6,
-        }}
-        src='Pattern.png'
-        top='15%'
-        left='70%'
-      />
-      <TimesheetLegend>
-        <LegendItemWrap>
-          <CircleFree
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{
-              type: 'spring',
-              damping: 3,
-              stiffness: 150,
-            }}
-          />
-          <LegendText
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            Wolny termin
-          </LegendText>
-        </LegendItemWrap>
-        <LegendItemWrap>
-          <CircleReserved
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{
-              type: 'spring',
-              damping: 3,
-              stiffness: 150,
-            }}
-          />
-          <LegendText
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            Zarezerwowany termin
-          </LegendText>
-        </LegendItemWrap>
-        <LegendItemWrap>
-          <CircleActive
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{
-              type: 'spring',
-              damping: 3,
-              stiffness: 150,
-            }}
-          />
-          <LegendText
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            Zaznaczony termin
-          </LegendText>
-        </LegendItemWrap>
-      </TimesheetLegend>
+      </StyledContainer>
     </PageWrapper>
   )
 }
