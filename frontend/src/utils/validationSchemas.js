@@ -415,3 +415,47 @@ export const updatePermissionsValidationSchema = Yup.object().shape({
     )
     .min(1, 'Wybierz min. 1 specjalizacje'),
 })
+
+export const addVisitAdminTimesheetValidationSchema = Yup.object().shape({
+  grupa: Yup.string().required('Wybierz grupe uslug...'),
+  usluga: Yup.string().required('Wybierz usluge...'),
+  imie: Yup.string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Wprowadz imie...'),
+  nazwisko: Yup.string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Wprowadz nazwisko...'),
+  email: Yup.string()
+    .email('Invalid email')
+    .required('Wprowadz adres e-mail...'),
+  telefon: Yup.number()
+    .test(
+      'len',
+      'Numer telefonu musi miec 9 cyfr',
+      (val) => val && val.toString().length === 9
+    )
+    .required('Numer telefonu jest wymagany'),
+  miasto: Yup.string()
+    .min(3, 'Miejscowosc musi miec co najmniej 3 znaki')
+    .max(50, 'Miejscowosc moze miec maksymalnie 50 znakow')
+    .required('Wprowadz miejscowosc...'),
+  ulica: Yup.string()
+    .min(3, 'Ulica musi miec co najmniej 3 znaki')
+    .max(50, 'Ulica moze miec maksymalnie 50 znakow')
+    .required('Wprowadz ulice...'),
+  kodPocztowy: Yup.number()
+    .test(
+      'len',
+      'Kod pocztowy musi miec 5 cyfr',
+      (val) => val && val.toString().length === 5
+    )
+    .required('Kod pocztowy jest wymagany'),
+  password: Yup.string()
+    .label('Password')
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      'Haslo musi zawierac min. 8 znakow w tym: litere, cyfre i znak specjalny'
+    ),
+})
