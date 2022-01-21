@@ -18,3 +18,19 @@ font-family: 'bebas neue', 'sans-serif';
 letter-spacing: .05em;
 color: ${props => props.primary ? "#01d4bf" : "#333"};
 `
+export const FormContainer = styled.div`
+display: flex;
+width: 100%;
+background-color: gray;
+height: fit-content;
+gap: 3em;
+`
+export const FormColumn = styled.div`
+background-color: ${props => props.primary ? "#444" : "cadetblue"};
+display: flex;
+flex-direction: column;
+justify-content: flex-start;
+align-items: flex-start;
+flex-grow: 1;
+
+`

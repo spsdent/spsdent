@@ -37,6 +37,8 @@ import {
   AddVisitContainer,
   TitleContainer,
   Title,
+  FormContainer,
+  FormColumn,
 } from "./AddVisitPageElements";
 const styles = {
   inputStyle: {
@@ -408,26 +410,27 @@ const AddVisitAdmin = () => {
                 }) => (
                   <>
                     <Form
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        width: "300px",
-                      }}
+                    // style={{
+                    //   display: "flex",
+                    //   flexDirection: "column",
+                    //   width: "300px",
+                    //   backgroundColor: 'red',
+                    // }}
                     >
-                      <Field
-                        as="select"
-                        name="grupa"
-                        style={styles.selectStyle}
-                        onBlur={handleBlur}
-                      >
-                        <option value="">Wybierz grupe usług</option>
-                        {serviceGroupHandler(values)}
-                      </Field>
-                      {errors.grupa && touched.grupa ? (
-                        <p style={styles.errorStyle}>{errors.grupa}</p>
-                      ) : null}
-                      {serviceGroupSelected && (
-                        <>
+                      <FormContainer>
+                        <FormColumn>
+                          <Field
+                            as="select"
+                            name="grupa"
+                            style={styles.selectStyle}
+                            onBlur={handleBlur}
+                          >
+                            <option value="">Wybierz grupe usług</option>
+                            {serviceGroupHandler(values)}
+                          </Field>
+                          {errors.grupa && touched.grupa ? (
+                            <p style={styles.errorStyle}>{errors.grupa}</p>
+                          ) : null}
                           <Field
                             as="select"
                             name="usluga"
@@ -456,251 +459,251 @@ const AddVisitAdmin = () => {
                                   {errors.specjalista}
                                 </p>
                               ) : null}
-                              {doctorSelected && (
+                              <DatePicker
+                                inline
+                                selected={startDate}
+                                dateFormat="dd/MM/yyyy"
+                                // shouldCloseOnSelect={false}
+                                onChange={(date) => {
+                                  setStartDate(date);
+                                  values.data = `${date.getDate()}.${
+                                    date.getMonth() + 1
+                                  }.${date.getFullYear()}`;
+                                  setValues(values);
+                                }}
+                                minDate={minDate}
+                                placeholderText="Wybierz termin wizyty"
+                                filterDate={isWeekday}
+                                excludeDates={datesToExclude}
+                                name="data"
+                                onBlur={handleBlur}
+                              />
+                              {errors.data && touched.data ? (
+                                <p style={styles.errorStyle}>{errors.data}</p>
+                              ) : null}
+                              {values.data && (
                                 <>
-                                  <DatePicker
-                                    selected={startDate}
-                                    dateFormat="dd/MM/yyyy"
-                                    onChange={(date) => {
-                                      setStartDate(date);
-                                      values.data = `${date.getDate()}.${
-                                        date.getMonth() + 1
-                                      }.${date.getFullYear()}`;
-                                      setValues(values);
-                                    }}
-                                    minDate={minDate}
-                                    placeholderText="Wybierz termin wizyty"
-                                    filterDate={isWeekday}
-                                    excludeDates={datesToExclude}
-                                    name="data"
+                                  <Field
+                                    as="select"
+                                    name="godzina"
+                                    style={styles.inputStyle}
                                     onBlur={handleBlur}
-                                  />
-                                  {errors.data && touched.data ? (
+                                  >
+                                    <option value="">Wybierz godzine...</option>
+                                    {pickingHours(values.data)}
+                                  </Field>
+                                  {errors.godzina && touched.godzina ? (
                                     <p style={styles.errorStyle}>
-                                      {errors.data}
+                                      {errors.godzina}
                                     </p>
                                   ) : null}
-                                  {values.data && (
-                                    <>
-                                      <Field
-                                        as="select"
-                                        name="godzina"
-                                        style={styles.inputStyle}
-                                        onBlur={handleBlur}
-                                      >
-                                        <option value="">
-                                          Wybierz godzine...
-                                        </option>
-                                        {pickingHours(values.data)}
-                                      </Field>
-                                      {errors.godzina && touched.godzina ? (
-                                        <p style={styles.errorStyle}>
-                                          {errors.godzina}
-                                        </p>
-                                      ) : null}
-                                      {/* {setChoseHour(values.godzina)} */}
-                                    </>
-                                  )}
+                                  {/* {setChoseHour(values.godzina)} */}
                                 </>
                               )}
                             </>
                           )}
-                        </>
-                      )}
+                        </FormColumn>
+                        <FormColumn primary>
+                          <Field
+                            name="imie"
+                            style={styles.inputStyle}
+                            placeholder="Imię"
+                            onBlur={handleBlur}
+                          />
+                          {errors.imie && touched.imie ? (
+                            <p style={styles.errorStyle}>{errors.imie}</p>
+                          ) : null}
 
-                      <Field
-                        name="imie"
-                        style={styles.inputStyle}
-                        placeholder="Imię"
-                        onBlur={handleBlur}
-                      />
-                      {errors.imie && touched.imie ? (
-                        <p style={styles.errorStyle}>{errors.imie}</p>
-                      ) : null}
+                          <Field
+                            name="nazwisko"
+                            style={styles.inputStyle}
+                            placeholder="Nazwisko"
+                            onBlur={handleBlur}
+                          />
+                          {errors.nazwisko && touched.nazwisko ? (
+                            <p style={styles.errorStyle}>{errors.nazwisko}</p>
+                          ) : null}
 
-                      <Field
-                        name="nazwisko"
-                        style={styles.inputStyle}
-                        placeholder="Nazwisko"
-                        onBlur={handleBlur}
-                      />
-                      {errors.nazwisko && touched.nazwisko ? (
-                        <p style={styles.errorStyle}>{errors.nazwisko}</p>
-                      ) : null}
+                          <Field
+                            name="email"
+                            type="email"
+                            style={styles.inputStyle}
+                            placeholder="E-mail"
+                            onBlur={handleBlur}
+                          />
+                          {errors.email && touched.email ? (
+                            <p style={styles.errorStyle}>{errors.email}</p>
+                          ) : null}
 
-                      <Field
-                        name="email"
-                        type="email"
-                        style={styles.inputStyle}
-                        placeholder="E-mail"
-                        onBlur={handleBlur}
-                      />
-                      {errors.email && touched.email ? (
-                        <p style={styles.errorStyle}>{errors.email}</p>
-                      ) : null}
+                          <Field
+                            name="telefon"
+                            style={styles.inputStyle}
+                            placeholder="Telefon"
+                            onBlur={handleBlur}
+                          />
+                          {errors.telefon && touched.telefon ? (
+                            <p style={styles.errorStyle}>{errors.telefon}</p>
+                          ) : null}
 
-                      <Field
-                        name="telefon"
-                        style={styles.inputStyle}
-                        placeholder="Telefon"
-                        onBlur={handleBlur}
-                      />
-                      {errors.telefon && touched.telefon ? (
-                        <p style={styles.errorStyle}>{errors.telefon}</p>
-                      ) : null}
+                          <Field
+                            name="miasto"
+                            style={styles.inputStyle}
+                            placeholder="Miasto"
+                            onBlur={handleBlur}
+                          />
+                          {errors.miasto && touched.miasto ? (
+                            <p style={styles.errorStyle}>{errors.miasto}</p>
+                          ) : null}
 
-                      <Field
-                        name="miasto"
-                        style={styles.inputStyle}
-                        placeholder="Miasto"
-                        onBlur={handleBlur}
-                      />
-                      {errors.miasto && touched.miasto ? (
-                        <p style={styles.errorStyle}>{errors.miasto}</p>
-                      ) : null}
+                          <Field
+                            name="ulica"
+                            style={styles.inputStyle}
+                            placeholder="Ulica"
+                            onBlur={handleBlur}
+                          />
+                          {errors.ulica && touched.ulica ? (
+                            <p style={styles.errorStyle}>{errors.ulica}</p>
+                          ) : null}
 
-                      <Field
-                        name="ulica"
-                        style={styles.inputStyle}
-                        placeholder="Ulica"
-                        onBlur={handleBlur}
-                      />
-                      {errors.ulica && touched.ulica ? (
-                        <p style={styles.errorStyle}>{errors.ulica}</p>
-                      ) : null}
-
-                      <Field
-                        name="kodPocztowy"
-                        style={styles.inputStyle}
-                        placeholder="Kod-pocztowy"
-                        onBlur={handleBlur}
-                      />
-                      {errors.kodPocztowy && touched.kodPocztowy ? (
-                        <p style={styles.errorStyle}>{errors.kodPocztowy}</p>
-                      ) : null}
-                      {!allUsersFromDb.filter(
-                        (user) => user.email === values.email
-                      ).length ? (
-                        <>
-                          {isCreateAccount ? (
+                          <Field
+                            name="kodPocztowy"
+                            style={styles.inputStyle}
+                            placeholder="Kod-pocztowy"
+                            onBlur={handleBlur}
+                          />
+                          {errors.kodPocztowy && touched.kodPocztowy ? (
+                            <p style={styles.errorStyle}>
+                              {errors.kodPocztowy}
+                            </p>
+                          ) : null}
+                          {!allUsersFromDb.filter(
+                            (user) => user.email === values.email
+                          ).length ? (
                             <>
-                              <p style={{ fontSize: ".75em" }}>
-                                Jednak nie chcesz tworzyc konta?
-                                <span
-                                  style={{
-                                    color: "#01D4BF",
-                                    cursor: "pointer",
-                                  }}
-                                  onClick={() => {
-                                    const { password, ...oldValues } = values;
-                                    setIsCreateAccount(false);
-                                    setValues(oldValues);
-                                  }}
-                                >
-                                  Kliknij tutaj
-                                </span>
-                              </p>
+                              {isCreateAccount ? (
+                                <>
+                                  <p style={{ fontSize: ".75em" }}>
+                                    Jednak nie chcesz tworzyc konta?
+                                    <span
+                                      style={{
+                                        color: "#01D4BF",
+                                        cursor: "pointer",
+                                      }}
+                                      onClick={() => {
+                                        const { password, ...oldValues } =
+                                          values;
+                                        setIsCreateAccount(false);
+                                        setValues(oldValues);
+                                      }}
+                                    >
+                                      Kliknij tutaj
+                                    </span>
+                                  </p>
 
-                              <Field
-                                name="password"
-                                type="password"
-                                style={styles.inputStyle}
-                                placeholder="Wpisz hasło"
-                                onBlur={handleBlur}
-                              />
-                              {errors.password && touched.password ? (
-                                <p style={{ color: "red" }}>
-                                  {errors.password}
+                                  <Field
+                                    name="password"
+                                    type="password"
+                                    style={styles.inputStyle}
+                                    placeholder="Wpisz hasło"
+                                    onBlur={handleBlur}
+                                  />
+                                  {errors.password && touched.password ? (
+                                    <p style={{ color: "red" }}>
+                                      {errors.password}
+                                    </p>
+                                  ) : null}
+                                </>
+                              ) : (
+                                <p style={{ fontSize: ".75em" }}>
+                                  Chcesz utworzyć konto?
+                                  <span
+                                    style={{
+                                      color: "#01D4BF",
+                                      cursor: "pointer",
+                                    }}
+                                    onClick={() => setIsCreateAccount(true)}
+                                  >
+                                    Kliknij tutaj
+                                  </span>
                                 </p>
-                              ) : null}
+                              )}
+                            </>
+                          ) : null}
+                          <button type="submit" style={styles.buttonStyle}>
+                            Podsumowanie
+                          </button>
+                          <button type="reset" style={styles.buttonStyle}>
+                            Wyczysc formularz
+                          </button>
+                        </FormColumn>
+                        <FormColumn>
+                          {currentUser &&
+                            currentUser.roles[currentUser.roles.length - 1] ===
+                              "ROLE_ADMIN" && (
+                              <>
+                                <label>Wyszukaj pacjenta z bazy</label>
+                                <Field
+                                  name="pacjent"
+                                  style={styles.inputStyle}
+                                  placeholder="Wyszukaj pacjenta"
+                                />
+                                <button
+                                  onClick={() => searchUser(values)}
+                                  type="button"
+                                  style={styles.buttonStyle}
+                                >
+                                  Wyszukaj
+                                </button>
+                                {errors.pacjent && touched.pacjent ? (
+                                  <p style={{ color: "red" }}>
+                                    {errors.pacjent}
+                                  </p>
+                                ) : null}
+                              </>
+                            )}
+
+                          {foundUsers.length > 0 ? (
+                            <>
+                              {foundUsers.map((user) => (
+                                <div
+                                  style={{
+                                    backgroundColor: "#333",
+                                    width: "300px",
+                                    padding: "15px",
+                                    color: "white",
+                                  }}
+                                  key={user._id}
+                                >
+                                  <p>Imie: {user.imie}</p>
+                                  <p>Nazwisko: {user.nazwisko}</p>
+                                  <p>Telefon: {user.telefon}</p>
+                                  <p>Miasto: {user.miasto}</p>
+                                  <p>Ulica: {user.ulica}</p>
+                                  <p>Kod-pocztowy: {user.kodPocztowy}</p>
+                                  <button
+                                    onClick={() => {
+                                      fillFormHandler(user, setValues);
+                                    }}
+                                    type="submit"
+                                    style={{
+                                      backgroundColor: "none",
+                                      border: "2px solid #333",
+                                      height: "3em",
+                                      margin: "10px 0",
+                                      padding: "10px",
+                                      cursor: "pointer",
+                                    }}
+                                  >
+                                    Wybierz tego pacjenta
+                                  </button>
+                                </div>
+                              ))}
                             </>
                           ) : (
-                            <p style={{ fontSize: ".75em" }}>
-                              Chcesz utworzyć konto?
-                              <span
-                                style={{
-                                  color: "#01D4BF",
-                                  cursor: "pointer",
-                                }}
-                                onClick={() => setIsCreateAccount(true)}
-                              >
-                                Kliknij tutaj
-                              </span>
-                            </p>
+                            <p style={{ color: "red" }}>{errorMsg}</p>
                           )}
-                        </>
-                      ) : null}
-                      <button type="submit" style={styles.buttonStyle}>
-                        Podsumowanie
-                      </button>
-                      <button type="reset" style={styles.buttonStyle}>
-                        Wyczysc formularz
-                      </button>
-                      {currentUser &&
-                        currentUser.roles[currentUser.roles.length - 1] ===
-                          "ROLE_ADMIN" && (
-                          <>
-                            <label>Wyszukaj pacjenta z bazy</label>
-                            <Field
-                              name="pacjent"
-                              style={styles.inputStyle}
-                              placeholder="Wyszukaj pacjenta"
-                            />
-                            <button
-                              onClick={() => searchUser(values)}
-                              type="button"
-                              style={
-                                styles.buttonStyle
-                              }
-                            >
-                              Wyszukaj
-                            </button>
-                            {errors.pacjent && touched.pacjent ? (
-                              <p style={{ color: "red" }}>{errors.pacjent}</p>
-                            ) : null}
-                          </>
-                        )}
-
-                      {foundUsers.length > 0 ? (
-                        <>
-                          {foundUsers.map((user) => (
-                            <div
-                              style={{
-                                backgroundColor: "#333",
-                                width: "300px",
-                                padding: "15px",
-                                color: "white",
-                              }}
-                              key={user._id}
-                            >
-                              <p>Imie: {user.imie}</p>
-                              <p>Nazwisko: {user.nazwisko}</p>
-                              <p>Telefon: {user.telefon}</p>
-                              <p>Miasto: {user.miasto}</p>
-                              <p>Ulica: {user.ulica}</p>
-                              <p>Kod-pocztowy: {user.kodPocztowy}</p>
-                              <button
-                                onClick={() => {
-                                  fillFormHandler(user, setValues);
-                                }}
-                                type="submit"
-                                style={{
-                                  backgroundColor: "none",
-                                  border: "2px solid #333",
-                                  height: "3em",
-                                  margin: "10px 0",
-                                  padding: "10px",
-                                  cursor: "pointer",
-                                }}
-                              >
-                                Wybierz tego pacjenta
-                              </button>
-                            </div>
-                          ))}
-                        </>
-                      ) : (
-                        <p style={{ color: "red" }}>{errorMsg}</p>
-                      )}
+                        </FormColumn>
+                      </FormContainer>
                       {isSubmit && (
                         <div
                           style={{
