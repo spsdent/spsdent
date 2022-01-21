@@ -39,6 +39,14 @@ import {
   Title,
   FormContainer,
   FormColumn,
+  FormInput,
+  FormButton,
+  FormBook,
+  FormSelect,
+  FormError,
+  RegisterText,
+  TextContainer,
+  SubTitle,
 } from "./AddVisitPageElements";
 const styles = {
   inputStyle: {
@@ -72,6 +80,7 @@ const styles = {
     backgroundColor: "transparent",
     border: "2px solid #333",
     height: "3em",
+    width: "18em",
     margin: ".5em 0",
     paddingLeft: ".5em",
     fontFamily: "Poppins",
@@ -419,6 +428,9 @@ const AddVisitAdmin = () => {
                     >
                       <FormContainer>
                         <FormColumn>
+                          <TextContainer>
+                            <SubTitle>Wybierz dane wizyty</SubTitle>
+                          </TextContainer>
                           <Field
                             as="select"
                             name="grupa"
@@ -486,7 +498,7 @@ const AddVisitAdmin = () => {
                                   <Field
                                     as="select"
                                     name="godzina"
-                                    style={styles.inputStyle}
+                                    style={styles.selectStyle}
                                     onBlur={handleBlur}
                                   >
                                     <option value="">Wybierz godzine...</option>
@@ -504,9 +516,11 @@ const AddVisitAdmin = () => {
                           )}
                         </FormColumn>
                         <FormColumn primary>
-                          <Field
+                          <TextContainer>
+                            <SubTitle primary>Podaj dane osobowe</SubTitle>
+                          </TextContainer>
+                          <FormInput
                             name="imie"
-                            style={styles.inputStyle}
                             placeholder="Imię"
                             onBlur={handleBlur}
                           />
@@ -514,9 +528,8 @@ const AddVisitAdmin = () => {
                             <p style={styles.errorStyle}>{errors.imie}</p>
                           ) : null}
 
-                          <Field
+                          <FormInput
                             name="nazwisko"
-                            style={styles.inputStyle}
                             placeholder="Nazwisko"
                             onBlur={handleBlur}
                           />
@@ -524,10 +537,9 @@ const AddVisitAdmin = () => {
                             <p style={styles.errorStyle}>{errors.nazwisko}</p>
                           ) : null}
 
-                          <Field
+                          <FormInput
                             name="email"
                             type="email"
-                            style={styles.inputStyle}
                             placeholder="E-mail"
                             onBlur={handleBlur}
                           />
@@ -535,9 +547,8 @@ const AddVisitAdmin = () => {
                             <p style={styles.errorStyle}>{errors.email}</p>
                           ) : null}
 
-                          <Field
+                          <FormInput
                             name="telefon"
-                            style={styles.inputStyle}
                             placeholder="Telefon"
                             onBlur={handleBlur}
                           />
@@ -545,9 +556,8 @@ const AddVisitAdmin = () => {
                             <p style={styles.errorStyle}>{errors.telefon}</p>
                           ) : null}
 
-                          <Field
+                          <FormInput
                             name="miasto"
-                            style={styles.inputStyle}
                             placeholder="Miasto"
                             onBlur={handleBlur}
                           />
@@ -555,9 +565,8 @@ const AddVisitAdmin = () => {
                             <p style={styles.errorStyle}>{errors.miasto}</p>
                           ) : null}
 
-                          <Field
+                          <FormInput
                             name="ulica"
-                            style={styles.inputStyle}
                             placeholder="Ulica"
                             onBlur={handleBlur}
                           />
@@ -565,9 +574,8 @@ const AddVisitAdmin = () => {
                             <p style={styles.errorStyle}>{errors.ulica}</p>
                           ) : null}
 
-                          <Field
+                          <FormInput
                             name="kodPocztowy"
-                            style={styles.inputStyle}
                             placeholder="Kod-pocztowy"
                             onBlur={handleBlur}
                           />
@@ -582,13 +590,12 @@ const AddVisitAdmin = () => {
                             <>
                               {isCreateAccount ? (
                                 <>
-                                  <p style={{ fontSize: ".75em" }}>
-                                    Jednak nie chcesz tworzyc konta?
-                                    <span
-                                      style={{
-                                        color: "#01D4BF",
-                                        cursor: "pointer",
-                                      }}
+                                  <TextContainer primary>
+                                    <RegisterText>
+                                      Jednak nie chcesz tworzyc konta?
+                                    </RegisterText>
+                                    <RegisterText
+                                      primary
                                       onClick={() => {
                                         const { password, ...oldValues } =
                                           values;
@@ -597,13 +604,11 @@ const AddVisitAdmin = () => {
                                       }}
                                     >
                                       Kliknij tutaj
-                                    </span>
-                                  </p>
-
-                                  <Field
+                                    </RegisterText>
+                                  </TextContainer>
+                                  <FormInput
                                     name="password"
                                     type="password"
-                                    style={styles.inputStyle}
                                     placeholder="Wpisz hasło"
                                     onBlur={handleBlur}
                                   />
@@ -614,46 +619,45 @@ const AddVisitAdmin = () => {
                                   ) : null}
                                 </>
                               ) : (
-                                <p style={{ fontSize: ".75em" }}>
-                                  Chcesz utworzyć konto?
-                                  <span
-                                    style={{
-                                      color: "#01D4BF",
-                                      cursor: "pointer",
-                                    }}
+                                <TextContainer primary>
+                                  <RegisterText>
+                                    Chcesz utworzyć konto?
+                                  </RegisterText>
+                                  <RegisterText
+                                    primary
                                     onClick={() => setIsCreateAccount(true)}
                                   >
                                     Kliknij tutaj
-                                  </span>
-                                </p>
+                                  </RegisterText>
+                                </TextContainer>
                               )}
                             </>
                           ) : null}
-                          <button type="submit" style={styles.buttonStyle}>
-                            Podsumowanie
-                          </button>
-                          <button type="reset" style={styles.buttonStyle}>
-                            Wyczysc formularz
-                          </button>
+                          <FormButton type="submit">Podsumowanie</FormButton>
+                          <FormButton type="reset">
+                            Wyczyść formularz
+                          </FormButton>
                         </FormColumn>
                         <FormColumn>
                           {currentUser &&
                             currentUser.roles[currentUser.roles.length - 1] ===
                               "ROLE_ADMIN" && (
                               <>
-                                <label>Wyszukaj pacjenta z bazy</label>
-                                <Field
+                                <TextContainer>
+                                  <SubTitle>Wyszukaj pacjenta z bazy</SubTitle>
+                                  
+                                </TextContainer>
+                                <FormInput
                                   name="pacjent"
                                   style={styles.inputStyle}
                                   placeholder="Wyszukaj pacjenta"
                                 />
-                                <button
+                                <FormButton
                                   onClick={() => searchUser(values)}
                                   type="button"
-                                  style={styles.buttonStyle}
                                 >
                                   Wyszukaj
-                                </button>
+                                </FormButton>
                                 {errors.pacjent && touched.pacjent ? (
                                   <p style={{ color: "red" }}>
                                     {errors.pacjent}
