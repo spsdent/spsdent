@@ -142,11 +142,6 @@ const AdminTimesheetPage = () => {
     const updatedArr = updatedVisits.filter(
       (ar) => !selectedDateVisitsArr.find((rm) => rm.godzina === ar.godzina)
     )
-    // updatedVisits.filter((el) =>
-    //   selectedDateVisitsArr.some((f) => f.godzina !== el.godzina)
-    // )
-
-    console.log('test', updatedArr)
     let aa = todayDate.split('.').reverse().join()
     let bb = selectedDate.split('.').reverse().join()
     if (aa > bb) {
