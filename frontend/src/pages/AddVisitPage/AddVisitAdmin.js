@@ -269,7 +269,7 @@ const AddVisitAdmin = () => {
       (service) => service.grupa === serviceGroupSelected
     )
     let usersToDisplay = []
-    if (serviceSelected) {
+    if (serviceSelected && serviceGroupSelected) {
       const selectedGroupDoctors = allDoctorsFromDb
         .filter((doctor) =>
           doctor.specjalnosci.includes(selectedGroupData[0]._id)
