@@ -143,14 +143,18 @@ const AdminTimesheetPage = () => {
     const selectedDateVisitsArr = visits.filter(
       (visit) => visit.data === selectedDate
     )
-    const updatedArr = updatedVisits.filter((el) =>
-      selectedDateVisitsArr.some((f) => f.godzina !== el.godzina)
-    )
-    let arrToDisplay = [...updatedArr, ...selectedDateVisitsArr]
-    if (selectedDate < todayDate) {
+    let aa = todayDate.split('.').reverse().join()
+    let bb = selectedDate.split('.').reverse().join()
+    if (aa > bb) {
       setSelectedDateVisits(selectedDateVisitsArr)
-    } else if (selectedDate >= todayDate) {
+    } else if (bb >= aa) {
       if (selectedDateVisitsArr.length > 0) {
+        const updatedArr = updatedVisits
+          .filter((el) =>
+            selectedDateVisitsArr.some((f) => f.godzina !== el.godzina)
+          )
+          .filter((item) => item.godzina > today.getHours())
+        let arrToDisplay = [...updatedArr, ...selectedDateVisitsArr]
         setSelectedDateVisits(arrToDisplay)
       } else {
         setSelectedDateVisits(updatedVisits)
