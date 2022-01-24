@@ -1,13 +1,12 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const PageWrapper = styled.div`
-
   display: flex;
   justify-content: center;
   margin-left: 8.5em;
   margin-top: 4.2em;
   height: calc(100vh - 4.2em);
-  overflow: ${(props) => (props.primary ? "hidden" : "visible")};
+  overflow: ${(props) => (props.primary ? 'hidden' : 'visible')};
   font-size: 24px;
   @media screen and (max-width: 1500px) {
     font-size: 20px;
@@ -21,4 +20,4 @@ export const PageWrapper = styled.div`
   @media screen and (max-width: 768px) {
     margin-left: 0;
   }
-`;
+`

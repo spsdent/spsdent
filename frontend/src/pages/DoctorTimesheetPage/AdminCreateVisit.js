@@ -47,9 +47,9 @@ const styles = {
 
 const AdminCreateVisit = ({
   bookingInfo,
-  isDelete,
   doctors,
   selectedDoctor,
+  isSelectedFunc,
 }) => {
   const [visitState, setVisitState] = useState({
     grupa: '',
@@ -72,9 +72,7 @@ const AdminCreateVisit = ({
   const { user: currentUser } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
 
-  // function responsible for display services from db as options to select
   const serviceGroupHandler = (values) => {
-    // set serviceGroupSelected state with value selected in form field "grupa usluga"
     setServiceGroupSelected(values.grupa)
     const currentSelectedDoctor = doctors
       .filter((doctor) => doctor.doctorId === selectedDoctor._id)
@@ -83,8 +81,6 @@ const AdminCreateVisit = ({
     const servicesToDisplay = allServicesFromDb.filter((service) =>
       currentSelectedDoctor.includes(service._id)
     )
-    // this conditon is responsible for clear select form fields when we
-    // chose default options in select fields
     if (serviceGroupSelected && !serviceSelected) {
       values.specjalista = ''
       values.data = ''
@@ -96,29 +92,25 @@ const AdminCreateVisit = ({
       values.godzina = ''
     }
 
-    // returns options for select field depends on services fetched from db
     return servicesToDisplay.map((service) => (
       <option value={service.grupa}>{service.grupa}</option>
     ))
   }
 
-  // function responsible for display services relative to before chosen value in field "grupa uslug"
   const serviceHandler = (values) => {
-    // selectedGroupServices is an array which store speficic services for current selected
-    // group in field "grupa uslug"
-    // 1. filter all services which are accesible in DB by service.grupa name
-    // 2. using map we return only properties uslugi which are arrays
-    // 3. by flatMap we iterate over returned before arrays and flat from two dimensional arrays
-    // to one dimensional
+    setServiceSelected(values.usluga)
     const selectedGroupServices = allServicesFromDb
       .filter((service) => service.grupa === serviceGroupSelected)
       .map((service) => service.uslugi)
       .flatMap((item) => item)
 
-    // we set serviceSelected state to value usluga chosen in form field
-    setServiceSelected(values.usluga)
+    if (values.usluga) {
+      const price = selectedGroupServices.find(
+        (item) => item.nazwa.toLowerCase() === values.usluga.toLowerCase()
+      ).cena
+      setSelectedServicePrice(price)
+    }
 
-    // return services selected group
     return selectedGroupServices.map((item) => (
       <option value={item.nazwa}>{item.nazwa}</option>
     ))
@@ -200,11 +192,22 @@ const AdminCreateVisit = ({
           setIsSuccessful(false)
         })
     }
+    setIsSubmit(false)
+    isSelectedFunc(false)
   }
 
   const onVisitSubmit = (values) => {
-    setIsSubmit(false)
     createVisit(values)
+    setVisitState({
+      grupa: '',
+      usluga: '',
+      nazwisko: '',
+      imie: '',
+      telefon: '',
+      miasto: '',
+      ulica: '',
+      kodPocztowy: '',
+    })
   }
 
   return (
@@ -213,7 +216,6 @@ const AdminCreateVisit = ({
       initialValues={visitState}
       validationSchema={addVisitAdminTimesheetValidationSchema}
       onSubmit={() => setIsSubmit(true)}
-      onReset={() => setVisitState({})}
     >
       {({ errors, touched, values, setValues, handleBlur, resetForm }) => (
         <Form
@@ -381,7 +383,7 @@ const AdminCreateVisit = ({
             </p>
           )}
           <button type='submit' style={styles.buttonStyle}>
-            Podsumowanie
+            Zarezerwuj
           </button>
           <button type='reset' style={styles.buttonStyle}>
             Wyczysc formularz
@@ -394,6 +396,7 @@ const AdminCreateVisit = ({
                 position: 'absolute',
                 right: '0',
                 top: '0',
+                bottom: '0',
                 backgroundColor: 'rgba(3,3,3,.8)',
                 zIndex: '9999',
               }}
@@ -475,8 +478,6 @@ const AdminCreateVisit = ({
                     style={styles.buttonBook}
                     onClick={() => {
                       onVisitSubmit(values)
-                      resetForm()
-                      setIsSubmit(false)
                     }}
                   >
                     Potwierdz rezerwacje

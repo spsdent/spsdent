@@ -4,7 +4,7 @@ import { Pattern } from '../../components/Pattern'
 import '../../styles/index.css'
 import styled from 'styled-components'
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import 'react-datepicker/dist/react-datepicker-cssmodules.css'
@@ -72,32 +72,28 @@ const AdminTimesheetPage = () => {
   const [pageNumber, setPageNumber] = useState(0)
   const [bookingInfo, setBookingInfo] = useState({})
   const [isSelected, setIsSelected] = useState(false)
-  const [oldDate, setOldDate] = useState('')
   const visitsPerPage = 5
   const pagesVisited = pageNumber * visitsPerPage
   const allUsers = useFetchAllUsers()
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const { isRefresh } = useSelector((state) => state.refresh)
 
   useEffect(() => {
     retrieveDoctors()
     retrieveUsers()
     retrieveVisits()
     let helperArr = []
-    let today = new Date()
     for (let i = 8; i <= 16; i++) {
       helperArr = [
         ...helperArr,
         {
-          data: `${today.getDate()}.${
-            today.getMonth() + 1
-          }.${today.getFullYear()}`,
           godzina: `${i}`,
         },
       ]
     }
     setUpdatedVisits(helperArr)
-  }, [])
+  }, [isRefresh])
 
   const retrieveDoctors = () => {
     DoctorData.getAll().then((response) => {
@@ -143,19 +139,29 @@ const AdminTimesheetPage = () => {
     const selectedDateVisitsArr = visits.filter(
       (visit) => visit.data === selectedDate
     )
+    const updatedArr = updatedVisits.filter(
+      (ar) => !selectedDateVisitsArr.find((rm) => rm.godzina === ar.godzina)
+    )
+    // updatedVisits.filter((el) =>
+    //   selectedDateVisitsArr.some((f) => f.godzina !== el.godzina)
+    // )
+
+    console.log('test', updatedArr)
     let aa = todayDate.split('.').reverse().join()
     let bb = selectedDate.split('.').reverse().join()
     if (aa > bb) {
       setSelectedDateVisits(selectedDateVisitsArr)
     } else if (bb >= aa) {
       if (selectedDateVisitsArr.length > 0) {
-        const updatedArr = updatedVisits
-          .filter((el) =>
-            selectedDateVisitsArr.some((f) => f.godzina !== el.godzina)
-          )
-          .filter((item) => item.godzina > today.getHours())
-        let arrToDisplay = [...updatedArr, ...selectedDateVisitsArr]
-        setSelectedDateVisits(arrToDisplay)
+        let arrToDisplay = []
+        if (selectedDate == todayDate) {
+          let arr = updatedArr.filter((item) => item.godzina > today.getHours())
+          arrToDisplay = [...arr, ...selectedDateVisitsArr]
+          setSelectedDateVisits(arrToDisplay)
+        } else {
+          arrToDisplay = [...updatedArr, ...selectedDateVisitsArr]
+          setSelectedDateVisits(arrToDisplay)
+        }
       } else {
         setSelectedDateVisits(updatedVisits)
       }
@@ -220,7 +226,9 @@ const AdminTimesheetPage = () => {
                   } else {
                     setIsSelected(true)
                     setBookingInfo({
-                      data: visit.data,
+                      data: `${selectedDate.getDate()}.${
+                        selectedDate.getMonth() + 1
+                      }.${selectedDate.getFullYear()}`,
                       godzina: visit.godzina,
                       specjalista: {
                         sid: selectedDoctor._id,
@@ -412,6 +420,7 @@ const AdminTimesheetPage = () => {
                 bookingInfo={bookingInfo}
                 doctors={doctors}
                 selectedDoctor={selectedDoctor}
+                isSelectedFunc={setIsSelected}
               />
             </div>
           </div>
