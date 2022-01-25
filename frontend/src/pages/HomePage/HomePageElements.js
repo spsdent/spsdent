@@ -131,6 +131,7 @@ export const PhotoHeader = styled(motion.img)`
   position: absolute;
   top: ${(props) => (props.primary ? "45%" : "21%")};
   right: ${(props) => (props.primary ? "15%" : "20%")};
+  cursor: pointer;
   @media screen and (orientation: portrait) {
     display: none;
   }
