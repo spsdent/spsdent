@@ -5,7 +5,10 @@ export const Container = styled(motion.div)`
   width: 100%;
   display: flex;
   flex-direction: column;
-  font-size: 27px;
+  font-size: 32px;
+  @media screen and (max-width: 2000px) {
+    font-size: 27px;
+  }
   @media screen and (max-width: 1700px) {
     font-size: 24px;
   }
@@ -19,13 +22,13 @@ export const Container = styled(motion.div)`
     font-size: 18px;
   }
   @media screen and (max-width: 1280px) {
-    font-size: 15px;
+    font-size: 16px;
   }
   @media screen and (max-width: 960px) {
     font-size: 14px;
   }
   @media screen and (max-width: 500px) {
-    font-size: 10px;
+    font-size: 12px;
   }
 `;
 export const ButtonsContainer = styled.div`

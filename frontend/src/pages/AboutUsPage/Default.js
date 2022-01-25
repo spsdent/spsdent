@@ -2,9 +2,10 @@ import { motion } from "framer-motion";
 import React from "react";
 import { Pattern } from "../../components/Pattern";
 import {
-  Title,
+  PageTitle,
   TextContainer,
   PictureContainer,
+  TextTitle,
   Text,
   TextWrap,
   
@@ -13,14 +14,14 @@ import {
 const Default = () => {
   return (
     <>
-      <Title
+      <PageTitle
         initial={{ opacity: 0, x: "25vw" }}
         animate={{ opacity: 1, x: "0" }}
         exit={{ opacity: 0, x: "-25vw" }}
         transition={{ duration: 0.3 }}
       >
         Naszym celem jest...
-      </Title>
+      </PageTitle>
       <TextContainer
         initial={{ opacity: 0, y: -200, scale: 0 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -43,9 +44,9 @@ const Default = () => {
         transition={{ delay: 0.4 }}
       >
         <Text>
-          <Title primary color>
+          <TextTitle primary color>
             Nasza kadra
-          </Title>
+          </TextTitle>
           Zespół <strong>SPS Dental Clinic</strong> tworzą doświadczeni
           specjaliści – doktorzy nauk medycznych oraz lekarze dentyści, a także
           dyplomowane higienistki i asystentki stomatologiczne. Aby wdrażać
@@ -62,13 +63,14 @@ const Default = () => {
         exit={{ y: 300, opacity: 0 }}
         transition={{ delay: 0.6 }}
       >
-        <Title primary>Co nas wyróżnia?</Title>
-        <Text></Text>
+        <TextTitle primary>Co nas wyróżnia?</TextTitle>
+        <Text primary>
         Oferujemy zindywidualizowane, w pełni bezpieczne metody leczenia oraz
         rzetelną i fachową obsługę Pacjenta. Nasze gabinety wyposażone są w
         nowoczesną aparaturę, za pomocą której możemy leczyć w sposób
         maksymalnie profesjonalny i efektywny. W Lublinie jesteśmy znani jako
         jedni z najlepszych stomatologów.
+        </Text>
       </TextWrap>
       <PictureContainer
         initial={{ opacity: 0 }}
