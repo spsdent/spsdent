@@ -35,14 +35,15 @@ import {
   ModalButtonsContainer,
   ModalButton,
 } from '../VisitPage/VisitPageElements'
-import { useFetchAllUsers } from '../../hooks'
 import { refreshApp } from '../../store/actions/refresh'
 import { Option, TimesheetPick } from './TimesheetPageElements'
+import { Link } from 'react-router-dom'
 
 import DoctorData from '../../services/doctor'
 import UserData from '../../services/user'
 import VisitData from '../../services/visit'
 import AdminCreateVisit from './AdminCreateVisit'
+import { clearMessage } from '../../store/actions/message'
 
 const StyledContainer = styled.section`
   width: 100%;
@@ -74,7 +75,6 @@ const AdminTimesheetPage = () => {
   const [isSelected, setIsSelected] = useState(false)
   const visitsPerPage = 5
   const pagesVisited = pageNumber * visitsPerPage
-  const allUsers = useFetchAllUsers()
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { isRefresh } = useSelector((state) => state.refresh)
@@ -82,7 +82,21 @@ const AdminTimesheetPage = () => {
   useEffect(() => {
     retrieveDoctors()
     retrieveUsers()
-    retrieveVisits()
+  }, [])
+
+  useEffect(() => {
+    let isMounted = true
+    VisitData.getAll().then((response) => {
+      if (isMounted) {
+        setVisits(response.data)
+      }
+    })
+    return () => {
+      isMounted = false
+    }
+  }, [isRefresh])
+
+  useEffect(() => {
     let helperArr = []
     for (let i = 8; i <= 16; i++) {
       helperArr = [
@@ -93,7 +107,10 @@ const AdminTimesheetPage = () => {
       ]
     }
     setUpdatedVisits(helperArr)
-  }, [isRefresh])
+    return () => {
+      setUpdatedVisits([])
+    }
+  }, [])
 
   const retrieveDoctors = () => {
     DoctorData.getAll().then((response) => {
@@ -182,7 +199,7 @@ const AdminTimesheetPage = () => {
   const displayVisits = selectedDateVisits
     .slice(pagesVisited, pagesVisited + visitsPerPage)
     .map((visit, i) => {
-      if (allUsers.length > 0) {
+      if (users.length > 0) {
         return (
           <>
             {visit.usluga ? (
@@ -312,6 +329,7 @@ const AdminTimesheetPage = () => {
               selected={false}
               dateFormat='dd/MM/yyyy'
               onChange={(date) => onDateSelect(date)}
+              value={selectedDate}
               filterDate={isWeekday}
               name='data'
               inline
@@ -409,13 +427,13 @@ const AdminTimesheetPage = () => {
                 justifyContent: 'center',
               }}
             >
-              <h2 style={{ marginBottom: '20px' }}>Zarezerwuj</h2>
               <AdminCreateVisit
                 isDelete={isDelete}
                 bookingInfo={bookingInfo}
                 doctors={doctors}
                 selectedDoctor={selectedDoctor}
                 isSelectedFunc={setIsSelected}
+                setSelectedDate={setSelectedDate}
               />
             </div>
           </div>
