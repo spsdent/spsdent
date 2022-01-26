@@ -86,3 +86,4 @@ export const TextTitle = styled.h2`
   font-size: 1.8em;
   padding: 0.2em 0 0.5em 0;
 `;
+
