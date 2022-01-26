@@ -73,6 +73,7 @@ const AdminTimesheetPage = () => {
   const [pageNumber, setPageNumber] = useState(0)
   const [bookingInfo, setBookingInfo] = useState({})
   const [isSelected, setIsSelected] = useState(false)
+  const [startDate, setStartDate] = useState(new Date())
   const visitsPerPage = 5
   const pagesVisited = pageNumber * visitsPerPage
   const dispatch = useDispatch()
@@ -82,21 +83,6 @@ const AdminTimesheetPage = () => {
   useEffect(() => {
     retrieveDoctors()
     retrieveUsers()
-  }, [])
-
-  useEffect(() => {
-    let isMounted = true
-    VisitData.getAll().then((response) => {
-      if (isMounted) {
-        setVisits(response.data)
-      }
-    })
-    return () => {
-      isMounted = false
-    }
-  }, [isRefresh])
-
-  useEffect(() => {
     let helperArr = []
     for (let i = 8; i <= 16; i++) {
       helperArr = [
@@ -112,11 +98,104 @@ const AdminTimesheetPage = () => {
     }
   }, [])
 
+  useEffect(() => {
+    let isMounted = true
+    VisitData.getAll().then((response) => {
+      if (isMounted) {
+        setVisits(response.data)
+        let today = new Date()
+        let todayDate = `${today.getDate()}.${
+          today.getMonth() + 1
+        }.${today.getFullYear()}`
+        let selectedDate = `${startDate.getDate()}.${
+          startDate.getMonth() + 1
+        }.${startDate.getFullYear()}`
+        const selectedDateVisitsArr = visits.filter(
+          (visit) => visit.data === selectedDate
+        )
+        const updatedArr = updatedVisits.filter(
+          (ar) => !selectedDateVisitsArr.find((rm) => rm.godzina === ar.godzina)
+        )
+        let aa = todayDate.split('.').reverse().join()
+        let bb = selectedDate.split('.').reverse().join()
+        if (aa > bb) {
+          setSelectedDateVisits(selectedDateVisitsArr)
+        } else if (bb >= aa) {
+          if (selectedDateVisitsArr.length > 0) {
+            let arrToDisplay = []
+            if (selectedDate == todayDate) {
+              let arr = updatedArr.filter(
+                (item) => item.godzina > today.getHours()
+              )
+              arrToDisplay = [...arr, ...selectedDateVisitsArr]
+              setSelectedDateVisits(arrToDisplay)
+            } else {
+              arrToDisplay = [...updatedArr, ...selectedDateVisitsArr]
+              setSelectedDateVisits(arrToDisplay)
+            }
+          } else {
+            setSelectedDateVisits(updatedVisits)
+          }
+        }
+      }
+    })
+    return () => {
+      isMounted = false
+    }
+  }, [isRefresh, startDate])
+
+  useEffect(() => {
+    let isMounted = true
+    VisitData.getAll().then((response) => {
+      if (isMounted) {
+        setVisits(response.data)
+        let today = new Date()
+        let todayDate = `${today.getDate()}.${
+          today.getMonth() + 1
+        }.${today.getFullYear()}`
+        let selectedDate = `${startDate.getDate()}.${
+          startDate.getMonth() + 1
+        }.${startDate.getFullYear()}`
+        const selectedDateVisitsArr = visits.filter(
+          (visit) => visit.data === selectedDate
+        )
+        const updatedArr = updatedVisits.filter(
+          (ar) => !selectedDateVisitsArr.find((rm) => rm.godzina === ar.godzina)
+        )
+        let aa = todayDate.split('.').reverse().join()
+        let bb = selectedDate.split('.').reverse().join()
+        if (aa > bb) {
+          setSelectedDateVisits(selectedDateVisitsArr)
+        } else if (bb >= aa) {
+          if (selectedDateVisitsArr.length > 0) {
+            let arrToDisplay = []
+            if (selectedDate == todayDate) {
+              let arr = updatedArr.filter(
+                (item) => item.godzina > today.getHours()
+              )
+              arrToDisplay = [...arr, ...selectedDateVisitsArr]
+              setSelectedDateVisits(arrToDisplay)
+            } else {
+              arrToDisplay = [...updatedArr, ...selectedDateVisitsArr]
+              setSelectedDateVisits(arrToDisplay)
+            }
+          } else {
+            setSelectedDateVisits(updatedVisits)
+          }
+        }
+      }
+    })
+    return () => {
+      isMounted = false
+    }
+  }, [isRefresh, startDate, updatedVisits, visits])
+
   const retrieveDoctors = () => {
     DoctorData.getAll().then((response) => {
       setDoctors(response.data)
     })
   }
+
 
   const retrieveUsers = () => {
     UserData.getAll().then((response) => {
@@ -146,6 +225,7 @@ const AdminTimesheetPage = () => {
 
   const onDateSelect = (date) => {
     setSelectedDate(date)
+    setStartDate(date)
     let today = new Date()
     let todayDate = `${today.getDate()}.${
       today.getMonth() + 1
@@ -238,9 +318,9 @@ const AdminTimesheetPage = () => {
                   } else {
                     setIsSelected(true)
                     setBookingInfo({
-                      data: `${selectedDate.getDate()}.${
-                        selectedDate.getMonth() + 1
-                      }.${selectedDate.getFullYear()}`,
+                      data: `${startDate.getDate()}.${
+                        startDate.getMonth() + 1
+                      }.${startDate.getFullYear()}`,
                       godzina: visit.godzina,
                       specjalista: {
                         sid: selectedDoctor._id,
@@ -326,17 +406,17 @@ const AdminTimesheetPage = () => {
         {selectedDoctor ? (
           <>
             <DatePicker
-              selected={false}
+              selected={startDate}
               dateFormat='dd/MM/yyyy'
-              onChange={(date) => onDateSelect(date)}
-              value={selectedDate}
+              onChange={(date) => setStartDate(date)}
+              value={startDate}
               filterDate={isWeekday}
               name='data'
               inline
             />
             <VisitsPageContainer>
               <VisitsContainer>
-                {selectedDate !== null ? (
+                {startDate !== null ? (
                   selectedDateVisits.length > 0 ? (
                     <>
                       <Headers
@@ -433,7 +513,7 @@ const AdminTimesheetPage = () => {
                 doctors={doctors}
                 selectedDoctor={selectedDoctor}
                 isSelectedFunc={setIsSelected}
-                setSelectedDate={setSelectedDate}
+                // setSelectedDate={setSelectedDate}
               />
             </div>
           </div>
