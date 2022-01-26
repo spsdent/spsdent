@@ -173,10 +173,10 @@ const AdminTimesheetPage = () => {
               let arr = updatedArr.filter(
                 (item) => item.godzina > today.getHours()
               )
-              arrToDisplay = [...arr, ...selectedDateVisitsArr]
+              arrToDisplay = [...arr, ...selectedDateVisitsArr].sort((a, b) => a.godzina - b.godzina)
               setSelectedDateVisits(arrToDisplay)
             } else {
-              arrToDisplay = [...updatedArr, ...selectedDateVisitsArr]
+              arrToDisplay = [...updatedArr, ...selectedDateVisitsArr].sort((a, b) => a.godzina - b.godzina)
               setSelectedDateVisits(arrToDisplay)
             }
           } else {
@@ -223,42 +223,42 @@ const AdminTimesheetPage = () => {
     return day !== 0 && day !== 6
   }
 
-  const onDateSelect = (date) => {
-    setSelectedDate(date)
-    setStartDate(date)
-    let today = new Date()
-    let todayDate = `${today.getDate()}.${
-      today.getMonth() + 1
-    }.${today.getFullYear()}`
-    let selectedDate = `${date.getDate()}.${
-      date.getMonth() + 1
-    }.${date.getFullYear()}`
-    const selectedDateVisitsArr = visits.filter(
-      (visit) => visit.data === selectedDate
-    )
-    const updatedArr = updatedVisits.filter(
-      (ar) => !selectedDateVisitsArr.find((rm) => rm.godzina === ar.godzina)
-    )
-    let aa = todayDate.split('.').reverse().join()
-    let bb = selectedDate.split('.').reverse().join()
-    if (aa > bb) {
-      setSelectedDateVisits(selectedDateVisitsArr)
-    } else if (bb >= aa) {
-      if (selectedDateVisitsArr.length > 0) {
-        let arrToDisplay = []
-        if (selectedDate == todayDate) {
-          let arr = updatedArr.filter((item) => item.godzina > today.getHours())
-          arrToDisplay = [...arr, ...selectedDateVisitsArr]
-          setSelectedDateVisits(arrToDisplay)
-        } else {
-          arrToDisplay = [...updatedArr, ...selectedDateVisitsArr]
-          setSelectedDateVisits(arrToDisplay)
-        }
-      } else {
-        setSelectedDateVisits(updatedVisits)
-      }
-    }
-  }
+  // const onDateSelect = (date) => {
+  //   setSelectedDate(date)
+  //   setStartDate(date)
+  //   let today = new Date()
+  //   let todayDate = `${today.getDate()}.${
+  //     today.getMonth() + 1
+  //   }.${today.getFullYear()}`
+  //   let selectedDate = `${date.getDate()}.${
+  //     date.getMonth() + 1
+  //   }.${date.getFullYear()}`
+  //   const selectedDateVisitsArr = visits.filter(
+  //     (visit) => visit.data === selectedDate
+  //   )
+  //   const updatedArr = updatedVisits.filter(
+  //     (ar) => !selectedDateVisitsArr.find((rm) => rm.godzina === ar.godzina)
+  //   )
+  //   let aa = todayDate.split('.').reverse().join()
+  //   let bb = selectedDate.split('.').reverse().join()
+  //   if (aa > bb) {
+  //     setSelectedDateVisits(selectedDateVisitsArr)
+  //   } else if (bb >= aa) {
+  //     if (selectedDateVisitsArr.length > 0) {
+  //       let arrToDisplay = []
+  //       if (selectedDate == todayDate) {
+  //         let arr = updatedArr.filter((item) => item.godzina > today.getHours())
+  //         arrToDisplay = [...arr, ...selectedDateVisitsArr]
+  //         setSelectedDateVisits(arrToDisplay)
+  //       } else {
+  //         arrToDisplay = [...updatedArr, ...selectedDateVisitsArr]
+  //         setSelectedDateVisits(arrToDisplay)
+  //       }
+  //     } else {
+  //       setSelectedDateVisits(updatedVisits)
+  //     }
+  //   }
+  // }
 
   const goToVisit = (item) => {
     navigate(`/visits/${item.id}`, {
@@ -346,20 +346,20 @@ const AdminTimesheetPage = () => {
     setPageNumber(selected)
   }
 
-  const onFilterByHour = () => {
-    if (filterPosition.godzina === 0) {
-      const descArr = selectedDateVisits.sort((a, b) => b.godzina - a.godzina)
-      setSelectedDateVisits(descArr)
-      setFilterPosition({ usluga: 0, data: 0, godzina: 1, cena: 0, lekarz: 0 })
-    } else if (filterPosition.godzina === 1) {
-      const ascArr = selectedDateVisits.sort((a, b) => a.godzina - b.godzina)
-      setSelectedDateVisits(ascArr)
-      setFilterPosition({ usluga: 0, data: 0, godzina: 2, cena: 0, lekarz: 0 })
-    } else if (filterPosition.godzina === 2) {
-      retrieveVisits()
-      setFilterPosition({ usluga: 0, data: 0, godzina: 0, cena: 0, lekarz: 0 })
-    }
-  }
+  // const onFilterByHour = () => {
+  //   if (filterPosition.godzina === 0) {
+  //     const descArr = selectedDateVisits.sort((a, b) => b.godzina - a.godzina)
+  //     setSelectedDateVisits(descArr)
+  //     setFilterPosition({ usluga: 0, data: 0, godzina: 1, cena: 0, lekarz: 0 })
+  //   } else if (filterPosition.godzina === 1) {
+  //     const ascArr = selectedDateVisits.sort((a, b) => a.godzina - b.godzina)
+  //     setSelectedDateVisits(ascArr)
+  //     setFilterPosition({ usluga: 0, data: 0, godzina: 2, cena: 0, lekarz: 0 })
+  //   } else if (filterPosition.godzina === 2) {
+  //     retrieveVisits()
+  //     setFilterPosition({ usluga: 0, data: 0, godzina: 0, cena: 0, lekarz: 0 })
+  //   }
+  // }
 
   const container = {
     hidden: { opacity: 0 },
@@ -419,7 +419,7 @@ const AdminTimesheetPage = () => {
                 {startDate !== null ? (
                   selectedDateVisits.length > 0 ? (
                     <>
-                      <Headers
+                      {/* <Headers
                         variants={container}
                         initial='hidden'
                         animate='show'
@@ -434,7 +434,7 @@ const AdminTimesheetPage = () => {
                             <TriangleAsc />
                           )}
                         </Header>
-                      </Headers>
+                      </Headers> */}
                       <VisitsListContainer
                         variants={container}
                         initial='hidden'
