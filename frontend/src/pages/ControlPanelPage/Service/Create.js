@@ -7,6 +7,17 @@ import { createServiceValidationSchema } from '../../../utils/validationSchemas'
 import ServiceData from '../../../services/service'
 import { SET_MESSAGE } from '../../../store/actions/types'
 import { clearMessage } from '../../../store/actions/message'
+import styled from 'styled-components'
+import { StyledContainer, StyledHeading } from '..//ControlPanelPageElements'
+
+const StyledLabel = styled.label`
+  font-size: 0.813rem;
+`
+
+const StyledHeadingCreate = styled(StyledHeading)`
+  font-size: 1rem;
+  margin-bottom: 1rem;
+`
 
 const styles = {
   inputStyles: {
@@ -112,8 +123,8 @@ const NewService = () => {
   }
 
   return (
-    <>
-      <h1> Dodaj specjalizacje </h1>
+    <StyledContainer>
+      <StyledHeadingCreate> Dodaj specjalizacje </StyledHeadingCreate>
       <Formik
         enableReinitialize
         initialValues={services}
@@ -131,7 +142,7 @@ const NewService = () => {
               flexDirection: 'column',
             }}
           >
-            <label> Nazwa grupy specjalizacji </label>
+            <StyledLabel> Nazwa grupy specjalizacji </StyledLabel>
             <Field
               style={styles.inputStyles}
               placeholder='Nazwa grupy uslug'
@@ -146,7 +157,7 @@ const NewService = () => {
               <>
                 {inputArr.map((item, index) => (
                   <React.Fragment key={index}>
-                    <label> Usluga {index + 1} </label>
+                    <StyledLabel> Usluga {index + 1} </StyledLabel>
                     <Field
                       style={styles.inputStyles}
                       type='text'
@@ -230,7 +241,7 @@ const NewService = () => {
           </Form>
         )}
       </Formik>
-    </>
+    </StyledContainer>
   )
 }
 

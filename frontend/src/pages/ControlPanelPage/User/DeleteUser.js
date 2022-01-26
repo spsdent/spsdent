@@ -4,10 +4,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { refreshApp } from '../../../store/actions/refresh'
 import UserService from '../../../services/user'
 import { PageWrapper } from '../../../components/PageWrapper'
-import { Container } from '../../ProfilePage/ProfilePageElements'
 import useDebounce from '../../../hooks/useDebounce'
 import { SET_MESSAGE } from '../../../store/actions/types'
 import { clearMessage } from '../../../store/actions/message'
+import styled from 'styled-components'
+
 const styles = {
   inputStyle: {
     backgroundColor: 'transparent',
@@ -32,6 +33,33 @@ const styles = {
   },
   errorStyle: { color: 'red' },
 }
+
+const StyledContainer = styled.section`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 1rem;
+`
+
+const StyledButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin: 1rem 0;
+`
+
+const StyledButton = styled.button`
+  padding: 0.35rem 1rem;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:hover {
+    background-color: #01d4bf;
+    border: none;
+  }
+`
 
 const DeleteUser = () => {
   const [isDelete, setIsDelete] = useState(false)
@@ -71,7 +99,7 @@ const DeleteUser = () => {
 
   return (
     <PageWrapper>
-      <Container>
+      <StyledContainer>
         <h1>Usun uzytkownika</h1>
         <input
           type='text'
@@ -83,7 +111,7 @@ const DeleteUser = () => {
         {message && (
           <p style={{ color: 'red', textAlign: 'center' }}>{message}</p>
         )}
-        {debouncedSearchTerm ? (
+        {debouncedSearchTerm && (
           <>
             {usersArr.filter(
               (item) =>
@@ -100,7 +128,7 @@ const DeleteUser = () => {
                   .map((user) => (
                     <div
                       style={{
-                        width: '350px',
+                        width: '100%',
                         display: 'flex',
                         backgroundColor: 'transparent',
                         marginBottom: '20px',
@@ -133,49 +161,6 @@ const DeleteUser = () => {
               </>
             ) : (
               <p>Nie ma takiego użytkownika</p>
-            )}
-          </>
-        ) : (
-          <>
-            {usersArr.length ? (
-              <>
-                {usersArr.map((user) => (
-                  <div
-                    style={{
-                      width: '350px',
-                      display: 'flex',
-                      backgroundColor: 'transparent',
-                      marginBottom: '20px',
-                      padding: '10px',
-                      border: '2px solid #333',
-                      color: '#333',
-                      flexDirection: 'column',
-                    }}
-                    key={user._id}
-                  >
-                    <p>Imie: {user.imie}</p>
-                    <p>Nazwisko: {user.nazwisko}</p>
-                    <p>E-mail: {user.email}</p>
-                    <p>Telefon: {user.telefon}</p>
-                    <p>Miasto: {user.miasto}</p>
-                    <p>Ulica: {user.ulica}</p>
-                    <p>Kod-pocztowy: {user.kodPocztowy}</p>
-                    <button
-                      onClick={() => {
-                        setIsDelete(true)
-                        setUserToDelete(user)
-                      }}
-                      style={styles.buttonStyle}
-                    >
-                      Usun
-                    </button>
-                  </div>
-                ))}
-              </>
-            ) : (
-              <>
-                <p>Brak uzytkownikow do wyswietlenia</p>
-              </>
             )}
           </>
         )}
@@ -248,7 +233,7 @@ const DeleteUser = () => {
             </div>
           </div>
         )}
-      </Container>
+      </StyledContainer>
     </PageWrapper>
   )
 }

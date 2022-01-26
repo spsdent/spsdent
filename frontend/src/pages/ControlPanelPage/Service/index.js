@@ -5,6 +5,29 @@ import NewService from './Create'
 import DeleteService from './Delete'
 import UpdateService from './Update'
 import { clearMessage } from '../../../store/actions/message'
+import styled from 'styled-components'
+import {
+  StyledButton,
+  StyledContainer,
+  StyledButtonContainer,
+} from '..//ControlPanelPageElements'
+
+const StyledButtonNew = styled(StyledButton)`
+  border: ${({ addNewService }) => (addNewService ? 'none' : '2px solid #333')};
+  background-color: ${({ addNewService }) =>
+    addNewService ? '#01D4BF' : 'transparent'};
+`
+const StyledButtonUpdate = styled(StyledButton)`
+  border: ${({ updateService }) => (updateService ? 'none' : '2px solid #333')};
+  background-color: ${({ updateService }) =>
+    updateService ? '#01D4BF' : 'transparent'};
+`
+
+const StyledButtonDelete = styled(StyledButton)`
+  border: ${({ deleteService }) => (deleteService ? 'none' : '2px solid #333')};
+  background-color: ${({ deleteService }) =>
+    deleteService ? '#01D4BF' : 'transparent'};
+`
 
 const ServicesControl = () => {
   const dispatch = useDispatch()
@@ -43,55 +66,31 @@ const ServicesControl = () => {
 
   const { addNewService, deleteService, updateService } = state
   return (
-    <>
-      <div style={{ display: 'flex' }}>
-        <button
+    <StyledContainer>
+      <StyledButtonContainer>
+        <StyledButtonNew
           onClick={addNewServiceHandler}
-          style={{
-            width: '200px',
-            height: '40px',
-            border: addNewService ? 'none' : '2px solid #333',
-            backgroundColor: addNewService ? '#01D4BF' : 'transparent',
-            marginRight: '5px',
-            cursor: 'pointer',
-            transition: '.2s',
-          }}
+          addNewService={addNewService}
         >
           Utworz
-        </button>
-        <button
+        </StyledButtonNew>
+        <StyledButtonUpdate
           onClick={updateServiceHandler}
-          style={{
-            width: '200px',
-            height: '40px',
-            border: updateService ? 'none' : '2px solid #333',
-            backgroundColor: updateService ? '#01D4BF' : 'transparent',
-            marginRight: '5px',
-            cursor: 'pointer',
-            transition: '.2s',
-          }}
+          updateService={updateService}
         >
           Aktualizuj
-        </button>
-        <button
+        </StyledButtonUpdate>
+        <StyledButtonDelete
           onClick={deleteServiceHandler}
-          style={{
-            width: '200px',
-            height: '40px',
-            border: deleteService ? 'none' : '2px solid #333',
-            backgroundColor: deleteService ? '#01D4BF' : 'transparent',
-            marginRight: '5px',
-            cursor: 'pointer',
-            transition: '.2s',
-          }}
+          deleteService={deleteService}
         >
           Usun
-        </button>
-      </div>
+        </StyledButtonDelete>
+      </StyledButtonContainer>
       {addNewService && <NewService />}
       {updateService && <UpdateService />}
       {deleteService && <DeleteService />}
-    </>
+    </StyledContainer>
   )
 }
 

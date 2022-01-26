@@ -7,6 +7,22 @@ import { updateUserDataValidationSchema } from '../../../utils/validationSchemas
 import { clearMessage } from '../../../store/actions/message'
 import { SET_MESSAGE } from '../../../store/actions/types'
 
+import styled from 'styled-components'
+
+const StyledFormik = styled(Formik)`
+  width: 100%;
+  height: 100%;
+  background-color: red;
+`
+
+const StyledFormLabel = styled.label`
+  font-size: .813rem;
+`
+
+const StyledField = styled(Field)`
+  border: 1px solid red;
+`
+
 const UpdateUser = ({ setBtnType, selectedUser }) => {
   let initialState = {
     userId: '',
@@ -70,7 +86,10 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
       return keys.every((k) => equals(a[k], b[k]))
     }
     if (equals(userObj, userOld)) {
-      dispatch({type: SET_MESSAGE, payload: 'Musisz wprowadzic jakies zmiany'})
+      dispatch({
+        type: SET_MESSAGE,
+        payload: 'Musisz wprowadzic jakies zmiany',
+      })
     } else {
       dispatch(clearMessage())
       UserService.updateUser(selectedUser, userObj)
@@ -79,7 +98,10 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
           setUser({
             roles: [{}],
           })
-          dispatch({type: SET_MESSAGE, payload: 'Dane użytkownika zostały zaktualizowane!'})
+          dispatch({
+            type: SET_MESSAGE,
+            payload: 'Dane użytkownika zostały zaktualizowane!',
+          })
         })
         .catch((e) => console.log(e))
     }
@@ -88,7 +110,7 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
   return (
     <>
       {selectedUser && (
-        <Formik
+        <StyledFormik
           enableReinitialize={true}
           initialValues={user}
           validationSchema={updateUserDataValidationSchema}
@@ -105,8 +127,8 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
               }}
             >
               <>
-                <label>Imie</label>
-                <Field
+                <StyledFormLabel>Imie</StyledFormLabel>
+                <StyledField
                   name='imie'
                   style={{
                     width: '300px',
@@ -122,7 +144,7 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
                 {errors.imie && touched.imie ? (
                   <p style={{ color: 'red' }}>{errors.imie}</p>
                 ) : null}
-                <label>Nazwisko</label>
+                <StyledFormLabel>Nazwisko</StyledFormLabel>
                 <Field
                   name='nazwisko'
                   type='text'
@@ -138,7 +160,7 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
                 {errors.nazwisko && touched.nazwisko ? (
                   <p style={{ color: 'red' }}>{errors.nazwisko}</p>
                 ) : null}
-                <label>E-mail</label>
+                <StyledFormLabel>E-mail</StyledFormLabel>
                 <Field
                   name='email'
                   type='email'
@@ -154,7 +176,7 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
                 {errors.email && touched.email ? (
                   <p style={{ color: 'red' }}>{errors.email}</p>
                 ) : null}
-                <label>Telefon</label>
+                <StyledFormLabel>Telefon</StyledFormLabel>
                 <Field
                   name='telefon'
                   type='number'
@@ -170,7 +192,7 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
                 {errors.telefon && touched.telefon ? (
                   <p style={{ color: 'red' }}>{errors.telefon}</p>
                 ) : null}
-                <label>Miasto</label>
+                <StyledFormLabel>Miasto</StyledFormLabel>
                 <Field
                   name='miasto'
                   type='text'
@@ -186,7 +208,7 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
                 {errors.miasto && touched.miasto ? (
                   <p style={{ color: 'red' }}>{errors.miasto}</p>
                 ) : null}
-                <label>Ulica</label>
+                <StyledFormLabel>Ulica</StyledFormLabel>
                 <Field
                   name='ulica'
                   type='text'
@@ -202,7 +224,7 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
                 {errors.ulica && touched.ulica ? (
                   <p style={{ color: 'red' }}>{errors.ulica}</p>
                 ) : null}
-                <label>Kod-pocztowy</label>
+                <StyledFormLabel>Kod-pocztowy</StyledFormLabel>
                 <Field
                   name='kodPocztowy'
                   type='number'
@@ -232,7 +254,7 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
               </>
             </Form>
           )}
-        </Formik>
+        </StyledFormik>
       )}
     </>
   )

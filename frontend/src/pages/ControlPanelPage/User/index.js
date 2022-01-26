@@ -4,8 +4,43 @@ import { useDispatch } from 'react-redux'
 import UpdateDoctor from './UpdateMain'
 import DeleteDoctor from './DeleteUser'
 import { PageWrapper } from '../../../components/PageWrapper'
-import { Container } from '../../ProfilePage/ProfilePageElements'
 import { clearMessage } from '../../../store/actions/message'
+import styled from 'styled-components'
+const StyledContainer = styled.section`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+`
+
+const StyledButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+`
+
+const StyledButton = styled.button`
+  padding: 0.35rem 1rem;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:hover {
+    background-color: #01d4bf;
+    border: none;
+  }
+`
+
+const StyledButtonUpdate = styled(StyledButton)`
+  border: ${({ btnType }) => (btnType ? 'none' : '2px solid #333')};
+  background-color: ${({ btnType }) => (btnType ? '#01D4BF' : 'transparent')};
+`
+const StyledButtonDelete = styled(StyledButton)`
+  border: ${({ btnType }) =>
+    btnType === 'service' ? 'none' : '2px solid #333'};
+  background-color: ${({ btnType }) =>
+    btnType === 'service' ? '#01D4BF' : 'transparent'};
+`
 
 const DoctorsControl = () => {
   const [state, setState] = useState({
@@ -44,41 +79,25 @@ const DoctorsControl = () => {
   const { updateDoctor, deleteDoctor } = state
   return (
     <PageWrapper>
-      <Container>
-        <div style={{ display: 'flex' }}>
-          <button
+      <StyledContainer>
+        <StyledButtonContainer>
+          <StyledButtonUpdate
             onClick={updateDoctorHandler}
-            style={{
-              width: '200px',
-              height: '40px',
-              border: updateDoctor ? 'none' : '2px solid #333',
-              backgroundColor: updateDoctor ? '#01D4BF' : 'transparent',
-              marginRight: '5px',
-              cursor: 'pointer',
-              transition: '.2s',
-            }}
+            btnType={updateDoctor}
           >
             Modyfikuj
-          </button>
-          <button
+          </StyledButtonUpdate>
+          <StyledButtonDelete
             onClick={deleteDoctorHandler}
-            style={{
-              width: '200px',
-              height: '40px',
-              border: deleteDoctor ? 'none' : '2px solid #333',
-              backgroundColor: deleteDoctor ? '#01D4BF' : 'transparent',
-              marginRight: '5px',
-              cursor: 'pointer',
-              transition: '.2s',
-            }}
+            btnType={updateDoctor}
           >
             Usun
-          </button>
-        </div>
+          </StyledButtonDelete>
+        </StyledButtonContainer>
         {/* {addNewDoctor && <NewDoctor />} */}
         {updateDoctor && <UpdateDoctor />}
         {deleteDoctor && <DeleteDoctor />}
-      </Container>
+      </StyledContainer>
     </PageWrapper>
   )
 }
