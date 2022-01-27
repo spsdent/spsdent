@@ -9,6 +9,18 @@ import { updateServiceValidationSchema } from '../../../utils/validationSchemas'
 import { SET_MESSAGE } from '../../../store/actions/types'
 import { clearMessage } from '../../../store/actions/message'
 
+import styled from 'styled-components'
+import { StyledContainer, StyledHeading } from '..//ControlPanelPageElements'
+
+const StyledLabel = styled.label`
+  font-size: 0.813rem;
+`
+
+const StyledHeadingCreate = styled(StyledHeading)`
+  font-size: 1rem;
+  margin-bottom: 1rem;
+`
+
 const styles = {
   inputStyles: {
     width: '100%',
@@ -90,8 +102,8 @@ const UpdateService = () => {
   }
 
   return (
-    <>
-      <h1>Zaktualizuj specjalizacje</h1>
+    <StyledContainer>
+      <StyledHeadingCreate>Zaktualizuj specjalizacje</StyledHeadingCreate>
       <Formik
         initialValues={{ grupa: '', nazwa: '', cena: '' }}
         validationSchema={updateServiceValidationSchema}
@@ -101,7 +113,7 @@ const UpdateService = () => {
       >
         {({ values, errors, touched, handleBlur }) => (
           <Form style={{ display: 'flex', flexDirection: 'column' }}>
-            <label>Wybierz grupe</label>
+            <StyledLabel>Wybierz grupe</StyledLabel>
             <Field
               as='select'
               name='grupa'
@@ -326,7 +338,7 @@ const UpdateService = () => {
           </div>
         </div>
       )}
-    </>
+    </StyledContainer>
   )
 }
 

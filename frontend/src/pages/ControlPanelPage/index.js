@@ -2,22 +2,36 @@ import React, { useState } from 'react'
 import { PageWrapper } from '../../components/PageWrapper'
 import DoctorsControl from './User'
 import ServicesControl from './Service'
+import styled from 'styled-components'
+import {
+  StyledButton,
+  StyledContainer,
+  StyledHeading,
+  StyledButtonContainer,
+} from './ControlPanelPageElements'
+
+const StyledButtonDoctor = styled(StyledButton)`
+  border: ${({ btnType }) =>
+    btnType === 'doctor' ? 'none' : '2px solid #333'};
+  background-color: ${({ btnType }) =>
+    btnType === 'doctor' ? '#01D4BF' : 'transparent'};
+`
+const StyledButtonService = styled(StyledButton)`
+  border: ${({ btnType }) =>
+    btnType === 'service' ? 'none' : '2px solid #333'};
+  background-color: ${({ btnType }) =>
+    btnType === 'service' ? '#01D4BF' : 'transparent'};
+`
 
 const ControlPanel = () => {
   const [btnType, setBtnType] = useState('')
   return (
     <PageWrapper>
-      <div
-        style={{
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <h1>Panel zarzadzania</h1>
-        <div style={{ display: 'flex', marginBottom: '20px' }}>
-          <button
+      <StyledContainer>
+        <StyledHeading>Panel zarzadzania</StyledHeading>
+        <StyledButtonContainer>
+          <StyledButtonDoctor
+            btnType={btnType}
             onClick={() => {
               if (btnType === 'doctor') {
                 setBtnType('')
@@ -25,19 +39,11 @@ const ControlPanel = () => {
                 setBtnType('doctor')
               }
             }}
-            style={{
-              width: '200px',
-              height: '40px',
-              border: btnType === 'doctor' ? 'none' : '2px solid #333',
-              backgroundColor: btnType === 'doctor' ? '#01D4BF' : 'transparent',
-              marginRight: '5px',
-              cursor: 'pointer',
-              transition: '.2s',
-            }}
           >
             Zarzadzaj uzytkownikami
-          </button>
-          <button
+          </StyledButtonDoctor>
+          <StyledButtonService
+            btnType={btnType}
             onClick={() => {
               if (btnType === 'service') {
                 setBtnType('')
@@ -45,23 +51,13 @@ const ControlPanel = () => {
                 setBtnType('service')
               }
             }}
-            style={{
-              width: '200px',
-              height: '40px',
-              border: btnType === 'service' ? 'none' : '2px solid #333',
-              backgroundColor:
-                btnType === 'service' ? '#01D4BF' : 'transparent',
-              marginRight: '5px',
-              cursor: 'pointer',
-              transition: '.2s',
-            }}
           >
             Zarzadzaj specjalizacjami
-          </button>
-        </div>
+          </StyledButtonService>
+        </StyledButtonContainer>
         {btnType === 'doctor' && <DoctorsControl btnType={btnType} />}
         {btnType === 'service' && <ServicesControl btnType={btnType} />}
-      </div>
+      </StyledContainer>
     </PageWrapper>
   )
 }

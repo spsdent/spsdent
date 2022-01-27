@@ -8,6 +8,7 @@ import { register } from '../../store/actions/auth'
 import { SET_MESSAGE } from '../../store/actions/types'
 import { refreshApp } from '../../store/actions/refresh'
 import VisitData from '../../services/visit'
+import ServiceData from '../../services/service'
 
 const styles = {
   inputStyle: {
@@ -50,7 +51,7 @@ const AdminCreateVisit = ({
   doctors,
   selectedDoctor,
   isSelectedFunc,
-  setSelectedDate
+  setSelectedDate,
 }) => {
   const [visitState, setVisitState] = useState({
     grupa: '',
@@ -71,6 +72,7 @@ const AdminCreateVisit = ({
   const allServicesFromDb = useFetchAllServices()
   const { user: currentUser } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
+
 
   const serviceGroupHandler = (values) => {
     setServiceGroupSelected(values.grupa)
@@ -173,7 +175,7 @@ const AdminCreateVisit = ({
       .then((response) => {
         setIsSubmit(false)
         isSelectedFunc(false)
-        setSelectedDate(null)
+        // setSelectedDate(null)
         dispatch(refreshApp())
         dispatch({
           type: SET_MESSAGE,
@@ -191,6 +193,12 @@ const AdminCreateVisit = ({
   const onVisitSubmit = (values, actions) => {
     createVisit(values)
     actions.resetForm()
+  }
+
+  const onCreateHandler = (values, setValues) => {
+    const { password, ...oldValues } = values
+    setIsCreateAccount(false)
+    setValues(oldValues)
   }
 
   return (
@@ -325,11 +333,7 @@ const AdminCreateVisit = ({
                       color: '#01D4BF',
                       cursor: 'pointer',
                     }}
-                    onClick={() => {
-                      const { password, ...oldValues } = values
-                      setIsCreateAccount(false)
-                      setValues(oldValues)
-                    }}
+                    onClick={() => onCreateHandler(values, setValues)}
                   >
                     Kliknij tutaj
                   </span>

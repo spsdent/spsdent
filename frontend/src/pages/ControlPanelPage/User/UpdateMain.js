@@ -9,8 +9,36 @@ import ServiceData from '../../../services/service'
 import UpdatePermissions from './UpdatePermissions'
 import UpdateData from './UpdateData'
 import { clearMessage } from '../../../store/actions/message'
+import styled from 'styled-components'
+import {
+  StyledButton,
+  StyledContainer,
+  StyledButtonContainer,
+} from '..//ControlPanelPageElements'
 
-const UpdateUser = () => {
+const StyledButtonData = styled(StyledButton)`
+  border: ${({ btnType }) => (btnType === 'dane' ? 'none' : '2px solid #333')};
+  background-color: ${({ btnType }) =>
+    btnType === 'dane' ? '#01D4BF' : 'transparent'};
+`
+const StyledButtonPerm = styled(StyledButton)`
+  border: ${({ btnType }) =>
+    btnType === 'uprawnienia' ? 'none' : '2px solid #333'};
+  background-color: ${({ btnType }) =>
+    btnType === 'uprawnienia' ? '#01D4BF' : 'transparent'};
+`
+
+const StyledLabel = styled.label`
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+`
+
+const StyledSelect = styled(Select)`
+  width: 100%;
+`
+
+const UpdateUser = (props) => {
   let initialState = {
     userId: '',
     imie: '',
@@ -85,9 +113,9 @@ const UpdateUser = () => {
   }
 
   return (
-    <>
-      <label>Wybierz uzytkownika</label>
-      <Select
+    <StyledContainer>
+      <StyledLabel>Wybierz uzytkownika</StyledLabel>
+      <StyledSelect
         isClearable
         defaultValue={selectedUser}
         onChange={(value) => {
@@ -102,43 +130,26 @@ const UpdateUser = () => {
         }))}
       />
       {selectedUser && (
-        <div style={{ width: '100%', display: 'flex', marginTop: '20px' }}>
-          <button
-            style={{
-              width: '100%',
-              height: '40px',
-              border: btnType === 'dane' ? 'none' : '2px solid #333',
-              background: btnType === 'dane' ? '#01D4BF' : 'transparent',
-              fontSize: '14px',
-              cursor: 'pointer',
-              marginRight: '10px',
-              padding: '10px',
-            }}
+        <StyledButtonContainer>
+          <StyledButtonData
+            btnType={btnType}
             onClick={() => {
               dispatch(clearMessage())
               onDataChange('dane')
             }}
           >
             Zmien dane
-          </button>
-          <button
-            style={{
-              width: '100%',
-              height: '40px',
-              border: btnType === 'uprawnienia' ? 'none' : '2px solid #333',
-              background: btnType === 'uprawnienia' ? '#01D4BF' : 'transparent',
-              fontSize: '14px',
-              cursor: 'pointer',
-              padding: '10px',
-            }}
+          </StyledButtonData>
+          <StyledButtonPerm
+            btnType={btnType}
             onClick={() => {
               dispatch(clearMessage())
               onDataChange('uprawnienia')
             }}
           >
             Zmien uprawnienia
-          </button>
-        </div>
+          </StyledButtonPerm>
+        </StyledButtonContainer>
       )}
       {message && (
         <p style={{ color: 'red', textAlign: 'center' }}>{message}</p>
@@ -155,7 +166,7 @@ const UpdateUser = () => {
           selectedUser={selectedUser && selectedUser.value}
         />
       )}
-    </>
+    </StyledContainer>
   )
 }
 

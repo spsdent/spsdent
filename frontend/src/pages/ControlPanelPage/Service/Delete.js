@@ -6,6 +6,18 @@ import { refreshApp } from '../../../store/actions/refresh'
 import { PageWrapper } from '../../../components/PageWrapper'
 import { Container } from '../../ProfilePage/ProfilePageElements'
 
+import styled from 'styled-components'
+import { StyledContainer, StyledHeading } from '..//ControlPanelPageElements'
+
+const StyledLabel = styled.label`
+  font-size: 0.813rem;
+`
+
+const StyledHeadingCreate = styled(StyledHeading)`
+  font-size: 1rem;
+  margin-bottom: 1rem;
+`
+
 const DeleteService = () => {
   const [servicesArr, setServicesArr] = useState([])
   const [isDelete, setIsDelete] = useState(false)
@@ -37,15 +49,15 @@ const DeleteService = () => {
 
   return (
     <PageWrapper>
-      <Container>
-        <h1>Usun specjalizacje</h1>
+      <StyledContainer>
+        <StyledHeadingCreate>Usun specjalizacje</StyledHeadingCreate>
         {servicesArr.map((service) => (
           <div
             style={{
               width: '100%',
               backgroundColor: 'transparent',
               color: '#333',
-              marginBottom: '10px',
+              marginBottom: '1rem',
               borderRadius: '10px',
               display: 'flex',
               alignItems: 'center',
@@ -145,7 +157,7 @@ const DeleteService = () => {
             </div>
           </div>
         )}
-      </Container>
+      </StyledContainer>
     </PageWrapper>
   )
 }
