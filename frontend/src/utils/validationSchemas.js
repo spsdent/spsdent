@@ -5,7 +5,7 @@ export const loginValidationSchema = Yup.object().shape({
     .required('E-mail jest wymagany')
     .email('Wpisz poprawny adres e-mail')
     .label('E-mail'),
-  password: Yup.string().required('Haslo jest wymagane').label('Haslo'),
+  password: Yup.string().required('Hasło jest wymagane').label('Hasło'),
 })
 
 export const passwordChangeValidationSchema = Yup.object().shape({
