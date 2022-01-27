@@ -11,16 +11,16 @@ import {
 } from './ControlPanelPageElements'
 
 const StyledButtonDoctor = styled(StyledButton)`
-  border: ${({ btnType }) =>
+  /* border: ${({ btnType }) =>
     btnType === 'doctor' ? 'none' : '2px solid #333'};
   background-color: ${({ btnType }) =>
-    btnType === 'doctor' ? '#01D4BF' : 'transparent'};
+    btnType === 'doctor' ? '#01D4BF' : 'transparent'}; */
 `
 const StyledButtonService = styled(StyledButton)`
-  border: ${({ btnType }) =>
+  /* border: ${({ btnType }) =>
     btnType === 'service' ? 'none' : '2px solid #333'};
   background-color: ${({ btnType }) =>
-    btnType === 'service' ? '#01D4BF' : 'transparent'};
+    btnType === 'service' ? '#01D4BF' : 'transparent'}; */
 `
 
 const ControlPanel = () => {

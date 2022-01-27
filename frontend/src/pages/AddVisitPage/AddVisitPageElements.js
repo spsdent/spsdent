@@ -5,11 +5,17 @@ export const AddVisitContainer = styled.div`
   /* background-color: cadetblue; */
   width: 90%;
   height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 export const TitleContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  /* background-color: red; */
+  align-self: flex-start;
   gap: 1em;
   padding: 1.5em 0 0.5em 3em;
 `;
@@ -22,18 +28,22 @@ export const Title = styled.h1`
 export const FormContainer = styled.div`
   display: flex;
   width: 100%;
-  /* background-color: gray; */
+  background-color: rgba(51,51,51,.05);
+  box-shadow: 0px 0px 10px #aaa;
   height: fit-content;
-  gap: 3em;
+  gap: 5em;
+  padding: 1em;
 `;
 export const FormColumn = styled.div`
-  background-color: ${(props) => (props.primary ? "#455" : "#545")};
+  /* background-color: ${(props) => (props.primary ? "#455" : "#545")}; */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   width: 30%;
-  border: 2px solid #333;
+  /* border: 2px solid #333; */
+  /* padding: 1em; */
+  
 `;
 export const FormInput = styled(Field)`
   background-color: transparent;
@@ -72,6 +82,7 @@ export const TextContainer = styled.div`
   justify-content: center;
   height: fit-content;
   gap: ${props => props.primary ? ".5em" : ".35em"};
+  text-align: center;
 `;
 export const RegisterText = styled.p`
   font-family: "Poppins";
