@@ -114,7 +114,7 @@ const UpdateUser = (props) => {
 
   return (
     <StyledContainer>
-      <StyledLabel>Wybierz uzytkownika</StyledLabel>
+      <StyledLabel>Wybierz użytkownika</StyledLabel>
       <StyledSelect
         isClearable
         defaultValue={selectedUser}
@@ -138,7 +138,7 @@ const UpdateUser = (props) => {
               onDataChange('dane')
             }}
           >
-            Zmien dane
+            Zmień dane
           </StyledButtonData>
           <StyledButtonPerm
             btnType={btnType}
@@ -147,7 +147,7 @@ const UpdateUser = (props) => {
               onDataChange('uprawnienia')
             }}
           >
-            Zmien uprawnienia
+            Zmień uprawnienia
           </StyledButtonPerm>
         </StyledButtonContainer>
       )}

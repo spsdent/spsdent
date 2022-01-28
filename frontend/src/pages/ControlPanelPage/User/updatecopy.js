@@ -255,7 +255,7 @@ const UpdateUser = () => {
                   }}
                   onClick={() => onDataChange(values, setValues)}
                 >
-                  Zmien dane
+                  Zmień dane
                 </button>
                 <button
                   style={{
@@ -277,13 +277,13 @@ const UpdateUser = () => {
                     }
                   }}
                 >
-                  Zmien uprawnienia
+                  Zmień uprawnienia
                 </button>
               </div>
             )}
             {btnType === 'dane' && (
               <>
-                <label>Imie</label>
+                <label>Imię</label>
                 <Field
                   name='imie'
                   style={{

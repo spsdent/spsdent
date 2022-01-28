@@ -28,7 +28,7 @@ const ControlPanel = () => {
   return (
     <PageWrapper>
       <StyledContainer>
-        <StyledHeading>Panel zarzadzania</StyledHeading>
+        <StyledHeading>Panel zarządzania</StyledHeading>
         <StyledButtonContainer>
           <StyledButtonDoctor
             btnType={btnType}
@@ -40,7 +40,7 @@ const ControlPanel = () => {
               }
             }}
           >
-            Zarzadzaj uzytkownikami
+            Zarządzaj użytkownikami
           </StyledButtonDoctor>
           <StyledButtonService
             btnType={btnType}
@@ -52,7 +52,7 @@ const ControlPanel = () => {
               }
             }}
           >
-            Zarzadzaj specjalizacjami
+            Zarządzaj specjalizacjami
           </StyledButtonService>
         </StyledButtonContainer>
         {btnType === 'doctor' && <DoctorsControl btnType={btnType} />}

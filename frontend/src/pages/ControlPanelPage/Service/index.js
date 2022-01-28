@@ -13,18 +13,18 @@ import {
 } from '..//ControlPanelPageElements'
 
 const StyledButtonNew = styled(StyledButton)`
-  border: ${({ addNewService }) => (addNewService ? 'none' : '2px solid #333')};
+  
   background-color: ${({ addNewService }) =>
     addNewService ? '#01D4BF' : 'transparent'};
 `
 const StyledButtonUpdate = styled(StyledButton)`
-  border: ${({ updateService }) => (updateService ? 'none' : '2px solid #333')};
+  
   background-color: ${({ updateService }) =>
     updateService ? '#01D4BF' : 'transparent'};
 `
 
 const StyledButtonDelete = styled(StyledButton)`
-  border: ${({ deleteService }) => (deleteService ? 'none' : '2px solid #333')};
+  
   background-color: ${({ deleteService }) =>
     deleteService ? '#01D4BF' : 'transparent'};
 `
@@ -72,7 +72,7 @@ const ServicesControl = () => {
           onClick={addNewServiceHandler}
           addNewService={addNewService}
         >
-          Utworz
+          Utwórz
         </StyledButtonNew>
         <StyledButtonUpdate
           onClick={updateServiceHandler}
@@ -84,7 +84,7 @@ const ServicesControl = () => {
           onClick={deleteServiceHandler}
           deleteService={deleteService}
         >
-          Usun
+          Usuń
         </StyledButtonDelete>
       </StyledButtonContainer>
       {addNewService && <NewService />}

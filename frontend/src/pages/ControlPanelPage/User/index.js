@@ -12,6 +12,7 @@ const StyledContainer = styled.section`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  background-color: red;
 `
 
 const StyledButtonContainer = styled.div`
@@ -78,7 +79,7 @@ const DoctorsControl = () => {
 
   const { updateDoctor, deleteDoctor } = state
   return (
-    <PageWrapper>
+    
       <StyledContainer>
         <StyledButtonContainer>
           <StyledButtonUpdate
@@ -98,7 +99,7 @@ const DoctorsControl = () => {
         {updateDoctor && <UpdateDoctor />}
         {deleteDoctor && <DeleteDoctor />}
       </StyledContainer>
-    </PageWrapper>
+    
   )
 }
 

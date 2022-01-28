@@ -7,7 +7,7 @@ import { PageWrapper } from '../../../components/PageWrapper'
 import { Container } from '../../ProfilePage/ProfilePageElements'
 
 import styled from 'styled-components'
-import { StyledContainer, StyledHeading } from '..//ControlPanelPageElements'
+import { StyledContainer, StyledHeading, ButtonControl } from '..//ControlPanelPageElements'
 
 const StyledLabel = styled.label`
   font-size: 0.813rem;
@@ -16,6 +16,7 @@ const StyledLabel = styled.label`
 const StyledHeadingCreate = styled(StyledHeading)`
   font-size: 1rem;
   margin-bottom: 1rem;
+  font-family: "poppins";
 `
 
 const DeleteService = () => {
@@ -48,21 +49,12 @@ const DeleteService = () => {
   }
 
   return (
-    <PageWrapper>
+    
       <StyledContainer>
-        <StyledHeadingCreate>Usun specjalizacje</StyledHeadingCreate>
+        <StyledHeadingCreate>Usuń specjalizację</StyledHeadingCreate>
         {servicesArr.map((service) => (
           <div
-            style={{
-              width: '100%',
-              backgroundColor: 'transparent',
-              color: '#333',
-              marginBottom: '1rem',
-              borderRadius: '10px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '20px',
-            }}
+        
           >
             <h2 style={{ verticalAlign: 'middle' }}>{service.grupa}</h2>
             {/* {service.uslugi.map((usluga) => (
@@ -71,22 +63,15 @@ const DeleteService = () => {
               <p>Cena uslugi: {usluga.cena}</p>
             </div>
           ))} */}
-            <button
-              style={{
-                border: '2px solid #333',
-                background: 'transparent',
-                fontSize: '14px',
-                cursor: 'pointer',
-                padding: '10px 20px',
-                color: '#333',
-              }}
+            <ButtonControl
+         
               onClick={() => {
                 setIsDelete(true)
                 setServiceToDelete(service._id)
               }}
             >
-              Usun specjalizacje
-            </button>
+              Usuń specjalizację
+            </ButtonControl>
           </div>
         ))}
         {isDelete && (
@@ -158,7 +143,7 @@ const DeleteService = () => {
           </div>
         )}
       </StyledContainer>
-    </PageWrapper>
+    
   )
 }
 

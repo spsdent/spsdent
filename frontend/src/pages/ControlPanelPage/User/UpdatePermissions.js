@@ -100,7 +100,7 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
       selectedOption.label !== 'spec'
     ) {
       DoctorService.remove(doctorToDelete._id)
-        .then((res) => console.log('usunieto pomyslnie', res))
+        .then((res) => console.log('Usunięto pomyślnie', res))
         .catch((e) => console.log(e))
       UserService.updateUser(selectedUser, userObj)
         .then((response) => {

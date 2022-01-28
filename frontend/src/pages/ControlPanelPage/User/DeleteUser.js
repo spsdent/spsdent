@@ -57,7 +57,7 @@ const StyledButton = styled.button`
 
   &:hover {
     background-color: #01d4bf;
-    border: none;
+   
   }
 `
 
