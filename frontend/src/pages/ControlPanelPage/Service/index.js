@@ -10,7 +10,7 @@ import {
   StyledButton,
   StyledContainer,
   StyledButtonContainer,
-} from '..//ControlPanelPageElements'
+} from '../ControlPanelPageElements'
 
 const StyledButtonNew = styled(StyledButton)`
   

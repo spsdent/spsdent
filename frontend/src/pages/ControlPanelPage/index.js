@@ -10,18 +10,6 @@ import {
   StyledButtonContainer,
 } from './ControlPanelPageElements'
 
-const StyledButtonDoctor = styled(StyledButton)`
-  /* border: ${({ btnType }) =>
-    btnType === 'doctor' ? 'none' : '2px solid #333'};
-  background-color: ${({ btnType }) =>
-    btnType === 'doctor' ? '#01D4BF' : 'transparent'}; */
-`
-const StyledButtonService = styled(StyledButton)`
-  /* border: ${({ btnType }) =>
-    btnType === 'service' ? 'none' : '2px solid #333'};
-  background-color: ${({ btnType }) =>
-    btnType === 'service' ? '#01D4BF' : 'transparent'}; */
-`
 
 const ControlPanel = () => {
   const [btnType, setBtnType] = useState('')
@@ -30,7 +18,7 @@ const ControlPanel = () => {
       <StyledContainer>
         <StyledHeading>Panel zarządzania</StyledHeading>
         <StyledButtonContainer>
-          <StyledButtonDoctor
+          <StyledButton
             btnType={btnType}
             onClick={() => {
               if (btnType === 'doctor') {
@@ -41,8 +29,8 @@ const ControlPanel = () => {
             }}
           >
             Zarządzaj użytkownikami
-          </StyledButtonDoctor>
-          <StyledButtonService
+          </StyledButton>
+          <StyledButton
             btnType={btnType}
             onClick={() => {
               if (btnType === 'service') {
@@ -53,7 +41,7 @@ const ControlPanel = () => {
             }}
           >
             Zarządzaj specjalizacjami
-          </StyledButtonService>
+          </StyledButton>
         </StyledButtonContainer>
         {btnType === 'doctor' && <DoctorsControl btnType={btnType} />}
         {btnType === 'service' && <ServicesControl btnType={btnType} />}
