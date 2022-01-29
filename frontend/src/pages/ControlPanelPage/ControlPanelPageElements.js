@@ -47,6 +47,8 @@ white-space: nowrap;
 font-family: 'bebas neue', 'poppins';
 letter-spacing: .04em;
 color: #333;
+line-height: 1em;
+margin-bottom: .4em;
 `
 export const StyledInput = styled.input`
 outline: none;
