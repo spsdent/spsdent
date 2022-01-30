@@ -16,11 +16,8 @@ import {
   StyledButtonContainer,
   SubTitle,
   ErrorText,
+  StyledSelect
 } from "..//ControlPanelPageElements";
-
-const StyledSelect = styled(Select)`
-  width: 100%;
-`;
 
 const UpdateUser = (props) => {
   let initialState = {
@@ -101,6 +98,7 @@ const UpdateUser = (props) => {
       <SubTitle>Wybierz użytkownika</SubTitle>
       <StyledSelect
         isClearable
+        placeholder="Wybierz.."
         defaultValue={selectedUser}
         onChange={(value) => {
           setSelectedUser(value);

@@ -1,5 +1,6 @@
 import styled from "styled-components";
-
+import Select from "react-select";
+import {motion} from 'framer-motion';
 export const StyledContainer = styled.section`
   width: 60%;
   display: flex;
@@ -25,6 +26,7 @@ export const StyledButton = styled.button`
   font-family: 'poppins';
   font-size: .6em;
   margin-bottom: 1.5em;
+  white-space: nowrap;
   &:hover {
     background-color: #01d4bf;
     /* border: 2px solid #fff; */
@@ -95,4 +97,21 @@ color: #333;
 font-family: 'poppins';
 font-weight: ${props => props.primary ? "bold" : "regular"};
 font-size: .8em;
+`
+export const StyledSelect = styled(Select)`
+border: 2px solid #333;
+font-family: 'poppins';
+font-size: .6em;
+outline: none;
+border: none;
+width: 20em;
+margin: .2em 0 .5em 0;
+
+`
+export const HoursChangeWrap = styled.div`
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: .2em 0;
 `

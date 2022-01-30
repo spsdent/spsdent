@@ -21,7 +21,7 @@ export const passwordChangeValidationSchema = Yup.object().shape({
       'Haslo musi zawierac min. 8 znakow w tym: litere, cyfre i znak specjalny'
     ),
   newPassword: Yup.string()
-    .required('Nowe haslo jest wymagane')
+    .required('Nowe hasło jest wymagane')
     .label('Nowe haslo')
     .matches(
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
