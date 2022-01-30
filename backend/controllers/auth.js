@@ -42,7 +42,7 @@ exports.signup = (req, res) => {
               return
             }
 
-            res.send({ message: 'Uzytkownik zostal zarejestrowany!' })
+            res.send({ message: 'Użytkownik został zarejestrowany!' })
           })
         }
       )
@@ -60,7 +60,7 @@ exports.signup = (req, res) => {
             return
           }
 
-          res.send({ message: 'Uzytkownik zostal zarejestrowany!' })
+          res.send({ message: 'Użytkownik został zarejestrowany!' })
         })
       })
     }
@@ -144,23 +144,23 @@ exports.changePwd = (req, res) => {
         )
           .then((response) => {
             if (response) {
-              res.send({ message: 'Haslo zostalo zmienione.' })
+              res.send({ message: 'Hasło zostało zmienione.' })
             } else {
               return res
                 .status(404)
-                .send({ message: 'Haslo nie zostalo zmienione' })
+                .send({ message: 'Hasło nie zostało zmienione' })
             }
           })
           .catch((e) => res.status(500).send({ message: e }))
       } else {
         res.status(404).send({
           message:
-            'Podane nowe haslo jest takie same jak aktualnie uzywane, wprowadz nowe.',
+            'Podane nowe hasło jest takie same jak aktualnie używane, wprowadź nowe.',
         })
       }
     } else {
       res.status(404).send({
-        message: 'Stare haslo nie jest prawidlowe',
+        message: 'Stare hasło nie jest prawidlowe',
       })
     }
   })

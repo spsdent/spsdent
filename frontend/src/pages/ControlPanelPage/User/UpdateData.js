@@ -1,52 +1,48 @@
-import React, { useState, useEffect } from 'react'
-import { Formik, Field, Form } from 'formik'
-import { useSelector, useDispatch } from 'react-redux'
-import UserService from '../../../services/user'
+import React, { useState, useEffect } from "react";
+import { Formik, Field, Form } from "formik";
+import { useSelector, useDispatch } from "react-redux";
+import UserService from "../../../services/user";
 
-import { updateUserDataValidationSchema } from '../../../utils/validationSchemas'
-import { clearMessage } from '../../../store/actions/message'
-import { SET_MESSAGE } from '../../../store/actions/types'
+import { updateUserDataValidationSchema } from "../../../utils/validationSchemas";
+import { clearMessage } from "../../../store/actions/message";
+import { SET_MESSAGE } from "../../../store/actions/types";
 
-import styled from 'styled-components'
-
+import styled from "styled-components";
+import {
+  UserText,
+  StyledField,
+  ErrorText,
+  StyledButton,
+} from "../ControlPanelPageElements";
 const StyledFormik = styled(Formik)`
   width: 100%;
   height: 100%;
-  background-color: red;
-`
-
-const StyledFormLabel = styled.label`
-  font-size: .813rem;
-`
-
-const StyledField = styled(Field)`
-  border: 1px solid red;
-`
+`;
 
 const UpdateUser = ({ setBtnType, selectedUser }) => {
   let initialState = {
-    userId: '',
-    imie: '',
-    nazwisko: '',
-    telefon: '',
-    email: '',
-    miasto: '',
-    ulica: '',
-    kodPocztowy: '',
-  }
-  const [user, setUser] = useState(initialState)
-  const [userOld, setUserOld] = useState('')
-  const { message } = useSelector((state) => state.message)
-  const dispatch = useDispatch()
+    userId: "",
+    imie: "",
+    nazwisko: "",
+    telefon: "",
+    email: "",
+    miasto: "",
+    ulica: "",
+    kodPocztowy: "",
+  };
+  const [user, setUser] = useState(initialState);
+  const [userOld, setUserOld] = useState("");
+  const { message } = useSelector((state) => state.message);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     UserService.getAll()
       .then((response) => {
         const selectedUserData = response.data.filter(
           (user) => user._id === selectedUser
-        )[0]
+        )[0];
         const { imie, nazwisko, kodPocztowy, email, ulica, miasto, telefon } =
-          selectedUserData
+          selectedUserData;
         const obj = {
           imie,
           nazwisko,
@@ -55,16 +51,16 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
           ulica,
           miasto,
           telefon,
-        }
-        setUser(obj)
-        setUserOld(obj)
+        };
+        setUser(obj);
+        setUserOld(obj);
       })
-      .catch((e) => console.log(e))
-  }, [selectedUser])
+      .catch((e) => console.log(e));
+  }, [selectedUser]);
 
   const updateUser = (values) => {
     const { imie, nazwisko, email, telefon, kodPocztowy, miasto, ulica } =
-      values
+      values;
     let userObj = {
       imie,
       nazwisko,
@@ -73,39 +69,39 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
       kodPocztowy,
       miasto,
       ulica,
-    }
+    };
     const equals = (a, b) => {
-      if (a === b) return true
+      if (a === b) return true;
       if (a instanceof Date && b instanceof Date)
-        return a.getTime() === b.getTime()
-      if (!a || !b || (typeof a !== 'object' && typeof b !== 'object'))
-        return a === b
-      if (a.prototype !== b.prototype) return false
-      const keys = Object.keys(a)
-      if (keys.length !== Object.keys(b).length) return false
-      return keys.every((k) => equals(a[k], b[k]))
-    }
+        return a.getTime() === b.getTime();
+      if (!a || !b || (typeof a !== "object" && typeof b !== "object"))
+        return a === b;
+      if (a.prototype !== b.prototype) return false;
+      const keys = Object.keys(a);
+      if (keys.length !== Object.keys(b).length) return false;
+      return keys.every((k) => equals(a[k], b[k]));
+    };
     if (equals(userObj, userOld)) {
       dispatch({
         type: SET_MESSAGE,
-        payload: 'Musisz wprowadzic jakies zmiany',
-      })
+        payload: "Musisz wprowadzic jakies zmiany",
+      });
     } else {
-      dispatch(clearMessage())
+      dispatch(clearMessage());
       UserService.updateUser(selectedUser, userObj)
         .then((response) => {
-          setBtnType('')
+          setBtnType("");
           setUser({
             roles: [{}],
-          })
+          });
           dispatch({
             type: SET_MESSAGE,
-            payload: 'Dane użytkownika zostały zaktualizowane!',
-          })
+            payload: "Dane użytkownika zostały zaktualizowane!",
+          });
         })
-        .catch((e) => console.log(e))
+        .catch((e) => console.log(e));
     }
-  }
+  };
 
   return (
     <>
@@ -115,149 +111,68 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
           initialValues={user}
           validationSchema={updateUserDataValidationSchema}
           onSubmit={(values) => {
-            updateUser(values)
+            updateUser(values);
           }}
         >
           {({ errors, touched, values, setValues }) => (
             <Form
               style={{
-                width: '300px',
-                display: 'flex',
-                flexDirection: 'column',
+                display: "flex",
+                flexDirection: "column",
               }}
             >
               <>
-                <StyledFormLabel>Imie</StyledFormLabel>
-                <StyledField
-                  name='imie'
-                  style={{
-                    width: '300px',
-                    backgroundColor: 'transparent',
-                    border: '2px solid #333',
-                    height: '3em',
-                    margin: '10px 0',
-                    paddingLeft: '1em',
-                  }}
-                  placeholder='Imie'
-                  type='text'
-                />
+                <UserText title>Imię</UserText>
+                <StyledField name="imie" placeholder="Imię" type="text" />
                 {errors.imie && touched.imie ? (
-                  <p style={{ color: 'red' }}>{errors.imie}</p>
+                  <ErrorText>{errors.imie}</ErrorText>
                 ) : null}
-                <StyledFormLabel>Nazwisko</StyledFormLabel>
-                <Field
-                  name='nazwisko'
-                  type='text'
-                  style={{
-                    backgroundColor: 'transparent',
-                    border: '2px solid #333',
-                    height: '3em',
-                    margin: '10px 0',
-                    paddingLeft: '1em',
-                  }}
-                  placeholder='Nazwisko'
+                <UserText title>Nazwisko</UserText>
+                <StyledField
+                  name="nazwisko"
+                  type="text"
+                  placeholder="Nazwisko"
                 />
                 {errors.nazwisko && touched.nazwisko ? (
-                  <p style={{ color: 'red' }}>{errors.nazwisko}</p>
+                  <ErrorText>{errors.nazwisko}</ErrorText>
                 ) : null}
-                <StyledFormLabel>E-mail</StyledFormLabel>
-                <Field
-                  name='email'
-                  type='email'
-                  style={{
-                    backgroundColor: 'transparent',
-                    border: '2px solid #333',
-                    height: '3em',
-                    margin: '10px 0',
-                    paddingLeft: '1em',
-                  }}
-                  placeholder='E-mail'
-                />
+                <UserText title>E-mail</UserText>
+                <StyledField name="email" type="email" placeholder="E-mail" />
                 {errors.email && touched.email ? (
-                  <p style={{ color: 'red' }}>{errors.email}</p>
+                  <ErrorText>{errors.email}</ErrorText>
                 ) : null}
-                <StyledFormLabel>Telefon</StyledFormLabel>
-                <Field
-                  name='telefon'
-                  type='number'
-                  style={{
-                    backgroundColor: 'transparent',
-                    border: '2px solid #333',
-                    height: '3em',
-                    margin: '10px 0',
-                    paddingLeft: '1em',
-                  }}
-                  placeholder='Telefon'
-                />
+                <UserText title>Telefon</UserText>
+                <StyledField name="telefon" type="text" placeholder="Telefon" />
                 {errors.telefon && touched.telefon ? (
-                  <p style={{ color: 'red' }}>{errors.telefon}</p>
+                  <ErrorText>{errors.telefon}</ErrorText>
                 ) : null}
-                <StyledFormLabel>Miasto</StyledFormLabel>
-                <Field
-                  name='miasto'
-                  type='text'
-                  style={{
-                    backgroundColor: 'transparent',
-                    border: '2px solid #333',
-                    height: '3em',
-                    margin: '10px 0',
-                    paddingLeft: '1em',
-                  }}
-                  placeholder='Miasto'
-                />
+                <UserText title>Miasto</UserText>
+                <StyledField name="miasto" type="text" placeholder="Miasto" />
                 {errors.miasto && touched.miasto ? (
-                  <p style={{ color: 'red' }}>{errors.miasto}</p>
+                  <ErrorText>{errors.miasto}</ErrorText>
                 ) : null}
-                <StyledFormLabel>Ulica</StyledFormLabel>
-                <Field
-                  name='ulica'
-                  type='text'
-                  style={{
-                    backgroundColor: 'transparent',
-                    border: '2px solid #333',
-                    height: '3em',
-                    margin: '10px 0',
-                    paddingLeft: '1em',
-                  }}
-                  placeholder='Ulica'
-                />
+                <UserText title>Ulica</UserText>
+                <StyledField name="ulica" type="text" placeholder="Ulica" />
                 {errors.ulica && touched.ulica ? (
-                  <p style={{ color: 'red' }}>{errors.ulica}</p>
+                  <ErrorText>{errors.ulica}</ErrorText>
                 ) : null}
-                <StyledFormLabel>Kod-pocztowy</StyledFormLabel>
-                <Field
-                  name='kodPocztowy'
-                  type='number'
-                  style={{
-                    backgroundColor: 'transparent',
-                    border: '2px solid #333',
-                    height: '3em',
-                    margin: '10px 0',
-                    paddingLeft: '1em',
-                  }}
-                  placeholder='Kod-pocztowy'
+                <UserText title>Kod pocztowy</UserText>
+                <StyledField
+                  name="kodPocztowy"
+                  type="text"
+                  placeholder="Kod pocztowy"
                 />
                 {errors.kodPocztowy && touched.kodPocztowy ? (
-                  <p style={{ color: 'red' }}>{errors.kodPocztowy}</p>
+                  <ErrorText>{errors.kodPocztowy}</ErrorText>
                 ) : null}
-                <button
-                  type='submit'
-                  style={{
-                    backgroundColor: 'none',
-                    border: '2px solid #333',
-                    height: '3em',
-                    margin: '10px 0',
-                  }}
-                >
-                  Aktualizuj dane
-                </button>
+                <StyledButton type="submit">Aktualizuj dane</StyledButton>
               </>
             </Form>
           )}
         </StyledFormik>
       )}
     </>
-  )
-}
+  );
+};
 
-export default UpdateUser
+export default UpdateUser;

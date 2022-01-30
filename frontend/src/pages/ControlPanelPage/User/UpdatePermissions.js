@@ -22,19 +22,10 @@ import {
   ErrorText,
   StyledButton,
   HoursChangeWrap,
+  StyledField
 } from "../ControlPanelPageElements";
 
-const style = {
-  backgroundColor: "transparent",
-  border: "2px solid #333",
-  height: "3em",
-  width: "20em",
-  paddingLeft: "1em",
-  outline: "none",
-  fontFamily: "poppins",
-  color: "#333",
-  marginBottom: ".3em",
-};
+
 
 const UpdateUser = ({ setBtnType, selectedUser }) => {
   let initialState = {
@@ -292,9 +283,9 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
                     ) : null}
                     <UserText>Wybierz godziny pracy użytkownika</UserText>
                     <HoursChangeWrap>
-                      <Field
+                      <StyledField
                         name="godzinyStart"
-                        style={style}
+                        
                         placeholder="Start pracy"
                         onBlur={handleBlur}
                       />
@@ -303,9 +294,9 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
                       ) : null}
                     </HoursChangeWrap>
                     <HoursChangeWrap>
-                      <Field
+                      <StyledField
                         name="godzinyKoniec"
-                        style={style}
+                        
                         placeholder="Koniec pracy"
                         onBlur={handleBlur}
                       />

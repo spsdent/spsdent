@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Select from "react-select";
-import {motion} from 'framer-motion';
+import { motion } from "framer-motion";
+import { Field } from "formik";
 export const StyledContainer = styled.section`
   width: 60%;
   display: flex;
@@ -23,8 +24,8 @@ export const StyledButton = styled.button`
   transition: 0.2s ease;
   outline: none;
   border: 2px solid #333;
-  font-family: 'poppins';
-  font-size: .6em;
+  font-family: "poppins";
+  font-size: 0.6em;
   margin-bottom: 1.5em;
   white-space: nowrap;
   &:hover {
@@ -43,75 +44,85 @@ export const ButtonControl = styled.button`
   padding: 0.5em 1em;
 `;
 export const SubTitle = styled.h3`
-font-size: 1.5em;
-/* background-color: red; */
-white-space: nowrap;
-font-family: 'bebas neue', 'poppins';
-letter-spacing: .04em;
-color: #333;
-line-height: 1em;
-margin-bottom: .4em;
-`
+  font-size: 1.5em;
+  /* background-color: red; */
+  white-space: nowrap;
+  font-family: "bebas neue", "poppins";
+  letter-spacing: 0.04em;
+  color: #333;
+  line-height: 1em;
+  margin-bottom: 0.4em;
+`;
 export const StyledInput = styled.input`
-outline: none;
-background-color: transparent;
-border: 2px solid #333;
-height: 3em;
-margin: .4em 0;
-padding-left: 1em;
-font-family: 'poppins';
-transition: .2s ease;
-&:focus {
-  box-shadow: 0px 0px 5px 0px #01d4bf;
-  
-}
-&::-webkit-input-placeholder {
-    color: rgba(51,51,51,.6);
+  outline: none;
+  background-color: transparent;
+  border: 2px solid #333;
+  height: 3em;
+  margin: 0.4em 0;
+  padding-left: 1em;
+  font-family: "poppins";
+  transition: 0.2s ease;
+  &:focus {
+    box-shadow: 0px 0px 5px 0px #01d4bf;
   }
-  
-`
+  &::-webkit-input-placeholder {
+    color: rgba(51, 51, 51, 0.6);
+  }
+`;
 export const ErrorText = styled.p`
-color: ${props => props.primary ? "red" : "#333"};
-text-align: center;
-font-size: .7em;
-font-family: 'poppins';
-white-space: nowrap;
-`
+  color: ${(props) => (props.primary ? "red" : "#333")};
+  text-align: center;
+  font-size: 0.7em;
+  font-family: "poppins";
+  white-space: nowrap;
+`;
 export const UserContainer = styled.div`
-width: 18em;
-height: fit-content;
-display: flex;
-margin-bottom: 1em;
-padding: .7em;
-border: 2px solid #333;
-color: #333;
-flex-direction: column;
-`
+  width: 18em;
+  height: fit-content;
+  display: flex;
+  margin-bottom: 1em;
+  padding: 0.7em;
+  border: 2px solid #333;
+  color: #333;
+  flex-direction: column;
+`;
 export const UserTextWrap = styled.div`
-display: flex;
-gap: .3em;
-margin-bottom: ${props => props.primary ? ".7em" : "0"};
-`
+  display: flex;
+  gap: 0.3em;
+  margin-bottom: ${(props) => (props.primary ? ".7em" : "0")};
+`;
 export const UserText = styled.p`
-color: #333;
-font-family: 'poppins';
-font-weight: ${props => props.primary ? "bold" : "regular"};
-font-size: .8em;
-`
+  color: #333;
+  font-family: "poppins";
+  font-weight: ${(props) => (props.primary ? "bold" : "regular")};
+  font-size: ${(props) => (props.title ? ".65em" : ".8em")};
+`;
 export const StyledSelect = styled(Select)`
-border: 2px solid #333;
-font-family: 'poppins';
-font-size: .6em;
-outline: none;
-border: none;
-width: 20em;
-margin: .2em 0 .5em 0;
-
-`
+  border: 2px solid #333;
+  font-family: "poppins";
+  font-size: 0.6em;
+  outline: none;
+  border: none;
+  width: 20em;
+  margin: 0.2em 0 0.5em 0;
+`;
 export const HoursChangeWrap = styled.div`
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-padding: .2em 0;
-`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0.2em 0;
+`;
+export const StyledField = styled(Field)`
+  border: 2px solid #333;
+  background-color: transparent;
+  height: 3em;
+  width: 20em;
+  padding-left: 0.5em;
+  outline: none;
+  margin: 0.2em 0 0.5em 0;
+  font-family:"poppins";
+  &:focus {
+    box-shadow: 0px 0px 5px 0px #01d4bf;
+  }
+`;
