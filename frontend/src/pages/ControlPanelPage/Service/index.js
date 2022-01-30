@@ -12,23 +12,6 @@ import {
   StyledButtonContainer,
 } from '../ControlPanelPageElements'
 
-const StyledButtonNew = styled(StyledButton)`
-  
-  background-color: ${({ addNewService }) =>
-    addNewService ? '#01D4BF' : 'transparent'};
-`
-const StyledButtonUpdate = styled(StyledButton)`
-  
-  background-color: ${({ updateService }) =>
-    updateService ? '#01D4BF' : 'transparent'};
-`
-
-const StyledButtonDelete = styled(StyledButton)`
-  
-  background-color: ${({ deleteService }) =>
-    deleteService ? '#01D4BF' : 'transparent'};
-`
-
 const ServicesControl = () => {
   const dispatch = useDispatch()
   const [state, setState] = useState({
@@ -68,24 +51,24 @@ const ServicesControl = () => {
   return (
     <StyledContainer>
       <StyledButtonContainer>
-        <StyledButtonNew
+        <StyledButton
           onClick={addNewServiceHandler}
           addNewService={addNewService}
         >
           Utwórz
-        </StyledButtonNew>
-        <StyledButtonUpdate
+        </StyledButton>
+        <StyledButton
           onClick={updateServiceHandler}
           updateService={updateService}
         >
           Aktualizuj
-        </StyledButtonUpdate>
-        <StyledButtonDelete
+        </StyledButton>
+        <StyledButton
           onClick={deleteServiceHandler}
           deleteService={deleteService}
         >
           Usuń
-        </StyledButtonDelete>
+        </StyledButton>
       </StyledButtonContainer>
       {addNewService && <NewService />}
       {updateService && <UpdateService />}

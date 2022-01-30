@@ -1,79 +1,66 @@
-import React, { useState, useEffect } from 'react'
-import { Formik, Form, Field, setIn } from 'formik'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useState, useEffect } from "react";
+import { Formik, Form, Field, setIn } from "formik";
+import { useDispatch, useSelector } from "react-redux";
 
-import { createServiceValidationSchema } from '../../../utils/validationSchemas'
+import { createServiceValidationSchema } from "../../../utils/validationSchemas";
 
-import ServiceData from '../../../services/service'
-import { SET_MESSAGE } from '../../../store/actions/types'
-import { clearMessage } from '../../../store/actions/message'
-import styled from 'styled-components'
-import { StyledContainer, StyledHeading } from '..//ControlPanelPageElements'
-
-const StyledLabel = styled.label`
-  font-size: 0.813rem;
-`
-
-const StyledHeadingCreate = styled(StyledHeading)`
-  font-size: 1rem;
-  margin-bottom: 1rem;
-`
-
-const styles = {
-  inputStyles: {
-    width: '100%',
-    backgroundColor: 'transparent',
-    border: '2px solid #333',
-    height: '3em',
-    margin: '10px 0',
-    paddingLeft: '1em',
-  },
-}
+import ServiceData from "../../../services/service";
+import { SET_MESSAGE } from "../../../store/actions/types";
+import { clearMessage } from "../../../store/actions/message";
+import {
+  StyledContainer,
+  StyledHeading,
+  StyledField,
+  ErrorText,
+  UserText,
+  SubTitle,
+  StyledButton,
+} from "..//ControlPanelPageElements";
 
 const NewService = () => {
   let initialState = {
-    grupa: '',
-  }
-  const [inputArr, setInputArr] = useState([{}])
-  const [services, setServices] = useState(initialState)
-  const [servicesArr, setServicesArr] = useState([])
-  const { message } = useSelector((state) => state.message)
-  const dispatch = useDispatch()
+    grupa: "",
+  };
+  const [inputArr, setInputArr] = useState([{}]);
+  const [services, setServices] = useState(initialState);
+  const [servicesArr, setServicesArr] = useState([]);
+  const { message } = useSelector((state) => state.message);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    retrieveSpecializations()
-  }, [])
+    retrieveSpecializations();
+  }, []);
 
   const retrieveSpecializations = () => {
     ServiceData.getAll()
       .then((response) => {
-        setServicesArr(response.data)
+        setServicesArr(response.data);
       })
-      .catch((e) => console.log(e))
-  }
+      .catch((e) => console.log(e));
+  };
 
   const newServiceInput = () => {
     if (inputArr.length > 4) {
       dispatch({
         type: SET_MESSAGE,
-        payload: 'Maksymalna liczba uslug do dodania za jednym razem to 5.',
-      })
+        payload: "Maksymalna liczba usług do dodania za jednym razem to 5.",
+      });
     } else {
-      setInputArr([...inputArr, {}])
+      setInputArr([...inputArr, {}]);
     }
-  }
+  };
 
   const deleteInputService = () => {
-    setInputArr(inputArr.slice(0, -1))
-  }
+    setInputArr(inputArr.slice(0, -1));
+  };
 
   const onSubmitHandle = (values) => {
     const servicesToUpdate = servicesArr.filter(
       (service) => service.grupa === values.grupa
-    )
-    const { grupa, ...uslugi } = values
-    let obj = []
-    if ('u1nazwa' in uslugi) {
+    );
+    const { grupa, ...uslugi } = values;
+    let obj = [];
+    if ("u1nazwa" in uslugi) {
       for (let i = 0; i < inputArr.length; i++) {
         if (uslugi[`u${i + 1}nazwa`]) {
           obj = [
@@ -82,167 +69,125 @@ const NewService = () => {
               nazwa: uslugi[`u${i + 1}nazwa`],
               cena: uslugi[`u${i + 1}cena`],
             },
-          ]
+          ];
         }
       }
     }
-    let servicesObj = { grupa: grupa, uslugi: [...obj] }
+    let servicesObj = { grupa: grupa, uslugi: [...obj] };
     if (servicesToUpdate.length) {
       dispatch({
         type: SET_MESSAGE,
-        payload: 'Ta specjalizacja znajduje się w kolekcji',
-      })
-      setInputArr([{}])
+        payload: "Ta specjalizacja znajduje się w kolekcji",
+      });
+      setInputArr([{}]);
       setServices({
         ...values,
-      })
+      });
     } else {
       ServiceData.create(servicesObj)
         .then((response) => {
           dispatch({
             type: SET_MESSAGE,
-            payload: 'Specjalizacja została utworzona!',
-          })
+            payload: "Specjalizacja została utworzona!",
+          });
         })
-        .catch((e) => console.log(e))
-      setInputArr([{}])
+        .catch((e) => console.log(e));
+      setInputArr([{}]);
       setServices({
-        grupa: '',
-        u1nazwa: '',
+        grupa: "",
+        u1nazwa: "",
         u1cena: null,
-        u2nazwa: '',
+        u2nazwa: "",
         u2cena: null,
-        u3nazwa: '',
+        u3nazwa: "",
         u3cena: null,
-        u4nazwa: '',
+        u4nazwa: "",
         u4cena: null,
-        u5nazwa: '',
+        u5nazwa: "",
         u5cena: null,
-      })
+      });
     }
-  }
+  };
 
   return (
     <StyledContainer>
-      <StyledHeadingCreate> Dodaj specjalizacje </StyledHeadingCreate>
+      <SubTitle>Dodaj specjalizację</SubTitle>
       <Formik
         enableReinitialize
         initialValues={services}
         validationSchema={createServiceValidationSchema}
         onSubmit={(values, actions) => {
-          onSubmitHandle(values)
-          actions.resetForm()
+          onSubmitHandle(values);
+          actions.resetForm();
         }}
       >
         {({ errors, touched, values, handleBlur, setValues }) => (
           <Form
             style={{
-              width: '350px',
-              display: 'flex',
-              flexDirection: 'column',
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
             }}
           >
-            <StyledLabel> Nazwa grupy specjalizacji </StyledLabel>
-            <Field
-              style={styles.inputStyles}
-              placeholder='Nazwa grupy uslug'
-              name='grupa'
+            <StyledField
+              placeholder="Nazwa grupy usług"
+              name="grupa"
               onBlur={handleBlur}
-              type='text'
+              type="text"
             />
             {errors.grupa && touched.grupa ? (
-              <p style={{ color: 'red' }}>{errors.grupa}</p>
+              <ErrorText primary>{errors.grupa}</ErrorText>
             ) : null}
             {values.grupa && (
               <>
                 {inputArr.map((item, index) => (
                   <React.Fragment key={index}>
-                    <StyledLabel> Usluga {index + 1} </StyledLabel>
-                    <Field
-                      style={styles.inputStyles}
-                      type='text'
-                      placeholder='Nazwa uslugi'
+                    <UserText>Usługa {index + 1} </UserText>
+                    <StyledField
+                      type="text"
+                      placeholder="Nazwa usługi"
                       name={`u${index + 1}nazwa`}
                       onBlur={handleBlur}
                     />
                     {errors[`u${index + 1}nazwa`] &&
                     touched[`u${index + 1}nazwa`] ? (
-                      <p style={{ color: 'red' }}>
+                      <ErrorText primary>
                         {errors[`u${index + 1}nazwa`]}
-                      </p>
+                      </ErrorText>
                     ) : null}
-                    <Field
-                      type='number'
-                      style={styles.inputStyles}
-                      placeholder='Cena uslugi'
+                    <StyledField
+                      type="number"
+                      placeholder="Cena usługi"
                       name={`u${index + 1}cena`}
                       onBlur={handleBlur}
                     />
                     {errors[`u${index + 1}cena`] &&
                     touched[`u${index + 1}cena`] ? (
-                      <p style={{ color: 'red' }}>
+                      <ErrorText primary>
                         {errors[`u${index + 1}cena`]}
-                      </p>
+                      </ErrorText>
                     ) : null}
                   </React.Fragment>
                 ))}
                 {inputArr.length !== 5 && (
-                  <button
-                    type='button'
-                    style={{
-                      height: '40px',
-                      border: '2px solid #333',
-                      background: 'transparent',
-                      fontSize: '18px',
-                      cursor: 'pointer',
-                      marginTop: '10px',
-                    }}
-                    onClick={newServiceInput}
-                  >
-                    Dodaj kolejna usluge
-                  </button>
+                  <StyledButton type="button" onClick={newServiceInput}>
+                    Dodaj kolejną usługę
+                  </StyledButton>
                 )}
                 {inputArr.length > 1 && (
-                  <button
-                    type='button'
-                    style={{
-                      height: '40px',
-                      border: '2px solid #333',
-                      background: 'transparent',
-                      fontSize: '18px',
-                      cursor: 'pointer',
-                      marginTop: '10px',
-                    }}
-                    onClick={deleteInputService}
-                  >
-                    Usun ostatnia usluge
-                  </button>
+                  <StyledButton type="button" onClick={deleteInputService}>
+                    Usuń ostatnią usługę
+                  </StyledButton>
                 )}
               </>
             )}
-            {values.grupa && (
-              <button
-                type='submit'
-                style={{
-                  height: '40px',
-                  border: '2px solid #333',
-                  background: 'transparent',
-                  fontSize: '18px',
-                  cursor: 'pointer',
-                  marginTop: '10px',
-                }}
-              >
-                Dodaj
-              </button>
-            )}
-            {message && (
-              <p style={{ color: 'red', textAlign: 'center' }}>{message}</p>
-            )}
+            {values.grupa && <StyledButton type="submit">Dodaj</StyledButton>}
+            {message && <ErrorText>{message}</ErrorText>}
           </Form>
         )}
       </Formik>
     </StyledContainer>
-  )
-}
+  );
+};
 
-export default NewService
+export default NewService;

@@ -72,6 +72,7 @@ export const ModalShadow = styled(motion.div)`
   top: 0;
   background-color: rgba(3, 3, 3, 0.5);
   z-index: 999;
+
 `;
 export const ModalContainer = styled(motion.div)`
   position: relative;

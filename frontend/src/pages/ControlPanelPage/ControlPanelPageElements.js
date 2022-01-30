@@ -15,8 +15,9 @@ export const StyledContainer = styled.section`
 export const StyledButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  gap: 0.5rem;
+  gap: 0.5em;
   /* margin: 1rem 0; */
+
 `;
 export const StyledButton = styled.button`
   padding: 1em 1em;
@@ -26,7 +27,7 @@ export const StyledButton = styled.button`
   border: 2px solid #333;
   font-family: "poppins";
   font-size: 0.6em;
-  margin-bottom: 1.5em;
+  margin-bottom: ${props => props.delete ? "0" : "1.5em"};
   white-space: nowrap;
   &:hover {
     background-color: #01d4bf;
@@ -96,6 +97,8 @@ export const UserText = styled.p`
   font-family: "poppins";
   font-weight: ${(props) => (props.primary ? "bold" : "regular")};
   font-size: ${(props) => (props.title ? ".65em" : ".8em")};
+  /* white-space: nowrap; */
+  /* background-color: red; */
 `;
 export const StyledSelect = styled(Select)`
   border: 2px solid #333;
@@ -105,6 +108,7 @@ export const StyledSelect = styled(Select)`
   border: none;
   width: 20em;
   margin: 0.2em 0 0.5em 0;
+  height: 3em;
 `;
 export const HoursChangeWrap = styled.div`
   display: flex;
@@ -118,7 +122,7 @@ export const StyledField = styled(Field)`
   background-color: transparent;
   height: 3em;
   width: 20em;
-  padding-left: 0.5em;
+  padding-left: 1em;
   outline: none;
   margin: 0.2em 0 0.5em 0;
   font-family:"poppins";
@@ -126,3 +130,25 @@ export const StyledField = styled(Field)`
     box-shadow: 0px 0px 5px 0px #01d4bf;
   }
 `;
+export const StyledOption = styled.option`
+width: 20em;
+height: 3em;
+outline: none;
+font-family: "poppins";
+`
+export const DeleteServiceContainer = styled.div`
+display: flex;
+flex-direction: column;
+gap: .2em;
+margin-top: .5em;
+width: 20em;
+`
+
+export const ServiceWrap = styled.div`
+display: flex;
+justify-content: space-between;
+align-items: center;
+background-color: rgba(51,51,51,.1);
+gap: 1em;
+padding: .5em;
+`

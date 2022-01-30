@@ -11,8 +11,20 @@ import {
   StyledContainer,
   StyledHeading,
   ButtonControl,
+  SubTitle,
+  StyledButton,
+  ErrorText,
+  UserText,
+  ServiceWrap,
+  DeleteServiceContainer,
 } from "..//ControlPanelPageElements";
-
+import {
+  ModalShadow,
+  ModalContainer,
+  ModalText,
+  ModalButtonsContainer,
+  ModalButton,
+} from "../../VisitPage/VisitPageElements";
 const StyledLabel = styled.label`
   font-size: 0.813rem;
 `;
@@ -54,93 +66,47 @@ const DeleteService = () => {
 
   return (
     <StyledContainer>
-      <StyledHeadingCreate>Usuń specjalizację</StyledHeadingCreate>
-      {servicesArr.map((service) => (
-        <div>
-          <h2 style={{ verticalAlign: "middle" }}>{service.grupa}</h2>
-          {/* {service.uslugi.map((usluga) => (
+      <SubTitle>Usuń specjalizację</SubTitle>
+      <DeleteServiceContainer>
+        {servicesArr.map((service) => (
+          <ServiceWrap>
+            <UserText title>{service.grupa}</UserText>
+            {/* {service.uslugi.map((usluga) => (
             <div style={{ margin: '10px 0' }}>
               <p>Nazwa uslugi: {usluga.nazwa}</p>
               <p>Cena uslugi: {usluga.cena}</p>
             </div>
           ))} */}
-          <ButtonControl
-            onClick={() => {
-              setIsDelete(true);
-              setServiceToDelete(service._id);
-            }}
-          >
-            Usuń specjalizację
-          </ButtonControl>
-        </div>
-      ))}
-      {isDelete && (
-        <div
-          style={{
-            width: "100vw",
-            height: "100vh",
-            position: "absolute",
-            left: "0",
-            top: "0",
-            backgroundColor: "rgba(3,3,3,.5)",
-            zIndex: "999",
-          }}
-        >
-          <div
-            style={{
-              position: "relative",
-              width: "50%",
-              height: "50%",
-              backgroundColor: "#fff",
-              left: "0",
-              right: "0",
-              top: "25%",
-              margin: "auto",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <h2 style={{ marginBottom: "20px" }}>Na pewno chcesz usunąć</h2>
-            <div
-              style={{
-                position: "relative",
-                backgroundColor: "#fff",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+            <StyledButton
+              delete
+              onClick={() => {
+                setIsDelete(true);
+                setServiceToDelete(service._id);
               }}
             >
-              <button
-                style={{
-                  backgroundColor: "transparent",
-                  border: "2px solid #333",
-                  padding: ".75em 50px",
-                  marginRight: "5px",
-                  cursor: "pointer",
-                }}
-                onClick={() => setIsDelete(false)}
-              >
+              Usuń specjalizację
+            </StyledButton>
+          </ServiceWrap>
+        ))}
+      </DeleteServiceContainer>
+      {isDelete && (
+        <ModalShadow>
+          <ModalContainer>
+            <ModalText>Na pewno chcesz usunąć?</ModalText>
+            <ModalButtonsContainer>
+              <ModalButton primary onClick={() => setIsDelete(false)}>
                 Nie
-              </button>
-              <button
-                style={{
-                  backgroundColor: "#01d4bf",
-                  border: "2px solid transparent",
-                  padding: ".75em 50px",
-                  marginLeft: "5px",
-                  cursor: "pointer",
-                }}
+              </ModalButton>
+              <ModalButton
                 onClick={() => {
                   onServiceDelete(serviceToDelete);
                 }}
               >
                 Tak
-              </button>
-            </div>
-          </div>
-        </div>
+              </ModalButton>
+            </ModalButtonsContainer>
+          </ModalContainer>
+        </ModalShadow>
       )}
     </StyledContainer>
   );

@@ -98,7 +98,7 @@ const UpdateUser = (props) => {
       <SubTitle>Wybierz użytkownika</SubTitle>
       <StyledSelect
         isClearable
-        placeholder="Wybierz.."
+        placeholder="Wybierz"
         defaultValue={selectedUser}
         onChange={(value) => {
           setSelectedUser(value);
