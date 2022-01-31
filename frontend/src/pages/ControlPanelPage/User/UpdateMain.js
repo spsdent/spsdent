@@ -112,7 +112,7 @@ const UpdateUser = (props) => {
         }))}
       />
       {selectedUser && (
-        <StyledButtonContainer>
+        <StyledButtonContainer primary>
           <StyledButton
             btnType={btnType}
             onClick={() => {

@@ -96,6 +96,8 @@ const styles = {
     fontFamily: "Poppins",
     fontSize: ".6em",
   },
+ 
+  
 };
 
 const AddVisitAdmin = () => {

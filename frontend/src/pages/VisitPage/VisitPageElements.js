@@ -115,8 +115,3 @@ export const ModalButton = styled.div`
   }
 `;
 
-// export const EmptyListHeading = styled(Title)`
-//   font-size: 2.5rem;
-//   text-decoration: underline;
-//   color: salmon;
-// `

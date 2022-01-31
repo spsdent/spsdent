@@ -10,6 +10,7 @@ export const AddVisitContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
 `;
 export const TitleContainer = styled.div`
   display: flex;
@@ -29,11 +30,12 @@ export const Title = styled.h1`
 export const FormContainer = styled.div`
   display: flex;
   width: 100%;
-  background-color: rgba(51,51,51,.05);
-  box-shadow: 0px 0px 10px #aaa;
+  /* background-color: rgba(51,51,51,.05); */
+  /* box-shadow: 0px 0px 10px #aaa; */
   height: fit-content;
-  gap: 5em;
-  padding: 1em;
+  gap: 2em;
+  /* padding: 1em; */
+
 `;
 export const FormColumn = styled.div`
   /* background-color: ${(props) => (props.primary ? "#455" : "#545")}; */
@@ -41,10 +43,23 @@ export const FormColumn = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  width: 30%;
-  /* border: 2px solid #333; */
-  /* padding: 1em; */
-  
+  width: 17em;
+  box-shadow: 0px 0px 10px 0px #aaa;
+  padding: 1em;
+  font-size: 24px;
+
+@media screen and (max-width: 1500px) {
+  font-size: 20px;
+}
+@media screen and (max-width: 1280px) {
+  font-size: 18px;
+}
+@media screen and (max-width: 960px) {
+  font-size: 16px;
+}
+@media screen and (max-width: 768px) {
+  font-size: 14px;
+}
 `;
 export const FormInput = styled(Field)`
   background-color: transparent;
@@ -58,6 +73,20 @@ export const FormInput = styled(Field)`
   font-family: "Poppins";
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  font-size: 15px;
+
+@media screen and (max-width: 1500px) {
+  font-size: 13px;
+}
+@media screen and (max-width: 1280px) {
+  font-size: 11px;
+}
+@media screen and (max-width: 960px) {
+  font-size: 9px;
+}
+@media screen and (max-width: 768px) {
+  font-size: 7px;
+}
 `;
 export const FormButton = styled.button`
   background-color: transparent;
@@ -82,7 +111,7 @@ export const TextContainer = styled.div`
   display: flex;
   justify-content: center;
   height: fit-content;
-  gap: ${props => props.primary ? ".5em" : ".35em"};
+  gap: ${(props) => (props.primary ? ".5em" : ".35em")};
   text-align: center;
 `;
 export const RegisterText = styled.p`
@@ -101,5 +130,5 @@ export const SubTitle = styled.h2`
   font-family: "bebas neue";
   letter-spacing: 0.04em;
   font-size: 1.3em;
-  color: ${props => props.primary ? "#01d4bf" : "#333"};
+  color: ${(props) => (props.primary ? "#01d4bf" : "#333")};
 `;

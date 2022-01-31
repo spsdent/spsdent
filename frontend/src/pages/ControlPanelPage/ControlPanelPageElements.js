@@ -16,7 +16,7 @@ export const StyledButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 0.5em;
-  /* margin: 1rem 0; */
+  /* margin: 1rem 0; */margin-top: ${props => props.primary ? "1em" : "0"};
 
 `;
 export const StyledButton = styled.button`
@@ -29,6 +29,7 @@ export const StyledButton = styled.button`
   font-size: 0.6em;
   margin-bottom: ${props => props.delete ? "0" : "1.5em"};
   white-space: nowrap;
+  margin-top: ${props => props.update ? "1.5em" : "0"};
   &:hover {
     background-color: #01d4bf;
     /* border: 2px solid #fff; */
@@ -38,6 +39,7 @@ export const StyledButton = styled.button`
 export const StyledHeading = styled.h1`
   color: #333;
   font-size: 3em;
+  white-space: nowrap;
 `;
 export const ButtonControl = styled.button`
   font-family: "poppins";
@@ -99,6 +101,7 @@ export const UserText = styled.p`
   font-size: ${(props) => (props.title ? ".65em" : ".8em")};
   /* white-space: nowrap; */
   /* background-color: red; */
+  margin-top: ${props => props.spec ? "1em" : "0"};
 `;
 export const StyledSelect = styled(Select)`
   border: 2px solid #333;

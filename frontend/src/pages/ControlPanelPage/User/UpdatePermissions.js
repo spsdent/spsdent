@@ -232,6 +232,7 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
           {({ errors, touched, values, setValues, handleBlur }) => (
             <Form
               style={{
+                // marginTop:"2em",
                 width: "20em",
                 display: "flex",
                 flexDirection: "column",
@@ -262,7 +263,7 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
 
                 {values.rola && values.rola.label === "spec" && (
                   <>
-                    <UserText>Wybierz specjalizację użytkownika</UserText>
+                    <UserText spec>Wybierz specjalizację użytkownika</UserText>
                     <StyledSelect
                       isMulti
                       placeholder="Wybierz specjalizację"
@@ -281,7 +282,7 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
                     {errors.specjalizacja && touched.specjalizacja ? (
                       <ErrorText primary>{errors.specjalizacja}</ErrorText>
                     ) : null}
-                    <UserText>Wybierz godziny pracy użytkownika</UserText>
+                    <UserText spec>Wybierz godziny pracy użytkownika</UserText>
                     <HoursChangeWrap>
                       <StyledField
                         name="godzinyStart"
@@ -307,7 +308,7 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
                   </>
                 )}
                 {values.rola && values.rola.label !== "" && (
-                  <StyledButton type="submit">
+                  <StyledButton update type="submit">
                     Aktualizuj uprawnienia
                   </StyledButton>
                 )}
