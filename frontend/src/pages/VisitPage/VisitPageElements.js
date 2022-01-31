@@ -67,12 +67,12 @@ export const ButtonVisit = styled(motion.button)`
 export const ModalShadow = styled(motion.div)`
   width: 100vw;
   height: 100vh;
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   background-color: rgba(3, 3, 3, 0.5);
-  z-index: 999;
-
+  z-index: 9999;
+  overflow: hidden;
 `;
 export const ModalContainer = styled(motion.div)`
   position: relative;
@@ -100,11 +100,19 @@ export const ModalButtonsContainer = styled.div`
   gap: 2em;
 `;
 export const ModalButton = styled.div`
+  color: ${props => props.primary ? "#333" : "#fff"};
+  padding: 0.5em 2em;
+  cursor: pointer;
+  transition: 0.2s ease;
   background-color: ${(props) => (props.primary ? "transparent" : "#01d4bf")};
   border: ${(props) =>
     props.primary ? "2px solid #333" : "2px solid transparent"};
-  padding: 0.75em 2.5em;
-  cursor: pointer;
+  &:hover {
+    background-color: ${(props) => (props.primary ? "#01d4bf" : "transparent")};
+    border: ${(props) =>
+      props.primary ? "2px solid transparent" : "2px solid #333"};
+      color: ${props => props.primary ? "#fff" : "#333"};
+  }
 `;
 
 // export const EmptyListHeading = styled(Title)`
