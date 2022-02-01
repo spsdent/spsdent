@@ -67,17 +67,17 @@ exports.delete = (req, res) => {
     .then((data) => {
       if (!data) {
         res.status(404).send({
-          message: `Cannot delete Visit with id=${id}. Maybe Visit was not found!`,
+          message: `Cannot delete Doctor with id=${id}. Maybe Doctor was not found!`,
         })
       } else {
         res.send({
-          message: 'Visit was deleted successfully!',
+          message: 'Doctor was deleted successfully!',
         })
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: 'Could not delete Visit with id=' + id,
+        message: 'Could not delete Doctor with id=' + id,
       })
     })
 }
