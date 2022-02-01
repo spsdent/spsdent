@@ -109,10 +109,10 @@ export const FormSelect = styled(Field)``;
 export const FormError = styled.p``;
 export const TextContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: ${props => props.primary ? "center" : "left"};
   height: fit-content;
   gap: ${(props) => (props.primary ? ".5em" : ".35em")};
-  text-align: center;
+  text-align: ${props => props.primary ? "center": "left"};
 `;
 export const RegisterText = styled.p`
   font-family: "Poppins";

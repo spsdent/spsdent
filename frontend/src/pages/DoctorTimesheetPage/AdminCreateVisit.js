@@ -16,6 +16,9 @@ import {
   ModalButtonsContainer,
   ModalButton,
 } from "../VisitPage/VisitPageElements";
+import {SideModalContainer, SideModalContent,FormColumn,FormItem,StyledLabel,} from './AdminCreateVisitElements.js'
+import {ErrorText, StyledButton, UserText} from '../ControlPanelPage/ControlPanelPageElements.js'
+import {RegisterText,TextContainer, FormInput} from '../AddVisitPage/AddVisitPageElements.js'
 const styles = {
   inputStyle: {
     backgroundColor: 'transparent',
@@ -23,6 +26,7 @@ const styles = {
     height: '3em',
     margin: '10px 0',
     paddingLeft: '1em',
+    width: "15em",
   },
   buttonStyle: {
     backgroundColor: 'transparent',
@@ -46,6 +50,7 @@ const styles = {
     height: '3em',
     margin: '10px 0',
     paddingLeft: '1em',
+    width: "15em",
   },
   errorStyle: {
     color: 'red',
@@ -209,6 +214,7 @@ const AdminCreateVisit = ({
 
   return (
     <>
+    <SideModalContainer>
       <ModalText>Zarezerwuj</ModalText>
       {allServicesFromDb.length > 0 ? (
         <Formik
@@ -219,36 +225,42 @@ const AdminCreateVisit = ({
           onReset={() => setVisitState({})}
         >
           {({ errors, touched, values, setValues, handleBlur, resetForm }) => (
+            <SideModalContent>
             <Form>
-              <label>Grupa uslug</label>
+            
+            <FormColumn>
+            <FormItem>
+              <StyledLabel>Grupa usług</StyledLabel>
               <Field
                 as='select'
                 name='grupa'
                 style={styles.selectStyle}
                 onBlur={handleBlur}
               >
-                <option value=''>Wybierz grupe uslugi...</option>
+                <option value=''>Wybierz grupę usług</option>
                 {serviceGroupHandler(values)}
               </Field>
               {errors.grupa && touched.grupa ? (
-                <p style={styles.errorStyle}>{errors.grupa}</p>
+                <ErrorText primary>{errors.grupa}</ErrorText>
               ) : null}
-
-              <label>Usluga</label>
+  </FormItem>
+  <FormItem>
+              <StyledLabel>Usługa</StyledLabel>
               <Field
                 as='select'
                 name='usluga'
                 style={styles.inputStyle}
                 onBlur={handleBlur}
               >
-                <option value=''>Wybierz usluge...</option>
+                <option value=''>Wybierz usługę</option>
                 {serviceHandler(values)}
               </Field>
               {errors.usluga && touched.usluga ? (
-                <p style={styles.errorStyle}>{errors.usluga}</p>
+                <ErrorText primary>{errors.usluga}</ErrorText>
               ) : null}
-
-              <label>Imie</label>
+              </FormItem>
+              <FormItem>
+              <StyledLabel>Imię</StyledLabel>
               <Field
                 name='imie'
                 type='text'
@@ -257,9 +269,11 @@ const AdminCreateVisit = ({
                 onBlur={handleBlur}
               />
               {errors.imie && touched.imie ? (
-                <p style={styles.errorStyle}>{errors.imie}</p>
+                <ErrorText primary>{errors.imie}</ErrorText>
               ) : null}
-              <label>Nazwisko</label>
+              </FormItem>
+              <FormItem>
+              <StyledLabel>Nazwisko</StyledLabel>
               <Field
                 name='nazwisko'
                 type='text'
@@ -268,9 +282,11 @@ const AdminCreateVisit = ({
                 onBlur={handleBlur}
               />
               {errors.nazwisko && touched.nazwisko ? (
-                <p style={styles.errorStyle}>{errors.nazwisko}</p>
+                <ErrorText primary>{errors.nazwisko}</ErrorText>
               ) : null}
-              <label>E-mail</label>
+              </FormItem>
+              <FormItem>
+              <StyledLabel>E-mail</StyledLabel>
               <Field
                 name='email'
                 type='email'
@@ -279,9 +295,11 @@ const AdminCreateVisit = ({
                 onBlur={handleBlur}
               />
               {errors.email && touched.email ? (
-                <p style={styles.errorStyle}>{errors.email}</p>
+                <ErrorText primary>{errors.email}</ErrorText>
               ) : null}
-              <label>Telefon</label>
+              </FormItem>
+                             <FormItem>
+              <StyledLabel>Telefon</StyledLabel>
               <Field
                 name='telefon'
                 type='number'
@@ -290,9 +308,12 @@ const AdminCreateVisit = ({
                 onBlur={handleBlur}
               />
               {errors.telefon && touched.telefon ? (
-                <p style={styles.errorStyle}>{errors.telefon}</p>
+                <ErrorText primary>{errors.telefon}</ErrorText>
               ) : null}
-              <label>Miasto</label>
+              </FormItem>
+              <FormItem>
+            
+              <StyledLabel>Miasto</StyledLabel>
               <Field
                 name='miasto'
                 type='text'
@@ -301,9 +322,11 @@ const AdminCreateVisit = ({
                 onBlur={handleBlur}
               />
               {errors.miasto && touched.miasto ? (
-                <p style={styles.errorStyle}>{errors.miasto}</p>
+                <ErrorText primary>{errors.miasto}</ErrorText>
               ) : null}
-              <label>Ulica</label>
+              </FormItem>
+              <FormItem>
+              <StyledLabel>Ulica</StyledLabel>
               <Field
                 name='ulica'
                 type='text'
@@ -312,9 +335,11 @@ const AdminCreateVisit = ({
                 onBlur={handleBlur}
               />
               {errors.ulica && touched.ulica ? (
-                <p style={styles.errorStyle}>{errors.ulica}</p>
+                <ErrorText primary>{errors.ulica}</ErrorText>
               ) : null}
-              <label>Kod-pocztowy</label>
+              </FormItem>
+              <FormItem>
+              <StyledLabel>Kod-pocztowy</StyledLabel>
               <Field
                 name='kodPocztowy'
                 type='number'
@@ -323,98 +348,76 @@ const AdminCreateVisit = ({
                 onBlur={handleBlur}
               />
               {errors.kodPocztowy && touched.kodPocztowy ? (
-                <p style={styles.errorStyle}>{errors.kodPocztowy}</p>
+                <ErrorText primary>{errors.kodPocztowy}</ErrorText>
               ) : null}
+             </FormItem> 
               {isCreateAccount ? (
-                <>
-                  <p style={{ fontSize: '.75em' }}>
-                    Jednak nie chcesz tworzyc konta?
-                    <span
-                      style={{
-                        color: '#01D4BF',
-                        cursor: 'pointer',
-                      }}
-                      onClick={() => onCreateHandler(values, setValues)}
-                    >
-                      Kliknij tutaj
-                    </span>
-                  </p>
-                  <label>Haslo</label>
-                  <Field
-                    name='password'
-                    type='password'
-                    style={{
-                      backgroundColor: 'transparent',
-                      border: '2px solid #333',
-                      height: '3em',
-                      margin: '10px 0',
-                      paddingLeft: '1em',
-                    }}
-                    placeholder='Haslo do konta'
-                    onBlur={handleBlur}
-                  />
-                  {errors.password && touched.password ? (
-                    <p style={{ color: 'red' }}>{errors.password}</p>
-                  ) : null}
-                </>
+               <>
+                                  <TextContainer>
+                                    <RegisterText>
+                                      Jednak nie chcesz tworzyc konta?
+                                    </RegisterText>
+                                    <RegisterText
+                                      primary
+                                      onClick={() => {
+                                        const { password, ...oldValues } =
+                                          values;
+                                        setIsCreateAccount(false);
+                                        setValues(oldValues);
+                                      }}
+                                    >
+                                      Kliknij tutaj
+                                    </RegisterText>
+                                  </TextContainer>
+                                  <FormInput
+                                    name="password"
+                                    type="password"
+                                    placeholder="Wpisz hasło"
+                                    onBlur={handleBlur}
+                                  />
+                                  {errors.password && touched.password ? (
+                                    <ErrorText primary>
+                                      {errors.password}
+                                    </ErrorText>
+                                  ) : null}
+                                </>
               ) : (
-                <p style={{ fontSize: '.75em' }}>
-                  Chcesz utworzyć konto?
-                  <span
-                    style={{
-                      color: '#01D4BF',
-                      cursor: 'pointer',
-                    }}
-                    onClick={() => setIsCreateAccount(true)}
-                  >
-                    Kliknij tutaj
-                  </span>
-                </p>
+                <TextContainer>
+                                  <RegisterText>
+                                    Chcesz utworzyć konto?
+                                  </RegisterText>
+                                  <RegisterText
+                                    primary
+                                    onClick={() => setIsCreateAccount(true)}
+                                  >
+                                    Kliknij tutaj
+                                  </RegisterText>
+                                </TextContainer>
+                              
               )}
-              <button
+              </FormColumn>
+              
+              <StyledButton
                 type='button'
-                style={styles.buttonStyle}
+                
                 onClick={() => setIsSubmit(true)}
               >
                 Zarezerwuj
-              </button>
-              <button type='reset' style={styles.buttonStyle}>
-                Wyczysc formularz
-              </button>
+              </StyledButton>
+              <StyledButton type='reset' >
+                Wyczyść formularz
+              </StyledButton>
+              
               {isSubmit && (
-                <div
-                  style={{
-                    width: '100vw',
-                    height: '100vh',
-                    position: 'absolute',
-                    right: '0',
-                    top: '0',
-                    bottom: '0',
-                    backgroundColor: 'rgba(3,3,3,.8)',
-                    zIndex: '9999',
-                  }}
+                <ModalShadow
                 >
-                  <div
-                    style={{
-                      position: 'relative',
-                      width: '50%',
-                      height: '50%',
-                      backgroundColor: '#fff',
-                      left: '0',
-                      right: '0',
-                      top: '25%',
-                      margin: 'auto',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
+                  <ModalContainer
                   >
-                    <h2 style={{ marginBottom: '20px' }}>Podsumowanie</h2>
+                    <ModalText>Podsumowanie</ModalText>
                     <div
                       style={{
                         position: 'relative',
-                        backgroundColor: '#fff',
+                      
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -468,18 +471,21 @@ const AdminCreateVisit = ({
                         Anuluj
                       </button>
                       <button type='submit' style={styles.buttonBook}>
-                        Potwierdz rezerwacje
+                        Potwierdź rezerwacje
                       </button>
                     </div>
-                  </div>
-                </div>
+                  </ModalContainer>
+                </ModalShadow>
               )}
+              
             </Form>
+            </SideModalContent>
           )}
         </Formik>
       ) : (
         <p>Loading...</p>
       )}
+      </SideModalContainer>
     </>
   )
 }

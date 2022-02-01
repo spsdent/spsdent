@@ -44,7 +44,7 @@ import UserData from '../../services/user'
 import VisitData from '../../services/visit'
 import AdminCreateVisit from './AdminCreateVisit'
 import { clearMessage } from '../../store/actions/message'
-
+import {SideModalContainer} from './AdminCreateVisitElements.js'
 const StyledContainer = styled.section`
   width: 100%;
   height: 100%;
@@ -456,11 +456,8 @@ const AdminTimesheetPage = () => {
           <p>Loading...</p>
         )}
         {isSelected && (
-          <ModalShadow
-          >
-            <ModalContainer
+          <ModalShadow>
             
-            >
               <AdminCreateVisit
                 isDelete={isDelete}
                 bookingInfo={bookingInfo}
@@ -469,7 +466,7 @@ const AdminTimesheetPage = () => {
                 isSelectedFunc={setIsSelected}
                 onCreate={setIsCreated}
               />
-            </ModalContainer>
+            
           </ModalShadow>
         )}
         {isDelete && (
