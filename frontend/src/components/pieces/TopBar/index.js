@@ -34,6 +34,9 @@ const TopBar = () => {
   const logOut = () => {
     dispatch(logout())
   }
+
+  const isAdmin = currentUser && currentUser.roles.includes("ROLE_ADMIN");
+
   return (
     <>
       <Nav>
@@ -59,7 +62,7 @@ const TopBar = () => {
           <ButtonsContainer>
             <ButtonNav primary>
               <ButtonLink
-                to='/add-visit'
+                to={isAdmin ? '/timesheet' :'/add-visit'}
                 onClick={() => dispatch(clearMessage())}
               >
                 Umów się na wizytę

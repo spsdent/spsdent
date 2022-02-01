@@ -27,7 +27,6 @@ import {
 import styled from 'styled-components'
 
 const MyStyledInput = FormInput.withComponent('input')
-const MyStyledButton = FormButton.withComponent('button')
 
 const LoginPage = () => {
   const initialValues = {
@@ -47,7 +46,7 @@ const LoginPage = () => {
     dispatch(login(email, password))
       .then(() => {
         dispatch(clearMessage())
-        navigate('/add-visit')
+        navigate('/settings')
       })
       .catch(() => {
         setLoading(false)
@@ -55,7 +54,7 @@ const LoginPage = () => {
   }
 
   if (isLoggedIn) {
-    return <Navigate to='/add-visit' />
+    return <Navigate to='/settings' />
   }
 
   return (
