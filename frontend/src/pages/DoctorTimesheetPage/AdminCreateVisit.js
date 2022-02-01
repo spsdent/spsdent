@@ -51,7 +51,7 @@ const AdminCreateVisit = ({
   doctors,
   selectedDoctor,
   isSelectedFunc,
-  setSelectedDate,
+  onCreate,
 }) => {
   const [visitState, setVisitState] = useState({
     grupa: '',
@@ -73,11 +73,10 @@ const AdminCreateVisit = ({
   const { user: currentUser } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
 
-
   const serviceGroupHandler = (values) => {
     setServiceGroupSelected(values.grupa)
     const currentSelectedDoctor = doctors
-      .filter((doctor) => doctor.doctorId === selectedDoctor._id)
+      .filter((doctor) => doctor.doctorId === selectedDoctor)
       .map((item) => item.specjalnosci)
       .flat()
     const servicesToDisplay = allServicesFromDb.filter((service) =>
@@ -154,6 +153,7 @@ const AdminCreateVisit = ({
       cena: selectedServicePrice,
       uid: currentUser !== null ? currentUser.id : null,
     }
+    console.log('bookinginfo', bookingInfo)
 
     if (values.password) {
       // Create new visit based on provide visitData object
@@ -175,7 +175,7 @@ const AdminCreateVisit = ({
       .then((response) => {
         setIsSubmit(false)
         isSelectedFunc(false)
-        // setSelectedDate(null)
+        onCreate(true)
         dispatch(refreshApp())
         dispatch({
           type: SET_MESSAGE,
@@ -204,278 +204,282 @@ const AdminCreateVisit = ({
   return (
     <>
       <h2 style={{ marginBottom: '20px' }}>Zarezerwuj</h2>
-      <Formik
-        enableReinitialize
-        initialValues={visitState}
-        validationSchema={addVisitAdminTimesheetValidationSchema}
-        onSubmit={(values, actions) => onVisitSubmit(values, actions)}
-        onReset={() => setVisitState({})}
-      >
-        {({ errors, touched, values, setValues, handleBlur, resetForm }) => (
-          <Form
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              width: '300px',
-            }}
-          >
-            <label>Grupa uslug</label>
-            <Field
-              as='select'
-              name='grupa'
-              style={styles.selectStyle}
-              onBlur={handleBlur}
+      {allServicesFromDb.length > 0 ? (
+        <Formik
+          enableReinitialize
+          initialValues={visitState}
+          validationSchema={addVisitAdminTimesheetValidationSchema}
+          onSubmit={(values, actions) => onVisitSubmit(values, actions)}
+          onReset={() => setVisitState({})}
+        >
+          {({ errors, touched, values, setValues, handleBlur, resetForm }) => (
+            <Form
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                width: '300px',
+              }}
             >
-              <option value=''>Wybierz grupe uslugi...</option>
-              {serviceGroupHandler(values)}
-            </Field>
-            {errors.grupa && touched.grupa ? (
-              <p style={styles.errorStyle}>{errors.grupa}</p>
-            ) : null}
+              <label>Grupa uslug</label>
+              <Field
+                as='select'
+                name='grupa'
+                style={styles.selectStyle}
+                onBlur={handleBlur}
+              >
+                <option value=''>Wybierz grupe uslugi...</option>
+                {serviceGroupHandler(values)}
+              </Field>
+              {errors.grupa && touched.grupa ? (
+                <p style={styles.errorStyle}>{errors.grupa}</p>
+              ) : null}
 
-            <label>Usluga</label>
-            <Field
-              as='select'
-              name='usluga'
-              style={styles.inputStyle}
-              onBlur={handleBlur}
-            >
-              <option value=''>Wybierz usluge...</option>
-              {serviceHandler(values)}
-            </Field>
-            {errors.usluga && touched.usluga ? (
-              <p style={styles.errorStyle}>{errors.usluga}</p>
-            ) : null}
+              <label>Usluga</label>
+              <Field
+                as='select'
+                name='usluga'
+                style={styles.inputStyle}
+                onBlur={handleBlur}
+              >
+                <option value=''>Wybierz usluge...</option>
+                {serviceHandler(values)}
+              </Field>
+              {errors.usluga && touched.usluga ? (
+                <p style={styles.errorStyle}>{errors.usluga}</p>
+              ) : null}
 
-            <label>Imie</label>
-            <Field
-              name='imie'
-              type='text'
-              style={styles.inputStyle}
-              placeholder='Imie'
-              onBlur={handleBlur}
-            />
-            {errors.imie && touched.imie ? (
-              <p style={styles.errorStyle}>{errors.imie}</p>
-            ) : null}
-            <label>Nazwisko</label>
-            <Field
-              name='nazwisko'
-              type='text'
-              style={styles.inputStyle}
-              placeholder='Nazwisko'
-              onBlur={handleBlur}
-            />
-            {errors.nazwisko && touched.nazwisko ? (
-              <p style={styles.errorStyle}>{errors.nazwisko}</p>
-            ) : null}
-            <label>E-mail</label>
-            <Field
-              name='email'
-              type='email'
-              style={styles.inputStyle}
-              placeholder='E-mail'
-              onBlur={handleBlur}
-            />
-            {errors.email && touched.email ? (
-              <p style={styles.errorStyle}>{errors.email}</p>
-            ) : null}
-            <label>Telefon</label>
-            <Field
-              name='telefon'
-              type='number'
-              style={styles.inputStyle}
-              placeholder='Telefon'
-              onBlur={handleBlur}
-            />
-            {errors.telefon && touched.telefon ? (
-              <p style={styles.errorStyle}>{errors.telefon}</p>
-            ) : null}
-            <label>Miasto</label>
-            <Field
-              name='miasto'
-              type='text'
-              style={styles.inputStyle}
-              placeholder='Miasto'
-              onBlur={handleBlur}
-            />
-            {errors.miasto && touched.miasto ? (
-              <p style={styles.errorStyle}>{errors.miasto}</p>
-            ) : null}
-            <label>Ulica</label>
-            <Field
-              name='ulica'
-              type='text'
-              style={styles.inputStyle}
-              placeholder='Ulica'
-              onBlur={handleBlur}
-            />
-            {errors.ulica && touched.ulica ? (
-              <p style={styles.errorStyle}>{errors.ulica}</p>
-            ) : null}
-            <label>Kod-pocztowy</label>
-            <Field
-              name='kodPocztowy'
-              type='number'
-              style={styles.inputStyle}
-              placeholder='Kod-pocztowy'
-              onBlur={handleBlur}
-            />
-            {errors.kodPocztowy && touched.kodPocztowy ? (
-              <p style={styles.errorStyle}>{errors.kodPocztowy}</p>
-            ) : null}
-            {isCreateAccount ? (
-              <>
+              <label>Imie</label>
+              <Field
+                name='imie'
+                type='text'
+                style={styles.inputStyle}
+                placeholder='Imie'
+                onBlur={handleBlur}
+              />
+              {errors.imie && touched.imie ? (
+                <p style={styles.errorStyle}>{errors.imie}</p>
+              ) : null}
+              <label>Nazwisko</label>
+              <Field
+                name='nazwisko'
+                type='text'
+                style={styles.inputStyle}
+                placeholder='Nazwisko'
+                onBlur={handleBlur}
+              />
+              {errors.nazwisko && touched.nazwisko ? (
+                <p style={styles.errorStyle}>{errors.nazwisko}</p>
+              ) : null}
+              <label>E-mail</label>
+              <Field
+                name='email'
+                type='email'
+                style={styles.inputStyle}
+                placeholder='E-mail'
+                onBlur={handleBlur}
+              />
+              {errors.email && touched.email ? (
+                <p style={styles.errorStyle}>{errors.email}</p>
+              ) : null}
+              <label>Telefon</label>
+              <Field
+                name='telefon'
+                type='number'
+                style={styles.inputStyle}
+                placeholder='Telefon'
+                onBlur={handleBlur}
+              />
+              {errors.telefon && touched.telefon ? (
+                <p style={styles.errorStyle}>{errors.telefon}</p>
+              ) : null}
+              <label>Miasto</label>
+              <Field
+                name='miasto'
+                type='text'
+                style={styles.inputStyle}
+                placeholder='Miasto'
+                onBlur={handleBlur}
+              />
+              {errors.miasto && touched.miasto ? (
+                <p style={styles.errorStyle}>{errors.miasto}</p>
+              ) : null}
+              <label>Ulica</label>
+              <Field
+                name='ulica'
+                type='text'
+                style={styles.inputStyle}
+                placeholder='Ulica'
+                onBlur={handleBlur}
+              />
+              {errors.ulica && touched.ulica ? (
+                <p style={styles.errorStyle}>{errors.ulica}</p>
+              ) : null}
+              <label>Kod-pocztowy</label>
+              <Field
+                name='kodPocztowy'
+                type='number'
+                style={styles.inputStyle}
+                placeholder='Kod-pocztowy'
+                onBlur={handleBlur}
+              />
+              {errors.kodPocztowy && touched.kodPocztowy ? (
+                <p style={styles.errorStyle}>{errors.kodPocztowy}</p>
+              ) : null}
+              {isCreateAccount ? (
+                <>
+                  <p style={{ fontSize: '.75em' }}>
+                    Jednak nie chcesz tworzyc konta?
+                    <span
+                      style={{
+                        color: '#01D4BF',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => onCreateHandler(values, setValues)}
+                    >
+                      Kliknij tutaj
+                    </span>
+                  </p>
+                  <label>Haslo</label>
+                  <Field
+                    name='password'
+                    type='password'
+                    style={{
+                      backgroundColor: 'transparent',
+                      border: '2px solid #333',
+                      height: '3em',
+                      margin: '10px 0',
+                      paddingLeft: '1em',
+                    }}
+                    placeholder='Haslo do konta'
+                    onBlur={handleBlur}
+                  />
+                  {errors.password && touched.password ? (
+                    <p style={{ color: 'red' }}>{errors.password}</p>
+                  ) : null}
+                </>
+              ) : (
                 <p style={{ fontSize: '.75em' }}>
-                  Jednak nie chcesz tworzyc konta?
+                  Chcesz utworzyć konto?
                   <span
                     style={{
                       color: '#01D4BF',
                       cursor: 'pointer',
                     }}
-                    onClick={() => onCreateHandler(values, setValues)}
+                    onClick={() => setIsCreateAccount(true)}
                   >
                     Kliknij tutaj
                   </span>
                 </p>
-                <label>Haslo</label>
-                <Field
-                  name='password'
-                  type='password'
-                  style={{
-                    backgroundColor: 'transparent',
-                    border: '2px solid #333',
-                    height: '3em',
-                    margin: '10px 0',
-                    paddingLeft: '1em',
-                  }}
-                  placeholder='Haslo do konta'
-                  onBlur={handleBlur}
-                />
-                {errors.password && touched.password ? (
-                  <p style={{ color: 'red' }}>{errors.password}</p>
-                ) : null}
-              </>
-            ) : (
-              <p style={{ fontSize: '.75em' }}>
-                Chcesz utworzyć konto?
-                <span
-                  style={{
-                    color: '#01D4BF',
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => setIsCreateAccount(true)}
-                >
-                  Kliknij tutaj
-                </span>
-              </p>
-            )}
-            <button
-              type='button'
-              style={styles.buttonStyle}
-              onClick={() => setIsSubmit(true)}
-            >
-              Zarezerwuj
-            </button>
-            <button type='reset' style={styles.buttonStyle}>
-              Wyczysc formularz
-            </button>
-            {isSubmit && (
-              <div
-                style={{
-                  width: '100vw',
-                  height: '100vh',
-                  position: 'absolute',
-                  right: '0',
-                  top: '0',
-                  bottom: '0',
-                  backgroundColor: 'rgba(3,3,3,.8)',
-                  zIndex: '9999',
-                }}
+              )}
+              <button
+                type='button'
+                style={styles.buttonStyle}
+                onClick={() => setIsSubmit(true)}
               >
+                Zarezerwuj
+              </button>
+              <button type='reset' style={styles.buttonStyle}>
+                Wyczysc formularz
+              </button>
+              {isSubmit && (
                 <div
                   style={{
-                    position: 'relative',
-                    width: '50%',
-                    height: '50%',
-                    backgroundColor: '#fff',
-                    left: '0',
+                    width: '100vw',
+                    height: '100vh',
+                    position: 'absolute',
                     right: '0',
-                    top: '25%',
-                    margin: 'auto',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                    top: '0',
+                    bottom: '0',
+                    backgroundColor: 'rgba(3,3,3,.8)',
+                    zIndex: '9999',
                   }}
                 >
-                  <h2 style={{ marginBottom: '20px' }}>Podsumowanie</h2>
                   <div
                     style={{
                       position: 'relative',
+                      width: '50%',
+                      height: '50%',
                       backgroundColor: '#fff',
+                      left: '0',
+                      right: '0',
+                      top: '25%',
+                      margin: 'auto',
                       display: 'flex',
+                      flexDirection: 'column',
                       alignItems: 'center',
                       justifyContent: 'center',
                     }}
                   >
+                    <h2 style={{ marginBottom: '20px' }}>Podsumowanie</h2>
                     <div
                       style={{
+                        position: 'relative',
+                        backgroundColor: '#fff',
                         display: 'flex',
-                        flexDirection: 'column',
-                        width: '50%',
+                        alignItems: 'center',
+                        justifyContent: 'center',
                       }}
                     >
-                      <h3>Twoje dane</h3>
-                      <p>
-                        {values.imie} {values.nazwisko}
-                      </p>
-                      <p>{values.email}</p>
-                      <p>{values.telefon}</p>
-                      <p>{values.miasto}</p>
-                      <p>{values.ulica}</p>
-                      <p>{values.kodPocztowy}</p>
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          width: '50%',
+                        }}
+                      >
+                        <h3>Twoje dane</h3>
+                        <p>
+                          {values.imie} {values.nazwisko}
+                        </p>
+                        <p>{values.email}</p>
+                        <p>{values.telefon}</p>
+                        <p>{values.miasto}</p>
+                        <p>{values.ulica}</p>
+                        <p>{values.kodPocztowy}</p>
+                      </div>
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          width: '50%',
+                        }}
+                      >
+                        <h3>Umówiona wizyta</h3>
+                        <p>
+                          {bookingInfo.specjalista.imie}
+                          {bookingInfo.specjalista.nazwisko}
+                        </p>
+                        <p>{values.grupa}</p>
+                        <p>{values.usluga}</p>
+                        <p>{bookingInfo.data}r.</p>
+                        <p>{bookingInfo.godzina}:00</p>
+                      </div>
                     </div>
                     <div
                       style={{
                         display: 'flex',
-                        flexDirection: 'column',
-                        width: '50%',
+                        justifyContent: 'space-between',
                       }}
                     >
-                      <h3>Umówiona wizyta</h3>
-                      <p>
-                        {bookingInfo.specjalista.imie}
-                        {bookingInfo.specjalista.nazwisko}
-                      </p>
-                      <p>{values.grupa}</p>
-                      <p>{values.usluga}</p>
-                      <p>{bookingInfo.data}r.</p>
-                      <p>{bookingInfo.godzina}:00</p>
+                      <button
+                        onClick={() => setIsSubmit(false)}
+                        style={styles.buttonStyle}
+                      >
+                        Anuluj
+                      </button>
+                      <button type='submit' style={styles.buttonBook}>
+                        Potwierdz rezerwacje
+                      </button>
                     </div>
-                  </div>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <button
-                      onClick={() => setIsSubmit(false)}
-                      style={styles.buttonStyle}
-                    >
-                      Anuluj
-                    </button>
-                    <button type='submit' style={styles.buttonBook}>
-                      Potwierdz rezerwacje
-                    </button>
                   </div>
                 </div>
-              </div>
-            )}
-          </Form>
-        )}
-      </Formik>
+              )}
+            </Form>
+          )}
+        </Formik>
+      ) : (
+        <p>Loading...</p>
+      )}
     </>
   )
 }
