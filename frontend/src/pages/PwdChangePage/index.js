@@ -2,29 +2,22 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { PageWrapper } from '../../components/PageWrapper'
 import { changePassword, logout } from '../../store/actions/auth'
-import { Formik, Field, Form } from 'formik'
+import { Formik, Field, Form, ErrorMessage } from 'formik'
 import { passwordChangeValidationSchema } from '../../utils/validationSchemas'
 import { Link } from 'react-router-dom'
 import { clearMessage } from '../../store/actions/message'
+import {
+  AddVisitContainer,
+  Title,
+  TitleContainer,
+  FormButton,
+  FormColumn,
+  FormContainer,
+  FormInput,
+  FormError,
+} from '../AddVisitPage/AddVisitPageElements'
 
-const styles = {
-  inputStyle: {
-    width: '300px',
-    backgroundColor: 'transparent',
-    border: '2px solid #333',
-    height: '3em',
-    margin: '10px 0',
-    paddingLeft: '1em',
-  },
-  buttonStyle: {
-    width: '300px',
-    backgroundColor: 'transparent',
-    border: '2px solid #333',
-    height: '3em',
-    margin: '10px 0',
-    cursor: 'pointer',
-  },
-}
+const MyStyledInput = FormInput.withComponent('input')
 
 const PwdChangePage = () => {
   const initialValues = {
@@ -47,8 +40,11 @@ const PwdChangePage = () => {
 
   return (
     <PageWrapper>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <h1>Zmien haslo</h1>
+      <AddVisitContainer>
+        <TitleContainer>
+          <Title>Zmień</Title>
+          <Title primary>hasło</Title>
+        </TitleContainer>
         <Formik
           initialValues={initialValues}
           onSubmit={(values, actions) => {
@@ -56,42 +52,49 @@ const PwdChangePage = () => {
           }}
           validationSchema={passwordChangeValidationSchema}
         >
-          {({ values, errors, touched }) => (
-            <Form style={{ display: 'flex', flexDirection: 'column' }}>
-              <Field
-                type='text'
-                name='email'
-                placeholder='E-mail'
-                value={values.email}
-                style={styles.inputStyle}
-              />
-              {errors.email && touched.email ? (
-                <p style={{ color: 'red' }}>{errors.email}</p>
-              ) : null}
-              <Field
-                type='password'
-                name='oldPassword'
-                placeholder='Stare haslo'
-                value={values.oldPassword}
-                style={styles.inputStyle}
-              />
-              {errors.oldPassword && touched.oldPassword ? (
-                <p style={{ color: 'red' }}>{errors.oldPassword}</p>
-              ) : null}
-              <Field
-                type='password'
-                name='newPassword'
-                placeholder='Nowe haslo'
-                value={values.newPassword}
-                style={styles.inputStyle}
-              />
-              {errors.newPassword && touched.newPassword ? (
-                <p style={{ color: 'red' }}>{errors.newPassword}</p>
-              ) : null}
-              <button style={styles.buttonStyle}>Zmien haslo</button>
-              {message && (
-                <p style={{ color: 'red', textAlign: 'center' }}>{message}</p>
-              )}
+          {({ values, errors, touched, handleBlur }) => (
+            <Form>
+              <FormContainer>
+                <FormColumn>
+                  <Field
+                    type='text'
+                    name='email'
+                    placeholder='E-mail'
+                    as={MyStyledInput}
+                    onBlur={handleBlur}
+                  />
+                  <ErrorMessage name='email'>
+                    {(msg) => <FormError>{msg}</FormError>}
+                  </ErrorMessage>
+
+                  <Field
+                    type='password'
+                    name='oldPassword'
+                    placeholder='Stare haslo'
+                    as={MyStyledInput}
+                    onBlur={handleBlur}
+                  />
+                  <ErrorMessage name='oldPassword'>
+                    {(msg) => <FormError>{msg}</FormError>}
+                  </ErrorMessage>
+                  <Field
+                    type='password'
+                    name='newPassword'
+                    placeholder='Nowe haslo'
+                    as={MyStyledInput}
+                    onBlur={handleBlur}
+                  />
+                  <ErrorMessage name='newPassword'>
+                    {(msg) => <FormError>{msg}</FormError>}
+                  </ErrorMessage>
+                  <FormButton>Zmien haslo</FormButton>
+                  {message && (
+                    <p style={{ color: 'red', textAlign: 'center' }}>
+                      {message}
+                    </p>
+                  )}
+                </FormColumn>
+              </FormContainer>
             </Form>
           )}
         </Formik>
@@ -116,7 +119,7 @@ const PwdChangePage = () => {
             Kliknij tutaj!
           </Link>
         </div>
-      </div>
+      </AddVisitContainer>
     </PageWrapper>
   )
 }

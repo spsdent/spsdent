@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Navigate, Link, useNavigate } from 'react-router-dom'
 import { login } from '../../store/actions/auth'
 import { PageWrapper } from '../../components/PageWrapper'
-import { Field, Form, Formik } from 'formik'
+import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { loginValidationSchema } from '../../utils/validationSchemas'
 import { clearMessage } from '../../store/actions/message'
 import {
@@ -13,18 +13,9 @@ import {
   FormButton,
   FormColumn,
   FormContainer,
-  FormError,
   FormInput,
+  FormError,
 } from '../AddVisitPage/AddVisitPageElements'
-
-import {
-  ModalShadow,
-  ModalContainer as MC,
-  ModalText,
-  ModalButtonsContainer,
-  ModalButton,
-} from '../VisitPage/VisitPageElements'
-import styled from 'styled-components'
 
 const MyStyledInput = FormInput.withComponent('input')
 
@@ -80,10 +71,9 @@ const LoginPage = () => {
                     placeholder='E-mail'
                     onBlur={handleBlur}
                   />
-                  {errors.email && touched.email ? (
-                    <p style={{ color: 'red' }}>{errors.email}</p>
-                  ) : null}
-
+                  <ErrorMessage name='email'>
+                    {(msg) => <FormError>{msg}</FormError>}
+                  </ErrorMessage>
                   <Field
                     type='password'
                     name='password'
@@ -91,9 +81,9 @@ const LoginPage = () => {
                     placeholder='Haslo'
                     onBlur={handleBlur}
                   />
-                  {errors.password && touched.password ? (
-                    <p style={{ color: 'red' }}>{errors.password}</p>
-                  ) : null}
+                  <ErrorMessage name='password'>
+                    {(msg) => <FormError>{msg}</FormError>}
+                  </ErrorMessage>
 
                   <FormButton>Zaloguj</FormButton>
 
