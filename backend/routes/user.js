@@ -10,10 +10,6 @@ module.exports = function (app) {
     next()
   })
 
-  // app.get('/api/test/all', controller.allAccess)
-
-  // app.get('/api/test/user', [authJwt.verifyToken], controller.userBoard)
-
   app.get('/api/users/:nazwisko', controller.findByLastName)
 
   app.get('/api/users', controller.findAllUsers)
@@ -22,15 +18,4 @@ module.exports = function (app) {
 
   app.put('/api/users/:id', controller.updateUser)
 
-  // app.get(
-  //   '/api/test/mod',
-  //   [authJwt.verifyToken, authJwt.isSpec],
-  //   controller.specBoard
-  // )
-
-  // app.get(
-  //   '/api/test/admin',
-  //   [authJwt.verifyToken, authJwt.isAdmin],
-  //   controller.adminBoard
-  // )
 }

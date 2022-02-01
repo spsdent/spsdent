@@ -4,7 +4,7 @@ const Service = db.service
 exports.create = (req, res) => {
   // Validate request
   if (!req.body.grupa) {
-    res.status(400).send({ message: 'Content can not be empty!' })
+    res.status(400).send({ message: 'Zawartość nie może być pusta!' })
     return
   }
 
@@ -23,7 +23,7 @@ exports.create = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || 'Some error occurred while creating the visits.',
+          err.message || 'Wystąpił błąd podczas tworzenia specjalizacji.',
       })
     })
 }
@@ -40,7 +40,7 @@ exports.findAll = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || 'Some error occurred while retrieving visits.',
+        message: err.message || 'Wystąpił błąd podczas pobierania specjalizacji.',
       })
     })
 }
@@ -51,18 +51,18 @@ exports.findOne = (req, res) => {
   Service.findById(id)
     .then((data) => {
       if (!data)
-        res.status(404).send({ message: 'Not found Visit with id ' + id })
+        res.status(404).send({ message: 'Nie znaleziono specjalizacji o id= ' + id })
       else res.send(data)
     })
     .catch((err) => {
-      res.status(500).send({ message: 'Error retrieving Visit with id=' + id })
+      res.status(500).send({ message: 'Wystąpił błąd podczas pobierania specjalizacji o id=' + id })
     })
 }
 
 exports.update = (req, res) => {
   if (!req.body) {
     return res.status(400).send({
-      message: 'Data to update can not be empty!',
+      message: 'Dane do aktualizacji nie mogą być puste!',
     })
   }
 
@@ -72,13 +72,13 @@ exports.update = (req, res) => {
     .then((data) => {
       if (!data) {
         res.status(404).send({
-          message: `Cannot update Service with id=${id}. Maybe Service was not found!`,
+          message: `Nie można zaktualizować specjalizacji o id=${id}. Możliwe że specjalizacja nie istnieje!`,
         })
-      } else res.send({ message: 'Service was updated successfully.' })
+      } else res.send({ message: 'Specjalizacja została zaktualizowana!' })
     })
     .catch((err) => {
       res.status(500).send({
-        message: 'Error updating Service with id=' + id,
+        message: 'Wystąpił błąd podczas aktualizacji specjalizacji o id=' + id,
       })
     })
 }
@@ -90,17 +90,17 @@ exports.delete = (req, res) => {
     .then((data) => {
       if (!data) {
         res.status(404).send({
-          message: `Cannot delete Service with id=${id}. Maybe Service was not found!`,
+          message: `Nie można usunąć specjalizacji o id=${id}. Możliwe że specjalizacja nie istnieje!`,
         })
       } else {
         res.send({
-          message: 'Service was deleted successfully!',
+          message: 'Specjalizacja została zaktualizowana!',
         })
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: 'Could not delete Service with id=' + id,
+        message: 'Nie można usunąć specjalizacji o id=' + id,
       })
     })
 }

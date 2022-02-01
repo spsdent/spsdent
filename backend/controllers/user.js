@@ -1,22 +1,6 @@
 const db = require('../models')
 const User = db.user
 
-exports.allAccess = (req, res) => {
-  res.status(200).send('Public Content.')
-}
-
-exports.userBoard = (req, res) => {
-  res.status(200).send('User Content.')
-}
-
-exports.adminBoard = (req, res) => {
-  res.status(200).send('Admin Content.')
-}
-
-exports.specBoard = (req, res) => {
-  res.status(200).send('Specialist Content.')
-}
-
 exports.findByLastName = (req, res) => {
   User.find({})
     .then((data) => {
@@ -28,7 +12,7 @@ exports.findByLastName = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || 'Some error occurred while retrieving users.',
+        message: err.message || 'Wystąpił błąd podczas pobierania użytkowników.',
       })
     })
 }
@@ -40,7 +24,7 @@ exports.findAllUsers = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || 'Some error occurred while retrieving users.',
+        message: err.message || 'Wystąpił błąd podczas pobierania użytkowników.',
       })
     })
 }
@@ -52,17 +36,17 @@ exports.updateUser = (req, res) => {
     .then((data) => {
       if (!data) {
         res.status(404).send({
-          message: `Cannot update User with id=${id}. Maybe User was not found!`,
+          message: `Nie można zaktualizować użytkownika o id=${id}. Możliwe że użytkownik nie istnieje`,
         })
       } else {
         res.send({
-          message: 'User was updated successfully!',
+          message: 'Użytkownik został zaktualizowany!',
         })
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: 'Could not update User with id=' + id,
+        message: 'Nie można zaktualizować użytkownika o id=' + id,
       })
     })
 }
@@ -72,17 +56,17 @@ exports.deleteUser = (req, res) => {
     .then((data) => {
       if (!data) {
         res.status(404).send({
-          message: `Cannot delete User with id=${id}. Maybe User was not found!`,
+          message: `Nie można usunąć użytkownika o id=${id}. Możliwe że użytkownik nie istnieje!`,
         })
       } else {
         res.send({
-          message: 'User was deleted successfully!',
+          message: 'Użytkownik został usunięty!',
         })
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: 'Could not delete User with id=' + id,
+        message: 'Nie można usunąć użytkownika o id=' + id,
       })
     })
 }

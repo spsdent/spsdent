@@ -8,7 +8,7 @@ exports.findAll = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || 'Some error occurred while retrieving roles.',
+        message: err.message || 'Wystąpił błąd podczas pobierania rol.',
       })
     })
 }

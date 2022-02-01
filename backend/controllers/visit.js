@@ -4,7 +4,7 @@ const Visit = db.visits
 exports.create = (req, res) => {
   // Validate request
   if (!req.body.usluga) {
-    res.status(400).send({ message: 'Content can not be empty!' })
+    res.status(400).send({ message: 'Zawartość nie może być pusta!' })
     return
   }
 
@@ -36,7 +36,7 @@ exports.create = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || 'Some error occurred while creating the visits.',
+          err.message || 'Wystąpił błąd podczas tworzenia wizyty.',
       })
     })
 }
@@ -53,7 +53,7 @@ exports.findAll = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || 'Some error occurred while retrieving visits.',
+        message: err.message || 'Wystąpił błąd podczas pobierania wizyt.',
       })
     })
 }
@@ -64,18 +64,18 @@ exports.findOne = (req, res) => {
   Visit.findById(id)
     .then((data) => {
       if (!data)
-        res.status(404).send({ message: 'Not found Visit with id ' + id })
+        res.status(404).send({ message: 'Nie znaleziono wizyty o id= ' + id })
       else res.send(data)
     })
     .catch((err) => {
-      res.status(500).send({ message: 'Error retrieving Visit with id=' + id })
+      res.status(500).send({ message: 'Błąd podczas pobierania wizyty o id=' + id })
     })
 }
 
 exports.update = (req, res) => {
   if (!req.body) {
     return res.status(400).send({
-      message: 'Data to update can not be empty!',
+      message: 'Dane do aktualizacji nie mogą być puste!',
     })
   }
 
@@ -85,13 +85,13 @@ exports.update = (req, res) => {
     .then((data) => {
       if (!data) {
         res.status(404).send({
-          message: `Cannot update Visit with id=${id}. Maybe Visit was not found!`,
+          message: `Nie można zaktualizować wizyty o id=${id}. Możliwe że wizyta nie istnieje`,
         })
-      } else res.send({ message: 'Visit was updated successfully.' })
+      } else res.send({ message: 'Wizyta została zaktualizowana!' })
     })
     .catch((err) => {
       res.status(500).send({
-        message: 'Error updating Visit with id=' + id,
+        message: 'Błąd podczas aktualizacji wizyty o id=' + id,
       })
     })
 }
@@ -103,17 +103,17 @@ exports.delete = (req, res) => {
     .then((data) => {
       if (!data) {
         res.status(404).send({
-          message: `Cannot delete Visit with id=${id}. Maybe Visit was not found!`,
+          message: `Nie można usunąć wizyty o id=${id}. Możliwe że wizyta nie istnieje`,
         })
       } else {
         res.send({
-          message: 'Visit was deleted successfully!',
+          message: 'Wizyta została usunięta!',
         })
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: 'Could not delete Visit with id=' + id,
+        message: 'Nie można usunąć wizyty o id=' + id,
       })
     })
 }
@@ -122,13 +122,13 @@ exports.deleteAll = (req, res) => {
   Visit.deleteMany({})
     .then((data) => {
       res.send({
-        message: `${data.deletedCount} Visits were deleted successfully!`,
+        message: `${data.deletedCount} Wizyty zostały usunięte!`,
       })
     })
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || 'Some error occurred while removing all Visits.',
+          err.message || 'Wystapił błąd podczas usuwania wizyt',
       })
     })
 }
@@ -141,7 +141,7 @@ exports.findAllByStatus = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || 'Some error occurred while retrieving tutorials.',
+          err.message || 'Wystąpił błąd podczas pobierania wizyt',
       })
     })
 }

@@ -8,12 +8,12 @@ verifyToken = (req, res, next) => {
   let token = req.headers['x-access-token']
 
   if (!token) {
-    return res.status(403).send({ message: 'No token provided!' })
+    return res.status(403).send({ message: 'Nie przekazano tokena' })
   }
 
   jwt.verify(token, config.secret, (err, decoded) => {
     if (err) {
-      return res.status(401).send({ message: 'Unauthorized!' })
+      return res.status(401).send({ message: 'Brak dostępu!' })
     }
     req.userId = decoded.id
     next()
@@ -44,7 +44,7 @@ isAdmin = (req, res, next) => {
           }
         }
 
-        res.status(403).send({ message: 'Require Admin Role!' })
+        res.status(403).send({ message: 'Wymagana jest rola administratora!' })
         return
       }
     )
@@ -75,7 +75,7 @@ isSpec = (req, res, next) => {
           }
         }
 
-        res.status(403).send({ message: 'Require Spec Role!' })
+        res.status(403).send({ message: 'Wymagana jest rola specjalisty!' })
         return
       }
     )

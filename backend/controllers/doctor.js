@@ -4,18 +4,16 @@ const Doctor = db.doctor
 exports.create = (req, res) => {
   // Validate request
   if (!req.body.doctorId) {
-    res.status(400).send({ message: 'Content can not be empty!' })
+    res.status(400).send({ message: 'Zawartość nie może być pusta!' })
     return
   }
 
-  // Create a Tutorial
   const doctor = new Doctor({
     doctorId: req.body.doctorId,
     specjalnosci: req.body.specjalnosci,
     godzinyPracy: req.body.godzinyPracy,
   })
 
-  // Save Tutorial in the database
   doctor
     .save(doctor)
     .then((data) => {
@@ -24,7 +22,7 @@ exports.create = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || 'Some error occurred while creating the visits.',
+          err.message || 'Wystąpił błąd podczas tworzenia profilu lekarza.',
       })
     })
 }
@@ -41,7 +39,7 @@ exports.findAll = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || 'Some error occurred while retrieving visits.',
+        message: err.message || 'Wystąpił błąd podczas pobierania profilu lekarza.',
       })
     })
 }
@@ -52,11 +50,11 @@ exports.findOne = (req, res) => {
   Doctor.findById(id)
     .then((data) => {
       if (!data)
-        res.status(404).send({ message: 'Not found Visit with id ' + id })
+        res.status(404).send({ message: 'Nie znaleziono lekarza o id= ' + id })
       else res.send(data)
     })
     .catch((err) => {
-      res.status(500).send({ message: 'Error retrieving Visit with id=' + id })
+      res.status(500).send({ message: 'Nie znaleziono lekarza o id= ' + id })
     })
 }
 
@@ -67,17 +65,17 @@ exports.delete = (req, res) => {
     .then((data) => {
       if (!data) {
         res.status(404).send({
-          message: `Cannot delete Doctor with id=${id}. Maybe Doctor was not found!`,
+          message: `Nie można usunąć lekarza o id=${id}. Możliwe że taki profil nie został znaleziony!`,
         })
       } else {
         res.send({
-          message: 'Doctor was deleted successfully!',
+          message: 'Profil lekarza usunięty pomyślnie!',
         })
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: 'Could not delete Doctor with id=' + id,
+        message: 'Nie można usunąć profilu lekarza o id= ' + id,
       })
     })
 }
@@ -85,7 +83,7 @@ exports.delete = (req, res) => {
 exports.update = (req, res) => {
   if (!req.body) {
     return res.status(400).send({
-      message: 'Data to update can not be empty!',
+      message: 'Dane do aktualizacji profilu nie mogą być puste!',
     })
   }
 
@@ -95,13 +93,13 @@ exports.update = (req, res) => {
     .then((data) => {
       if (!data) {
         res.status(404).send({
-          message: `Cannot update Doctor with id=${id}. Maybe Doctor was not found!`,
+          message: `Nie można zaktualizować profilu lekarza o id=${id}. Możliwe że profil lekarza nie został znaleziony!`,
         })
-      } else res.send({ message: 'Doctor was updated successfully.' })
+      } else res.send({ message: 'Profil lekarza został zaktualizowany!' })
     })
     .catch((err) => {
       res.status(500).send({
-        message: 'Error updating Doctor with id=' + id,
+        message: 'Wystąpił błąd podczas aktualizacji profilu lekarza o id= ' + id,
       })
     })
 }
