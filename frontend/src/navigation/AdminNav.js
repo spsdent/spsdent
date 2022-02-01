@@ -6,9 +6,9 @@ import {
 
 const AdminNav = () => (
   <>
-    <NavItem>
+    {/* <NavItem>
       <StyledLink to='/add-visit'>Zarezerwuj</StyledLink>
-    </NavItem>
+    </NavItem> */}
     <NavItem>
       <StyledLink to='/timesheet'>Grafik</StyledLink>
     </NavItem>
