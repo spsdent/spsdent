@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { useNavigate, Link } from 'react-router-dom'
@@ -330,8 +330,8 @@ const AddVisitNonAuth = () => {
   return (
     <PageWrapper>
       <AddVisitContainer>
-        {allDoctorsFromDb.length > 0 ? (
-          !isSuccessful ? (
+        <Suspense fallback={<p>Loading...</p>}>
+          {!isSuccessful ? (
             <>
               <TitleContainer>
                 <Title>Zarezerwuj</Title>
@@ -691,10 +691,8 @@ const AddVisitNonAuth = () => {
                 </Link>
               )}
             </div>
-          )
-        ) : (
-          <p>Przykro nam, ale nie oferujemy żadnych usług</p>
-        )}
+          )}
+        </Suspense>
       </AddVisitContainer>
     </PageWrapper>
   )
