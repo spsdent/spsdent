@@ -107,6 +107,7 @@ export const HeaderText = styled.button`
 export const VisitsListContainer = styled(motion.div)`
   height: fit-content;
   width: 105%;
+  text-align: ${props => props.primary ? "center" : "left"};
 `
 export const Visit = styled(motion.div)`
   width: 100%;

@@ -426,6 +426,7 @@ const AddVisitNonAuth = () => {
                                   excludeDates={datesToExclude}
                                   name='data'
                                   onBlur={handleBlur}
+                                  withPortal
                                 />
                                 {errors.data && touched.data ? (
                                   <p style={styles.errorStyle}>{errors.data}</p>

@@ -9,7 +9,13 @@ import { SET_MESSAGE } from '../../store/actions/types'
 import { refreshApp } from '../../store/actions/refresh'
 import VisitData from '../../services/visit'
 import ServiceData from '../../services/service'
-
+import {
+  ModalShadow,
+  ModalContainer,
+  ModalText,
+  ModalButtonsContainer,
+  ModalButton,
+} from "../VisitPage/VisitPageElements";
 const styles = {
   inputStyle: {
     backgroundColor: 'transparent',
@@ -203,7 +209,7 @@ const AdminCreateVisit = ({
 
   return (
     <>
-      <h2 style={{ marginBottom: '20px' }}>Zarezerwuj</h2>
+      <ModalText>Zarezerwuj</ModalText>
       {allServicesFromDb.length > 0 ? (
         <Formik
           enableReinitialize
@@ -213,13 +219,7 @@ const AdminCreateVisit = ({
           onReset={() => setVisitState({})}
         >
           {({ errors, touched, values, setValues, handleBlur, resetForm }) => (
-            <Form
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                width: '300px',
-              }}
-            >
+            <Form>
               <label>Grupa uslug</label>
               <Field
                 as='select'

@@ -342,7 +342,21 @@ const AdminTimesheetPage = () => {
       },
     },
   }
+ 
+  const Styles=  styled.div`
 
+  .react-datepicker__input-container input {
+    width: 25em;
+    height: 3em;
+    text-align: center;
+    outline: none;
+    border: 2px solid #333;
+    background-color: #fff;
+    font-family: "poppins";
+    color: #333;
+    margin-top: 2em;
+  }
+  `
   return (
     <PageWrapper>
       <StyledContainer>
@@ -377,6 +391,7 @@ const AdminTimesheetPage = () => {
 
             {selectedDoctor ? (
               <>
+              <Styles>
                 <DatePicker
                   selected={startDate}
                   dateFormat='dd/MM/yyyy'
@@ -384,14 +399,15 @@ const AdminTimesheetPage = () => {
                   value={startDate}
                   filterDate={isWeekday}
                   name='data'
-                  inline
-                />
+                  withPortal
+                /></Styles>
                 <VisitsPageContainer>
                   <VisitsContainer>
                     {startDate !== null ? (
                       selectedDateVisits.length > 0 ? (
                         <>
                           <VisitsListContainer
+                          primary
                             variants={container}
                             initial='hidden'
                             animate='show'
@@ -440,32 +456,10 @@ const AdminTimesheetPage = () => {
           <p>Loading...</p>
         )}
         {isSelected && (
-          <div
-            style={{
-              width: '100vw',
-              height: '100vh',
-              position: 'absolute',
-              left: '0',
-              top: '0',
-              backgroundColor: 'rgba(3,3,3,.5)',
-              zIndex: '999',
-            }}
+          <ModalShadow
           >
-            <div
-              style={{
-                position: 'relative',
-                width: '50%',
-                height: 'auto',
-                backgroundColor: '#fff',
-                left: '0',
-                right: '0',
-                top: '25%',
-                margin: 'auto',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
+            <ModalContainer
+            
             >
               <AdminCreateVisit
                 isDelete={isDelete}
@@ -475,8 +469,8 @@ const AdminTimesheetPage = () => {
                 isSelectedFunc={setIsSelected}
                 onCreate={setIsCreated}
               />
-            </div>
-          </div>
+            </ModalContainer>
+          </ModalShadow>
         )}
         {isDelete && (
           <ModalShadow>
