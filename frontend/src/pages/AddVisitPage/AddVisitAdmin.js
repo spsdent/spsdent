@@ -30,8 +30,6 @@ import {
 } from "../../hooks";
 import UserData from "../../services/user";
 
-
-
 import { register } from "../../store/actions/auth";
 import { SET_MESSAGE } from "../../store/actions/types";
 import { clearMessage } from "../../store/actions/message";
@@ -49,6 +47,7 @@ import {
   RegisterText,
   TextContainer,
   SubTitle,
+  DatePickerWrapperStyles,
 } from "./AddVisitPageElements";
 const styles = {
   inputStyle: {
@@ -96,8 +95,6 @@ const styles = {
     fontFamily: "Poppins",
     fontSize: ".6em",
   },
- 
-  
 };
 
 const AddVisitAdmin = () => {
@@ -403,9 +400,11 @@ const AddVisitAdmin = () => {
     setIsSubmit(false);
     createVisit(values);
   };
-
+ 
   return (
+    
     <PageWrapper>
+    
       <AddVisitContainer>
         {allDoctorsFromDb.length > 0 ? (
           !isSuccessful ? (
@@ -489,7 +488,6 @@ const AddVisitAdmin = () => {
                               </p>
                             ) : null}
                             <DatePicker
-                              inline
                               selected={startDate}
                               dateFormat="dd/MM/yyyy"
                               // shouldCloseOnSelect={false}
@@ -506,6 +504,8 @@ const AddVisitAdmin = () => {
                               excludeDates={datesToExclude}
                               name="data"
                               onBlur={handleBlur}
+                              
+                              withPortal
                             />
                             {errors.data && touched.data ? (
                               <p style={styles.errorStyle}>{errors.data}</p>

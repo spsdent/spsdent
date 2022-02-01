@@ -110,11 +110,17 @@ export const FormError = styled.p`
 `
 export const TextContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: ${props => props.primary ? "center" : "left"};
   height: fit-content;
+<<<<<<< HEAD
   gap: ${(props) => (props.primary ? '.5em' : '.35em')};
   text-align: center;
 `
+=======
+  gap: ${(props) => (props.primary ? ".5em" : ".35em")};
+  text-align: ${props => props.primary ? "center": "left"};
+`;
+>>>>>>> b31475b3c3cb13cae3728f7031860e9d58a36906
 export const RegisterText = styled.p`
   font-family: 'Poppins';
   font-size: 0.6em;

@@ -45,14 +45,16 @@ export const TimesheetPickContainer = styled.div`
   height: 15%;
 `
 export const TimesheetPick = styled(motion.select)`
-  width: 47%;
+  width: 25em;
   padding: 0.6em;
+  height: 3em;
   outline: none;
   border: 2px solid #333;
-  font-family: 'bebas neue';
-  font-size: 0.7em;
+  font-family: 'poppins';
+  /* font-size: 0.7em; */
   color: #333;
   letter-spacing: 0.05em;
+  text-align: center;
   &:focus {
     box-shadow: 0px 0px 3px 0.1px #333;
     outline: none;
@@ -61,6 +63,8 @@ export const TimesheetPick = styled(motion.select)`
 `
 export const Option = styled.option`
   color: #333;
+  width: 30%;
+  font-family: "poppins";
 `
 
 export const TimesheetContainer = styled.div`
