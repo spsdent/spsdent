@@ -1,30 +1,34 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { PageWrapper } from '../../components/PageWrapper'
-import { Formik, Form, Field } from 'formik'
+import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { useNavigate, Link } from 'react-router-dom'
 import { register } from '../../store/actions/auth'
 import { signupValidationSchema } from '../../utils/validationSchemas'
 import { clearMessage } from '../../store/actions/message'
 
-const styles = {
-  inputStyle: {
-    backgroundColor: 'transparent',
-    border: '2px solid #333',
-    height: '3em',
-    margin: '10px 0',
-    paddingLeft: '1em',
-    width: '300px',
-  },
-  buttonStyle: {
-    backgroundColor: 'none',
-    border: '2px solid #333',
-    height: '3em',
-    margin: '10px 0',
-    cursor: 'pointer',
-    width: '300px',
-  },
-}
+import {
+  AddVisitContainer,
+  Title,
+  TitleContainer,
+  FormButton,
+  FormColumn,
+  FormContainer,
+  FormError,
+  FormInput,
+} from '../AddVisitPage/AddVisitPageElements'
+
+import {
+  ModalShadow,
+  ModalContainer as MC,
+  ModalText,
+  ModalButtonsContainer,
+  ModalButton,
+} from '../VisitPage/VisitPageElements'
+import styled from 'styled-components'
+
+const MyStyledInput = FormInput.withComponent('input')
+const MyStyledButton = FormButton.withComponent('button')
 
 const Register = () => {
   const initialValues = {
@@ -78,10 +82,13 @@ const Register = () => {
 
   return (
     <PageWrapper>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <AddVisitContainer>
         {!successful ? (
           <>
-            <h1>Zarejestruj sie</h1>
+            <TitleContainer>
+                <Title>Zarejestruj</Title>
+                <Title primary>się</Title>
+              </TitleContainer>
             <Formik
               enableReinitialize
               initialValues={initialValues}
@@ -91,113 +98,105 @@ const Register = () => {
               validationSchema={signupValidationSchema}
             >
               {({ values, errors, touched, handleBlur }) => (
-                <Form style={{ display: 'flex', flexDirection: 'column' }}>
-                  <Field
-                    type='text'
-                    name='imie'
-                    value={values.imie}
-                    style={styles.inputStyle}
-                    placeholder='Imie'
-                    onBlur={handleBlur}
-                  />
-                  {errors.imie && touched.imie ? (
-                    <p style={{ color: 'red' }}>{errors.imie}</p>
-                  ) : null}
-                  <Field
-                    type='text'
-                    name='nazwisko'
-                    value={values.nazwisko}
-                    style={styles.inputStyle}
-                    placeholder='Nazwisko'
-                    onBlur={handleBlur}
-                  />
-                  {errors.nazwisko && touched.nazwisko ? (
-                    <p style={{ color: 'red' }}>{errors.nazwisko}</p>
-                  ) : null}
-                  <Field
-                    type='number'
-                    name='telefon'
-                    value={values.telefon}
-                    style={styles.inputStyle}
-                    placeholder='Telefon'
-                    onBlur={handleBlur}
-                  />
-                  {errors.telefon && touched.telefon ? (
-                    <p style={{ color: 'red' }}>{errors.telefon}</p>
-                  ) : null}
-                  <Field
-                    type='text'
-                    name='miasto'
-                    value={values.miasto}
-                    style={styles.inputStyle}
-                    placeholder='Miasto'
-                    onBlur={handleBlur}
-                  />
-                  {errors.miasto && touched.miasto ? (
-                    <p style={{ color: 'red' }}>{errors.miasto}</p>
-                  ) : null}
-                  <Field
-                    type='text'
-                    name='ulica'
-                    value={values.ulica}
-                    style={styles.inputStyle}
-                    placeholder='Ulica'
-                    onBlur={handleBlur}
-                  />
-                  {errors.ulica && touched.ulica ? (
-                    <p style={{ color: 'red' }}>{errors.ulica}</p>
-                  ) : null}
-                  <Field
-                    type='number'
-                    name='kodPocztowy'
-                    value={values.kodPocztowy}
-                    style={styles.inputStyle}
-                    placeholder='Kod-pocztowy'
-                    onBlur={handleBlur}
-                  />
-                  {errors.kodPocztowy && touched.kodPocztowy ? (
-                    <p style={{ color: 'red' }}>{errors.kodPocztowy}</p>
-                  ) : null}
-                  <Field
-                    type='text'
-                    name='email'
-                    value={values.email}
-                    style={styles.inputStyle}
-                    placeholder='E-mail'
-                    onBlur={handleBlur}
-                  />
-                  {errors.email && touched.email ? (
-                    <p style={{ color: 'red' }}>{errors.email}</p>
-                  ) : null}
-                  <Field
-                    type='password'
-                    name='password'
-                    value={values.password}
-                    style={styles.inputStyle}
-                    placeholder='Haslo'
-                    onBlur={handleBlur}
-                  />
-                  {errors.password && touched.password ? (
-                    <p style={{ color: 'red' }}>{errors.password}</p>
-                  ) : null}
-                  <button style={styles.buttonStyle} type='submit'>
-                    Zarejestruj
-                  </button>
-                  <button style={styles.buttonStyle} type='reset'>
-                    Wyczysc pola
-                  </button>
-                  {message && (
-                    <p style={{ color: 'red', textAlign: 'center' }}>
-                      {message}
-                    </p>
-                  )}
+                <Form>
+                  <FormContainer>
+                    <FormColumn>
+                      <Field
+                        type='text'
+                        name='imie'
+                        as={MyStyledInput}
+                        placeholder='Imie'
+                        onBlur={handleBlur}
+                      />
+                      <ErrorMessage name='imie'>
+                        {(msg) => <FormError>{msg}</FormError>}
+                      </ErrorMessage>
+                      <Field
+                        type='text'
+                        name='nazwisko'
+                        as={MyStyledInput}
+                        placeholder='Nazwisko'
+                        onBlur={handleBlur}
+                      />
+                      <ErrorMessage name='nazwisko'>
+                        {(msg) => <FormError>{msg}</FormError>}
+                      </ErrorMessage>
+                      <Field
+                        type='number'
+                        name='telefon'
+                        as={MyStyledInput}
+                        placeholder='Telefon'
+                        onBlur={handleBlur}
+                      />
+                      <ErrorMessage name='telefon'>
+                        {(msg) => <FormError>{msg}</FormError>}
+                      </ErrorMessage>
+                      <Field
+                        type='text'
+                        name='miasto'
+                        as={MyStyledInput}
+                        placeholder='Miasto'
+                        onBlur={handleBlur}
+                      />
+                      <ErrorMessage name='miasto'>
+                        {(msg) => <FormError>{msg}</FormError>}
+                      </ErrorMessage>
+                      <Field
+                        type='text'
+                        name='ulica'
+                        as={MyStyledInput}
+                        placeholder='Ulica'
+                        onBlur={handleBlur}
+                      />
+                      <ErrorMessage name='ulica'>
+                        {(msg) => <FormError>{msg}</FormError>}
+                      </ErrorMessage>
+                      <Field
+                        type='number'
+                        name='kodPocztowy'
+                        as={MyStyledInput}
+                        placeholder='Kod-pocztowy'
+                        onBlur={handleBlur}
+                      />
+                      <ErrorMessage name='kodPocztowy'>
+                        {(msg) => <FormError>{msg}</FormError>}
+                      </ErrorMessage>
+                      <Field
+                        type='text'
+                        name='email'
+                        as={MyStyledInput}
+                        placeholder='E-mail'
+                        onBlur={handleBlur}
+                      />
+                      <ErrorMessage name='email'>
+                        {(msg) => <FormError>{msg}</FormError>}
+                      </ErrorMessage>
+                      <Field
+                        type='password'
+                        name='password'
+                        as={MyStyledInput}
+                        placeholder='Haslo'
+                        onBlur={handleBlur}
+                      />
+                      <ErrorMessage name='password'>
+                        {(msg) => <FormError>{msg}</FormError>}
+                      </ErrorMessage>
+                      <FormButton type='submit'>Zarejestruj</FormButton>
+                      <FormButton type='reset'>Wyczysc pola</FormButton>
+                      {message && (
+                        <p style={{ color: 'red', textAlign: 'center' }}>
+                          {message}
+                        </p>
+                      )}
+                    </FormColumn>
+                  </FormContainer>
                 </Form>
               )}
             </Formik>
           </>
         ) : (
           <div
-            style={{ display: 'flex', flexDirection: 'column', color: '#333' }}
+            style={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', color: '#333' }}
           >
             {message && (
               <p style={{ color: 'red', textAlign: 'center' }}>{message}</p>
@@ -211,7 +210,7 @@ const Register = () => {
             </Link>
           </div>
         )}
-      </div>
+      </AddVisitContainer>
     </PageWrapper>
   )
 }

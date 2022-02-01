@@ -42,7 +42,7 @@ export const register =
         dispatch({
           type: SET_MESSAGE,
           payload: password
-            ? 'Wizyta oraz konto zostały utworzone!'
+            ? 'Konto zostało utworzone!'
             : response.data.message,
         })
 

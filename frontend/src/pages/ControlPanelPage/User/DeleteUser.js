@@ -107,31 +107,31 @@ const DeleteUser = () => {
                 .map((user) => (
                   <UserContainer key={user._id}>
                     <UserTextWrap>
-                      <UserText primary>Imie:</UserText>{' '}
+                      <UserText primary>Imie:</UserText>
                       <UserText>{user.imie}</UserText>
                     </UserTextWrap>
                     <UserTextWrap>
-                      <UserText primary>Nazwisko:</UserText>{' '}
+                      <UserText primary>Nazwisko:</UserText>
                       <UserText>{user.nazwisko}</UserText>
                     </UserTextWrap>
                     <UserTextWrap>
-                      <UserText primary>E-mail:</UserText>{' '}
+                      <UserText primary>E-mail:</UserText>
                       <UserText>{user.email}</UserText>
                     </UserTextWrap>
                     <UserTextWrap>
-                      <UserText primary>Telefon:</UserText>{' '}
+                      <UserText primary>Telefon:</UserText>
                       <UserText>{user.telefon}</UserText>
                     </UserTextWrap>
                     <UserTextWrap>
-                      <UserText primary>Miasto:</UserText>{' '}
+                      <UserText primary>Miasto:</UserText>
                       <UserText>{user.miasto}</UserText>
                     </UserTextWrap>
                     <UserTextWrap>
-                      <UserText primary>Ulica:</UserText>{' '}
+                      <UserText primary>Ulica:</UserText>
                       <UserText>{user.ulica}</UserText>
                     </UserTextWrap>
                     <UserTextWrap primary>
-                      <UserText primary>Kod-pocztowy:</UserText>{' '}
+                      <UserText primary>Kod-pocztowy:</UserText>
                       <UserText>{user.kodPocztowy}</UserText>
                     </UserTextWrap>
 

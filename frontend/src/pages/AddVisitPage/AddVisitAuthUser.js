@@ -298,7 +298,7 @@ const AddVisitAuthUser = () => {
   return (
     <PageWrapper>
       <Container>
-        <h1> Zarezerwuj wizyte - user </h1>
+        <h1> Zarezerwuj wizytę </h1>
         {allDoctorsFromDb.length > 0 ? (
           <Formik
             enableReinitialize
@@ -322,14 +322,14 @@ const AddVisitAuthUser = () => {
                   width: '300px',
                 }}
               >
-                <label> Grupa uslug </label>
+                <label> Grupa usług </label>
                 <Field
                   as='select'
                   name='grupa'
                   style={styles.selectStyle}
                   onBlur={handleBlur}
                 >
-                  <option value=''> Wybierz grupe uslugi... </option>
+                  <option value=''> Wybierz grupę usługi... </option>
                   {serviceGroupHandler(values)}
                 </Field>
                 {errors.grupa && touched.grupa ? (
@@ -337,14 +337,14 @@ const AddVisitAuthUser = () => {
                 ) : null}
                 {serviceGroupSelected && (
                   <>
-                    <label> Usluga </label>
+                    <label> Usługa </label>
                     <Field
                       as='select'
                       name='usluga'
                       style={styles.inputStyle}
                       onBlur={handleBlur}
                     >
-                      <option value=''> Wybierz usluge... </option>
+                      <option value=''> Wybierz usługę... </option>
                       {serviceHandler(values)}
                     </Field>
                     {errors.usluga && touched.usluga ? (
@@ -359,7 +359,7 @@ const AddVisitAuthUser = () => {
                           style={styles.selectStyle}
                           onBlur={handleBlur}
                         >
-                          <option value=''> Wybierz specjaliste... </option>
+                          <option value=''> Wybierz specjalistę... </option>
                           {doctorHandler(values)}
                         </Field>
                         {errors.specjalista && touched.specjalista ? (
@@ -400,7 +400,7 @@ const AddVisitAuthUser = () => {
                                   style={styles.inputStyle}
                                   onBlur={handleBlur}
                                 >
-                                  <option value=''> Wybierz godzine... </option>
+                                  <option value=''> Wybierz godzinę... </option>
                                   {pickingHours(values.data)}
                                 </Field>
                                 {errors.godzina && touched.godzina ? (
@@ -421,7 +421,7 @@ const AddVisitAuthUser = () => {
                   Podsumowanie
                 </button>
                 <button type='reset' style={styles.buttonStyle}>
-                  Wyczysc formularz
+                  Wyczyść formularz
                 </button>
                 {isSubmit && (
                   <div
@@ -512,7 +512,7 @@ const AddVisitAuthUser = () => {
                             setIsSubmit(false)
                           }}
                         >
-                          Potwierdz rezerwacje
+                          Potwierdź rezerwację
                         </button>
                       </div>
                     </div>

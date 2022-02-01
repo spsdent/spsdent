@@ -6,25 +6,28 @@ import { PageWrapper } from '../../components/PageWrapper'
 import { Field, Form, Formik } from 'formik'
 import { loginValidationSchema } from '../../utils/validationSchemas'
 import { clearMessage } from '../../store/actions/message'
+import {
+  AddVisitContainer,
+  Title,
+  TitleContainer,
+  FormButton,
+  FormColumn,
+  FormContainer,
+  FormError,
+  FormInput,
+} from '../AddVisitPage/AddVisitPageElements'
 
-const styles = {
-  inputStyle: {
-    backgroundColor: 'transparent',
-    border: '2px solid #333',
-    height: '3em',
-    width: '300px',
-    margin: '10px 0',
-    paddingLeft: '1em',
-  },
-  buttonStyle: {
-    backgroundColor: 'none',
-    border: '2px solid #333',
-    height: '3em',
-    width: '300px',
-    margin: '10px 0',
-    cursor: 'pointer',
-  },
-}
+import {
+  ModalShadow,
+  ModalContainer as MC,
+  ModalText,
+  ModalButtonsContainer,
+  ModalButton,
+} from '../VisitPage/VisitPageElements'
+import styled from 'styled-components'
+
+const MyStyledInput = FormInput.withComponent('input')
+const MyStyledButton = FormButton.withComponent('button')
 
 const LoginPage = () => {
   const initialValues = {
@@ -57,69 +60,73 @@ const LoginPage = () => {
 
   return (
     <PageWrapper>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <h1>Zaloguj sie</h1>
+      <AddVisitContainer>
+        <TitleContainer>
+          <Title>Zaloguj</Title>
+          <Title primary>się</Title>
+        </TitleContainer>
         <Formik
           onSubmit={(values) => handleLogin(values)}
           initialValues={initialValues}
           validationSchema={loginValidationSchema}
         >
           {({ errors, values, touched, handleBlur }) => (
-            <Form style={{ display: 'flex', flexDirection: 'column' }}>
-              <Field
-                type='email'
-                name='email'
-                value={values.email}
-                style={styles.inputStyle}
-                placeholder='E-mail'
-                onBlur={handleBlur}
-              />
-              {errors.email && touched.email ? (
-                <p style={{ color: 'red' }}>{errors.email}</p>
-              ) : null}
+            <Form>
+              <FormContainer>
+                <FormColumn>
+                  <Field
+                    type='email'
+                    name='email'
+                    as={MyStyledInput}
+                    placeholder='E-mail'
+                    onBlur={handleBlur}
+                  />
+                  {errors.email && touched.email ? (
+                    <p style={{ color: 'red' }}>{errors.email}</p>
+                  ) : null}
 
-              <Field
-                type='password'
-                name='password'
-                value={values.password}
-                style={styles.inputStyle}
-                placeholder='Haslo'
-                onBlur={handleBlur}
-              />
-              {errors.password && touched.password ? (
-                <p style={{ color: 'red' }}>{errors.password}</p>
-              ) : null}
+                  <Field
+                    type='password'
+                    name='password'
+                    as={MyStyledInput}
+                    placeholder='Haslo'
+                    onBlur={handleBlur}
+                  />
+                  {errors.password && touched.password ? (
+                    <p style={{ color: 'red' }}>{errors.password}</p>
+                  ) : null}
 
-              <button style={styles.buttonStyle}>
-                {loading && <span></span>}
-                <span>Zaloguj</span>
-              </button>
+                  <FormButton>Zaloguj</FormButton>
 
-              {message && (
-                <p style={{ color: 'red', textAlign: 'center' }}>{message}</p>
-              )}
+                  {message && (
+                    <p style={{ color: 'red', textAlign: 'center' }}>
+                      {message}
+                    </p>
+                  )}
+                  <div style={{ display: 'flex', color: '#333' }}>
+                    <p style={{ marginRight: '5px' }}>Chcesz utworzyć konto?</p>
+                    <Link
+                      style={{ textDecoration: 'none', color: '#01D4BF' }}
+                      to='/register'
+                    >
+                      Kliknij tutaj!
+                    </Link>
+                  </div>
+                  <div style={{ display: 'flex', color: '#333' }}>
+                    <p style={{ marginRight: '5px' }}>Zapomniales hasla?</p>
+                    <Link
+                      style={{ textDecoration: 'none', color: '#01D4BF' }}
+                      to='/password-change'
+                    >
+                      Zresetuj haslo!
+                    </Link>
+                  </div>
+                </FormColumn>
+              </FormContainer>
             </Form>
           )}
         </Formik>
-        <div style={{ display: 'flex', color: '#333' }}>
-          <p style={{ marginRight: '5px' }}>Chcesz utworzyć konto?</p>
-          <Link
-            style={{ textDecoration: 'none', color: '#01D4BF' }}
-            to='/register'
-          >
-            Kliknij tutaj!
-          </Link>
-        </div>
-        <div style={{ display: 'flex', color: '#333' }}>
-          <p style={{ marginRight: '5px' }}>Zapomniales hasla?</p>
-          <Link
-            style={{ textDecoration: 'none', color: '#01D4BF' }}
-            to='/password-change'
-          >
-            Zresetuj haslo!
-          </Link>
-        </div>
-      </div>
+      </AddVisitContainer>
     </PageWrapper>
   )
 }

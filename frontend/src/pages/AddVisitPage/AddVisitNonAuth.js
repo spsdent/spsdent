@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Formik, Form, Field } from 'formik'
+import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { useNavigate, Link } from 'react-router-dom'
 
 import DatePicker from 'react-datepicker'
@@ -24,41 +24,35 @@ import { register } from '../../store/actions/auth'
 import { SET_MESSAGE } from '../../store/actions/types'
 import { clearMessage } from '../../store/actions/message'
 
-const styles = {
-  inputStyle: {
-    backgroundColor: 'transparent',
-    border: '2px solid #333',
-    height: '3em',
-    margin: '10px 0',
-    paddingLeft: '1em',
-  },
-  buttonStyle: {
-    backgroundColor: 'transparent',
-    border: '2px solid #333',
-    height: '3em',
-    margin: '10px 5px',
-    padding: '5px 10px',
-    cursor: 'pointer',
-  },
-  buttonBook: {
-    backgroundColor: '#01D4BF',
-    border: 'none',
-    height: '3em',
-    margin: '10px 5px',
-    padding: '5px 10px',
-    cursor: 'pointer',
-  },
-  selectStyle: {
-    backgroundColor: 'transparent',
-    border: '2px solid #333',
-    height: '3em',
-    margin: '10px 0',
-    paddingLeft: '1em',
-  },
-  errorStyle: {
-    color: 'red',
-  },
-}
+import {
+  AddVisitContainer,
+  Title,
+  TitleContainer,
+  FormButton,
+  FormColumn,
+  FormContainer,
+  FormError,
+  FormInput,
+  ModalContainer,
+  ModalVisitContentContainer,
+  ModalVisitData,
+  ModalVisitDataLabel,
+  ModalVisitDataText,
+  ModalVisitTextContainer,
+} from './AddVisitPageElements'
+
+import {
+  ModalShadow,
+  ModalContainer as MC,
+  ModalText,
+  ModalButtonsContainer,
+  ModalButton,
+} from '../VisitPage/VisitPageElements'
+import styled from 'styled-components'
+
+const MyStyledSelect = FormInput.withComponent('select')
+const MyStyledInput = FormInput.withComponent('input')
+const MyStyledButton = FormButton.withComponent('button')
 
 const AddVisitNonAuth = () => {
   const [visit, setVisit] = useState(initialAddVisitValues)
@@ -335,11 +329,14 @@ const AddVisitNonAuth = () => {
 
   return (
     <PageWrapper>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <AddVisitContainer>
         {allDoctorsFromDb.length > 0 ? (
           !isSuccessful ? (
             <>
-              <h1>Zarezerwuj wizyte</h1>
+              <TitleContainer>
+                <Title>Zarezerwuj</Title>
+                <Title primary>wizytę</Title>
+              </TitleContainer>
               <Formik
                 enableReinitialize
                 initialValues={visit}
@@ -355,336 +352,315 @@ const AddVisitNonAuth = () => {
                   handleBlur,
                   resetForm,
                 }) => (
-                  <Form
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      width: '300px',
-                    }}
-                  >
-                    <label>Grupa uslug</label>
-                    <Field
-                      as='select'
-                      name='grupa'
-                      style={styles.selectStyle}
-                      onBlur={handleBlur}
-                    >
-                      <option value=''>Wybierz grupe uslugi...</option>
-                      {serviceGroupHandler(values)}
-                    </Field>
-                    {errors.grupa && touched.grupa ? (
-                      <p style={styles.errorStyle}>{errors.grupa}</p>
-                    ) : null}
-                    {serviceGroupSelected && (
-                      <>
-                        <label>Usluga</label>
-                        <Field
-                          as='select'
-                          name='usluga'
-                          style={styles.inputStyle}
-                          onBlur={handleBlur}
-                        >
-                          <option value=''>Wybierz usluge...</option>
-                          {serviceHandler(values)}
+                  <Form>
+                    <FormContainer>
+                      <FormColumn>
+                        <label>Grupa uslug</label>
+                        <Field name='grupa' as={MyStyledSelect}>
+                          <option value=''>Wybierz grupę usługi...</option>
+                          {serviceGroupHandler(values)}
                         </Field>
-                        {errors.usluga && touched.usluga ? (
-                          <p style={styles.errorStyle}>{errors.usluga}</p>
-                        ) : null}
-                        {serviceSelected && (
+                        <ErrorMessage name='grupa'>
+                          {(msg) => <FormError>{msg}</FormError>}
+                        </ErrorMessage>
+                        {serviceGroupSelected && (
                           <>
-                            <label>Specjalista</label>
-                            <Field
-                              as='select'
-                              name='specjalista'
-                              style={styles.selectStyle}
-                              onBlur={handleBlur}
-                            >
-                              <option value=''>Wybierz specjaliste...</option>
-                              {doctorHandler(values)}
+                            <Field as={MyStyledSelect} name='usluga'>
+                              <option value=''>Wybierz usługę...</option>
+                              {serviceHandler(values)}
                             </Field>
-                            {errors.specjalista && touched.specjalista ? (
-                              <p style={styles.errorStyle}>
-                                {errors.specjalista}
-                              </p>
-                            ) : null}
-                            {doctorSelected && (
+                            <ErrorMessage name='usluga'>
+                              {(msg) => <FormError>{msg}</FormError>}
+                            </ErrorMessage>
+                            {serviceSelected && (
                               <>
-                                <label>Data</label>
-                                <DatePicker
-                                  selected={startDate}
-                                  dateFormat='dd/MM/yyyy'
-                                  onChange={(date) => {
-                                    setStartDate(date)
-                                    values.data = `${date.getDate()}.${
-                                      date.getMonth() + 1
-                                    }.${date.getFullYear()}`
-                                    setValues(values)
-                                  }}
-                                  minDate={minDate}
-                                  placeholderText='Wybierz termin wizyty'
-                                  filterDate={isWeekday}
-                                  excludeDates={datesToExclude}
-                                  name='data'
-                                  onBlur={handleBlur}
-                                />
-                                {errors.data && touched.data ? (
-                                  <p style={styles.errorStyle}>{errors.data}</p>
-                                ) : null}
-                                {values.data && (
+                                <Field as={MyStyledSelect} name='specjalista'>
+                                  <option value=''>
+                                    Wybierz specjalistę...
+                                  </option>
+                                  {doctorHandler(values)}
+                                </Field>
+                                <ErrorMessage name='specjalista'>
+                                  {(msg) => <FormError>{msg}</FormError>}
+                                </ErrorMessage>
+                                {doctorSelected && (
                                   <>
-                                    <label>Godzina</label>
-                                    <Field
-                                      as='select'
-                                      name='godzina'
-                                      style={styles.inputStyle}
+                                    <DatePicker
+                                      selected={startDate}
+                                      dateFormat='dd/MM/yyyy'
+                                      onChange={(date) => {
+                                        setStartDate(date)
+                                        values.data = `${date.getDate()}.${
+                                          date.getMonth() + 1
+                                        }.${date.getFullYear()}`
+                                        setValues(values)
+                                      }}
+                                      minDate={minDate}
+                                      placeholderText='Wybierz termin wizyty'
+                                      filterDate={isWeekday}
+                                      excludeDates={datesToExclude}
+                                      name='data'
                                       onBlur={handleBlur}
-                                    >
-                                      <option value=''>
-                                        Wybierz godzine...
-                                      </option>
-                                      {pickingHours(values.data)}
-                                    </Field>
-                                    {errors.godzina && touched.godzina ? (
-                                      <p style={styles.errorStyle}>
-                                        {errors.godzina}
-                                      </p>
-                                    ) : null}
+                                    />
+                                    <ErrorMessage name='data'>
+                                      {(msg) => <FormError>{msg}</FormError>}
+                                    </ErrorMessage>
+                                    {values.data && (
+                                      <>
+                                        <Field
+                                          as={MyStyledSelect}
+                                          name='godzina'
+                                        >
+                                          <option value=''>
+                                            Wybierz godzinę...
+                                          </option>
+                                          {pickingHours(values.data)}
+                                        </Field>
+                                        <ErrorMessage name='godzina'>
+                                          {(msg) => (
+                                            <FormError>{msg}</FormError>
+                                          )}
+                                        </ErrorMessage>
+                                      </>
+                                    )}
                                   </>
                                 )}
                               </>
                             )}
                           </>
                         )}
-                      </>
-                    )}
-                    <label>Imie</label>
-                    <Field
-                      name='imie'
-                      type='text'
-                      style={styles.inputStyle}
-                      placeholder='Imie'
-                      onBlur={handleBlur}
-                    />
-                    {errors.imie && touched.imie ? (
-                      <p style={styles.errorStyle}>{errors.imie}</p>
-                    ) : null}
-                    <label>Nazwisko</label>
-                    <Field
-                      name='nazwisko'
-                      type='text'
-                      style={styles.inputStyle}
-                      placeholder='Nazwisko'
-                      onBlur={handleBlur}
-                    />
-                    {errors.nazwisko && touched.nazwisko ? (
-                      <p style={styles.errorStyle}>{errors.nazwisko}</p>
-                    ) : null}
-                    <label>E-mail</label>
-                    <Field
-                      name='email'
-                      type='email'
-                      style={styles.inputStyle}
-                      placeholder='E-mail'
-                      onBlur={handleBlur}
-                    />
-                    {errors.email && touched.email ? (
-                      <p style={styles.errorStyle}>{errors.email}</p>
-                    ) : null}
-                    <label>Telefon</label>
-                    <Field
-                      name='telefon'
-                      type='number'
-                      style={styles.inputStyle}
-                      placeholder='Telefon'
-                      onBlur={handleBlur}
-                    />
-                    {errors.telefon && touched.telefon ? (
-                      <p style={styles.errorStyle}>{errors.telefon}</p>
-                    ) : null}
-                    <label>Miasto</label>
-                    <Field
-                      name='miasto'
-                      type='text'
-                      style={styles.inputStyle}
-                      placeholder='Miasto'
-                      onBlur={handleBlur}
-                    />
-                    {errors.miasto && touched.miasto ? (
-                      <p style={styles.errorStyle}>{errors.miasto}</p>
-                    ) : null}
-                    <label>Ulica</label>
-                    <Field
-                      name='ulica'
-                      type='text'
-                      style={styles.inputStyle}
-                      placeholder='Ulica'
-                      onBlur={handleBlur}
-                    />
-                    {errors.ulica && touched.ulica ? (
-                      <p style={styles.errorStyle}>{errors.ulica}</p>
-                    ) : null}
-                    <label>Kod-pocztowy</label>
-                    <Field
-                      name='kodPocztowy'
-                      type='number'
-                      style={styles.inputStyle}
-                      placeholder='Kod-pocztowy'
-                      onBlur={handleBlur}
-                    />
-                    {errors.kodPocztowy && touched.kodPocztowy ? (
-                      <p style={styles.errorStyle}>{errors.kodPocztowy}</p>
-                    ) : null}
-                    {isCreateAccount ? (
-                      <>
-                        <p style={{ fontSize: '.75em' }}>
-                          Jednak nie chcesz tworzyc konta?
-                          <span
-                            style={{
-                              color: '#01D4BF',
-                              cursor: 'pointer',
-                            }}
-                            onClick={() => {
-                              const { password, ...oldValues } = values
-                              setIsCreateAccount(false)
-                              setValues(oldValues)
-                            }}
-                          >
-                            Kliknij tutaj
-                          </span>
-                        </p>
-                        <label>Haslo</label>
                         <Field
-                          name='password'
-                          type='password'
-                          style={{
-                            backgroundColor: 'transparent',
-                            border: '2px solid #333',
-                            height: '3em',
-                            margin: '10px 0',
-                            paddingLeft: '1em',
-                          }}
-                          placeholder='Haslo do konta'
+                          as={MyStyledInput}
+                          name='imie'
+                          type='text'
+                          placeholder='Imie'
                           onBlur={handleBlur}
                         />
-                        {errors.password && touched.password ? (
-                          <p style={{ color: 'red' }}>{errors.password}</p>
-                        ) : null}
-                      </>
-                    ) : (
-                      <p style={{ fontSize: '.75em' }}>
-                        Chcesz utworzyć konto?
-                        <span
-                          style={{
-                            color: '#01D4BF',
-                            cursor: 'pointer',
-                          }}
-                          onClick={() => setIsCreateAccount(true)}
-                        >
-                          Kliknij tutaj
-                        </span>
-                      </p>
-                    )}
-                    <button type='submit' style={styles.buttonStyle}>
-                      Podsumowanie
-                    </button>
-                    <button type='reset' style={styles.buttonStyle}>
-                      Wyczysc formularz
-                    </button>
-                    {isSubmit && (
-                      <div
-                        style={{
-                          width: '100vw',
-                          height: '100vh',
-                          position: 'absolute',
-                          left: '0',
-                          top: '0',
-                          backgroundColor: 'rgba(3,3,3,.5)',
-                          zIndex: '999',
-                        }}
-                      >
-                        <div
-                          style={{
-                            position: 'relative',
-                            width: '50%',
-                            height: '50%',
-                            backgroundColor: '#fff',
-                            left: '0',
-                            right: '0',
-                            top: '25%',
-                            margin: 'auto',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                          }}
-                        >
-                          <h2 style={{ marginBottom: '20px' }}>Podsumowanie</h2>
-                          <div
-                            style={{
-                              position: 'relative',
-                              backgroundColor: '#fff',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                            }}
-                          >
-                            <div
+                        <ErrorMessage name='imie'>
+                          {(msg) => <FormError>{msg}</FormError>}
+                        </ErrorMessage>
+                        <Field
+                          as={MyStyledInput}
+                          name='nazwisko'
+                          type='text'
+                          placeholder='Nazwisko'
+                          onBlur={handleBlur}
+                        />
+                        <ErrorMessage name='nazwisko'>
+                          {(msg) => <FormError>{msg}</FormError>}
+                        </ErrorMessage>
+                        <Field
+                          as={MyStyledInput}
+                          name='email'
+                          type='email'
+                          placeholder='E-mail'
+                          onBlur={handleBlur}
+                        />
+                        <ErrorMessage name='email'>
+                          {(msg) => <FormError>{msg}</FormError>}
+                        </ErrorMessage>
+                        <Field
+                          as={MyStyledInput}
+                          name='telefon'
+                          type='number'
+                          placeholder='Telefon'
+                          onBlur={handleBlur}
+                        />
+                        <ErrorMessage name='telefon'>
+                          {(msg) => <FormError>{msg}</FormError>}
+                        </ErrorMessage>
+                        <Field
+                          as={MyStyledInput}
+                          name='miasto'
+                          type='text'
+                          placeholder='Miasto'
+                          onBlur={handleBlur}
+                        />
+                        <ErrorMessage name='miasto'>
+                          {(msg) => <FormError>{msg}</FormError>}
+                        </ErrorMessage>
+                        <Field
+                          as={MyStyledInput}
+                          name='ulica'
+                          type='text'
+                          placeholder='Ulica'
+                          onBlur={handleBlur}
+                        />
+                        <ErrorMessage name='ulica'>
+                          {(msg) => <FormError>{msg}</FormError>}
+                        </ErrorMessage>
+                        <Field
+                          as={MyStyledInput}
+                          name='kodPocztowy'
+                          type='number'
+                          placeholder='Kod-pocztowy'
+                          onBlur={handleBlur}
+                        />
+                        <ErrorMessage name='kodPocztowy'>
+                          {(msg) => <FormError>{msg}</FormError>}
+                        </ErrorMessage>
+                        {isCreateAccount ? (
+                          <>
+                            <p style={{ fontSize: '.75em' }}>
+                              Jednak nie chcesz tworzyć konta?
+                              <span
+                                style={{
+                                  color: '#01D4BF',
+                                  cursor: 'pointer',
+                                }}
+                                onClick={() => {
+                                  const { password, ...oldValues } = values
+                                  setIsCreateAccount(false)
+                                  setValues(oldValues)
+                                }}
+                              >
+                                Kliknij tutaj
+                              </span>
+                            </p>
+                            <Field
+                              as={MyStyledInput}
+                              name='password'
+                              type='password'
+                              placeholder='Hasło do konta'
+                              onBlur={handleBlur}
+                            />
+                            <ErrorMessage name='password'>
+                              {(msg) => <FormError>{msg}</FormError>}
+                            </ErrorMessage>
+                          </>
+                        ) : (
+                          <p style={{ fontSize: '.75em' }}>
+                            Chcesz utworzyć konto?
+                            <span
                               style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                width: '50%',
+                                color: '#01D4BF',
+                                cursor: 'pointer',
                               }}
+                              onClick={() => setIsCreateAccount(true)}
                             >
-                              <h3>Twoje dane</h3>
-                              <p>
-                                {values.imie} {values.nazwisko}
-                              </p>
-                              <p>{values.email}</p>
-                              <p>{values.telefon}</p>
-                              <p>{values.miasto}</p>
-                              <p>{values.ulica}</p>
-                              <p>{values.kodPocztowy}</p>
-                            </div>
-                            <div
-                              style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                width: '50%',
-                              }}
-                            >
-                              <h3>Umówiona wizyta</h3>
-                              <p>{values.grupa}</p>
-                              <p>{values.usluga}</p>
-                              <p>{values.data}r.</p>
-                              <p>{values.godzina}:00</p>
-                            </div>
-                          </div>
-                          <div
-                            style={{
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                            }}
-                          >
-                            <button
-                              onClick={() => setIsSubmit(false)}
-                              style={styles.buttonStyle}
-                            >
-                              Anuluj
-                            </button>
-                            <button
-                              style={styles.buttonBook}
-                              onClick={() => {
-                                onVisitSubmit(values)
-                                resetForm()
-                                setIsSubmit(false)
-                              }}
-                            >
-                              Potwierdz rezerwacje
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    )}
+                              Kliknij tutaj
+                            </span>
+                          </p>
+                        )}
+                        <MyStyledButton type='submit'>
+                          Podsumowanie
+                        </MyStyledButton>
+                        <MyStyledButton type='reset'>
+                          Wyczyść formularz
+                        </MyStyledButton>
+                        {isSubmit && (
+                          <ModalShadow>
+                            <ModalContainer>
+                              <ModalText>Podsumowanie</ModalText>
+                              <ModalVisitContentContainer>
+                                <ModalVisitData>
+                                  <h3>Twoje dane</h3>
+                                  <ModalVisitTextContainer>
+                                    <ModalVisitDataLabel>
+                                      Imie i nazwisko
+                                    </ModalVisitDataLabel>
+                                    <ModalVisitDataText>
+                                      {values.imie} {values.nazwisko}
+                                    </ModalVisitDataText>
+                                  </ModalVisitTextContainer>
+                                  <ModalVisitTextContainer>
+                                    <ModalVisitDataLabel>
+                                      E-mail
+                                    </ModalVisitDataLabel>
+                                    <ModalVisitDataText>
+                                      {values.email}
+                                    </ModalVisitDataText>
+                                  </ModalVisitTextContainer>
+                                  <ModalVisitTextContainer>
+                                    <ModalVisitDataLabel>
+                                      Telefon
+                                    </ModalVisitDataLabel>
+                                    <ModalVisitDataText>
+                                      {values.telefon}
+                                    </ModalVisitDataText>
+                                  </ModalVisitTextContainer>
+                                  <ModalVisitTextContainer>
+                                    <ModalVisitDataLabel>
+                                      Miasto
+                                    </ModalVisitDataLabel>
+                                    <ModalVisitDataText>
+                                      {values.miasto}
+                                    </ModalVisitDataText>
+                                  </ModalVisitTextContainer>
+                                  <ModalVisitTextContainer>
+                                    <ModalVisitDataLabel>
+                                      Ulica
+                                    </ModalVisitDataLabel>
+                                    <ModalVisitDataText>
+                                      {values.ulica}
+                                    </ModalVisitDataText>
+                                  </ModalVisitTextContainer>
+                                  <ModalVisitTextContainer>
+                                    <ModalVisitDataLabel>
+                                      Kod-pocztowy
+                                    </ModalVisitDataLabel>
+                                    <ModalVisitDataText>
+                                      {values.kodPocztowy}
+                                    </ModalVisitDataText>
+                                  </ModalVisitTextContainer>
+                                </ModalVisitData>
+                                <ModalVisitData>
+                                  <h3>Umówiona wizyta</h3>
+                                  <ModalVisitTextContainer>
+                                    <ModalVisitDataLabel>
+                                      Grupa
+                                    </ModalVisitDataLabel>
+                                    <ModalVisitDataText>
+                                      {values.grupa}
+                                    </ModalVisitDataText>
+                                  </ModalVisitTextContainer>
+                                  <ModalVisitTextContainer>
+                                    <ModalVisitDataLabel>
+                                      Usługa
+                                    </ModalVisitDataLabel>
+                                    <ModalVisitDataText>
+                                      {values.usluga}
+                                    </ModalVisitDataText>
+                                  </ModalVisitTextContainer>
+                                  <ModalVisitTextContainer>
+                                    <ModalVisitDataLabel>
+                                      Data wizyty
+                                    </ModalVisitDataLabel>
+                                    <ModalVisitDataText>
+                                      {values.data}r.
+                                    </ModalVisitDataText>
+                                  </ModalVisitTextContainer>
+                                  <ModalVisitTextContainer>
+                                    <ModalVisitDataLabel>
+                                      Godzina wizyty
+                                    </ModalVisitDataLabel>
+                                    <ModalVisitDataText>
+                                      {values.godzina}:00
+                                    </ModalVisitDataText>
+                                  </ModalVisitTextContainer>
+                                </ModalVisitData>
+                              </ModalVisitContentContainer>
+                              <ModalButtonsContainer>
+                                <MyStyledButton
+                                  onClick={() => setIsSubmit(false)}
+                                >
+                                  Anuluj
+                                </MyStyledButton>
+                                <ModalButton
+                                  onClick={() => {
+                                    onVisitSubmit(values)
+                                    resetForm()
+                                    setIsSubmit(false)
+                                  }}
+                                >
+                                  Potwierdź rezerwacje
+                                </ModalButton>
+                              </ModalButtonsContainer>
+                            </ModalContainer>
+                          </ModalShadow>
+                        )}
+                      </FormColumn>
+                    </FormContainer>
                   </Form>
                 )}
               </Formik>
@@ -719,7 +695,7 @@ const AddVisitNonAuth = () => {
         ) : (
           <p>Przykro nam, ale nie oferujemy żadnych usług</p>
         )}
-      </div>
+      </AddVisitContainer>
     </PageWrapper>
   )
 }
