@@ -33,6 +33,12 @@ import {
 } from "../VisitPage/VisitPageElements";
 import useFetchAllUsers from "../../hooks/useFetchAllUsers";
 
+const style = {
+  whiteSpace: "nowrap",
+  fontFamily: "Poppins",
+  color: "red",
+}
+
 const VisitsPage = () => {
   const [filterPosition, setFilterPosition] = useState({
     usluga: 0,
@@ -331,6 +337,7 @@ const VisitsPage = () => {
               >
                 {displayVisits}
                 <MyPaginate
+               
                   previousLabel={"Poprzednia strona"}
                   nextLabel={"Następna strona"}
                   pageCount={pageCount}

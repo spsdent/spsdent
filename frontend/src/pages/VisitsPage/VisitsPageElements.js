@@ -19,10 +19,10 @@ export const VisitsPageContainer = styled.div`
 `
 export const VisitsPageTitleContainer = styled.div`
   display: flex;
-  margin: 1.5em;
+  /* margin: 1.5em; */
 `
 export const VisitsPageTitle = styled(motion.h1)`
-  font-size: 4em;
+  font-size: 3.5em;
   letter-spacing: 0.05em;
   margin-left: 0.25em;
   color: ${(props) => (props.primary ? '#01D4BF' : '#333')};
