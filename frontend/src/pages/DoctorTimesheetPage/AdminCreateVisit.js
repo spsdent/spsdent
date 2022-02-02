@@ -181,9 +181,8 @@ const AdminCreateVisit = ({
       })
   }
 
-  const onVisitSubmit = (values, actions) => {
+  const onVisitSubmit = (values) => {
     createVisit(values)
-    actions.resetForm()
   }
 
   const onCreateHandler = (values, setValues) => {

@@ -233,7 +233,7 @@ const AddVisitAuthUser = () => {
     const today = new Date()
 
     let updatedHours = []
-    if (startDate) {
+    if (serviceSelected && serviceGroupSelected && startDate) {
       const currentDayDoctorVisits = allVisitsFromDb
         .filter(
           (visit) =>
