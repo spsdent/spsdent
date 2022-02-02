@@ -167,48 +167,48 @@ const AdminCreateVisit = ({
   const dispatch = useDispatch()
 
   const serviceGroupHandler = (values) => {
-    setServiceGroupSelected(values.grupa)
+    setServiceGroupSelected(values.grupa);
     const currentSelectedDoctor = doctors
       .filter((doctor) => doctor.doctorId === selectedDoctor)
       .map((item) => item.specjalnosci)
-      .flat()
+      .flat();
     const servicesToDisplay = allServicesFromDb.filter((service) =>
       currentSelectedDoctor.includes(service._id)
-    )
+    );
     if (serviceGroupSelected && !serviceSelected) {
-      values.specjalista = ''
-      values.data = ''
-      values.godzina = ''
+      values.specjalista = "";
+      values.data = "";
+      values.godzina = "";
     } else if (!serviceGroupSelected) {
-      setServiceSelected('')
-      values.usluga = ''
-      values.data = ''
-      values.godzina = ''
+      setServiceSelected("");
+      values.usluga = "";
+      values.data = "";
+      values.godzina = "";
     }
 
     return servicesToDisplay.map((service) => (
       <option value={service.grupa}>{service.grupa}</option>
-    ))
-  }
+    ));
+  };
 
   const serviceHandler = (values) => {
-    setServiceSelected(values.usluga)
+    setServiceSelected(values.usluga);
     const selectedGroupServices = allServicesFromDb
       .filter((service) => service.grupa === serviceGroupSelected)
       .map((service) => service.uslugi)
-      .flatMap((item) => item)
+      .flatMap((item) => item);
 
     if (values.usluga) {
       const price = selectedGroupServices.find(
         (item) => item.nazwa.toLowerCase() === values.usluga.toLowerCase()
-      ).cena
-      setSelectedServicePrice(price)
+      ).cena;
+      setSelectedServicePrice(price);
     }
 
     return selectedGroupServices.map((item) => (
       <option value={item.nazwa}>{item.nazwa}</option>
-    ))
-  }
+    ));
+  };
 
   const createVisit = (values) => {
     const {
@@ -222,7 +222,7 @@ const AdminCreateVisit = ({
       kodPocztowy,
       ulica,
       status,
-    } = values
+    } = values;
 
     // Create object with values from form
     let visitData = {
@@ -245,8 +245,8 @@ const AdminCreateVisit = ({
       status,
       cena: selectedServicePrice,
       uid: currentUser !== null ? currentUser.id : null,
-    }
-    console.log('bookinginfo', bookingInfo)
+    };
+    console.log("bookinginfo", bookingInfo);
 
     if (values.password) {
       // Create new visit based on provide visitData object
@@ -261,38 +261,38 @@ const AdminCreateVisit = ({
           email,
           values.password
         )
-      )
+      );
     }
     // Create new visit based on provide visitData object
     VisitData.create(visitData)
       .then((response) => {
-        setIsSubmit(false)
-        isSelectedFunc(false)
-        onCreate(true)
-        dispatch(refreshApp())
+        setIsSubmit(false);
+        isSelectedFunc(false);
+        onCreate(true);
+        dispatch(refreshApp());
         dispatch({
           type: SET_MESSAGE,
-          payload: 'Wizyta została utworzona!',
-        })
+          payload: "Wizyta została utworzona!",
+        });
       })
       .catch((e) => {
         dispatch({
           type: SET_MESSAGE,
-          payload: 'Wystapił błąd podczas tworzenia rezerwacji, przepraszamy.',
-        })
-      })
-  }
+          payload: "Wystapił błąd podczas tworzenia rezerwacji, przepraszamy.",
+        });
+      });
+  };
 
   const onVisitSubmit = (values, actions) => {
-    createVisit(values)
-    actions.resetForm()
-  }
+    createVisit(values);
+    actions.resetForm();
+  };
 
   const onCreateHandler = (values, setValues) => {
-    const { password, ...oldValues } = values
-    setIsCreateAccount(false)
-    setValues(oldValues)
-  }
+    const { password, ...oldValues } = values;
+    setIsCreateAccount(false);
+    setValues(oldValues);
+  };
 
   return (
     <>
@@ -594,7 +594,7 @@ const AdminCreateVisit = ({
         )}
       </SideModalContainer>
     </>
-  )
-}
+  );
+};
 
-export default AdminCreateVisit
+export default AdminCreateVisit;

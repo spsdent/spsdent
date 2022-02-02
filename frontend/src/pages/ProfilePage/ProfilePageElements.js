@@ -20,6 +20,9 @@ export const Container = styled.div`
   @media screen and (max-width: 960px) {
     font-size: 13px;
   }
+  @media screen and (max-width: 768px) {
+    font-size: 11px;
+  }
 `;
 
 export const TitleContainer = styled.div`
@@ -38,12 +41,6 @@ export const Title = styled(motion.h1)`
   white-space: nowrap;
 `;
 
-// export const EmptyListHeading = styled(Title)`
-//   font-size: 2.5rem;
-//   text-decoration: underline;
-//   color: salmon;
-// `
-
 export const DashboardContainer = styled(motion.div)`
   background-color: rgba(255, 255, 255, 0.7);
   height: fit-content;
@@ -52,33 +49,40 @@ export const DashboardContainer = styled(motion.div)`
 `;
 export const VitalInfoContainer = styled.div`
   display: flex;
+  flex-direction: row;
   margin-bottom: 1em;
   transition: 1s ease;
+  justify-content: space-around;
+  gap: 1em;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 export const VitalInfoSocket = styled(motion.div)`
   padding: 0.4em 0 0.1em 0;
 `;
 export const VitalInfoText = styled.p`
   font-family: "poppins";
-  font-size: ${(props) => (props.primary ? ".7em" : ".9em")};
+  font-size: ${(props) => (props.primary ? ".6em" : ".75em")};
   color: ${(props) => (props.primary ? "rgba(51,51,51,.5)" : "#333")};
   line-height: 1.2em;
   margin-bottom: ${(props) => (props.password ? "1em" : "0")};
 `;
 export const VitalInfoEditContainer = styled(motion.div)`
-  width: 60%;
+  width: 8em;
   border: none;
   height: 2em;
 `;
 export const VitalInfoEdit = styled(Field)`
-  width: 100%;
-  height: ${props => props.password ? "2em" : "100%"};
+  width: 12em;
+  height: ${(props) => (props.password ? "2em" : "100%")};
   padding: 0.4em;
   background-color: rgba(51, 51, 51, 0.1);
   border-radius: 5px;
   margin-bottom: ${(props) => (props.primary ? "2.5em" : "0")};
   font-family: "poppins";
-  font-size: 0.7em;
+  font-size: 0.6em;
   color: rgba(51, 51, 51, 0.7);
   outline: none;
   border: none;
@@ -87,14 +91,26 @@ export const VitalInfoEdit = styled(Field)`
     background-color: rgba(51, 51, 51, 0.2);
   }
 `;
+export const VitalInfoWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  padding-right: 1em;
+  @media screen and (max-width: 968px) {
+    flex-direction: column;
+  }
+  @media screen and (max-width: 768px) {
+    margin: 0 auto;
+  }
+`;
 export const ButtonsContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   gap: 0.5em;
-  flex-grow: 1;
-  padding-top: 1em;
+
+  padding: 1em;
   cursor: pointer;
 `;
 export const ButtonDashboard = styled(motion.button)`
@@ -115,22 +131,26 @@ export const ButtonDashboard = styled(motion.button)`
   }
 `;
 export const PasswordChangeContainer = styled(motion.div)`
-  /* background-color: cadetblue; */
   display: flex;
   flex-direction: column;
-  align-items: center;c
+  align-items: center;
   justify-content: flex-start;
   gap: 0.6em;
   border: 2px solid black;
   border-radius: 10px;
   padding: 1em;
-  margin: 0 2em 0 0;
-  width: 15em;
+
+  width: 10em;
   height: 13em;
+  margin: 0 auto;
 `;
 
 export const DashboardVisitContainer = styled.div`
   display: flex;
+  flex-direction: row;
+  @media screen and (max-width: 968px) {
+    flex-direction: column;
+  }
 `;
 
 export const DashboardVisit = styled.div`
@@ -178,8 +198,9 @@ export const ButtonVitalInfo = styled(motion.button)`
   font-size: 0.8em;
   border-radius: 8px;
   letter-spacing: 0.05em;
-  width: 60%;
+  width: 8em;
   margin-top: 1em;
+  white-space: nowrap;
   cursor: pointer;
   &:active {
     background-color: #01d4bf;
