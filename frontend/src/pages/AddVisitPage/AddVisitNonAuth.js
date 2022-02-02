@@ -48,7 +48,6 @@ import {
   ModalButtonsContainer,
   ModalButton,
 } from '../VisitPage/VisitPageElements'
-import styled from 'styled-components'
 
 const MyStyledSelect = FormInput.withComponent('select')
 const MyStyledInput = FormInput.withComponent('input')
@@ -227,18 +226,21 @@ const AddVisitNonAuth = () => {
     const selectedGroupData = allServicesFromDb.filter(
       (service) => service.grupa === serviceGroupSelected
     )
-    const selectedGroupDoctors = allDoctorsFromDb
-      .filter((doctor) =>
-        doctor.specjalnosci.includes(selectedGroupData[0]._id)
+    let usersToDisplay = []
+    if (serviceSelected && serviceGroupSelected) {
+      const selectedGroupDoctors = allDoctorsFromDb
+        .filter((doctor) =>
+          doctor.specjalnosci.includes(selectedGroupData[0]._id)
+        )
+        .map((item) => item.doctorId)
+      usersToDisplay = allUsersFromDb.filter((user) =>
+        selectedGroupDoctors.includes(user._id)
       )
-      .map((item) => item.doctorId)
-    const usersToDisplay = allUsersFromDb.filter((user) =>
-      selectedGroupDoctors.includes(user._id)
-    )
-    const servicePrice = allServicesFromDb
-      .filter((service) => service.grupa === serviceGroupSelected)[0]
-      .uslugi.filter((usluga) => usluga.nazwa === serviceSelected)[0]
-    setSelectedServicePrice(servicePrice.cena)
+      const servicePrice = allServicesFromDb
+        .filter((service) => service.grupa === serviceGroupSelected)[0]
+        .uslugi.filter((usluga) => usluga.nazwa === serviceSelected)[0]
+      setSelectedServicePrice(servicePrice.cena)
+    }
     if (doctorSelected && !values.data) {
       values.godzina = ''
     }
@@ -278,25 +280,30 @@ const AddVisitNonAuth = () => {
           visit.specjalista.sid === `${selectedDoctorData.doctorId}`
       )
       .map((item) => +item.godzina)
-    const updatedHours = selectedDoctorData.godzinyPracy
-      .filter((item) => !currentDayDoctorVisits.includes(item))
-      .filter((hour) => {
-        if (today.getDate() === values.split('.')[0]) {
-          return hour > today.getHours()
-        } else {
-          return hour
-        }
-      })
-
-    if (updatedHours.length > 0) {
-      return updatedHours.map((item) => (
-        <option value={`${item}`} key={`${item}`}>{`${item}`}</option>
-      ))
-    } else {
-      return dentHours.map((item) => (
-        <option value={`${item}`} key={`${item}`}>{`${item}`}</option>
-      ))
+    let updatedHours = []
+    if (startDate) {
+      updatedHours = selectedDoctorData.godzinyPracy
+        .filter((item) => !currentDayDoctorVisits.includes(item))
+        .filter((hour) => {
+          if (today.getDate() === values.split('.')[0]) {
+            return hour > today.getHours()
+          } else {
+            return hour
+          }
+        })
+      if (updatedHours.length > 0) {
+        return updatedHours.map((item) => (
+          <option value={`${item}`} key={`${item}`}>{`${item}`}</option>
+        ))
+      } else {
+        return dentHours.map((item) => (
+          <option value={`${item}`} key={`${item}`}>{`${item}`}</option>
+        ))
+      }
     }
+    return updatedHours.map((item) => (
+      <option value={`${item}`} key={`${item}`}>{`${item}`}</option>
+    ))
   }
 
   const isWeekday = (date) => {
@@ -363,72 +370,61 @@ const AddVisitNonAuth = () => {
                         <ErrorMessage name='grupa'>
                           {(msg) => <FormError>{msg}</FormError>}
                         </ErrorMessage>
-                        {serviceGroupSelected && (
-                          <>
-                            <Field as={MyStyledSelect} name='usluga'>
-                              <option value=''>Wybierz usługę...</option>
-                              {serviceHandler(values)}
-                            </Field>
-                            <ErrorMessage name='usluga'>
-                              {(msg) => <FormError>{msg}</FormError>}
-                            </ErrorMessage>
-                            {serviceSelected && (
-                              <>
-                                <Field as={MyStyledSelect} name='specjalista'>
-                                  <option value=''>
-                                    Wybierz specjalistę...
-                                  </option>
-                                  {doctorHandler(values)}
-                                </Field>
-                                <ErrorMessage name='specjalista'>
-                                  {(msg) => <FormError>{msg}</FormError>}
-                                </ErrorMessage>
-                                {doctorSelected && (
-                                  <>
-                                    <DatePicker
-                                      selected={startDate}
-                                      dateFormat='dd/MM/yyyy'
-                                      onChange={(date) => {
-                                        setStartDate(date)
-                                        values.data = `${date.getDate()}.${
-                                          date.getMonth() + 1
-                                        }.${date.getFullYear()}`
-                                        setValues(values)
-                                      }}
-                                      minDate={minDate}
-                                      placeholderText='Wybierz termin wizyty'
-                                      filterDate={isWeekday}
-                                      excludeDates={datesToExclude}
-                                      name='data'
-                                      onBlur={handleBlur}
-                                    />
-                                    <ErrorMessage name='data'>
-                                      {(msg) => <FormError>{msg}</FormError>}
-                                    </ErrorMessage>
-                                    {values.data && (
-                                      <>
-                                        <Field
-                                          as={MyStyledSelect}
-                                          name='godzina'
-                                        >
-                                          <option value=''>
-                                            Wybierz godzinę...
-                                          </option>
-                                          {pickingHours(values.data)}
-                                        </Field>
-                                        <ErrorMessage name='godzina'>
-                                          {(msg) => (
-                                            <FormError>{msg}</FormError>
-                                          )}
-                                        </ErrorMessage>
-                                      </>
-                                    )}
-                                  </>
-                                )}
-                              </>
-                            )}
-                          </>
-                        )}
+                        <Field
+                          as={MyStyledSelect}
+                          name='usluga'
+                          disabled={!serviceGroupSelected}
+                        >
+                          <option value=''>Wybierz usługę...</option>
+                          {serviceHandler(values)}
+                        </Field>
+                        <ErrorMessage name='usluga'>
+                          {(msg) => <FormError>{msg}</FormError>}
+                        </ErrorMessage>
+                        <Field
+                          as={MyStyledSelect}
+                          name='specjalista'
+                          disabled={!serviceSelected}
+                        >
+                          <option value=''>Wybierz specjalistę...</option>
+                          {doctorHandler(values)}
+                        </Field>
+                        <ErrorMessage name='specjalista'>
+                          {(msg) => <FormError>{msg}</FormError>}
+                        </ErrorMessage>
+                        <DatePicker
+                          disabled={!doctorSelected}
+                          selected={startDate}
+                          dateFormat='dd/MM/yyyy'
+                          onChange={(date) => {
+                            setStartDate(date)
+                            values.data = `${date.getDate()}.${
+                              date.getMonth() + 1
+                            }.${date.getFullYear()}`
+                            setValues(values)
+                          }}
+                          minDate={minDate}
+                          placeholderText='Wybierz termin wizyty'
+                          filterDate={isWeekday}
+                          excludeDates={datesToExclude}
+                          name='data'
+                          onBlur={handleBlur}
+                          withPortal
+                        />
+                        <ErrorMessage name='data'>
+                          {(msg) => <FormError>{msg}</FormError>}
+                        </ErrorMessage>
+                        <Field
+                          disabled={!values.data}
+                          as={MyStyledSelect}
+                          name='godzina'
+                        >
+                          <option value=''>Wybierz godzinę...</option>
+                          {pickingHours(values.data)}
+                        </Field>
+                        <ErrorMessage name='godzina'>
+                          {(msg) => <FormError>{msg}</FormError>}
+                        </ErrorMessage>
                         <Field
                           as={MyStyledInput}
                           name='imie'

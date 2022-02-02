@@ -504,7 +504,6 @@ const AddVisitAdmin = () => {
                               excludeDates={datesToExclude}
                               name="data"
                               onBlur={handleBlur}
-                              
                               withPortal
                             />
                             {errors.data && touched.data ? (

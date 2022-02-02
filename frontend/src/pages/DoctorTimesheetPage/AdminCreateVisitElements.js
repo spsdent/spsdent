@@ -1,4 +1,7 @@
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
+import {
+    ModalButtonsContainer,
+  } from '../VisitPage/VisitPageElements'
 
 export const SideModalContainer = styled.div`
 position: fixed;
@@ -60,3 +63,104 @@ export const StyledButtonExit = styled.button`
     background: transparent;
     cursor: pointer;
 `;
+
+export const FormInput = styled.input`
+  width: 100%;
+  max-width: 400px;
+  background-color: transparent;
+  border: 2px solid #333;
+  outline: none;
+  color: #333;
+  padding: 10px 5px;
+  font-family: 'Poppins';
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 7px;
+  margin: 5px 0;
+
+  &:disabled {
+    cursor: not-allowed;
+    background: #ddd;
+    border: none;
+  }
+
+  @media screen and (min-width: 1500px) {
+    font-size: 15px;
+  }
+  @media screen and (min-width: 1280px) {
+    font-size: 13px;
+  }
+  @media screen and (min-width: 960px) {
+    font-size: 11px;
+  }
+  @media only screen and (min-width: 768px) {
+    max-width: 450px;
+    font-size: 9px;
+  }
+`
+
+export const FormButton = styled.button`
+  width: 100%;
+  max-width: 350px;
+  background-color: transparent;
+  border: 2px solid #333;
+  font-family: 'Poppins';
+  color: #333;
+  transition: 0.2s ease;
+  cursor: pointer;
+  padding: 5px 0;
+  margin: 5px 0;
+  font-size: 9px;
+
+  &:hover {
+    background-color: #01d4bf;
+    color: #fff;
+    border-color: #fff;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    background: #ddd;
+    border: none;
+  }
+
+  @media screen and (min-width: 1500px) {
+    font-size: 17px;
+  }
+  @media screen and (min-width: 1280px) {
+    font-size: 15px;
+  }
+  @media screen and (min-width: 960px) {
+    font-size: 13px;
+    max-width: 450px;
+  }
+  @media only screen and (min-width: 768px) {
+    max-width: 400px;
+    font-size: 11px;
+  }
+`
+
+export const StyledModalButton = styled(FormButton)`
+  width: 200px;
+  padding: 10px 0;
+  transition: .2s;
+
+  &:hover {
+    background: #01d4bf;
+    border: 2px solid #01d4bf;
+  }
+
+  ${({primary}) => primary && css`
+    background: #01d4bf;
+    border: 2px solid #01d4bf;
+    &:hover {
+      background: #fff;
+      border: 2px solid #333;
+      color: #333;
+    }
+  `}
+`
+
+export const StyledButtonsModalContainer = styled(ModalButtonsContainer)`
+  width: 100%;
+`

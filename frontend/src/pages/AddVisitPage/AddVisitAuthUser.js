@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Formik, Form, Field } from 'formik'
+import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { useNavigate } from 'react-router-dom'
 
 import DatePicker from 'react-datepicker'
@@ -26,45 +26,33 @@ import {
   useFetchAllUsers,
   useCreateDates,
 } from '../../hooks'
-import {
-  Container,
-} from '../ProfilePage/ProfilePageElements'
 
-const styles = {
-  inputStyle: {
-    backgroundColor: 'transparent',
-    border: '2px solid #333',
-    height: '3em',
-    margin: '10px 0',
-    paddingLeft: '1em',
-  },
-  buttonStyle: {
-    backgroundColor: 'transparent',
-    border: '2px solid #333',
-    height: '3em',
-    margin: '10px 5px',
-    padding: '5px 10px',
-    cursor: 'pointer',
-  },
-  buttonBook: {
-    backgroundColor: '#01D4BF',
-    border: 'none',
-    height: '3em',
-    margin: '10px 5px',
-    padding: '5px 10px',
-    cursor: 'pointer',
-  },
-  selectStyle: {
-    backgroundColor: 'transparent',
-    border: '2px solid #333',
-    height: '3em',
-    margin: '10px 0',
-    paddingLeft: '1em',
-  },
-  errorStyle: {
-    color: 'red',
-  },
-}
+import {
+  AddVisitContainer,
+  FormButton,
+  FormColumn,
+  FormContainer,
+  FormError,
+  FormInput,
+  ModalContainer,
+  ModalVisitContentContainer,
+  ModalVisitData,
+  ModalVisitDataLabel,
+  ModalVisitDataText,
+  ModalVisitTextContainer,
+  Title,
+  TitleContainer,
+} from './AddVisitPageElements'
+
+import {
+  ModalShadow,
+  ModalText,
+  ModalButtonsContainer,
+} from '../VisitPage/VisitPageElements'
+import { StyledModalButton } from '../DoctorTimesheetPage/AdminCreateVisitElements'
+import styled from 'styled-components'
+
+const MyStyledSelect = FormInput.withComponent('select')
 
 const AddVisitAuthUser = () => {
   const [visit, setVisit] = useState(initialAddVisitValues)
@@ -196,18 +184,22 @@ const AddVisitAuthUser = () => {
     const selectedGroupData = allServicesFromDb.filter(
       (service) => service.grupa === serviceGroupSelected
     )
-    const selectedGroupDoctors = allDoctorsFromDb
-      .filter((doctor) =>
-        doctor.specjalnosci.includes(selectedGroupData[0]._id)
+    let usersToDisplay = []
+    if (serviceSelected && serviceGroupSelected) {
+      const selectedGroupDoctors = allDoctorsFromDb
+        .filter((doctor) =>
+          doctor.specjalnosci.includes(selectedGroupData[0]._id)
+        )
+        .map((item) => item.doctorId)
+      usersToDisplay = allUsersFromDb.filter((user) =>
+        selectedGroupDoctors.includes(user._id)
       )
-      .map((item) => item.doctorId)
-    const usersToDisplay = allUsersFromDb.filter((user) =>
-      selectedGroupDoctors.includes(user._id)
-    )
-    const servicePrice = allServicesFromDb
-      .filter((service) => service.grupa === serviceGroupSelected)[0]
-      .uslugi.filter((usluga) => usluga.nazwa === serviceSelected)[0]
-    setSelectedServicePrice(servicePrice.cena)
+      const servicePrice = allServicesFromDb
+        .filter((service) => service.grupa === serviceGroupSelected)[0]
+        .uslugi.filter((usluga) => usluga.nazwa === serviceSelected)[0]
+      setSelectedServicePrice(servicePrice.cena)
+    }
+
     if (doctorSelected && !values.data) {
       values.godzina = ''
     }
@@ -240,36 +232,42 @@ const AddVisitAuthUser = () => {
     )
     const today = new Date()
 
-    const currentDayDoctorVisits = allVisitsFromDb
-      .filter(
-        (visit) =>
-          visit.data.split('.')[0] === values.split('.')[0] &&
-          visit.specjalista.sid === `${selectedDoctorData.doctorId}`
-      )
-      .map((item) => +item.godzina)
-    const updatedHours = selectedDoctorData.godzinyPracy
-      .filter((item) => !currentDayDoctorVisits.includes(item))
-      .filter((hour) => {
-        if (today.getDate() === values.split('.')[0]) {
-          return hour > today.getHours()
-        } else {
-          return hour
-        }
-      })
+    let updatedHours = []
+    if (startDate) {
+      const currentDayDoctorVisits = allVisitsFromDb
+        .filter(
+          (visit) =>
+            visit.data.split('.')[0] === values.split('.')[0] &&
+            visit.specjalista.sid === `${selectedDoctorData.doctorId}`
+        )
+        .map((item) => +item.godzina)
+      updatedHours = selectedDoctorData.godzinyPracy
+        .filter((item) => !currentDayDoctorVisits.includes(item))
+        .filter((hour) => {
+          if (today.getDate() === values.split('.')[0]) {
+            return hour > today.getHours()
+          } else {
+            return hour
+          }
+        })
 
-    if (updatedHours.length > 0) {
-      return updatedHours.map((item) => (
-        <option value={`${item}`} key={`${item}`}>
-          {`${item}`}
-        </option>
-      ))
-    } else {
-      return dentHours.map((item) => (
-        <option value={`${item}`} key={`${item}`}>
-          {`${item}`}
-        </option>
-      ))
+      if (updatedHours.length > 0) {
+        return updatedHours.map((item) => (
+          <option value={`${item}`} key={`${item}`}>
+            {`${item}`}
+          </option>
+        ))
+      } else {
+        return dentHours.map((item) => (
+          <option value={`${item}`} key={`${item}`}>
+            {`${item}`}
+          </option>
+        ))
+      }
     }
+    return updatedHours.map((item) => (
+      <option value={`${item}`} key={`${item}`}>{`${item}`}</option>
+    ))
   }
 
   const isWeekday = (date) => {
@@ -297,8 +295,11 @@ const AddVisitAuthUser = () => {
 
   return (
     <PageWrapper>
-      <Container>
-        <h1> Zarezerwuj wizytę </h1>
+      <AddVisitContainer>
+        <TitleContainer>
+          <Title>Zarezerwuj</Title>
+          <Title primary>Wizytę</Title>
+        </TitleContainer>
         {allDoctorsFromDb.length > 0 ? (
           <Formik
             enableReinitialize
@@ -315,217 +316,195 @@ const AddVisitAuthUser = () => {
               resetForm,
               handleBlur,
             }) => (
-              <Form
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  width: '300px',
-                }}
-              >
-                <label> Grupa usług </label>
-                <Field
-                  as='select'
-                  name='grupa'
-                  style={styles.selectStyle}
-                  onBlur={handleBlur}
-                >
-                  <option value=''> Wybierz grupę usługi... </option>
-                  {serviceGroupHandler(values)}
-                </Field>
-                {errors.grupa && touched.grupa ? (
-                  <p style={styles.errorStyle}> {errors.grupa} </p>
-                ) : null}
-                {serviceGroupSelected && (
-                  <>
-                    <label> Usługa </label>
+              <Form>
+                <FormContainer>
+                  <FormColumn>
+                    <Field as={MyStyledSelect} name='grupa' onBlur={handleBlur}>
+                      <option value=''> Wybierz grupę usługi... </option>
+                      {serviceGroupHandler(values)}
+                    </Field>
+                    <ErrorMessage name='grupa'>
+                      {(msg) => <FormError>{msg}</FormError>}
+                    </ErrorMessage>
                     <Field
-                      as='select'
+                      as={MyStyledSelect}
                       name='usluga'
-                      style={styles.inputStyle}
                       onBlur={handleBlur}
+                      disabled={!serviceGroupSelected}
                     >
                       <option value=''> Wybierz usługę... </option>
                       {serviceHandler(values)}
                     </Field>
-                    {errors.usluga && touched.usluga ? (
-                      <p style={styles.errorStyle}> {errors.usluga} </p>
-                    ) : null}
-                    {serviceSelected && (
-                      <>
-                        <label> Specjalista </label>
-                        <Field
-                          as='select'
-                          name='specjalista'
-                          style={styles.selectStyle}
-                          onBlur={handleBlur}
-                        >
-                          <option value=''> Wybierz specjalistę... </option>
-                          {doctorHandler(values)}
-                        </Field>
-                        {errors.specjalista && touched.specjalista ? (
-                          <p style={styles.errorStyle}>
-                            {' '}
-                            {errors.specjalista}{' '}
-                          </p>
-                        ) : null}
-                        {doctorSelected && (
-                          <>
-                            <label>Data</label>
-                            <DatePicker
-                              selected={startDate}
-                              dateFormat='dd/MM/yyyy'
-                              onChange={(date) => {
-                                setStartDate(date)
-                                values.data = `${date.getDate()}.${
-                                  date.getMonth() + 1
-                                }.${date.getFullYear()}`
-                                setValues(values)
-                              }}
-                              minDate={minDate}
-                              placeholderText='Wybierz termin wizyty'
-                              filterDate={isWeekday}
-                              excludeDates={datesToExclude}
-                              name='data'
-                              onBlur={handleBlur}
-                              withPortal
-                            />
-                            {errors.data && touched.data ? (
-                              <p style={styles.errorStyle}>{errors.data}</p>
-                            ) : null}
-                            {values.data && (
-                              <>
-                                <label> Godzina </label>
-                                <Field
-                                  as='select'
-                                  name='godzina'
-                                  style={styles.inputStyle}
-                                  onBlur={handleBlur}
-                                >
-                                  <option value=''> Wybierz godzinę... </option>
-                                  {pickingHours(values.data)}
-                                </Field>
-                                {errors.godzina && touched.godzina ? (
-                                  <p style={styles.errorStyle}>
-                                    {errors.godzina}
-                                  </p>
-                                ) : null}
-                                {/* {setChoseHour(values.godzina)} */}
-                              </>
-                            )}
-                          </>
-                        )}
-                      </>
-                    )}
-                  </>
-                )}
-                <button type='submit' style={styles.buttonStyle}>
-                  Podsumowanie
-                </button>
-                <button type='reset' style={styles.buttonStyle}>
-                  Wyczyść formularz
-                </button>
-                {isSubmit && (
-                  <div
-                    style={{
-                      width: '100vw',
-                      height: '100vh',
-                      position: 'absolute',
-                      left: '0',
-                      top: '0',
-                      backgroundColor: 'rgba(3,3,3,.5)',
-                      zIndex: '999',
-                    }}
-                  >
-                    <div
-                      style={{
-                        position: 'relative',
-                        width: '50%',
-                        height: '50%',
-                        backgroundColor: '#fff',
-                        left: '0',
-                        right: '0',
-                        top: '25%',
-                        margin: 'auto',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
+                    <ErrorMessage name='usluga'>
+                      {(msg) => <FormError>{msg}</FormError>}
+                    </ErrorMessage>
+                    <Field
+                      as={MyStyledSelect}
+                      name='specjalista'
+                      onBlur={handleBlur}
+                      disabled={!serviceSelected}
                     >
-                      <h2 style={{ marginBottom: '20px' }}>Podsumowanie</h2>
-                      <div
-                        style={{
-                          position: 'relative',
-                          backgroundColor: '#fff',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                        }}
-                      >
-                        <div
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            width: '50%',
-                          }}
-                        >
-                          <h3>Twoje dane</h3>
-                          <p>
-                            {currentUser.imie} {currentUser.nazwisko}
-                          </p>
-                          <p>{currentUser.email}</p>
-                          <p>{currentUser.telefon}</p>
-                          <p>{currentUser.miasto}</p>
-                          <p>{currentUser.ulica}</p>
-                          <p>{currentUser.kodPocztowy}</p>
-                        </div>
-                        <div
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            width: '50%',
-                          }}
-                        >
-                          <h3>Umówiona wizyta</h3>
-                          <p>{values.grupa}</p>
-                          <p>{values.usluga}</p>
-                          <p>{values.data}r.</p>
-                          <p>{values.godzina}:00</p>
-                        </div>
-                      </div>
-                      <div
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                        }}
-                      >
-                        <button
-                          onClick={() => setIsSubmit(false)}
-                          style={styles.buttonStyle}
-                        >
-                          Anuluj
-                        </button>
-                        <button
-                          style={styles.buttonBook}
-                          onClick={() => {
-                            createVisit(values)
-                            resetForm()
-                            setIsSubmit(false)
-                          }}
-                        >
-                          Potwierdź rezerwację
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                )}
+                      <option value=''> Wybierz specjalistę... </option>
+                      {doctorHandler(values)}
+                    </Field>
+                    <ErrorMessage name='specjalista'>
+                      {(msg) => <FormError>{msg}</FormError>}
+                    </ErrorMessage>
+                    <DatePicker
+                      disabled={!doctorSelected}
+                      selected={startDate}
+                      dateFormat='dd/MM/yyyy'
+                      onChange={(date) => {
+                        setStartDate(date)
+                        values.data = `${date.getDate()}.${
+                          date.getMonth() + 1
+                        }.${date.getFullYear()}`
+                        setValues(values)
+                      }}
+                      minDate={minDate}
+                      placeholderText='Wybierz termin wizyty'
+                      filterDate={isWeekday}
+                      excludeDates={datesToExclude}
+                      name='data'
+                      onBlur={handleBlur}
+                      withPortal
+                    />
+                    <ErrorMessage name='data'>
+                      {(msg) => <FormError>{msg}</FormError>}
+                    </ErrorMessage>
+                    <Field
+                      disabled={!values.data}
+                      as={MyStyledSelect}
+                      name='godzina'
+                      onBlur={handleBlur}
+                    >
+                      <option value=''> Wybierz godzinę... </option>
+                      {pickingHours(values.data)}
+                    </Field>
+                    <ErrorMessage name='godzina'>
+                      {(msg) => <FormError>{msg}</FormError>}
+                    </ErrorMessage>
+
+                    <FormButton type='submit'>Podsumowanie</FormButton>
+                    <FormButton type='reset'>
+                      Wyczyść formularz
+                    </FormButton>
+                    {isSubmit && (
+                      <ModalShadow>
+                        <ModalContainer>
+                          <ModalText>Podsumowanie</ModalText>
+                          <ModalVisitContentContainer>
+                            <ModalVisitData>
+                              <h3>Twoje dane</h3>
+                              <ModalVisitTextContainer>
+                                <ModalVisitDataLabel>
+                                  Imie i nazwisko
+                                </ModalVisitDataLabel>
+                                <ModalVisitDataText>
+                                  {currentUser.imie} {currentUser.nazwisko}
+                                </ModalVisitDataText>
+                              </ModalVisitTextContainer>
+                              <ModalVisitTextContainer>
+                                <ModalVisitDataLabel>
+                                  E-mail
+                                </ModalVisitDataLabel>
+                                <ModalVisitDataText>
+                                  {currentUser.email}
+                                </ModalVisitDataText>
+                              </ModalVisitTextContainer>
+                              <ModalVisitTextContainer>
+                                <ModalVisitDataLabel>
+                                  Telefon
+                                </ModalVisitDataLabel>
+                                <ModalVisitDataText>
+                                  {currentUser.telefon}
+                                </ModalVisitDataText>
+                              </ModalVisitTextContainer>
+                              <ModalVisitTextContainer>
+                                <ModalVisitDataLabel>
+                                  Miasto
+                                </ModalVisitDataLabel>
+                                <ModalVisitDataText>
+                                  {currentUser.miasto}
+                                </ModalVisitDataText>
+                              </ModalVisitTextContainer>
+                              <ModalVisitTextContainer>
+                                <ModalVisitDataLabel>Ulica</ModalVisitDataLabel>
+                                <ModalVisitDataText>
+                                  {currentUser.ulica}
+                                </ModalVisitDataText>
+                              </ModalVisitTextContainer>
+                              <ModalVisitTextContainer>
+                                <ModalVisitDataLabel>
+                                  Kod-pocztowy
+                                </ModalVisitDataLabel>
+                                <ModalVisitDataText>
+                                  {currentUser.kodPocztowy}
+                                </ModalVisitDataText>
+                              </ModalVisitTextContainer>
+                            </ModalVisitData>
+                            <ModalVisitData>
+                              <h3>Umówiona wizyta</h3>
+                              <ModalVisitTextContainer>
+                                <ModalVisitDataLabel>Grupa</ModalVisitDataLabel>
+                                <ModalVisitDataText>
+                                  {values.grupa}
+                                </ModalVisitDataText>
+                              </ModalVisitTextContainer>
+                              <ModalVisitTextContainer>
+                                <ModalVisitDataLabel>
+                                  Usługa
+                                </ModalVisitDataLabel>
+                                <ModalVisitDataText>
+                                  {values.usluga}
+                                </ModalVisitDataText>
+                              </ModalVisitTextContainer>
+                              <ModalVisitTextContainer>
+                                <ModalVisitDataLabel>
+                                  Data wizyty
+                                </ModalVisitDataLabel>
+                                <ModalVisitDataText>
+                                  {values.data}r.
+                                </ModalVisitDataText>
+                              </ModalVisitTextContainer>
+                              <ModalVisitTextContainer>
+                                <ModalVisitDataLabel>
+                                  Godzina wizyty
+                                </ModalVisitDataLabel>
+                                <ModalVisitDataText>
+                                  {values.godzina}:00
+                                </ModalVisitDataText>
+                              </ModalVisitTextContainer>
+                            </ModalVisitData>
+                          </ModalVisitContentContainer>
+                          <ModalButtonsContainer>
+                            <StyledModalButton
+                              onClick={() => setIsSubmit(false)}
+                            >
+                              Anuluj
+                            </StyledModalButton>
+                            <StyledModalButton
+                              onClick={() => {
+                                createVisit(values)
+                                resetForm()
+                                setIsSubmit(false)
+                              }}
+                            >
+                              Potwierdź rezerwację
+                            </StyledModalButton>
+                          </ModalButtonsContainer>
+                        </ModalContainer>
+                      </ModalShadow>
+                    )}
+                  </FormColumn>
+                </FormContainer>
               </Form>
             )}
           </Formik>
         ) : (
           <p>Przykro nam, ale nie oferujemy żadnych usług</p>
         )}
-      </Container>
+      </AddVisitContainer>
     </PageWrapper>
   )
 }
