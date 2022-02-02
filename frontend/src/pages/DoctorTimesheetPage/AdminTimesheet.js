@@ -457,7 +457,6 @@ const AdminTimesheetPage = () => {
         )}
         {isSelected && (
           <ModalShadow>
-            
               <AdminCreateVisit
                 isDelete={isDelete}
                 bookingInfo={bookingInfo}
@@ -465,8 +464,7 @@ const AdminTimesheetPage = () => {
                 selectedDoctor={selectedDoctor}
                 isSelectedFunc={setIsSelected}
                 onCreate={setIsCreated}
-              />
-            
+              />   
           </ModalShadow>
         )}
         {isDelete && (

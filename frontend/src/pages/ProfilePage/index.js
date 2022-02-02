@@ -29,6 +29,7 @@ import {
   DashboardVisitTitle,
   DashboardVisitText,
   DashboardVisitButton,
+  VitalInfoWrap,
 } from "./ProfilePageElements";
 import { logout, changePassword } from "../../store/actions/auth";
 import { refreshApp } from "../../store/actions/refresh";
@@ -207,13 +208,16 @@ const ProfilePage = () => {
                 handleBlur,
               }) => (
                 <>
+                <VitalInfoWrap>
                   <Form
                     style={{
                       display: "flex",
                       flexDirection: "column",
-                      width: "40%",
+                      width: "50%",
+                      
                     }}
                   >
+                    
                     <VitalInfoSocket>
                       <VitalInfoText primary>Imię:</VitalInfoText>
                       <VitalInfoText>{userData.imie}</VitalInfoText>
@@ -318,14 +322,17 @@ const ProfilePage = () => {
                         </>
                       )}
                     </AnimatePresence>
+                    
                   </Form>
                   <Form
                     style={{
                       display: "flex",
                       flexDirection: "column",
-                      width: "40%",
+                      width: "50%",
+                      
                     }}
                   >
+                    
                     <VitalInfoSocket>
                       <VitalInfoText primary>Ulica:</VitalInfoText>
                       <VitalInfoText>{userData.ulica}</VitalInfoText>
@@ -418,7 +425,9 @@ const ProfilePage = () => {
                         </ButtonVitalInfo>
                       )}
                     </AnimatePresence>
+                    
                   </Form>
+                  </VitalInfoWrap>
                 </>
               )}
             </Formik>
@@ -473,6 +482,7 @@ const ProfilePage = () => {
                         </>
                       )}
                     </AnimatePresence>
+                    
                   </Form>
                   <ButtonsContainer>
                     <ButtonDashboard
