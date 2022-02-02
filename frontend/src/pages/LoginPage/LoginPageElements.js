@@ -45,7 +45,7 @@ export const LoginContainer = styled(motion.div)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 0px 0px 10px #333;
+  box-shadow: 0px 0px 47px -36px rgba(51, 51, 51, .5);
   font-size: 24px;
   @media screen and (max-width: 1500px) {
     font-size: 20px;
