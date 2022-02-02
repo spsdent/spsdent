@@ -457,7 +457,6 @@ const AdminTimesheetPage = () => {
         )}
         {isSelected && (
           <ModalShadow>
-            
               <AdminCreateVisit
                 isDelete={isDelete}
                 bookingInfo={bookingInfo}

@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import { ModalContainer as MC } from '../VisitPage/VisitPageElements'
-import { ErrorMessage, Field } from 'formik'
-import DatePicker from 'react-datepicker'
+import { Field } from 'formik'
 
 export const AddVisitContainer = styled.div`
   /* background-color: cadetblue; */
@@ -97,6 +96,7 @@ export const FormButton = styled.button`
   color: #333;
   transition: 0.2s ease;
   cursor: pointer;
+
   &:hover {
     background-color: #01d4bf;
     color: #fff;
@@ -107,14 +107,29 @@ export const FormBook = styled.button``
 export const FormSelect = styled(Field)``
 export const FormError = styled.p`
   color: red;
+  font-size: 9px;
+
+  @media screen and (min-width: 1500px) {
+    font-size: 17px;
+  }
+  @media screen and (min-width: 1280px) {
+    font-size: 15px;
+  }
+  @media screen and (min-width: 960px) {
+    font-size: 13px;
+  }
+  @media only screen and (min-width: 768px) {
+    font-size: 11px;
+  }
 `
 export const TextContainer = styled.div`
   display: flex;
-  justify-content: ${props => props.primary ? "center" : "left"};
+  justify-content: ${(props) => (props.primary ? 'center' : 'left')};
   height: fit-content;
-  gap: ${(props) => (props.primary ? ".5em" : ".35em")};
-  text-align: ${props => props.primary ? "center": "left"};
-`;
+  gap: ${(props) => (props.primary ? '.5em' : '.35em')};
+  text-align: ${(props) => (props.primary ? 'center' : 'left')};
+  margin: 5px 0;
+`
 export const RegisterText = styled.p`
   font-family: 'Poppins';
   font-size: 0.6em;
@@ -138,7 +153,7 @@ export const ModalContainer = styled(MC)`
   height: auto;
   min-height: 50%;
   top: 15%;
-  padding: 15px;
+  padding: 15px 30px;
 `
 
 export const ModalVisitContentContainer = styled.div`
