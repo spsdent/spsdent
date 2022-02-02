@@ -16,12 +16,6 @@ import {
   VisitsPageTitleContainer,
   VisitsPageTitle,
   VisitsContainer,
-  Headers,
-  Header,
-  HeaderText,
-  TriangleAsc,
-  TriangleDesc,
-  TriangleDescActive,
   VisitsListContainer,
   Visit,
   VisitContent,
@@ -37,17 +31,40 @@ import {
 } from '../VisitPage/VisitPageElements'
 import { refreshApp } from '../../store/actions/refresh'
 import { Option, TimesheetPick } from './TimesheetPageElements'
-import { Link } from 'react-router-dom'
 
 import DoctorData from '../../services/doctor'
 import UserData from '../../services/user'
 import VisitData from '../../services/visit'
 import AdminCreateVisit from './AdminCreateVisit'
-import { clearMessage } from '../../store/actions/message'
-import { SideModalContainer } from './AdminCreateVisitElements.js'
+
 const StyledContainer = styled.section`
   width: 100%;
   height: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  justify-content: center;
+
+  @media only screen and (min-width: 1076px) {
+    grid-template-columns: 2fr 3fr;
+  }
+`
+
+const StyledHeader = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  @media only screen and (min-width: 768px) {
+    grid-column: 1 / 2;
+    justify-self: center;
+  }
+`
+
+const StyledList = styled.div`
+  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -370,102 +387,99 @@ const AdminTimesheetPage = () => {
   return (
     <PageWrapper>
       <StyledContainer>
-        <VisitsPageTitleContainer>
-          <VisitsPageTitle
-            initial={{ y: -50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.1 }}
-          >
-            Grafik
-          </VisitsPageTitle>
-        </VisitsPageTitleContainer>
-        {filteredUsers.length > 0 ? (
-          <>
-            <TimesheetPick
-              name='selectedDoctor'
-              onChange={onDoctorChange}
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              value={selectedDoctor}
+        <StyledHeader>
+          <VisitsPageTitleContainer>
+            <VisitsPageTitle
+              initial={{ y: -50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.1 }}
             >
-              <Option value='' disabled>
-                Wybierz lekarza
+              Grafik
+            </VisitsPageTitle>
+          </VisitsPageTitleContainer>
+          <TimesheetPick
+            name='selectedDoctor'
+            onChange={onDoctorChange}
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            value={selectedDoctor}
+          >
+            <Option value='' disabled>
+              Wybierz lekarza
+            </Option>
+            {filteredUsers.map((doctor) => (
+              <Option value={doctor._id} key={doctor._id}>
+                {doctor.imie} {doctor.nazwisko}
               </Option>
-              {filteredUsers.map((doctor) => (
-                <Option value={doctor._id} key={doctor._id}>
-                  {doctor.imie} {doctor.nazwisko}
-                </Option>
-              ))}
-            </TimesheetPick>
-
-            {selectedDoctor ? (
-              <>
-                <Styles>
-                  <DatePicker
-                    selected={startDate}
-                    dateFormat='dd/MM/yyyy'
-                    onChange={(date) => setStartDate(date)}
-                    value={startDate}
-                    filterDate={isWeekday}
-                    name='data'
-                    withPortal
-                  />
-                </Styles>
-                <VisitsPageContainer>
-                  <VisitsContainer>
-                    {startDate !== null ? (
-                      selectedDateVisits.length > 0 ? (
-                        <>
-                          <VisitsListContainer
-                            primary
-                            variants={container}
-                            initial='hidden'
-                            animate='show'
-                          >
-                            {displayVisits}
-                            <MyPaginate
-                              previousLabel={'Poprzednia strona'}
-                              nextLabel={'Następna strona'}
-                              pageCount={pageCount}
-                              onPageChange={changePage}
-                            />
-                          </VisitsListContainer>
-                        </>
-                      ) : (
-                        <VisitsPageTitle
-                          initial={{ y: -50, opacity: 0 }}
-                          animate={{ y: 0, opacity: 1 }}
-                          transition={{ delay: 0.1 }}
+            ))}
+          </TimesheetPick>
+        </StyledHeader>
+        <StyledList>
+          {selectedDoctor ? (
+            <>
+              <Styles>
+                <DatePicker
+                  selected={startDate}
+                  dateFormat='dd/MM/yyyy'
+                  onChange={(date) => setStartDate(date)}
+                  value={startDate}
+                  filterDate={isWeekday}
+                  name='data'
+                  withPortal
+                />
+              </Styles>
+              <VisitsPageContainer>
+                <VisitsContainer>
+                  {startDate !== null ? (
+                    selectedDateVisits.length > 0 ? (
+                      <>
+                        <VisitsListContainer
+                          primary
+                          variants={container}
+                          initial='hidden'
+                          animate='show'
                         >
-                          Brak wizyt tego dnia
-                        </VisitsPageTitle>
-                      )
+                          {displayVisits}
+                          <MyPaginate
+                            previousLabel={'Poprzednia strona'}
+                            nextLabel={'Następna strona'}
+                            pageCount={pageCount}
+                            onPageChange={changePage}
+                          />
+                        </VisitsListContainer>
+                      </>
                     ) : (
                       <VisitsPageTitle
                         initial={{ y: -50, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.1 }}
                       >
-                        Wybierz datę
+                        Brak wizyt tego dnia
                       </VisitsPageTitle>
-                    )}
-                  </VisitsContainer>
-                </VisitsPageContainer>
-              </>
-            ) : (
-              <VisitsPageTitle
-                initial={{ y: -50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.1 }}
-              >
-                Wybierz lekarza
-              </VisitsPageTitle>
-            )}
-          </>
-        ) : (
-          <p>Loading...</p>
-        )}
+                    )
+                  ) : (
+                    <VisitsPageTitle
+                      initial={{ y: -50, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.1 }}
+                    >
+                      Wybierz datę
+                    </VisitsPageTitle>
+                  )}
+                </VisitsContainer>
+              </VisitsPageContainer>
+            </>
+          ) : (
+            <VisitsPageTitle
+              initial={{ y: -50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.1 }}
+            >
+              Wybierz lekarza
+            </VisitsPageTitle>
+          )}
+        </StyledList>
         {isSelected && (
           <ModalShadow>
             <AdminCreateVisit

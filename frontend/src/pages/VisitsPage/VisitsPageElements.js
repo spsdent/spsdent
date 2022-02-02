@@ -107,7 +107,7 @@ export const HeaderText = styled.button`
 export const VisitsListContainer = styled(motion.div)`
   height: fit-content;
   width: 105%;
-  text-align: ${props => props.primary ? "center" : "left"};
+  text-align: ${(props) => (props.primary ? 'center' : 'left')};
 `
 export const Visit = styled(motion.div)`
   width: 100%;
@@ -154,12 +154,14 @@ export const MyPaginate = styled(ReactPaginate).attrs({
   // You can redifine classes here, if you want.
   activeClassName: 'active', // default to "disabled"
 })`
+  width: 100%;
   margin-bottom: 2rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   list-style-type: none;
-  padding: 0 5rem;
+  padding: .75rem;
   li a {
     padding: 0.1rem 1rem;
     border: gray 1px solid;
