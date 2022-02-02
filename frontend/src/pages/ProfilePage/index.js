@@ -38,7 +38,13 @@ import VisitData from "../../services/visit";
 import { SET_MESSAGE } from "../../store/actions/types";
 import { clearMessage } from "../../store/actions/message";
 import { AnimatePresence } from "framer-motion";
-
+import {
+  ModalShadow,
+  ModalContainer,
+  ModalText,
+  ModalButtonsContainer,
+  ModalButton,
+} from "../VisitPage/VisitPageElements";
 const ProfilePage = () => {
   const [initialValues, setInitialValues] = useState({
     imie: "",
@@ -208,225 +214,221 @@ const ProfilePage = () => {
                 handleBlur,
               }) => (
                 <>
-                <VitalInfoWrap>
-                  <Form
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      width: "50%",
-                      
-                    }}
-                  >
-                    
-                    <VitalInfoSocket>
-                      <VitalInfoText primary>Imię:</VitalInfoText>
-                      <VitalInfoText>{userData.imie}</VitalInfoText>
-                    </VitalInfoSocket>
-                    <AnimatePresence>
-                      {isEditing && (
-                        <>
-                          <VitalInfoEditContainer
-                            initial={{ x: -50, opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            exit={{ x: -50, opacity: 0 }}
+                  <VitalInfoWrap>
+                    <Form
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        width: "50%",
+                      }}
+                    >
+                      <VitalInfoSocket>
+                        <VitalInfoText primary>Imię:</VitalInfoText>
+                        <VitalInfoText>{userData.imie}</VitalInfoText>
+                      </VitalInfoSocket>
+                      <AnimatePresence>
+                        {isEditing && (
+                          <>
+                            <VitalInfoEditContainer
+                              initial={{ x: -50, opacity: 0 }}
+                              animate={{ x: 0, opacity: 1 }}
+                              exit={{ x: -50, opacity: 0 }}
+                            >
+                              <VitalInfoEdit
+                                type="text"
+                                name="imie"
+                                placeholder="Imię"
+                                value={values.imie}
+                                onBlur={handleBlur}
+                              />
+                              {errors.imie && touched.imie ? (
+                                <p style={{ color: "red" }}>{errors.imie}</p>
+                              ) : null}
+                            </VitalInfoEditContainer>
+                          </>
+                        )}
+                      </AnimatePresence>
+                      <VitalInfoSocket>
+                        <VitalInfoText primary>Nazwisko:</VitalInfoText>
+                        <VitalInfoText>{userData.nazwisko}</VitalInfoText>
+                      </VitalInfoSocket>
+                      <AnimatePresence>
+                        {isEditing && (
+                          <>
+                            <VitalInfoEditContainer
+                              initial={{ x: -50, opacity: 0 }}
+                              animate={{ x: 0, opacity: 1 }}
+                              exit={{ x: -50, opacity: 0 }}
+                            >
+                              <VitalInfoEdit
+                                type="text"
+                                name="nazwisko"
+                                placeholder="Nazwisko"
+                                value={values.nazwisko}
+                                onBlur={handleBlur}
+                              />
+                              {errors.nazwisko && touched.nazwisko ? (
+                                <p style={{ color: "red" }}>
+                                  {errors.nazwisko}
+                                </p>
+                              ) : null}
+                            </VitalInfoEditContainer>
+                          </>
+                        )}
+                      </AnimatePresence>
+                      <VitalInfoSocket>
+                        <VitalInfoText primary>Telefon:</VitalInfoText>
+                        <VitalInfoText>{userData.telefon}</VitalInfoText>
+                      </VitalInfoSocket>
+                      <AnimatePresence>
+                        {isEditing && (
+                          <>
+                            <VitalInfoEditContainer
+                              initial={{ x: -50, opacity: 0 }}
+                              animate={{ x: 0, opacity: 1 }}
+                              exit={{ x: -50, opacity: 0 }}
+                            >
+                              <VitalInfoEdit
+                                type="text"
+                                name="telefon"
+                                placeholder="Telefon"
+                                value={values.telefon}
+                                onBlur={handleBlur}
+                              />
+                              {errors.telefon && touched.telefon ? (
+                                <p style={{ color: "red" }}>{errors.telefon}</p>
+                              ) : null}
+                            </VitalInfoEditContainer>
+                          </>
+                        )}
+                      </AnimatePresence>
+                      <VitalInfoSocket>
+                        <VitalInfoText primary>Miasto:</VitalInfoText>
+                        <VitalInfoText>{userData.miasto}</VitalInfoText>
+                      </VitalInfoSocket>
+                      <AnimatePresence>
+                        {isEditing && (
+                          <>
+                            <VitalInfoEditContainer
+                              initial={{ x: -50, opacity: 0 }}
+                              animate={{ x: 0, opacity: 1 }}
+                              exit={{ x: -50, opacity: 0 }}
+                            >
+                              <VitalInfoEdit
+                                type="text"
+                                name="miasto"
+                                placeholder="Miasto"
+                                value={values.miasto}
+                                onBlur={handleBlur}
+                              />
+                              {errors.miasto && touched.miasto ? (
+                                <p style={{ color: "red" }}>{errors.miasto}</p>
+                              ) : null}
+                            </VitalInfoEditContainer>
+                          </>
+                        )}
+                      </AnimatePresence>
+                    </Form>
+                    <Form
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        width: "50%",
+                      }}
+                    >
+                      <VitalInfoSocket>
+                        <VitalInfoText primary>Ulica:</VitalInfoText>
+                        <VitalInfoText>{userData.ulica}</VitalInfoText>
+                      </VitalInfoSocket>
+                      <AnimatePresence>
+                        {isEditing && (
+                          <>
+                            <VitalInfoEditContainer
+                              initial={{ x: -50, opacity: 0 }}
+                              animate={{ x: 0, opacity: 1 }}
+                              exit={{ x: -50, opacity: 0 }}
+                            >
+                              <VitalInfoEdit
+                                type="text"
+                                name="ulica"
+                                placeholder="Ulica"
+                                value={values.ulica}
+                                onBlur={handleBlur}
+                              />
+                              {errors.miasto && touched.miasto ? (
+                                <p style={{ color: "red" }}>{errors.miasto}</p>
+                              ) : null}
+                            </VitalInfoEditContainer>
+                          </>
+                        )}
+                      </AnimatePresence>
+                      <VitalInfoSocket>
+                        <VitalInfoText primary>Kod pocztowy:</VitalInfoText>
+                        <VitalInfoText>{userData.kodPocztowy}</VitalInfoText>
+                      </VitalInfoSocket>
+                      <AnimatePresence>
+                        {isEditing && (
+                          <>
+                            <VitalInfoEditContainer
+                              initial={{ x: -50, opacity: 0 }}
+                              animate={{ x: 0, opacity: 1 }}
+                              exit={{ x: -50, opacity: 0 }}
+                            >
+                              <VitalInfoEdit
+                                type="text"
+                                name="kodPocztowy"
+                                placeholder="Kod-pocztowy"
+                                value={values.kodPocztowy}
+                                onBlur={handleBlur}
+                              />
+                              {errors.kodPocztowy && touched.kodPocztowy ? (
+                                <p style={{ color: "red" }}>
+                                  {errors.kodPocztowy}
+                                </p>
+                              ) : null}
+                            </VitalInfoEditContainer>
+                          </>
+                        )}
+                      </AnimatePresence>
+                      <VitalInfoSocket>
+                        <VitalInfoText primary>Email:</VitalInfoText>
+                        <VitalInfoText>{userData.email}</VitalInfoText>
+                      </VitalInfoSocket>
+                      <AnimatePresence>
+                        {isEditing && (
+                          <>
+                            <VitalInfoEditContainer
+                              initial={{ x: -50, opacity: 0 }}
+                              animate={{ x: 0, opacity: 1 }}
+                              exit={{ x: -50, opacity: 0 }}
+                            >
+                              <VitalInfoEdit
+                                type="text"
+                                name="email"
+                                placeholder="E-mail"
+                                value={values.email}
+                                onBlur={handleBlur}
+                              />
+                              {errors.email && touched.email ? (
+                                <p style={{ color: "red" }}>{errors.email}</p>
+                              ) : null}
+                            </VitalInfoEditContainer>
+                          </>
+                        )}
+                      </AnimatePresence>
+                      <AnimatePresence>
+                        {isEditing && (
+                          <ButtonVitalInfo
+                            type="submit"
+                            initial={{ scale: 0, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0, opacity: 0 }}
                           >
-                            <VitalInfoEdit
-                              type="text"
-                              name="imie"
-                              placeholder="Imię"
-                              value={values.imie}
-                              onBlur={handleBlur}
-                            />
-                            {errors.imie && touched.imie ? (
-                              <p style={{ color: "red" }}>{errors.imie}</p>
-                            ) : null}
-                          </VitalInfoEditContainer>
-                        </>
-                      )}
-                    </AnimatePresence>
-                    <VitalInfoSocket>
-                      <VitalInfoText primary>Nazwisko:</VitalInfoText>
-                      <VitalInfoText>{userData.nazwisko}</VitalInfoText>
-                    </VitalInfoSocket>
-                    <AnimatePresence>
-                      {isEditing && (
-                        <>
-                          <VitalInfoEditContainer
-                            initial={{ x: -50, opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            exit={{ x: -50, opacity: 0 }}
-                          >
-                            <VitalInfoEdit
-                              type="text"
-                              name="nazwisko"
-                              placeholder="Nazwisko"
-                              value={values.nazwisko}
-                              onBlur={handleBlur}
-                            />
-                            {errors.nazwisko && touched.nazwisko ? (
-                              <p style={{ color: "red" }}>{errors.nazwisko}</p>
-                            ) : null}
-                          </VitalInfoEditContainer>
-                        </>
-                      )}
-                    </AnimatePresence>
-                    <VitalInfoSocket>
-                      <VitalInfoText primary>Telefon:</VitalInfoText>
-                      <VitalInfoText>{userData.telefon}</VitalInfoText>
-                    </VitalInfoSocket>
-                    <AnimatePresence>
-                      {isEditing && (
-                        <>
-                          <VitalInfoEditContainer
-                            initial={{ x: -50, opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            exit={{ x: -50, opacity: 0 }}
-                          >
-                            <VitalInfoEdit
-                              type="text"
-                              name="telefon"
-                              placeholder="Telefon"
-                              value={values.telefon}
-                              onBlur={handleBlur}
-                            />
-                            {errors.telefon && touched.telefon ? (
-                              <p style={{ color: "red" }}>{errors.telefon}</p>
-                            ) : null}
-                          </VitalInfoEditContainer>
-                        </>
-                      )}
-                    </AnimatePresence>
-                    <VitalInfoSocket>
-                      <VitalInfoText primary>Miasto:</VitalInfoText>
-                      <VitalInfoText>{userData.miasto}</VitalInfoText>
-                    </VitalInfoSocket>
-                    <AnimatePresence>
-                      {isEditing && (
-                        <>
-                          <VitalInfoEditContainer
-                            initial={{ x: -50, opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            exit={{ x: -50, opacity: 0 }}
-                          >
-                            <VitalInfoEdit
-                              type="text"
-                              name="miasto"
-                              placeholder="Miasto"
-                              value={values.miasto}
-                              onBlur={handleBlur}
-                            />
-                            {errors.miasto && touched.miasto ? (
-                              <p style={{ color: "red" }}>{errors.miasto}</p>
-                            ) : null}
-                          </VitalInfoEditContainer>
-                        </>
-                      )}
-                    </AnimatePresence>
-                    
-                  </Form>
-                  <Form
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      width: "50%",
-                      
-                    }}
-                  >
-                    
-                    <VitalInfoSocket>
-                      <VitalInfoText primary>Ulica:</VitalInfoText>
-                      <VitalInfoText>{userData.ulica}</VitalInfoText>
-                    </VitalInfoSocket>
-                    <AnimatePresence>
-                      {isEditing && (
-                        <>
-                          <VitalInfoEditContainer
-                            initial={{ x: -50, opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            exit={{ x: -50, opacity: 0 }}
-                          >
-                            <VitalInfoEdit
-                              type="text"
-                              name="ulica"
-                              placeholder="Ulica"
-                              value={values.ulica}
-                              onBlur={handleBlur}
-                            />
-                            {errors.miasto && touched.miasto ? (
-                              <p style={{ color: "red" }}>{errors.miasto}</p>
-                            ) : null}
-                          </VitalInfoEditContainer>
-                        </>
-                      )}
-                    </AnimatePresence>
-                    <VitalInfoSocket>
-                      <VitalInfoText primary>Kod pocztowy:</VitalInfoText>
-                      <VitalInfoText>{userData.kodPocztowy}</VitalInfoText>
-                    </VitalInfoSocket>
-                    <AnimatePresence>
-                      {isEditing && (
-                        <>
-                          <VitalInfoEditContainer
-                            initial={{ x: -50, opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            exit={{ x: -50, opacity: 0 }}
-                          >
-                            <VitalInfoEdit
-                              type="text"
-                              name="kodPocztowy"
-                              placeholder="Kod-pocztowy"
-                              value={values.kodPocztowy}
-                              onBlur={handleBlur}
-                            />
-                            {errors.kodPocztowy && touched.kodPocztowy ? (
-                              <p style={{ color: "red" }}>
-                                {errors.kodPocztowy}
-                              </p>
-                            ) : null}
-                          </VitalInfoEditContainer>
-                        </>
-                      )}
-                    </AnimatePresence>
-                    <VitalInfoSocket>
-                      <VitalInfoText primary>Email:</VitalInfoText>
-                      <VitalInfoText>{userData.email}</VitalInfoText>
-                    </VitalInfoSocket>
-                    <AnimatePresence>
-                      {isEditing && (
-                        <>
-                          <VitalInfoEditContainer
-                            initial={{ x: -50, opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            exit={{ x: -50, opacity: 0 }}
-                          >
-                            <VitalInfoEdit
-                              type="text"
-                              name="email"
-                              placeholder="E-mail"
-                              value={values.email}
-                              onBlur={handleBlur}
-                            />
-                            {errors.email && touched.email ? (
-                              <p style={{ color: "red" }}>{errors.email}</p>
-                            ) : null}
-                          </VitalInfoEditContainer>
-                        </>
-                      )}
-                    </AnimatePresence>
-                    <AnimatePresence>
-                      {isEditing && (
-                        <ButtonVitalInfo
-                          type="submit"
-                          initial={{ scale: 0, opacity: 0 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                          exit={{ scale: 0, opacity: 0 }}
-                        >
-                          Zapisz zmiany
-                        </ButtonVitalInfo>
-                      )}
-                    </AnimatePresence>
-                    
-                  </Form>
+                            Zapisz zmiany
+                          </ButtonVitalInfo>
+                        )}
+                      </AnimatePresence>
+                    </Form>
                   </VitalInfoWrap>
                 </>
               )}
@@ -451,7 +453,7 @@ const ProfilePage = () => {
                           >
                             <VitalInfoText password>Zmiana hasła</VitalInfoText>
                             <VitalInfoEdit
-                            password
+                              password
                               type="password"
                               name="oldPassword"
                               placeholder="Stare hasło"
@@ -463,8 +465,8 @@ const ProfilePage = () => {
                               </p>
                             ) : null}
                             <VitalInfoEdit
-                            password
-                            primary
+                              password
+                              primary
                               type="password"
                               name="newPassword"
                               placeholder="Nowe haslo"
@@ -482,7 +484,6 @@ const ProfilePage = () => {
                         </>
                       )}
                     </AnimatePresence>
-                    
                   </Form>
                   <ButtonsContainer>
                     <ButtonDashboard
@@ -569,74 +570,31 @@ const ProfilePage = () => {
         {message && (
           <p style={{ color: "red", textAlign: "center" }}>{message}</p>
         )}
-        {isDelete && (
-          <div
-            style={{
-              width: "100vw",
-              height: "100vh",
-              position: "absolute",
-              left: "0",
-              top: "0",
-              backgroundColor: "rgba(3,3,3,.5)",
-              zIndex: "999",
-            }}
-          >
-            <div
-              style={{
-                position: "relative",
-                width: "50%",
-                height: "50%",
-                backgroundColor: "#fff",
-                left: "0",
-                right: "0",
-                top: "25%",
-                margin: "auto",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
+        <AnimatePresence>
+          {isDelete && (
+            <ModalShadow
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
             >
-              <h2 style={{ marginBottom: "20px" }}>
-                Na pewno chcesz usunąć konto?
-              </h2>
-              <div
-                style={{
-                  position: "relative",
-                  backgroundColor: "#fff",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
+              <ModalContainer
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0, opacity: 0 }}
+                transition={{ duration: 0.5 }}
               >
-                <button
-                  style={{
-                    backgroundColor: "transparent",
-                    border: "2px solid #333",
-                    padding: ".75em 50px",
-                    marginRight: "5px",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => setIsDelete(false)}
-                >
-                  Nie
-                </button>
-                <button
-                  style={{
-                    backgroundColor: "#01d4bf",
-                    border: "2px solid transparent",
-                    padding: ".75em 50px",
-                    marginLeft: "5px",
-                    cursor: "pointer",
-                  }}
-                  onClick={onAccountDelete}
-                >
-                  Tak
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+                <ModalText>Na pewno chcesz usunąć konto?</ModalText>
+                <ModalButtonsContainer>
+                  <ModalButton primary onClick={() => setIsDelete(false)}>
+                    Nie
+                  </ModalButton>
+                  <ModalButton onClick={onAccountDelete}>Tak</ModalButton>
+                </ModalButtonsContainer>
+              </ModalContainer>
+            </ModalShadow>
+          )}
+        </AnimatePresence>
       </Container>
       <Pattern
         src="/Pattern.png"
