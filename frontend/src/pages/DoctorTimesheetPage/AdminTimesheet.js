@@ -44,7 +44,7 @@ import UserData from '../../services/user'
 import VisitData from '../../services/visit'
 import AdminCreateVisit from './AdminCreateVisit'
 import { clearMessage } from '../../store/actions/message'
-import {SideModalContainer} from './AdminCreateVisitElements.js'
+import { SideModalContainer } from './AdminCreateVisitElements.js'
 const StyledContainer = styled.section`
   width: 100%;
   height: 100%;
@@ -57,7 +57,6 @@ const AdminTimesheetPage = () => {
   const [selectedDoctor, setSelectedDoctor] = useState('')
   const [doctors, setDoctors] = useState([])
   const [users, setUsers] = useState([])
-  const [customDoctors, setCustomDoctors] = useState([])
   const [updatedVisits, setUpdatedVisits] = useState([])
   const [selectedDateVisits, setSelectedDateVisits] = useState([])
   const [isDelete, setIsDelete] = useState(false)
@@ -71,25 +70,36 @@ const AdminTimesheetPage = () => {
   const pagesVisited = pageNumber * visitsPerPage
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { isRefresh } = useSelector((state) => state.refresh)
 
   useEffect(() => {
     retrieveUsers()
-    retrieveDoctors()
-    let helperArr = []
-    for (let i = 8; i <= 16; i++) {
-      helperArr = [
-        ...helperArr,
-        {
-          godzina: `${i}`,
-        },
-      ]
-    }
-    setUpdatedVisits(helperArr)
+    DoctorData.getAll().then((response) => {
+      setDoctors(response.data)
+      const workingHours = response.data.find(
+        (doctor) => doctor.doctorId === selectedDoctor
+      )
+      if (selectedDoctor) {
+        let helperArr = []
+        for (
+          let i = workingHours.godzinyPracy[0];
+          i <= workingHours.godzinyPracy[workingHours.godzinyPracy.length - 1];
+          i++
+        ) {
+          helperArr = [
+            ...helperArr,
+            {
+              godzina: `${i}`,
+            },
+          ]
+        }
+        setUpdatedVisits(helperArr)
+      }
+    })
+
     return () => {
       setUpdatedVisits([])
     }
-  }, [])
+  }, [selectedDoctor])
 
   useEffect(() => {
     VisitData.getAll().then((response) => {
@@ -254,6 +264,7 @@ const AdminTimesheetPage = () => {
       .then((response) => {
         console.log('Usunieto wizyte pomyslnie!')
         dispatch(refreshApp())
+        setIsCreated(!isCreated)
       })
       .catch((e) => console.log(e))
   }
@@ -342,20 +353,19 @@ const AdminTimesheetPage = () => {
       },
     },
   }
- 
-  const Styles=  styled.div`
 
-  .react-datepicker__input-container input {
-    width: 25em;
-    height: 3em;
-    text-align: center;
-    outline: none;
-    border: 2px solid #333;
-    background-color: #fff;
-    font-family: "poppins";
-    color: #333;
-    margin-top: 2em;
-  }
+  const Styles = styled.div`
+    .react-datepicker__input-container input {
+      width: 25em;
+      height: 3em;
+      text-align: center;
+      outline: none;
+      border: 2px solid #333;
+      background-color: #fff;
+      font-family: 'poppins';
+      color: #333;
+      margin-top: 2em;
+    }
   `
   return (
     <PageWrapper>
@@ -391,23 +401,24 @@ const AdminTimesheetPage = () => {
 
             {selectedDoctor ? (
               <>
-              <Styles>
-                <DatePicker
-                  selected={startDate}
-                  dateFormat='dd/MM/yyyy'
-                  onChange={(date) => setStartDate(date)}
-                  value={startDate}
-                  filterDate={isWeekday}
-                  name='data'
-                  withPortal
-                /></Styles>
+                <Styles>
+                  <DatePicker
+                    selected={startDate}
+                    dateFormat='dd/MM/yyyy'
+                    onChange={(date) => setStartDate(date)}
+                    value={startDate}
+                    filterDate={isWeekday}
+                    name='data'
+                    withPortal
+                  />
+                </Styles>
                 <VisitsPageContainer>
                   <VisitsContainer>
                     {startDate !== null ? (
                       selectedDateVisits.length > 0 ? (
                         <>
                           <VisitsListContainer
-                          primary
+                            primary
                             variants={container}
                             initial='hidden'
                             animate='show'
@@ -457,14 +468,14 @@ const AdminTimesheetPage = () => {
         )}
         {isSelected && (
           <ModalShadow>
-              <AdminCreateVisit
-                isDelete={isDelete}
-                bookingInfo={bookingInfo}
-                doctors={doctors}
-                selectedDoctor={selectedDoctor}
-                isSelectedFunc={setIsSelected}
-                onCreate={setIsCreated}
-              />   
+            <AdminCreateVisit
+              isDelete={isDelete}
+              bookingInfo={bookingInfo}
+              doctors={doctors}
+              selectedDoctor={selectedDoctor}
+              isSelectedFunc={setIsSelected}
+              onCreate={setIsCreated}
+            />
           </ModalShadow>
         )}
         {isDelete && (

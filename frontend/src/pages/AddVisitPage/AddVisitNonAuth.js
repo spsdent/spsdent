@@ -281,7 +281,7 @@ const AddVisitNonAuth = () => {
       )
       .map((item) => +item.godzina)
     let updatedHours = []
-    if (startDate) {
+    if (serviceSelected && serviceGroupSelected && startDate) {
       updatedHours = selectedDoctorData.godzinyPracy
         .filter((item) => !currentDayDoctorVisits.includes(item))
         .filter((hour) => {
