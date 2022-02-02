@@ -45,6 +45,8 @@ import {
   ModalButtonsContainer,
   ModalButton,
 } from "../VisitPage/VisitPageElements";
+
+import { ErrorText } from "../ControlPanelPage/ControlPanelPageElements";
 const ProfilePage = () => {
   const [initialValues, setInitialValues] = useState({
     imie: "",
@@ -242,7 +244,7 @@ const ProfilePage = () => {
                                 onBlur={handleBlur}
                               />
                               {errors.imie && touched.imie ? (
-                                <p style={{ color: "red" }}>{errors.imie}</p>
+                                <ErrorText primary panel>{errors.imie}</ErrorText>
                               ) : null}
                             </VitalInfoEditContainer>
                           </>
@@ -268,9 +270,9 @@ const ProfilePage = () => {
                                 onBlur={handleBlur}
                               />
                               {errors.nazwisko && touched.nazwisko ? (
-                                <p style={{ color: "red" }}>
+                                <ErrorText primary panel>
                                   {errors.nazwisko}
-                                </p>
+                                </ErrorText>
                               ) : null}
                             </VitalInfoEditContainer>
                           </>
@@ -296,7 +298,7 @@ const ProfilePage = () => {
                                 onBlur={handleBlur}
                               />
                               {errors.telefon && touched.telefon ? (
-                                <p style={{ color: "red" }}>{errors.telefon}</p>
+                                <ErrorText primary panel>{errors.telefon}</ErrorText>
                               ) : null}
                             </VitalInfoEditContainer>
                           </>
@@ -322,7 +324,7 @@ const ProfilePage = () => {
                                 onBlur={handleBlur}
                               />
                               {errors.miasto && touched.miasto ? (
-                                <p style={{ color: "red" }}>{errors.miasto}</p>
+                                <ErrorText primary panel>{errors.miasto}</ErrorText>
                               ) : null}
                             </VitalInfoEditContainer>
                           </>
@@ -355,8 +357,8 @@ const ProfilePage = () => {
                                 value={values.ulica}
                                 onBlur={handleBlur}
                               />
-                              {errors.miasto && touched.miasto ? (
-                                <p style={{ color: "red" }}>{errors.miasto}</p>
+                              {errors.ulica && touched.ulica ? (
+                                <ErrorText primary panel>{errors.ulica}</ErrorText>
                               ) : null}
                             </VitalInfoEditContainer>
                           </>
@@ -382,9 +384,9 @@ const ProfilePage = () => {
                                 onBlur={handleBlur}
                               />
                               {errors.kodPocztowy && touched.kodPocztowy ? (
-                                <p style={{ color: "red" }}>
+                                <ErrorText primary panel>
                                   {errors.kodPocztowy}
-                                </p>
+                                </ErrorText>
                               ) : null}
                             </VitalInfoEditContainer>
                           </>
@@ -410,7 +412,7 @@ const ProfilePage = () => {
                                 onBlur={handleBlur}
                               />
                               {errors.email && touched.email ? (
-                                <p style={{ color: "red" }}>{errors.email}</p>
+                                <ErrorText primary panel>{errors.email}</ErrorText>
                               ) : null}
                             </VitalInfoEditContainer>
                           </>
@@ -460,9 +462,9 @@ const ProfilePage = () => {
                               value={values.oldPassword}
                             />
                             {errors.oldPassword && touched.oldPassword ? (
-                              <p style={{ color: "red", fontSize: ".6em" }}>
+                              <ErrorText primary panel>
                                 {errors.oldPassword}
-                              </p>
+                              </ErrorText>
                             ) : null}
                             <VitalInfoEdit
                               password
@@ -473,9 +475,9 @@ const ProfilePage = () => {
                               value={values.newPassword}
                             />
                             {errors.newPassword && touched.newPassword ? (
-                              <p style={{ color: "red", fontSize: ".6em" }}>
+                              <ErrorText primary panel>
                                 {errors.newPassword}
-                              </p>
+                              </ErrorText>
                             ) : null}
                             <ButtonDashboard type="submit">
                               Zmień hasło
@@ -568,7 +570,7 @@ const ProfilePage = () => {
           ) : null}
         </DashboardContainer>
         {message && (
-          <p style={{ color: "red", textAlign: "center" }}>{message}</p>
+          <ErrorText>{message}</ErrorText>
         )}
         <AnimatePresence>
           {isDelete && (

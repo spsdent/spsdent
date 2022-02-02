@@ -74,8 +74,8 @@ export const StyledInput = styled.input`
 `;
 export const ErrorText = styled.p`
   color: ${(props) => (props.primary ? "red" : "#333")};
-  text-align: center;
-  font-size: 0.7em;
+  text-align: ${props => props.panel ? "left" : "center"};
+  font-size: ${props => props.panel ? ".6em" : ".7em"};
   font-family: "poppins";
   white-space: nowrap;
 `;
