@@ -69,8 +69,8 @@ export const FormInput = styled(Field)`
   outline: none;
   color: #333;
   font-family: 'Poppins';
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  /* letter-spacing: 0.04em; */
+  /* text-transform: uppercase; */
   font-size: 15px;
 
   @media screen and (max-width: 1500px) {
@@ -158,7 +158,7 @@ export const ModalContainer = styled(MC)`
 
 export const ModalVisitContentContainer = styled.div`
   position: relative;
-  background-olor: #fff;
+  background-color: #fff;
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: baseline;

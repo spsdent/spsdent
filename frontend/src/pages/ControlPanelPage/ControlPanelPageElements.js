@@ -27,6 +27,7 @@ export const StyledButton = styled.button`
   border: 2px solid #333;
   font-family: "poppins";
   font-size: 0.6em;
+  width: ${props => props.addVisit ? "18em" : "auto"};
   margin-bottom: ${props => props.delete ? "0" : "1.5em"};
   white-space: nowrap;
   margin-top: ${props => props.update ? "1.5em" : "0"};
