@@ -75,7 +75,7 @@ const LoginPage = () => {
                 <LoginContainer
                   initial={{ opacity: 0, scale: 0, rotate: 60 }}
                   animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                  transition={{duration: .5}}
+                  transition={{ duration: 0.5 }}
                 >
                   <TitleContainer>
                     <Title>Zaloguj</Title>
@@ -85,7 +85,6 @@ const LoginPage = () => {
                     <StyledField
                       type="email"
                       name="email"
-                      // as={MyStyledInput}
                       placeholder="E-mail"
                       onBlur={handleBlur}
                     />
@@ -101,7 +100,6 @@ const LoginPage = () => {
                     <StyledField
                       type="password"
                       name="password"
-                      // as={MyStyledInput}
                       placeholder="Hasło"
                       onBlur={handleBlur}
                     />
