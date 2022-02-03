@@ -4,11 +4,12 @@ import { Pattern } from '../../components/Pattern'
 import '../../styles/index.css'
 import styled from 'styled-components'
 
+import { addDays, getDay } from 'date-fns'
+import pl from 'date-fns/locale/pl'
 import { useDispatch, useSelector } from 'react-redux'
-import DatePicker from 'react-datepicker'
+import DatePicker, {registerLocale} from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import 'react-datepicker/dist/react-datepicker-cssmodules.css'
-import { getDay } from 'date-fns'
 import { useNavigate } from 'react-router'
 import { FaTrashAlt } from 'react-icons/fa'
 import {
@@ -36,6 +37,7 @@ import DoctorData from '../../services/doctor'
 import UserData from '../../services/user'
 import VisitData from '../../services/visit'
 import AdminCreateVisit from './AdminCreateVisit'
+import { useFetchAllVisits } from '../../hooks'
 
 const StyledContainer = styled.section`
   width: 100%;
@@ -87,6 +89,8 @@ const AdminTimesheetPage = () => {
   const pagesVisited = pageNumber * visitsPerPage
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const allVisitsFromDb = useFetchAllVisits()
+  registerLocale('pl', pl)
 
   useEffect(() => {
     retrieveUsers()
@@ -230,9 +234,42 @@ const AdminTimesheetPage = () => {
     doctors.some((doctor) => doctor.doctorId === user._id)
   )
 
+  let arrToReturn = [new Date()]
+
+  const counts = allVisitsFromDb.reduce(
+    (acc, value) => ({
+      ...acc,
+      [value.data]: (acc[value.data] || 0) + 1,
+    }),
+    {}
+  )
+
+  let datesToExclude = Object.entries(counts)
+    .filter((item) => item[1] > 7)
+    .map((item) => [
+      ...arrToReturn,
+      addDays(new Date(), +item[0].split('.')[0] - new Date().getDate()),
+    ])
+    .flat()
+  let toExclude = []
+
+
   const onDoctorChange = (e) => {
     const user = doctors.find((user) => user.doctorId === e.target.value)
     setSelectedDoctor(user.doctorId)
+
+    const doctorDatesToExclude = allVisitsFromDb
+        .filter((visit) => visit.specjalista.sid === user.doctorId)
+        .map((item) => item.data)
+        .reduce((cnt, cur) => ((cnt[cur] = cnt[cur] + 1 || 1), cnt), {})
+
+      toExclude = Object.entries(doctorDatesToExclude)
+        .filter((item) => item[1] > 1)
+        .map((item) => [
+          ...datesToExclude,
+          addDays(new Date(), +item[0].split('.')[0] - new Date().getDate()),
+        ])
+        .flat()
   }
 
   const isWeekday = (date) => {
@@ -435,6 +472,8 @@ const AdminTimesheetPage = () => {
                   filterDate={isWeekday}
                   name='data'
                   withPortal
+                  excludeDates={toExclude}
+                  locale='pl'
                 />
               </Styles>
               <VisitsPageContainer>

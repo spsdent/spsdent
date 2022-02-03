@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { useNavigate } from 'react-router-dom'
 
-import DatePicker from 'react-datepicker'
+import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { addDays, getDay } from 'date-fns'
+import pl from 'date-fns/locale/pl'
 
 import VisitData from '../../services/visit'
 import { refreshApp } from '../../store/actions/refresh'
@@ -63,6 +64,7 @@ const AddVisitAuthUser = () => {
   const [isSubmit, setIsSubmit] = useState(false)
   const [startDate, setStartDate] = useState(null)
   const [datesToExc, setDatesToExc] = useState([])
+  registerLocale('pl', pl)
 
   const { user: currentUser } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
@@ -132,12 +134,14 @@ const AddVisitAuthUser = () => {
       values.data = ''
       values.godzina = ''
       setDoctorSelected('')
+      setStartDate(null)
     } else if (!serviceGroupSelected) {
       setServiceSelected('')
       setDoctorSelected('')
       values.usluga = ''
       values.data = ''
       values.godzina = ''
+      setStartDate(null)
     }
 
     // returns options for select field depends on services fetched from db
@@ -167,8 +171,8 @@ const AddVisitAuthUser = () => {
     } else if (!serviceSelected) {
       values.godzina = ''
       values.data = ''
-      setStartDate(null)
       setDoctorSelected('')
+      setStartDate(null)
     }
 
     // we set serviceSelected state to value usluga chosen in form field
@@ -197,11 +201,15 @@ const AddVisitAuthUser = () => {
       addDays(new Date(), +item[0].split('.')[0] - new Date().getDate()),
     ])
     .flat()
-    let toExclude = []
+  let toExclude = []
 
   const doctorHandler = (values) => {
     const selectedGroupData = allServicesFromDb.filter(
       (service) => service.grupa === serviceGroupSelected
+    )
+    setDoctorSelected(values.specjalista)
+    const foundDoctor = allDoctorsFromDb.find(
+      (doctor) => doctor.doctorId === values.specjalista
     )
     let usersToDisplay = []
     if (serviceSelected && serviceGroupSelected) {
@@ -224,7 +232,7 @@ const AddVisitAuthUser = () => {
         .reduce((cnt, cur) => ((cnt[cur] = cnt[cur] + 1 || 1), cnt), {})
 
       toExclude = Object.entries(doctorDatesToExclude)
-        .filter((item) => item[1] > 1)
+        .filter((item) => item[1] > foundDoctor.godzinyPracy.length - 1)
         .map((item) => [
           ...datesToExclude,
           addDays(new Date(), +item[0].split('.')[0] - new Date().getDate()),
@@ -232,10 +240,11 @@ const AddVisitAuthUser = () => {
         .flat()
     }
 
-    if (doctorSelected && !values.data) {
+    if (!doctorSelected) {
       values.godzina = ''
+      setStartDate(null)
     }
-    setDoctorSelected(values.specjalista)
+    
     return usersToDisplay.map((doctor) => (
       <option value={`${doctor._id}`}>
         {doctor.imie} {doctor.nazwisko}
@@ -250,7 +259,12 @@ const AddVisitAuthUser = () => {
     const today = new Date()
 
     let updatedHours = []
-    if (serviceSelected && serviceGroupSelected && startDate) {
+    if (
+      serviceSelected &&
+      serviceGroupSelected &&
+      startDate &&
+      doctorSelected
+    ) {
       const currentDayDoctorVisits = allVisitsFromDb
         .filter(
           (visit) =>
@@ -367,6 +381,7 @@ const AddVisitAuthUser = () => {
                       name='data'
                       onBlur={handleBlur}
                       withPortal
+                      locale='pl'
                     />
                     <ErrorMessage name='data'>
                       {(msg) => <FormError>{msg}</FormError>}
