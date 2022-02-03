@@ -37,15 +37,19 @@ export const AddVisitContainer = styled.div`
   justify-content: center;
   align-items: center;
   /* background-color: blue; */
+  position: absolute;
+  top: 6em;
+
 `;
 export const LoginContainer = styled(motion.div)`
   width: 26em;
-  height: 23em;
+  height: ${props => props.register ? "fit-content" : "23em"};
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   box-shadow: 0px 0px 47px -36px rgba(51, 51, 51, .5);
+  padding: 2em 0;
   font-size: 24px;
   @media screen and (max-width: 1500px) {
     font-size: 20px;
