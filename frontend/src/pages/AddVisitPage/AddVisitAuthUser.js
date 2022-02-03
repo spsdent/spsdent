@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { useNavigate } from 'react-router-dom'
@@ -62,6 +62,7 @@ const AddVisitAuthUser = () => {
   const [selectedServicePrice, setSelectedServicePrice] = useState('')
   const [isSubmit, setIsSubmit] = useState(false)
   const [startDate, setStartDate] = useState(null)
+  const [datesToExc, setDatesToExc] = useState([])
 
   const { user: currentUser } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
@@ -71,7 +72,6 @@ const AddVisitAuthUser = () => {
   const allServicesFromDb = useFetchAllServices()
   const allDoctorsFromDb = useFetchAllDoctors()
   const allUsersFromDb = useFetchAllUsers()
-  const dates = useCreateDates()
 
   const createVisit = (values) => {
     const { imie, nazwisko, email, telefon, miasto, kodPocztowy, ulica, id } =
@@ -180,6 +180,25 @@ const AddVisitAuthUser = () => {
     ))
   }
 
+  const counts = allVisitsFromDb.reduce(
+    (acc, value) => ({
+      ...acc,
+      [value.data]: (acc[value.data] || 0) + 1,
+    }),
+    {}
+  )
+
+  let arrToReturn = [new Date()]
+
+  let datesToExclude = Object.entries(counts)
+    .filter((item) => item[1] > 7)
+    .map((item) => [
+      ...arrToReturn,
+      addDays(new Date(), +item[0].split('.')[0] - new Date().getDate()),
+    ])
+    .flat()
+    let toExclude = []
+
   const doctorHandler = (values) => {
     const selectedGroupData = allServicesFromDb.filter(
       (service) => service.grupa === serviceGroupSelected
@@ -198,6 +217,19 @@ const AddVisitAuthUser = () => {
         .filter((service) => service.grupa === serviceGroupSelected)[0]
         .uslugi.filter((usluga) => usluga.nazwa === serviceSelected)[0]
       setSelectedServicePrice(servicePrice.cena)
+
+      const doctorDatesToExclude = allVisitsFromDb
+        .filter((visit) => visit.specjalista.sid === values.specjalista)
+        .map((item) => item.data)
+        .reduce((cnt, cur) => ((cnt[cur] = cnt[cur] + 1 || 1), cnt), {})
+
+      toExclude = Object.entries(doctorDatesToExclude)
+        .filter((item) => item[1] > 1)
+        .map((item) => [
+          ...datesToExclude,
+          addDays(new Date(), +item[0].split('.')[0] - new Date().getDate()),
+        ])
+        .flat()
     }
 
     if (doctorSelected && !values.data) {
@@ -210,21 +242,6 @@ const AddVisitAuthUser = () => {
       </option>
     ))
   }
-
-  const selectDates = dates.map((item, index) => (
-    <option
-      value={`${item.date.getDate()}.${
-        item.date.getMonth() + 1
-      }.${item.date.getFullYear()}`}
-      key={`${item.date.getDate()}.${
-        item.date.getMonth() + 1
-      }.${item.date.getFullYear()}`}
-    >
-      {`${days[item.date.getDay()]}, ${item.date.getDate()} ${
-        months[item.date.getMonth()]
-      } ${item.date.getFullYear()}`}
-    </option>
-  ))
 
   const pickingHours = (values) => {
     const selectedDoctorData = allDoctorsFromDb.find(
@@ -251,19 +268,19 @@ const AddVisitAuthUser = () => {
           }
         })
 
-      if (updatedHours.length > 0) {
-        return updatedHours.map((item) => (
-          <option value={`${item}`} key={`${item}`}>
-            {`${item}`}
-          </option>
-        ))
-      } else {
-        return dentHours.map((item) => (
-          <option value={`${item}`} key={`${item}`}>
-            {`${item}`}
-          </option>
-        ))
-      }
+      // if (updatedHours.length > 0) {
+      //   return updatedHours.map((item) => (
+      //     <option value={`${item}`} key={`${item}`}>
+      //       {`${item}`}
+      //     </option>
+      //   ))
+      // } else {
+      //   return dentHours.map((item) => (
+      //     <option value={`${item}`} key={`${item}`}>
+      //       {`${item}`}
+      //     </option>
+      //   ))
+      // }
     }
     return updatedHours.map((item) => (
       <option value={`${item}`} key={`${item}`}>{`${item}`}</option>
@@ -274,24 +291,6 @@ const AddVisitAuthUser = () => {
     const day = getDay(date)
     return day !== 0 && day !== 6
   }
-
-  const counts = allVisitsFromDb.reduce(
-    (acc, value) => ({
-      ...acc,
-      [value.data]: (acc[value.data] || 0) + 1,
-    }),
-    {}
-  )
-
-  let arrToReturn = [new Date()]
-
-  let datesToExclude = Object.entries(counts)
-    .filter((item) => item[1] > 7)
-    .map((item) => [
-      ...arrToReturn,
-      addDays(new Date(), +item[0].split('.')[0] - new Date().getDate()),
-    ])
-    .flat()
 
   return (
     <PageWrapper>
@@ -364,7 +363,7 @@ const AddVisitAuthUser = () => {
                       minDate={minDate}
                       placeholderText='Wybierz termin wizyty'
                       filterDate={isWeekday}
-                      excludeDates={datesToExclude}
+                      excludeDates={toExclude}
                       name='data'
                       onBlur={handleBlur}
                       withPortal
@@ -386,9 +385,7 @@ const AddVisitAuthUser = () => {
                     </ErrorMessage>
 
                     <FormButton type='submit'>Podsumowanie</FormButton>
-                    <FormButton type='reset'>
-                      Wyczyść formularz
-                    </FormButton>
+                    <FormButton type='reset'>Wyczyść formularz</FormButton>
                     {isSubmit && (
                       <ModalShadow>
                         <ModalContainer>

@@ -118,65 +118,73 @@ const AdminTimesheetPage = () => {
     }
   }, [selectedDoctor])
 
-  useEffect(() => {
-    VisitData.getAll().then((response) => {
-      let today = new Date()
-      let todayDate = `${today.getDate()}.${
-        today.getMonth() + 1
-      }.${today.getFullYear()}`
-      let selectedDate = `${startDate.getDate()}.${
-        startDate.getMonth() + 1
-      }.${startDate.getFullYear()}`
-      const selectedDateVisitsArr = response.data
-        .filter((visit) => visit.data === selectedDate)
-        .filter((visit) => visit.specjalista.sid === selectedDoctor)
-      const updatedArr = updatedVisits.filter(
-        (ar) => !selectedDateVisitsArr.find((rm) => rm.godzina === ar.godzina)
-      )
-      let aa = todayDate.split('.').reverse().join()
-      let bb = selectedDate.split('.').reverse().join()
-      if (aa > bb) {
-        setSelectedDateVisits(selectedDateVisitsArr)
-      } else if (bb >= aa) {
-        if (selectedDateVisitsArr.length > 0) {
-          let arrToDisplay = []
-          if (selectedDate == todayDate) {
-            let arr = updatedArr.filter(
-              (item) => item.godzina > today.getHours()
-            )
-            arrToDisplay = [...arr, ...selectedDateVisitsArr]
-            setSelectedDateVisits(arrToDisplay)
-          } else {
-            arrToDisplay = [...updatedArr, ...selectedDateVisitsArr]
-            setSelectedDateVisits(arrToDisplay)
-          }
-        } else {
-          setSelectedDateVisits(updatedVisits)
-        }
-      }
-    })
-  }, [isCreated, startDate, updatedVisits, selectedDoctor])
+  // useEffect(() => {
+  //   VisitData.getAll().then((response) => {
+  //     let today = new Date()
+  //     let todayDate = `${today.getDate()}.${
+  //       today.getMonth() + 1
+  //     }.${today.getFullYear()}`
+  //     let selectedDate = `${startDate.getDate()}.${
+  //       startDate.getMonth() + 1
+  //     }.${startDate.getFullYear()}`
+  //     const selectedDateVisitsArr = response.data
+  //       .filter((visit) => visit.data === selectedDate)
+  //       .filter((visit) => visit.specjalista.sid === selectedDoctor)
+  //     const updatedArr = updatedVisits.filter(
+  //       (ar) => !selectedDateVisitsArr.find((rm) => rm.godzina === ar.godzina)
+  //     )
+  //     let aa = todayDate.split('.').reverse().join()
+  //     let bb = selectedDate.split('.').reverse().join()
+  //     if (aa > bb) {
+  //       setSelectedDateVisits(selectedDateVisitsArr)
+  //     } else if (bb >= aa) {
+  //       if (selectedDateVisitsArr.length > 0) {
+  //         let arrToDisplay = []
+  //         if (selectedDate == todayDate) {
+  //           let arr = updatedArr.filter(
+  //             (item) => item.godzina > today.getHours()
+  //           )
+  //           arrToDisplay = [...arr, ...selectedDateVisitsArr]
+  //           setSelectedDateVisits(arrToDisplay)
+  //         } else {
+  //           arrToDisplay = [...updatedArr, ...selectedDateVisitsArr]
+  //           setSelectedDateVisits(arrToDisplay)
+  //         }
+  //       } else {
+  //         setSelectedDateVisits(updatedVisits)
+  //       }
+  //     }
+  //   })
+  // }, [isCreated, startDate, updatedVisits, selectedDoctor])
 
   useEffect(() => {
     VisitData.getAll().then((response) => {
       let today = new Date()
+
       let todayDate = `${today.getDate()}.${
         today.getMonth() + 1
       }.${today.getFullYear()}`
+
       let selectedDate = `${startDate.getDate()}.${
         startDate.getMonth() + 1
       }.${startDate.getFullYear()}`
+
+      console.log('selectedDate', selectedDate)
+
       const selectedDateVisitsArr = response.data
         .filter((visit) => visit.data === selectedDate)
         .filter((visit) => visit.specjalista.sid === selectedDoctor)
+
       const updatedArr = updatedVisits.filter(
         (ar) => !selectedDateVisitsArr.find((rm) => rm.godzina === ar.godzina)
       )
+
       let aa = todayDate.split('.').reverse().join()
       let bb = selectedDate.split('.').reverse().join()
+
       if (aa > bb) {
         setSelectedDateVisits(selectedDateVisitsArr)
-      } else if (bb >= aa) {
+      }else if (bb >= aa) {
         if (selectedDateVisitsArr.length > 0) {
           let arrToDisplay = []
           if (selectedDate == todayDate) {
@@ -480,6 +488,7 @@ const AdminTimesheetPage = () => {
             </VisitsPageTitle>
           )}
         </StyledList>
+        {console.log('wybrana data', startDate)}
         {isSelected && (
           <ModalShadow>
             <AdminCreateVisit

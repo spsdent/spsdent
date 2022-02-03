@@ -222,6 +222,25 @@ const AddVisitNonAuth = () => {
     ))
   }
 
+  let arrToReturn = [new Date()]
+
+  const counts = allVisitsFromDb.reduce(
+    (acc, value) => ({
+      ...acc,
+      [value.data]: (acc[value.data] || 0) + 1,
+    }),
+    {}
+  )
+
+  let datesToExclude = Object.entries(counts)
+    .filter((item) => item[1] > 7)
+    .map((item) => [
+      ...arrToReturn,
+      addDays(new Date(), +item[0].split('.')[0] - new Date().getDate()),
+    ])
+    .flat()
+    let toExclude = []
+
   const doctorHandler = (values) => {
     const selectedGroupData = allServicesFromDb.filter(
       (service) => service.grupa === serviceGroupSelected
@@ -240,6 +259,20 @@ const AddVisitNonAuth = () => {
         .filter((service) => service.grupa === serviceGroupSelected)[0]
         .uslugi.filter((usluga) => usluga.nazwa === serviceSelected)[0]
       setSelectedServicePrice(servicePrice.cena)
+
+      const doctorDatesToExclude = allVisitsFromDb
+      .filter((visit) => visit.specjalista.sid === values.specjalista)
+      .map((item) => item.data)
+      .reduce((cnt, cur) => ((cnt[cur] = cnt[cur] + 1 || 1), cnt), {})
+
+    toExclude = Object.entries(doctorDatesToExclude)
+      .filter((item) => item[1] > 1)
+      .map((item) => [
+        ...datesToExclude,
+        addDays(new Date(), +item[0].split('.')[0] - new Date().getDate()),
+      ])
+      .flat()
+
     }
     if (doctorSelected && !values.data) {
       values.godzina = ''
@@ -291,15 +324,15 @@ const AddVisitNonAuth = () => {
             return hour
           }
         })
-      if (updatedHours.length > 0) {
-        return updatedHours.map((item) => (
-          <option value={`${item}`} key={`${item}`}>{`${item}`}</option>
-        ))
-      } else {
-        return dentHours.map((item) => (
-          <option value={`${item}`} key={`${item}`}>{`${item}`}</option>
-        ))
-      }
+      // if (updatedHours.length > 0) {
+      //   return updatedHours.map((item) => (
+      //     <option value={`${item}`} key={`${item}`}>{`${item}`}</option>
+      //   ))
+      // } else {
+      //   return dentHours.map((item) => (
+      //     <option value={`${item}`} key={`${item}`}>{`${item}`}</option>
+      //   ))
+      // }
     }
     return updatedHours.map((item) => (
       <option value={`${item}`} key={`${item}`}>{`${item}`}</option>
@@ -310,24 +343,6 @@ const AddVisitNonAuth = () => {
     const day = getDay(date)
     return day !== 0 && day !== 6
   }
-
-  const counts = allVisitsFromDb.reduce(
-    (acc, value) => ({
-      ...acc,
-      [value.data]: (acc[value.data] || 0) + 1,
-    }),
-    {}
-  )
-
-  let arrToReturn = [new Date()]
-
-  let datesToExclude = Object.entries(counts)
-    .filter((item) => item[1] > 7)
-    .map((item) => [
-      ...arrToReturn,
-      addDays(new Date(), +item[0].split('.')[0] - new Date().getDate()),
-    ])
-    .flat()
 
   const onVisitSubmit = (values) => {
     setIsSubmit(false)
@@ -406,7 +421,7 @@ const AddVisitNonAuth = () => {
                           minDate={minDate}
                           placeholderText='Wybierz termin wizyty'
                           filterDate={isWeekday}
-                          excludeDates={datesToExclude}
+                          excludeDates={toExclude}
                           name='data'
                           onBlur={handleBlur}
                           withPortal
