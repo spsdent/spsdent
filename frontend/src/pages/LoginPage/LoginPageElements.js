@@ -42,7 +42,7 @@ export const AddVisitContainer = styled.div`
   gap: ${(props) => (props.pswrdChange ? "1em" : "0")};
 `;
 export const LoginContainer = styled(motion.div)`
-  width: 26em;
+  width: 27em;
   height: ${(props) => (props.register ? "fit-content" : "23em")};
   display: flex;
   flex-direction: column;

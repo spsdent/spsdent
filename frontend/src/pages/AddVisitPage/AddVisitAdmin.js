@@ -14,7 +14,10 @@ import {
   addVisitSearchUserValidationSchema,
 } from "../../utils/validationSchemas";
 import { PageWrapper } from "../../components/PageWrapper";
-
+import {
+  ErrorText,
+  StyledField
+} from "../ControlPanelPage/ControlPanelPageElements";
 import {
   months,
   days,
@@ -29,7 +32,7 @@ import {
   useFetchAllUsers,
 } from "../../hooks";
 import UserData from "../../services/user";
-
+import styled from 'styled-components'
 import { register } from "../../store/actions/auth";
 import { SET_MESSAGE } from "../../store/actions/types";
 import { clearMessage } from "../../store/actions/message";
@@ -86,7 +89,7 @@ const styles = {
     paddingLeft: ".5em",
     fontFamily: "Poppins",
     letterSpacing: ".04em",
-    textTransform: "uppercase",
+   
     outline: "none",
     color: "#333",
   },
@@ -96,7 +99,22 @@ const styles = {
     fontSize: ".6em",
   },
 };
-
+const Styles = styled.div`
+  .react-datepicker__input-container input {
+    background-color: transparent;
+    border: 2px solid #333;
+    height: 3em;
+    width: 18em;
+    margin: 0.6em 0;
+    padding-left: 1em;
+    outline: none;
+    color: #333;
+    font-family: "Poppins";
+    /* letter-spacing: 0.04em; */
+    /* text-transform: uppercase; */
+    /* font-size: 15px; */
+  }
+`;
 const AddVisitAdmin = () => {
   const [visit, setVisit] = useState(initialAddVisitValues);
   const [serviceGroupSelected, setServiceGroupSelected] = useState("");
@@ -454,7 +472,7 @@ const AddVisitAdmin = () => {
                             {serviceGroupHandler(values)}
                           </Field>
                           {errors.grupa && touched.grupa ? (
-                            <p style={styles.errorStyle}>{errors.grupa}</p>
+                            <ErrorText primary panel>{errors.grupa}</ErrorText>
                           ) : null}
                           <Field
                             as="select"
@@ -468,7 +486,7 @@ const AddVisitAdmin = () => {
                             {serviceHandler(values)}
                           </Field>
                           {errors.usluga && touched.usluga ? (
-                            <p style={styles.errorStyle}>{errors.usluga}</p>
+                            <ErrorText primary panel>{errors.usluga}</ErrorText>
                           ) : null}
                           <>
                             <Field
@@ -483,10 +501,11 @@ const AddVisitAdmin = () => {
                               {doctorHandler(values)}
                             </Field>
                             {errors.specjalista && touched.specjalista ? (
-                              <p style={styles.errorStyle}>
+                              <ErrorText primary panel>
                                 {errors.specjalista}
-                              </p>
+                              </ErrorText>
                             ) : null}
+                            <Styles>
                             <DatePicker
                               selected={startDate}
                               dateFormat="dd/MM/yyyy"
@@ -506,8 +525,9 @@ const AddVisitAdmin = () => {
                               onBlur={handleBlur}
                               withPortal
                             />
+                            </Styles>
                             {errors.data && touched.data ? (
-                              <p style={styles.errorStyle}>{errors.data}</p>
+                              <ErrorText primary panel>{errors.data}</ErrorText>
                             ) : null}
                             <Field
                               as="select"
@@ -521,7 +541,7 @@ const AddVisitAdmin = () => {
                               {pickingHours(values.data)}
                             </Field>
                             {errors.godzina && touched.godzina ? (
-                              <p style={styles.errorStyle}>{errors.godzina}</p>
+                              <ErrorText primary panel>{errors.godzina}</ErrorText>
                             ) : null}
                             {/* {setChoseHour(values.godzina)} */}
                           </>
@@ -536,7 +556,7 @@ const AddVisitAdmin = () => {
                             onBlur={handleBlur}
                           />
                           {errors.imie && touched.imie ? (
-                            <p style={styles.errorStyle}>{errors.imie}</p>
+                            <ErrorText primary panel>{errors.imie}</ErrorText>
                           ) : null}
 
                           <FormInput
@@ -545,7 +565,7 @@ const AddVisitAdmin = () => {
                             onBlur={handleBlur}
                           />
                           {errors.nazwisko && touched.nazwisko ? (
-                            <p style={styles.errorStyle}>{errors.nazwisko}</p>
+                            <ErrorText primary panel>{errors.nazwisko}</ErrorText>
                           ) : null}
 
                           <FormInput
@@ -555,7 +575,7 @@ const AddVisitAdmin = () => {
                             onBlur={handleBlur}
                           />
                           {errors.email && touched.email ? (
-                            <p style={styles.errorStyle}>{errors.email}</p>
+                            <ErrorText primary panel>{errors.email}</ErrorText>
                           ) : null}
 
                           <FormInput
@@ -564,7 +584,7 @@ const AddVisitAdmin = () => {
                             onBlur={handleBlur}
                           />
                           {errors.telefon && touched.telefon ? (
-                            <p style={styles.errorStyle}>{errors.telefon}</p>
+                            <ErrorText primary panel>{errors.telefon}</ErrorText>
                           ) : null}
 
                           <FormInput
@@ -573,7 +593,7 @@ const AddVisitAdmin = () => {
                             onBlur={handleBlur}
                           />
                           {errors.miasto && touched.miasto ? (
-                            <p style={styles.errorStyle}>{errors.miasto}</p>
+                            <ErrorText primary panel>{errors.miasto}</ErrorText>
                           ) : null}
 
                           <FormInput
@@ -582,7 +602,7 @@ const AddVisitAdmin = () => {
                             onBlur={handleBlur}
                           />
                           {errors.ulica && touched.ulica ? (
-                            <p style={styles.errorStyle}>{errors.ulica}</p>
+                            <ErrorText primary panel>{errors.ulica}</ErrorText>
                           ) : null}
 
                           <FormInput
@@ -591,9 +611,9 @@ const AddVisitAdmin = () => {
                             onBlur={handleBlur}
                           />
                           {errors.kodPocztowy && touched.kodPocztowy ? (
-                            <p style={styles.errorStyle}>
+                            <ErrorText primary panel>
                               {errors.kodPocztowy}
-                            </p>
+                            </ErrorText>
                           ) : null}
                           {!allUsersFromDb.filter(
                             (user) => user.email === values.email
@@ -624,9 +644,9 @@ const AddVisitAdmin = () => {
                                     onBlur={handleBlur}
                                   />
                                   {errors.password && touched.password ? (
-                                    <p style={{ color: "red" }}>
+                                    <ErrorText primary panel>
                                       {errors.password}
-                                    </p>
+                                    </ErrorText>
                                   ) : null}
                                 </>
                               ) : (
@@ -668,9 +688,9 @@ const AddVisitAdmin = () => {
                                   Wyszukaj
                                 </FormButton>
                                 {errors.pacjent && touched.pacjent ? (
-                                  <p style={{ color: "red" }}>
+                                  <ErrorText primary panel>
                                     {errors.pacjent}
-                                  </p>
+                                  </ErrorText>
                                 ) : null}
                               </>
                             )}
@@ -820,22 +840,11 @@ const AddVisitAdmin = () => {
               </Formik>
             </>
           ) : (
-            <div
-              style={{
-                width: "100%",
-                height: "100vh",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                color: "#333",
-                fontSize: "24px",
-              }}
-            >
+            <>
               {message && (
-                <p style={{ color: "red", textAlign: "center" }}>{message}</p>
+                <ErrorText>{message}</ErrorText>
               )}
-            </div>
+            </>
           )
         ) : (
           <p>Przykro nam, ale nie oferujemy żadnych usług</p>
