@@ -50,7 +50,7 @@ import {
   ModalText,
   ModalButtonsContainer,
 } from '../VisitPage/VisitPageElements'
-import { StyledModalButton } from '../DoctorTimesheetPage/AdminCreateVisitElements'
+import { StyledModalButton } from '../TimesheetPage/AdminCreateVisitElements'
 import styled from 'styled-components'
 
 const MyStyledSelect = FormInput.withComponent('select')

@@ -26,7 +26,7 @@ import PriceListPage from '../pages/PriceListPage/'
 import ContactPage from '../pages/ContactPage/'
 import ArchiveVisitsPage from '../pages/ArchiveVisitsPage'
 import ControlPanelPage from '../pages/ControlPanelPage'
-import DoctorTimesheetPage from '../pages/DoctorTimesheetPage'
+import TimesheetPage from '../pages/TimesheetPage'
 import VisitsPage from '../pages/VisitsPage'
 import ProfilePage from '../pages/ProfilePage'
 import PwdChangePage from '../pages/PwdChangePage'
@@ -78,7 +78,7 @@ const RootNavigation = () => {
               path='/timesheet'
               element={
                 <PrivateRoute>
-                  <DoctorTimesheetPage />
+                  <TimesheetPage />
                 </PrivateRoute>
               }
             />

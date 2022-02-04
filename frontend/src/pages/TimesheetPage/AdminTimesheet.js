@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import { PageWrapper } from '../../components/PageWrapper'
 import { Pattern } from '../../components/Pattern'
 import '../../styles/index.css'
@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import { addDays, getDay } from 'date-fns'
 import pl from 'date-fns/locale/pl'
 import { useDispatch, useSelector } from 'react-redux'
-import DatePicker, {registerLocale} from 'react-datepicker'
+import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import 'react-datepicker/dist/react-datepicker-cssmodules.css'
 import { useNavigate } from 'react-router'
@@ -37,7 +37,6 @@ import DoctorData from '../../services/doctor'
 import UserData from '../../services/user'
 import VisitData from '../../services/visit'
 import AdminCreateVisit from './AdminCreateVisit'
-import { useFetchAllVisits } from '../../hooks'
 
 const StyledContainer = styled.section`
   width: 100%;
@@ -58,8 +57,9 @@ const StyledHeader = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+
   @media only screen and (min-width: 768px) {
-    grid-column: 1 / 2;
+    grid-column: ${({ isSelected }) => (isSelected ? '1 / 2' : '1 / -1')};
     justify-self: center;
   }
 `
@@ -67,7 +67,7 @@ const StyledHeader = styled.div`
 const StyledList = styled.div`
   height: 100%;
   width: 100%;
-  display: flex;
+  display: ${({ isSelected }) => (isSelected ? 'flex' : 'none')};
   flex-direction: column;
   align-items: center;
 `
@@ -89,7 +89,6 @@ const AdminTimesheetPage = () => {
   const pagesVisited = pageNumber * visitsPerPage
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const allVisitsFromDb = useFetchAllVisits()
   registerLocale('pl', pl)
 
   useEffect(() => {
@@ -122,45 +121,6 @@ const AdminTimesheetPage = () => {
     }
   }, [selectedDoctor])
 
-  // useEffect(() => {
-  //   VisitData.getAll().then((response) => {
-  //     let today = new Date()
-  //     let todayDate = `${today.getDate()}.${
-  //       today.getMonth() + 1
-  //     }.${today.getFullYear()}`
-  //     let selectedDate = `${startDate.getDate()}.${
-  //       startDate.getMonth() + 1
-  //     }.${startDate.getFullYear()}`
-  //     const selectedDateVisitsArr = response.data
-  //       .filter((visit) => visit.data === selectedDate)
-  //       .filter((visit) => visit.specjalista.sid === selectedDoctor)
-  //     const updatedArr = updatedVisits.filter(
-  //       (ar) => !selectedDateVisitsArr.find((rm) => rm.godzina === ar.godzina)
-  //     )
-  //     let aa = todayDate.split('.').reverse().join()
-  //     let bb = selectedDate.split('.').reverse().join()
-  //     if (aa > bb) {
-  //       setSelectedDateVisits(selectedDateVisitsArr)
-  //     } else if (bb >= aa) {
-  //       if (selectedDateVisitsArr.length > 0) {
-  //         let arrToDisplay = []
-  //         if (selectedDate == todayDate) {
-  //           let arr = updatedArr.filter(
-  //             (item) => item.godzina > today.getHours()
-  //           )
-  //           arrToDisplay = [...arr, ...selectedDateVisitsArr]
-  //           setSelectedDateVisits(arrToDisplay)
-  //         } else {
-  //           arrToDisplay = [...updatedArr, ...selectedDateVisitsArr]
-  //           setSelectedDateVisits(arrToDisplay)
-  //         }
-  //       } else {
-  //         setSelectedDateVisits(updatedVisits)
-  //       }
-  //     }
-  //   })
-  // }, [isCreated, startDate, updatedVisits, selectedDoctor])
-
   useEffect(() => {
     VisitData.getAll().then((response) => {
       let today = new Date()
@@ -188,7 +148,7 @@ const AdminTimesheetPage = () => {
 
       if (aa > bb) {
         setSelectedDateVisits(selectedDateVisitsArr)
-      }else if (bb >= aa) {
+      } else if (bb >= aa) {
         if (selectedDateVisitsArr.length > 0) {
           let arrToDisplay = []
           if (selectedDate == todayDate) {
@@ -212,107 +172,29 @@ const AdminTimesheetPage = () => {
     })
   }, [isCreated, startDate, updatedVisits, selectedDoctor])
 
-  const retrieveDoctors = () => {
-    DoctorData.getAll().then((response) => {
-      setDoctors(response.data)
-    })
-  }
-
   const retrieveUsers = () => {
     UserData.getAll().then((response) => {
       setUsers(response.data)
     })
   }
 
-  // const retrieveVisits = () => {
-  //   VisitData.getAll().then((response) => {
-  //     setVisits(response.data)
-  //   })
-  // }
-
   const filteredUsers = users.filter((user) =>
     doctors.some((doctor) => doctor.doctorId === user._id)
   )
 
-  let arrToReturn = [new Date()]
-
-  const counts = allVisitsFromDb.reduce(
-    (acc, value) => ({
-      ...acc,
-      [value.data]: (acc[value.data] || 0) + 1,
-    }),
-    {}
-  )
-
-  let datesToExclude = Object.entries(counts)
-    .filter((item) => item[1] > 7)
-    .map((item) => [
-      ...arrToReturn,
-      addDays(new Date(), +item[0].split('.')[0] - new Date().getDate()),
-    ])
-    .flat()
-  let toExclude = []
-
-
   const onDoctorChange = (e) => {
-    const user = doctors.find((user) => user.doctorId === e.target.value)
-    setSelectedDoctor(user.doctorId)
-
-    const doctorDatesToExclude = allVisitsFromDb
-        .filter((visit) => visit.specjalista.sid === user.doctorId)
-        .map((item) => item.data)
-        .reduce((cnt, cur) => ((cnt[cur] = cnt[cur] + 1 || 1), cnt), {})
-
-      toExclude = Object.entries(doctorDatesToExclude)
-        .filter((item) => item[1] > 1)
-        .map((item) => [
-          ...datesToExclude,
-          addDays(new Date(), +item[0].split('.')[0] - new Date().getDate()),
-        ])
-        .flat()
+    if (e.target.value === '') {
+      setSelectedDoctor('')
+    } else {
+      const user = doctors.find((user) => user.doctorId === e.target.value)
+      setSelectedDoctor(user.doctorId)
+    }
   }
 
   const isWeekday = (date) => {
     const day = getDay(date)
     return day !== 0 && day !== 6
   }
-
-  // const onDateSelect = (date) => {
-  //   setSelectedDate(date)
-  //   setStartDate(date)
-  //   let today = new Date()
-  //   let todayDate = `${today.getDate()}.${
-  //     today.getMonth() + 1
-  //   }.${today.getFullYear()}`
-  //   let selectedDate = `${date.getDate()}.${
-  //     date.getMonth() + 1
-  //   }.${date.getFullYear()}`
-  //   const selectedDateVisitsArr = visits.filter(
-  //     (visit) => visit.data === selectedDate
-  //   )
-  //   const updatedArr = updatedVisits.filter(
-  //     (ar) => !selectedDateVisitsArr.find((rm) => rm.godzina === ar.godzina)
-  //   )
-  //   let aa = todayDate.split('.').reverse().join()
-  //   let bb = selectedDate.split('.').reverse().join()
-  //   if (aa > bb) {
-  //     setSelectedDateVisits(selectedDateVisitsArr)
-  //   } else if (bb >= aa) {
-  //     if (selectedDateVisitsArr.length > 0) {
-  //       let arrToDisplay = []
-  //       if (selectedDate == todayDate) {
-  //         let arr = updatedArr.filter((item) => item.godzina > today.getHours())
-  //         arrToDisplay = [...arr, ...selectedDateVisitsArr]
-  //         setSelectedDateVisits(arrToDisplay)
-  //       } else {
-  //         arrToDisplay = [...updatedArr, ...selectedDateVisitsArr]
-  //         setSelectedDateVisits(arrToDisplay)
-  //       }
-  //     } else {
-  //       setSelectedDateVisits(updatedVisits)
-  //     }
-  //   }
-  // }
 
   const goToVisit = (item) => {
     navigate(`/visits/${item.id}`, {
@@ -324,7 +206,6 @@ const AdminTimesheetPage = () => {
     setIsDelete(false)
     VisitData.remove(visitId.id)
       .then((response) => {
-        console.log('Usunieto wizyte pomyslnie!')
         dispatch(refreshApp())
         setIsCreated(!isCreated)
       })
@@ -432,7 +313,7 @@ const AdminTimesheetPage = () => {
   return (
     <PageWrapper>
       <StyledContainer>
-        <StyledHeader>
+        <StyledHeader isSelected={selectedDoctor}>
           <VisitsPageTitleContainer>
             <VisitsPageTitle
               initial={{ y: -50, opacity: 0 }}
@@ -450,9 +331,7 @@ const AdminTimesheetPage = () => {
             transition={{ duration: 0.5 }}
             value={selectedDoctor}
           >
-            <Option value='' disabled>
-              Wybierz lekarza
-            </Option>
+            <Option value=''>Wybierz lekarza</Option>
             {filteredUsers.map((doctor) => (
               <Option value={doctor._id} key={doctor._id}>
                 {doctor.imie} {doctor.nazwisko}
@@ -460,8 +339,8 @@ const AdminTimesheetPage = () => {
             ))}
           </TimesheetPick>
         </StyledHeader>
-        <StyledList>
-          {selectedDoctor ? (
+        <StyledList isSelected={selectedDoctor}>
+          {selectedDoctor && (
             <>
               <Styles>
                 <DatePicker
@@ -472,14 +351,12 @@ const AdminTimesheetPage = () => {
                   filterDate={isWeekday}
                   name='data'
                   withPortal
-                  excludeDates={toExclude}
                   locale='pl'
                 />
               </Styles>
               <VisitsPageContainer>
                 <VisitsContainer>
-                  {startDate !== null ? (
-                    selectedDateVisits.length > 0 ? (
+                    {selectedDateVisits ? (
                       <>
                         <VisitsListContainer
                           primary
@@ -504,30 +381,12 @@ const AdminTimesheetPage = () => {
                       >
                         Brak wizyt tego dnia
                       </VisitsPageTitle>
-                    )
-                  ) : (
-                    <VisitsPageTitle
-                      initial={{ y: -50, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: 0.1 }}
-                    >
-                      Wybierz datę
-                    </VisitsPageTitle>
-                  )}
+                    )}
                 </VisitsContainer>
               </VisitsPageContainer>
             </>
-          ) : (
-            <VisitsPageTitle
-              initial={{ y: -50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.1 }}
-            >
-              Wybierz lekarza
-            </VisitsPageTitle>
           )}
         </StyledList>
-        {console.log('wybrana data', startDate)}
         {isSelected && (
           <ModalShadow>
             <AdminCreateVisit
