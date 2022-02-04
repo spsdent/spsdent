@@ -119,6 +119,15 @@ const AddVisitAuthUser = () => {
   // function responsible for display services from db as options to select
   const serviceGroupHandler = (values) => {
     // set serviceGroupSelected state with value selected in form field "grupa usluga"
+    if(serviceGroupSelected !== values.grupa) {
+      values.specjalista = ''
+      values.data = ''
+      values.godzina = ''
+      values.usluga = ''
+      setDoctorSelected(null)
+      setStartDate(null)
+      setServiceSelected('')
+    }
     setServiceGroupSelected(values.grupa)
     const doctorsSpecArr = allDoctorsFromDb
       .map((item) => item.specjalnosci)
@@ -133,11 +142,11 @@ const AddVisitAuthUser = () => {
       values.specjalista = ''
       values.data = ''
       values.godzina = ''
-      setDoctorSelected('')
+      setDoctorSelected(null)
       setStartDate(null)
     } else if (!serviceGroupSelected) {
-      setServiceSelected('')
-      setDoctorSelected('')
+      setServiceSelected(null)
+      setDoctorSelected(null)
       values.usluga = ''
       values.data = ''
       values.godzina = ''
@@ -221,10 +230,6 @@ const AddVisitAuthUser = () => {
       usersToDisplay = allUsersFromDb.filter((user) =>
         selectedGroupDoctors.includes(user._id)
       )
-      const servicePrice = allServicesFromDb
-        .filter((service) => service.grupa === serviceGroupSelected)[0]
-        .uslugi.filter((usluga) => usluga.nazwa === serviceSelected)[0]
-      setSelectedServicePrice(servicePrice.cena)
 
       const doctorDatesToExclude = allVisitsFromDb
         .filter((visit) => visit.specjalista.sid === values.specjalista)
@@ -244,7 +249,7 @@ const AddVisitAuthUser = () => {
       values.godzina = ''
       setStartDate(null)
     }
-    
+
     return usersToDisplay.map((doctor) => (
       <option value={`${doctor._id}`}>
         {doctor.imie} {doctor.nazwisko}
@@ -265,6 +270,10 @@ const AddVisitAuthUser = () => {
       startDate &&
       doctorSelected
     ) {
+      const servicePrice = allServicesFromDb
+        .filter((service) => service.grupa === serviceGroupSelected)[0]
+        .uslugi.filter((usluga) => usluga.nazwa === serviceSelected)[0]
+      setSelectedServicePrice(servicePrice.cena)
       const currentDayDoctorVisits = allVisitsFromDb
         .filter(
           (visit) =>
@@ -281,20 +290,6 @@ const AddVisitAuthUser = () => {
             return hour
           }
         })
-
-      // if (updatedHours.length > 0) {
-      //   return updatedHours.map((item) => (
-      //     <option value={`${item}`} key={`${item}`}>
-      //       {`${item}`}
-      //     </option>
-      //   ))
-      // } else {
-      //   return dentHours.map((item) => (
-      //     <option value={`${item}`} key={`${item}`}>
-      //       {`${item}`}
-      //     </option>
-      //   ))
-      // }
     }
     return updatedHours.map((item) => (
       <option value={`${item}`} key={`${item}`}>{`${item}`}</option>

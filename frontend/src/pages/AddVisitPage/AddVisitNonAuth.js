@@ -192,6 +192,15 @@ const AddVisitNonAuth = () => {
   // function responsible for display services from db as options to select
   const serviceGroupHandler = (values) => {
     // set serviceGroupSelected state with value selected in form field "grupa usluga"
+    if(serviceGroupSelected !== values.grupa) {
+      values.specjalista = ''
+      values.data = ''
+      values.godzina = ''
+      values.usluga = ''
+      setDoctorSelected(null)
+      setStartDate(null)
+      setServiceSelected('')
+    }
     setServiceGroupSelected(values.grupa)
     const doctorsSpecArr = allDoctorsFromDb
       .map((item) => item.specjalnosci)
@@ -294,10 +303,6 @@ const AddVisitNonAuth = () => {
       usersToDisplay = allUsersFromDb.filter((user) =>
         selectedGroupDoctors.includes(user._id)
       )
-      const servicePrice = allServicesFromDb
-        .filter((service) => service.grupa === serviceGroupSelected)[0]
-        .uslugi.filter((usluga) => usluga.nazwa === serviceSelected)[0]
-      setSelectedServicePrice(servicePrice.cena)
 
       const doctorDatesToExclude = allVisitsFromDb
         .filter((visit) => visit.specjalista.sid === values.specjalista)
@@ -345,6 +350,10 @@ const AddVisitNonAuth = () => {
       startDate &&
       doctorSelected
     ) {
+      const servicePrice = allServicesFromDb
+        .filter((service) => service.grupa === serviceGroupSelected)[0]
+        .uslugi.filter((usluga) => usluga.nazwa === serviceSelected)[0]
+      setSelectedServicePrice(servicePrice.cena)
       updatedHours = selectedDoctorData.godzinyPracy
         .filter((item) => !currentDayDoctorVisits.includes(item))
         .filter((hour) => {
