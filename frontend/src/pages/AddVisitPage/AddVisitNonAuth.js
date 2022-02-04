@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { addDays, getDay } from 'date-fns'
@@ -103,6 +103,50 @@ const PageButton = styled.button`
     background-color: #ddd;
     border: none;
     cursor: not-allowed;
+  }
+`
+
+const ProgressIconContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+`
+
+const ProgressIcon = styled.div`
+  width: 20px;
+  height: 20px;
+  border: 2px solid #01d4bf;
+  background-size: 100% 200%;
+  background-image: linear-gradient(to bottom, transparent 50%, #01d4bf 50%);
+  transition: background-position 1s;
+
+  &:nth-child(1) {
+    ${({ values }) =>
+      values.grupa &&
+      values.usluga &&
+      values.specjalista &&
+      values.data &&
+      values.godzina &&
+      css`
+        background-position: 0 -97%;
+      `}
+  }
+
+  &:nth-child(2) {
+    border: 2px solid ${({page}) => page === 0 ? '#ccc' : '#01d4bf'};
+    ${({ values }) =>
+      values.imie &&
+      values.nazwisko &&
+      values.email &&
+      values.telefon &&
+      values.miasto &&
+      values.kodPocztowy &&
+      css`
+        background-position: 0 -97%;
+        border: 2px solid #01d4bf;
+      `}
   }
 `
 
@@ -389,15 +433,6 @@ const AddVisitNonAuth = () => {
             return hour
           }
         })
-      // if (updatedHours.length > 0) {
-      //   return updatedHours.map((item) => (
-      //     <option value={`${item}`} key={`${item}`}>{`${item}`}</option>
-      //   ))
-      // } else {
-      //   return dentHours.map((item) => (
-      //     <option value={`${item}`} key={`${item}`}>{`${item}`}</option>
-      //   ))
-      // }
     }
     return updatedHours.map((item) => (
       <option value={`${item}`} key={`${item}`}>{`${item}`}</option>
@@ -682,6 +717,10 @@ const AddVisitNonAuth = () => {
                         </StyledButton>
                       </>
                     )}
+                    <ProgressIconContainer>
+                      <ProgressIcon values={values}></ProgressIcon>
+                      <ProgressIcon page={page} values={values}></ProgressIcon>
+                    </ProgressIconContainer>
                     <PageButtonContainer>
                       {page === 1 && (
                         <PageButton onClick={() => setPage(0)}>
