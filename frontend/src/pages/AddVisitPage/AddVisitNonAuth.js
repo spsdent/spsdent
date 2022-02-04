@@ -1,7 +1,6 @@
-import React, { useState, useEffect, Suspense } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
-import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -13,7 +12,7 @@ import { refreshApp } from '../../store/actions/refresh'
 import { addVisitNonAuthValidationSchema } from '../../utils/validationSchemas'
 import { PageWrapper } from '../../components/PageWrapper'
 
-import { initialAddVisitValues, dentHours, minDate } from '../../helpers'
+import { initialAddVisitValues, minDate } from '../../helpers'
 import {
   useFetchAllDoctors,
   useFetchAllServices,
@@ -28,9 +27,7 @@ import { clearMessage } from '../../store/actions/message'
 import {
   Title,
   FormButton,
-  FormColumn,
   FormContainer,
-  FormError,
   FormInput,
   ModalContainer,
   ModalVisitContentContainer,
@@ -50,7 +47,6 @@ import {
   ModalButton,
 } from '../VisitPage/VisitPageElements'
 import {
-  StyledField,
   ErrorText,
   StyledButton,
 } from '../ControlPanelPage/ControlPanelPageElements'
@@ -79,6 +75,37 @@ const Styles = styled.div`
   }
 `
 
+const PageButtonContainer = styled.div`
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+`
+
+const PageButton = styled.button`
+  width: 18em;
+  height: 3em;
+  background-color: #01d4bf;
+  max-width: 300px;
+  margin-top: 20px;
+  transition: 0.2s;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: transparent;
+    border: 2px solid #01d4bf;
+  }
+
+  &:disabled {
+    background-color: #ddd;
+    border: none;
+    cursor: not-allowed;
+  }
+`
+
 const MyStyledSelect = FormInput.withComponent('select')
 const MyStyledInput = FormInput.withComponent('input')
 const MyStyledButton = FormButton.withComponent('button')
@@ -94,11 +121,11 @@ const AddVisitNonAuth = () => {
   const [isSuccessful, setIsSuccessful] = useState(false)
   const [accountCreated, setAccountCreated] = useState(false)
   const [isSubmit, setIsSubmit] = useState(false)
+  const [page, setPage] = useState(0)
 
   const { message } = useSelector((state) => state.message)
   const { user: currentUser } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
-  let navigate = useNavigate()
   registerLocale('pl', pl)
 
   const allVisitsFromDb = useFetchAllVisits()
@@ -192,7 +219,7 @@ const AddVisitNonAuth = () => {
   // function responsible for display services from db as options to select
   const serviceGroupHandler = (values) => {
     // set serviceGroupSelected state with value selected in form field "grupa usluga"
-    if(serviceGroupSelected !== values.grupa) {
+    if (serviceGroupSelected !== values.grupa) {
       values.specjalista = ''
       values.data = ''
       values.godzina = ''
@@ -224,7 +251,6 @@ const AddVisitNonAuth = () => {
       values.godzina = ''
       setStartDate(null)
     }
-
 
     // returns options for select field depends on services fetched from db
     return servicesToDisplay.map((service) => (
@@ -391,37 +417,33 @@ const AddVisitNonAuth = () => {
   return (
     <PageWrapper>
       <AddVisitContainer>
-        <Suspense fallback={<p>Loading...</p>}>
-          {!isSuccessful ? (
-            <>
-              <Formik
-                enableReinitialize
-                initialValues={visit}
-                validationSchema={addVisitNonAuthValidationSchema}
-                onSubmit={() => setIsSubmit(true)}
-                onReset={() => setVisit(initialAddVisitValues)}
-              >
-                {({
-                  errors,
-                  touched,
-                  values,
-                  setValues,
-                  handleBlur,
-                  resetForm,
-                }) => (
-                  <Form>
-                    <FormContainer>
-                      <LoginContainer
-                        register
-                        initial={{ opacity: 0, scale: 0, rotate: 60 }}
-                        animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                        transition={{ duration: 0.5 }}
-                      >
-                        <TitleContainer>
-                          <Title>Zarezerwuj</Title>
-                          <Title primary>wizytę</Title>
-                        </TitleContainer>
+        <>
+          <Formik
+            enableReinitialize
+            initialValues={visit}
+            validationSchema={addVisitNonAuthValidationSchema}
+            onSubmit={() => setIsSubmit(true)}
+            onReset={() => {
+              setVisit(initialAddVisitValues)
+              setPage(0)
+            }}
+          >
+            {({ values, setValues, handleBlur, resetForm }) => (
+              <Form>
+                <FormContainer>
+                  <LoginContainer
+                    register
+                    initial={{ opacity: 0, scale: 0, rotate: 60 }}
+                    animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <TitleContainer>
+                      <Title>Zarezerwuj</Title>
+                      <Title primary>wizytę</Title>
+                    </TitleContainer>
 
+                    {page === 0 && (
+                      <>
                         <Field name='grupa' as={MyStyledSelect}>
                           <option value=''>Wybierz grupę usług</option>
                           {serviceGroupHandler(values)}
@@ -507,6 +529,10 @@ const AddVisitNonAuth = () => {
                             </ErrorText>
                           )}
                         </ErrorMessage>
+                      </>
+                    )}
+                    {page === 1 && (
+                      <>
                         <Field
                           as={MyStyledInput}
                           name='imie'
@@ -654,137 +680,154 @@ const AddVisitNonAuth = () => {
                         <StyledButton addVisit type='reset'>
                           Wyczyść formularz
                         </StyledButton>
-                        {isSubmit && (
-                          <ModalShadow>
-                            <ModalContainer>
-                              <ModalText>Podsumowanie</ModalText>
-                              <ModalVisitContentContainer>
-                                <ModalVisitData>
-                                  <h3>Twoje dane</h3>
-                                  <ModalVisitTextContainer>
-                                    <ModalVisitDataLabel>
-                                      Imie i nazwisko
-                                    </ModalVisitDataLabel>
-                                    <ModalVisitDataText>
-                                      {values.imie} {values.nazwisko}
-                                    </ModalVisitDataText>
-                                  </ModalVisitTextContainer>
-                                  <ModalVisitTextContainer>
-                                    <ModalVisitDataLabel>
-                                      E-mail
-                                    </ModalVisitDataLabel>
-                                    <ModalVisitDataText>
-                                      {values.email}
-                                    </ModalVisitDataText>
-                                  </ModalVisitTextContainer>
-                                  <ModalVisitTextContainer>
-                                    <ModalVisitDataLabel>
-                                      Telefon
-                                    </ModalVisitDataLabel>
-                                    <ModalVisitDataText>
-                                      {values.telefon}
-                                    </ModalVisitDataText>
-                                  </ModalVisitTextContainer>
-                                  <ModalVisitTextContainer>
-                                    <ModalVisitDataLabel>
-                                      Miasto
-                                    </ModalVisitDataLabel>
-                                    <ModalVisitDataText>
-                                      {values.miasto}
-                                    </ModalVisitDataText>
-                                  </ModalVisitTextContainer>
-                                  <ModalVisitTextContainer>
-                                    <ModalVisitDataLabel>
-                                      Ulica
-                                    </ModalVisitDataLabel>
-                                    <ModalVisitDataText>
-                                      {values.ulica}
-                                    </ModalVisitDataText>
-                                  </ModalVisitTextContainer>
-                                  <ModalVisitTextContainer>
-                                    <ModalVisitDataLabel>
-                                      Kod-pocztowy
-                                    </ModalVisitDataLabel>
-                                    <ModalVisitDataText>
-                                      {values.kodPocztowy}
-                                    </ModalVisitDataText>
-                                  </ModalVisitTextContainer>
-                                </ModalVisitData>
-                                <ModalVisitData>
-                                  <h3>Umówiona wizyta</h3>
-                                  <ModalVisitTextContainer>
-                                    <ModalVisitDataLabel>
-                                      Grupa
-                                    </ModalVisitDataLabel>
-                                    <ModalVisitDataText>
-                                      {values.grupa}
-                                    </ModalVisitDataText>
-                                  </ModalVisitTextContainer>
-                                  <ModalVisitTextContainer>
-                                    <ModalVisitDataLabel>
-                                      Usługa
-                                    </ModalVisitDataLabel>
-                                    <ModalVisitDataText>
-                                      {values.usluga}
-                                    </ModalVisitDataText>
-                                  </ModalVisitTextContainer>
-                                  <ModalVisitTextContainer>
-                                    <ModalVisitDataLabel>
-                                      Data wizyty
-                                    </ModalVisitDataLabel>
-                                    <ModalVisitDataText>
-                                      {values.data}r.
-                                    </ModalVisitDataText>
-                                  </ModalVisitTextContainer>
-                                  <ModalVisitTextContainer>
-                                    <ModalVisitDataLabel>
-                                      Godzina wizyty
-                                    </ModalVisitDataLabel>
-                                    <ModalVisitDataText>
-                                      {values.godzina}:00
-                                    </ModalVisitDataText>
-                                  </ModalVisitTextContainer>
-                                </ModalVisitData>
-                              </ModalVisitContentContainer>
-                              <ModalButtonsContainer>
-                                <MyStyledButton
-                                  onClick={() => setIsSubmit(false)}
-                                >
-                                  Anuluj
-                                </MyStyledButton>
-                                <ModalButton
-                                  onClick={() => {
-                                    onVisitSubmit(values)
-                                    resetForm()
-                                    setIsSubmit(false)
-                                  }}
-                                >
-                                  Potwierdź rezerwacje
-                                </ModalButton>
-                              </ModalButtonsContainer>
-                            </ModalContainer>
-                          </ModalShadow>
+                      </>
+                    )}
+                    <PageButtonContainer>
+                      {page === 1 && (
+                        <PageButton onClick={() => setPage(0)}>
+                          Poprzednia strona
+                        </PageButton>
+                      )}
+                      {page === 0 && (
+                        <PageButton
+                          disabled={
+                            !values.usluga ||
+                            !values.grupa ||
+                            !values.specjalista ||
+                            !values.data ||
+                            !values.godzina ||
+                            page === 1
+                          }
+                          onClick={() => setPage(1)}
+                        >
+                          Nastepna strona
+                        </PageButton>
+                      )}
+                    </PageButtonContainer>
+                    {isSuccessful && (
+                      <>
+                        {message && <ErrorText>{message}</ErrorText>}
+                        {accountCreated && (
+                          <StyledLink
+                            to='/login'
+                            onClick={() => dispatch(clearMessage())}
+                          >
+                            Przejdź do logowania!
+                          </StyledLink>
                         )}
-                      </LoginContainer>
-                    </FormContainer>
-                  </Form>
-                )}
-              </Formik>
-            </>
-          ) : (
-            <>
-              {message && <ErrorText>{message}</ErrorText>}
-              {accountCreated && (
-                <StyledLink
-                  to='/login'
-                  onClick={() => dispatch(clearMessage())}
-                >
-                  Przejdź do logowania!
-                </StyledLink>
-              )}
-            </>
-          )}
-        </Suspense>
+                      </>
+                    )}
+                    {isSubmit && (
+                      <ModalShadow>
+                        <ModalContainer>
+                          <ModalText>Podsumowanie</ModalText>
+                          <ModalVisitContentContainer>
+                            <ModalVisitData>
+                              <h3>Twoje dane</h3>
+                              <ModalVisitTextContainer>
+                                <ModalVisitDataLabel>
+                                  Imie i nazwisko
+                                </ModalVisitDataLabel>
+                                <ModalVisitDataText>
+                                  {values.imie} {values.nazwisko}
+                                </ModalVisitDataText>
+                              </ModalVisitTextContainer>
+                              <ModalVisitTextContainer>
+                                <ModalVisitDataLabel>
+                                  E-mail
+                                </ModalVisitDataLabel>
+                                <ModalVisitDataText>
+                                  {values.email}
+                                </ModalVisitDataText>
+                              </ModalVisitTextContainer>
+                              <ModalVisitTextContainer>
+                                <ModalVisitDataLabel>
+                                  Telefon
+                                </ModalVisitDataLabel>
+                                <ModalVisitDataText>
+                                  {values.telefon}
+                                </ModalVisitDataText>
+                              </ModalVisitTextContainer>
+                              <ModalVisitTextContainer>
+                                <ModalVisitDataLabel>
+                                  Miasto
+                                </ModalVisitDataLabel>
+                                <ModalVisitDataText>
+                                  {values.miasto}
+                                </ModalVisitDataText>
+                              </ModalVisitTextContainer>
+                              <ModalVisitTextContainer>
+                                <ModalVisitDataLabel>Ulica</ModalVisitDataLabel>
+                                <ModalVisitDataText>
+                                  {values.ulica}
+                                </ModalVisitDataText>
+                              </ModalVisitTextContainer>
+                              <ModalVisitTextContainer>
+                                <ModalVisitDataLabel>
+                                  Kod-pocztowy
+                                </ModalVisitDataLabel>
+                                <ModalVisitDataText>
+                                  {values.kodPocztowy}
+                                </ModalVisitDataText>
+                              </ModalVisitTextContainer>
+                            </ModalVisitData>
+                            <ModalVisitData>
+                              <h3>Umówiona wizyta</h3>
+                              <ModalVisitTextContainer>
+                                <ModalVisitDataLabel>Grupa</ModalVisitDataLabel>
+                                <ModalVisitDataText>
+                                  {values.grupa}
+                                </ModalVisitDataText>
+                              </ModalVisitTextContainer>
+                              <ModalVisitTextContainer>
+                                <ModalVisitDataLabel>
+                                  Usługa
+                                </ModalVisitDataLabel>
+                                <ModalVisitDataText>
+                                  {values.usluga}
+                                </ModalVisitDataText>
+                              </ModalVisitTextContainer>
+                              <ModalVisitTextContainer>
+                                <ModalVisitDataLabel>
+                                  Data wizyty
+                                </ModalVisitDataLabel>
+                                <ModalVisitDataText>
+                                  {values.data}r.
+                                </ModalVisitDataText>
+                              </ModalVisitTextContainer>
+                              <ModalVisitTextContainer>
+                                <ModalVisitDataLabel>
+                                  Godzina wizyty
+                                </ModalVisitDataLabel>
+                                <ModalVisitDataText>
+                                  {values.godzina}:00
+                                </ModalVisitDataText>
+                              </ModalVisitTextContainer>
+                            </ModalVisitData>
+                          </ModalVisitContentContainer>
+                          <ModalButtonsContainer>
+                            <MyStyledButton onClick={() => setIsSubmit(false)}>
+                              Anuluj
+                            </MyStyledButton>
+                            <ModalButton
+                              onClick={() => {
+                                onVisitSubmit(values)
+                                resetForm()
+                                setIsSubmit(false)
+                              }}
+                            >
+                              Potwierdź rezerwacje
+                            </ModalButton>
+                          </ModalButtonsContainer>
+                        </ModalContainer>
+                      </ModalShadow>
+                    )}
+                  </LoginContainer>
+                </FormContainer>
+              </Form>
+            )}
+          </Formik>
+        </>
       </AddVisitContainer>
     </PageWrapper>
   )
