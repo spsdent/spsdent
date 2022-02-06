@@ -41,7 +41,6 @@ import {
 
 import {
   ModalShadow,
-  ModalContainer as MC,
   ModalText,
   ModalButtonsContainer,
   ModalButton,
@@ -715,18 +714,7 @@ const AddVisitNonAuth = () => {
                             </RegisterText>
                           </TextContainer>
                         )}
-                        <StyledButton
-                          addVisit
-                          type='submit'
-                          disabled={
-                            !values.usluga ||
-                            !values.grupa ||
-                            !values.specjalista ||
-                            !values.data ||
-                            !values.godzina ||
-                            page === 1
-                          }
-                        >
+                        <StyledButton addVisit type='submit'>
                           Podsumowanie
                         </StyledButton>
                         <StyledButton addVisit type='reset'>
