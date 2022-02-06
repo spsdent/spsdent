@@ -31,10 +31,16 @@ export const StyledButton = styled.button`
   margin-bottom: ${props => props.delete ? "0" : "1.5em"};
   white-space: nowrap;
   margin-top: ${props => props.update ? "1.5em" : "0"};
+  
   &:hover {
     background-color: #01d4bf;
     /* border: 2px solid #fff; */
-    color: #fff;
+  }
+
+  &:disabled {
+    background-color: transparent;
+    border: 2px solid #ddd;
+    cursor: not-allowed;
   }
 `;
 export const StyledHeading = styled.h1`

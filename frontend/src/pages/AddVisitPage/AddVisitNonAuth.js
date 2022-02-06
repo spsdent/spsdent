@@ -87,21 +87,27 @@ const PageButtonContainer = styled.div`
 const PageButton = styled.button`
   width: 18em;
   height: 3em;
-  background-color: #01d4bf;
   max-width: 300px;
   margin-top: 20px;
-  transition: 0.2s;
-  border: none;
+  border: 2px solid #01d4bf;
+  background-size: 100% 200%;
+  background-image: linear-gradient(to bottom, transparent 50%, #01d4bf 50%);
+  transition: background-position 1s;
   cursor: pointer;
 
-  &:hover {
-    background-color: transparent;
-    border: 2px solid #01d4bf;
-  }
+  ${({ values }) =>
+    values.grupa &&
+    values.usluga &&
+    values.specjalista &&
+    values.data &&
+    values.godzina &&
+    css`
+      background-position: 0 -97%;
+    `}
 
   &:disabled {
-    background-color: #ddd;
-    border: none;
+    background-color: transparent;
+    border: 2px solid #ddd;
     cursor: not-allowed;
   }
 `
@@ -135,7 +141,7 @@ const ProgressIcon = styled.div`
   }
 
   &:nth-child(2) {
-    border: 2px solid ${({page}) => page === 0 ? '#ccc' : '#01d4bf'};
+    border: 2px solid ${({ page }) => (page === 0 ? '#ccc' : '#01d4bf')};
     ${({ values }) =>
       values.imie &&
       values.nazwisko &&
@@ -709,7 +715,18 @@ const AddVisitNonAuth = () => {
                             </RegisterText>
                           </TextContainer>
                         )}
-                        <StyledButton addVisit type='submit'>
+                        <StyledButton
+                          addVisit
+                          type='submit'
+                          disabled={
+                            !values.usluga ||
+                            !values.grupa ||
+                            !values.specjalista ||
+                            !values.data ||
+                            !values.godzina ||
+                            page === 1
+                          }
+                        >
                           Podsumowanie
                         </StyledButton>
                         <StyledButton addVisit type='reset'>
@@ -723,7 +740,7 @@ const AddVisitNonAuth = () => {
                     </ProgressIconContainer>
                     <PageButtonContainer>
                       {page === 1 && (
-                        <PageButton onClick={() => setPage(0)}>
+                        <PageButton onClick={() => setPage(0)} values={values}>
                           Poprzednia strona
                         </PageButton>
                       )}
@@ -737,6 +754,7 @@ const AddVisitNonAuth = () => {
                             !values.godzina ||
                             page === 1
                           }
+                          values={values}
                           onClick={() => setPage(1)}
                         >
                           Nastepna strona
