@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { useNavigate } from 'react-router-dom'
@@ -13,19 +13,12 @@ import { refreshApp } from '../../store/actions/refresh'
 import { addVisitUserValidationSchema } from '../../utils/validationSchemas'
 import { PageWrapper } from '../../components/PageWrapper'
 
-import {
-  months,
-  days,
-  initialAddVisitValues,
-  dentHours,
-  minDate,
-} from '../../helpers'
+import { initialAddVisitValues, minDate } from '../../helpers'
 import {
   useFetchAllDoctors,
   useFetchAllServices,
   useFetchAllVisits,
   useFetchAllUsers,
-  useCreateDates,
 } from '../../hooks'
 
 import {
@@ -51,11 +44,11 @@ import {
   ModalButtonsContainer,
 } from '../VisitPage/VisitPageElements'
 import { StyledModalButton } from '../TimesheetPage/AdminCreateVisitElements'
-import styled from 'styled-components'
 
 const MyStyledSelect = FormInput.withComponent('select')
 
 const AddVisitAuthUser = () => {
+  // definiowanie stanów, które będą wkorzystywane w komponencie
   const [visit, setVisit] = useState(initialAddVisitValues)
   const [serviceGroupSelected, setServiceGroupSelected] = useState('')
   const [serviceSelected, setServiceSelected] = useState('')
@@ -63,26 +56,36 @@ const AddVisitAuthUser = () => {
   const [selectedServicePrice, setSelectedServicePrice] = useState('')
   const [isSubmit, setIsSubmit] = useState(false)
   const [startDate, setStartDate] = useState(null)
-  const [datesToExc, setDatesToExc] = useState([])
+
+  // rejestrowanie polskich znaków dla kalendarza
   registerLocale('pl', pl)
 
+  // tutaj redux zwraca obiekt z informacjami o aktualnie zalogowanym użytkowniku
   const { user: currentUser } = useSelector((state) => state.auth)
+
   const dispatch = useDispatch()
   let navigate = useNavigate()
 
+  // hooki pomocnicze do, w których znajdują się funkcje do pobierania informacji z bazki
+  // są w folderze hooks
   const allVisitsFromDb = useFetchAllVisits()
   const allServicesFromDb = useFetchAllServices()
   const allDoctorsFromDb = useFetchAllDoctors()
   const allUsersFromDb = useFetchAllUsers()
 
+  // funkcja odpowiedzialna za dodawanie wizyt
   const createVisit = (values) => {
+    // destrukturyzacja wlasciwosci obiektu currentUser
     const { imie, nazwisko, email, telefon, miasto, kodPocztowy, ulica, id } =
       currentUser
+
+    // desktrukturyzacja wlasciwosci z obiektu values, ktory jest obiektem formularza - zawiera wartosci z formularza
     const { grupa, usluga, specjalista, data, godzina, status } = values
 
+    // przeszukuje kolekcje uzytkownicy zeby znalezc uzytkownika w bazie odpowiadajacego temu co wybrany zostal w formularzu
     const doctor = allUsersFromDb.find((user) => user._id === specjalista)
 
-    // Create object with values from form
+    // obiekt ktory bedzie przekazany do kontrolera zeby utworzyc wizyte w bazie
     let visitData = {
       grupa,
       usluga,
@@ -105,10 +108,13 @@ const AddVisitAuthUser = () => {
       uid: currentUser !== null ? id : null,
     }
 
-    // Create new visit based on provide visitData object
+    // to odpowiada za tworzenie wizyty - VisitData daje ruta znajdujacego sie w services/visit - ktory przyjmuje obiekt(visitData)
+    // ktory jest przekazywany potem do backendu do kontrolera zeby utworzyc wizyte
     VisitData.create(visitData)
       .then((response) => {
+        // funkcja z reduxa odpowiedzialna za zmiane stanu, ktora przydaje sie do odswiezania na biezaco komponentow
         dispatch(refreshApp())
+        // nawigacja od razu do podstrony wizyty po utworzeniu wizyty
         navigate('/wizyty')
       })
       .catch((e) => {
@@ -116,10 +122,11 @@ const AddVisitAuthUser = () => {
       })
   }
 
-  // function responsible for display services from db as options to select
-  const serviceGroupHandler = (values) => {
-    // set serviceGroupSelected state with value selected in form field "grupa usluga"
-    if(serviceGroupSelected !== values.grupa) {
+  // funkcja odpowiedzialna za wyswietlanie dostepnych w bazie grup uslug
+  const onServiceGroupSelect = (values) => {
+    // ten if jest tutaj po to zeby wyczyscic pola formularza jesli wybralismy juz opcje w formularzu,
+    // ale nagle chcemy zmienic tylko grupe - to zeby wszystkie pozostale pola czyscilo i nie wypierdalalo bledow
+    if (serviceGroupSelected !== values.grupa) {
       values.specjalista = ''
       values.data = ''
       values.godzina = ''
@@ -128,16 +135,22 @@ const AddVisitAuthUser = () => {
       setStartDate(null)
       setServiceSelected('')
     }
+
+    // ustawienie wartosci stanu na wartosc wybranej grupy
     setServiceGroupSelected(values.grupa)
+
+    // pobieranie z kolekcji doktorzy tylko specjalnosci i splaszczanie tablic zeby byly jednowymiarowe
     const doctorsSpecArr = allDoctorsFromDb
       .map((item) => item.specjalnosci)
       .flat()
-    const servicesToDisplay = allServicesFromDb.filter((service) =>
+
+    // tutaj zwracam tablice z uslugami jakie sa przypisane do istniejacych w bazie lekarzy,
+    // zeby nie miec w selectcie opcji, ktore nie sa przypisane do lekarzy
+    const servicesAssigned = allServicesFromDb.filter((service) =>
       doctorsSpecArr.includes(service._id)
     )
 
-    // this conditon is responsible for clear select form fields when we
-    // chose default options in select fields
+    // tutaj kolejne czyszczenia w zaleznosci co jest wybrane, a co nie w formularzu
     if (serviceGroupSelected && !serviceSelected) {
       values.specjalista = ''
       values.data = ''
@@ -153,26 +166,22 @@ const AddVisitAuthUser = () => {
       setStartDate(null)
     }
 
-    // returns options for select field depends on services fetched from db
-    return servicesToDisplay.map((service) => (
+    // tutaj sa zwracane opcje do selecta - grupy jakie sa uzywane przez istniejacych lekarzy
+    return servicesAssigned.map((service) => (
       <option value={service.grupa}> {service.grupa} </option>
     ))
   }
 
-  // function responsible for display services relative to before chosen value in field "grupa uslug"
-  const serviceHandler = (values) => {
-    // selectedGroupServices is an array which store speficic services for current selected
-    // group in field "grupa uslug"
-    // 1. filter all services which are accesible in DB by service.grupa name
-    // 2. using map we return only properties uslugi which are arrays
-    // 3. by flatMap we iterate over returned before arrays and flat from two dimensional arrays
-    // to one dimensional
+  // funkcja odpowiedzialna za wyswietlenie konrketnych uslug dla wybranej grupy
+  const onServiceSelect = (values) => {
+    // tutaj w tej zmiennej przechowywana jest tablica zawierajaca uslugi tej grupy ktora zostala wybrana w pierwszym polu formularza
+
     const selectedGroupServices = allServicesFromDb
       .filter((service) => service.grupa === serviceGroupSelected)
       .map((service) => service.uslugi)
       .flatMap((item) => item)
 
-    // as before we clear form select fields when change to default values
+    // tutaj znowu czyszczenie pól formularza
     if (serviceSelected && !doctorSelected) {
       values.godzina = ''
       values.data = ''
@@ -184,15 +193,16 @@ const AddVisitAuthUser = () => {
       setStartDate(null)
     }
 
-    // we set serviceSelected state to value usluga chosen in form field
+    // ustawianie wartosci stanu dla serviceSelected na wartosc wybranej uslugi w formularzu
     setServiceSelected(values.usluga)
 
-    // return services selected group
+    // zwracanie uslug ktore zostaly dopasowane w bazie do wybranej grupy
     return selectedGroupServices.map((item) => (
       <option value={item.nazwa}> {item.nazwa} </option>
     ))
   }
 
+  // tutaj sobie grupuje wizyty w bazie zeby miec info ile na jaki dzien juz dzien, przyda sie do wykluczania dat w kalendarzu
   const counts = allVisitsFromDb.reduce(
     (acc, value) => ({
       ...acc,
@@ -201,8 +211,10 @@ const AddVisitAuthUser = () => {
     {}
   )
 
+  // tworze sobie tablice z dzisiejsza data to akurat jest potrzebne temu kalendarzowi przy wykluczaniu dat
   let arrToReturn = [new Date()]
 
+  // tutaj robie sobie taka podstawowa tablice z datami do wykluczenia - ona bedzie potem rozszerzana o kolejne
   let datesToExclude = Object.entries(counts)
     .filter((item) => item[1] > 7)
     .map((item) => [
@@ -210,32 +222,51 @@ const AddVisitAuthUser = () => {
       addDays(new Date(), +item[0].split('.')[0] - new Date().getDate()),
     ])
     .flat()
+
+  // ta tablica bedzie podana do kalendarza - z ostatecznymi datami do wykluczania
   let toExclude = []
 
-  const doctorHandler = (values) => {
-    const selectedGroupData = allServicesFromDb.filter(
+  // funkcja sluzaca do wyswietlania lekarzy, ktorzy maja przypisana do siebie wybrana wczesniej grupe uslug
+  const onDoctorSelect = (values) => {
+    // wyszukuje w bazie grupy tej samej co wybrana zostala w formularzu i zwracam jej dane
+    const selectedGroupData = allServicesFromDb.find(
       (service) => service.grupa === serviceGroupSelected
     )
+
+    // zapisuje do stanu lekarza informacje o lekarzu
     setDoctorSelected(values.specjalista)
-    const foundDoctor = allDoctorsFromDb.find(
-      (doctor) => doctor.doctorId === values.specjalista
-    )
-    let usersToDisplay = []
+
+    let doctorsToDisplay = []
+
+    // tutaj sprawdzam czy w formularzu zostala wybrana grupa i usluga jesli tak to:
     if (serviceSelected && serviceGroupSelected) {
+      // przeszukuje kolekcje lekarzy w celu znaleznia tych lekarzy ktorzy maja przypisana do siebie grupe uslug
+      // taka jaka zostala wybrana w formularzu
       const selectedGroupDoctors = allDoctorsFromDb
-        .filter((doctor) =>
-          doctor.specjalnosci.includes(selectedGroupData[0]._id)
-        )
+        .filter((doctor) => doctor.specjalnosci.includes(selectedGroupData._id))
         .map((item) => item.doctorId)
-      usersToDisplay = allUsersFromDb.filter((user) =>
+
+      // tutaj przeszukuje sobie kolekcje z uzytkownikami zeby pobrac uzytkownikow(lekarz) ktorzy zostali dopasowani
+      // w selectedGroupDoctors - przeszukuje wszystkich uzytkownikow poniewaz w kolekcji lekarze nie przechowuje danych o uzytkowniku
+      // tylko id zeby móc przeszukac wlasnie tablice uzytkownikow i dopasowac lekarza
+      doctorsToDisplay = allUsersFromDb.filter((user) =>
         selectedGroupDoctors.includes(user._id)
       )
 
+      // tutaj sobie grupuje wizyty wybranego lekarza, zeby ułatwic sobie robote z wykluczaniem dat w kalendarzu
       const doctorDatesToExclude = allVisitsFromDb
         .filter((visit) => visit.specjalista.sid === values.specjalista)
         .map((item) => item.data)
         .reduce((cnt, cur) => ((cnt[cur] = cnt[cur] + 1 || 1), cnt), {})
 
+      // szukam w kolekcji lekarzy lekarza, ktorego id jest takie same jak wybranego w formularzu i zwracam jego dane
+      // przyda mi sie to zeby wiedziec ile godzin pracuje lekarz, zeby moc wykluczyc date na zasadzie ze pracuje 3h, to max. 3 wizyty z taka
+      // sama data moze miec
+      const foundDoctor = allDoctorsFromDb.find(
+        (doctor) => doctor.doctorId === values.specjalista
+      )
+
+      // a tutaj dodaje te daty do wykluczenia do tablicy 
       toExclude = Object.entries(doctorDatesToExclude)
         .filter((item) => item[1] > foundDoctor.godzinyPracy.length - 1)
         .map((item) => [
@@ -245,44 +276,65 @@ const AddVisitAuthUser = () => {
         .flat()
     }
 
+    // czyszczenie pola daty i godziny jesli lekarz nie jest wybrany
     if (!doctorSelected) {
       values.godzina = ''
       setStartDate(null)
     }
 
-    return usersToDisplay.map((doctor) => (
+    // wyswietlanie lekarzy majacych przypisana do siebie wybrana grupe w formularzu
+    return doctorsToDisplay.map((doctor) => (
       <option value={`${doctor._id}`}>
         {doctor.imie} {doctor.nazwisko}
       </option>
     ))
   }
 
-  const pickingHours = (values) => {
+  // wyswietlanie dostepnych godzin na wizyte
+  const onHourSelect = (values) => {
+    // przeszukuje kolekcje lekarzy zeby zwrocic informacje o wybranym w formularzu lekarzu
     const selectedDoctorData = allDoctorsFromDb.find(
       (doctor) => doctor.doctorId === doctorSelected
     )
+
     const today = new Date()
 
     let updatedHours = []
+
+    // tutaj jesli wszystkie wczesniejsze pola formularza sa wybrane to:
     if (
       serviceSelected &&
       serviceGroupSelected &&
       startDate &&
       doctorSelected
     ) {
+      // szukam ceny wybranej uslugi
       const servicePrice = allServicesFromDb
         .filter((service) => service.grupa === serviceGroupSelected)[0]
         .uslugi.filter((usluga) => usluga.nazwa === serviceSelected)[0]
+      // zapis dopasowanej ceny do stanu
       setSelectedServicePrice(servicePrice.cena)
-      const currentDayDoctorVisits = allVisitsFromDb
+
+    // szukam w kolekcji wizyt z taka sama data jaka zostala wybrana w formularzu i w dodatku tego konkretnego wybranego lekarza
+    // a nastepnie zwracam same godziny tych wizyt
+      const currentDayDoctorBookedHours = allVisitsFromDb
         .filter(
           (visit) =>
             visit.data.split('.')[0] === values.split('.')[0] &&
             visit.specjalista.sid === `${selectedDoctorData.doctorId}`
         )
         .map((item) => +item.godzina)
+
+      // najpierw szukam godziny, ktore nie zostaly uzyte do rezerwacji wizyty,
+      // nastepnie sprawdzam czy wybrana data w formularzu jest taka sama jak dziś - jesli wybrana data w formularzu jest taka sama jak dzis
+      // to zwracam tylko te godziny z pozostalych lekarza, ktore sa wieksze od obecnej godziny
+      // zalozmy ze lekarz pracuje od 8 do 16
+      // ma danego dnia zarezerwowane godziny 8 i 9 - i te godziny sa w tablicy currentDayDoctorHours
+      // nastepnie sprawdzam jakie godziny pozostaly wolne czyli od 10 do 16 i je zwracam
+      // ale chce zeby np. jak jest 13:13 to zebym nie mogl zabookowac juz na 10, 11, 12 i 13 bo te godziny wlasnie mineły, to muszę je z
+      // tych pozostalych lekarza wyrzucic i wlasnie to robie w tym ifie w drugim filter na dole
       updatedHours = selectedDoctorData.godzinyPracy
-        .filter((item) => !currentDayDoctorVisits.includes(item))
+        .filter((item) => !currentDayDoctorBookedHours.includes(item))
         .filter((hour) => {
           if (today.getDate() === values.split('.')[0]) {
             return hour > today.getHours()
@@ -291,11 +343,14 @@ const AddVisitAuthUser = () => {
           }
         })
     }
+
+    // tutaj zwracam godziny do wyswietlenia w selectcie
     return updatedHours.map((item) => (
       <option value={`${item}`} key={`${item}`}>{`${item}`}</option>
     ))
   }
 
+  // tutaj funkcja pomocnicza do zablokowania weekendow w kalendarzu
   const isWeekday = (date) => {
     const day = getDay(date)
     return day !== 0 && day !== 6
@@ -329,7 +384,7 @@ const AddVisitAuthUser = () => {
                   <FormColumn>
                     <Field as={MyStyledSelect} name='grupa' onBlur={handleBlur}>
                       <option value=''> Wybierz grupę usługi... </option>
-                      {serviceGroupHandler(values)}
+                      {onServiceGroupSelect(values)}
                     </Field>
                     <ErrorMessage name='grupa'>
                       {(msg) => <FormError>{msg}</FormError>}
@@ -341,7 +396,7 @@ const AddVisitAuthUser = () => {
                       disabled={!serviceGroupSelected}
                     >
                       <option value=''> Wybierz usługę... </option>
-                      {serviceHandler(values)}
+                      {onServiceSelect(values)}
                     </Field>
                     <ErrorMessage name='usluga'>
                       {(msg) => <FormError>{msg}</FormError>}
@@ -353,7 +408,7 @@ const AddVisitAuthUser = () => {
                       disabled={!serviceSelected}
                     >
                       <option value=''> Wybierz specjalistę... </option>
-                      {doctorHandler(values)}
+                      {onDoctorSelect(values)}
                     </Field>
                     <ErrorMessage name='specjalista'>
                       {(msg) => <FormError>{msg}</FormError>}
@@ -388,7 +443,7 @@ const AddVisitAuthUser = () => {
                       onBlur={handleBlur}
                     >
                       <option value=''> Wybierz godzinę... </option>
-                      {pickingHours(values.data)}
+                      {onHourSelect(values.data)}
                     </Field>
                     <ErrorMessage name='godzina'>
                       {(msg) => <FormError>{msg}</FormError>}

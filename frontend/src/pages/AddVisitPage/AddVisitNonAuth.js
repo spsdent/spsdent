@@ -201,7 +201,6 @@ const AddVisitNonAuth = () => {
 
     const doctor = allUsersFromDb.find((user) => user._id === specjalista)
 
-    // Create object with values from form
     let visitData = {
       grupa,
       usluga,
@@ -224,7 +223,6 @@ const AddVisitNonAuth = () => {
       uid: currentUser !== null ? currentUser.id : null,
     }
 
-    // Create new visit based on provide visitData object
     VisitData.create(visitData)
       .then((response) => {
         setIsSuccessful(true)
@@ -242,7 +240,6 @@ const AddVisitNonAuth = () => {
         })
       })
     if (values.password) {
-      // Create new visit based on provide visitData object
       dispatch(
         register(
           imie,
@@ -265,9 +262,7 @@ const AddVisitNonAuth = () => {
     }
   }
 
-  // function responsible for display services from db as options to select
-  const serviceGroupHandler = (values) => {
-    // set serviceGroupSelected state with value selected in form field "grupa usluga"
+  const onServiceGroupSelect = (values) => {
     if (serviceGroupSelected !== values.grupa) {
       values.specjalista = ''
       values.data = ''
@@ -277,15 +272,17 @@ const AddVisitNonAuth = () => {
       setStartDate(null)
       setServiceSelected('')
     }
+
     setServiceGroupSelected(values.grupa)
+
     const doctorsSpecArr = allDoctorsFromDb
       .map((item) => item.specjalnosci)
       .flat()
-    const servicesToDisplay = allServicesFromDb.filter((service) =>
+
+    const servicesAssigned = allServicesFromDb.filter((service) =>
       doctorsSpecArr.includes(service._id)
     )
-    // this conditon is responsible for clear select form fields when we
-    // chose default options in select fields
+
     if (serviceGroupSelected && !serviceSelected) {
       values.specjalista = ''
       values.data = ''
@@ -301,26 +298,17 @@ const AddVisitNonAuth = () => {
       setStartDate(null)
     }
 
-    // returns options for select field depends on services fetched from db
-    return servicesToDisplay.map((service) => (
+    return servicesAssigned.map((service) => (
       <option value={service.grupa}>{service.grupa}</option>
     ))
   }
 
-  // function responsible for display services relative to before chosen value in field "grupa uslug"
-  const serviceHandler = (values) => {
-    // selectedGroupServices is an array which store speficic services for current selected
-    // group in field "grupa uslug"
-    // 1. filter all services which are accesible in DB by service.grupa name
-    // 2. using map we return only properties uslugi which are arrays
-    // 3. by flatMap we iterate over returned before arrays and flat from two dimensional arrays
-    // to one dimensional
+  const onServiceSelect = (values) => {
     const selectedGroupServices = allServicesFromDb
       .filter((service) => service.grupa === serviceGroupSelected)
       .map((service) => service.uslugi)
       .flatMap((item) => item)
 
-    // as before we clear form select fields when change to default values
     if (serviceSelected && !doctorSelected) {
       values.godzina = ''
       values.data = ''
@@ -332,10 +320,8 @@ const AddVisitNonAuth = () => {
       setStartDate(null)
     }
 
-    // we set serviceSelected state to value usluga chosen in form field
     setServiceSelected(values.usluga)
 
-    // return services selected group
     return selectedGroupServices.map((item) => (
       <option value={item.nazwa}>{item.nazwa}</option>
     ))
@@ -358,23 +344,25 @@ const AddVisitNonAuth = () => {
       addDays(new Date(), +item[0].split('.')[0] - new Date().getDate()),
     ])
     .flat()
+
   let toExclude = []
 
-  const doctorHandler = (values) => {
+  const onDoctorSelect = (values) => {
     const selectedGroupData = allServicesFromDb.filter(
       (service) => service.grupa === serviceGroupSelected
     )
+
     setDoctorSelected(values.specjalista)
-    const foundDoctor = allDoctorsFromDb.find(
-      (doctor) => doctor.doctorId === values.specjalista
-    )
+
     let usersToDisplay = []
+
     if (serviceSelected && serviceGroupSelected) {
       const selectedGroupDoctors = allDoctorsFromDb
         .filter((doctor) =>
           doctor.specjalnosci.includes(selectedGroupData[0]._id)
         )
         .map((item) => item.doctorId)
+
       usersToDisplay = allUsersFromDb.filter((user) =>
         selectedGroupDoctors.includes(user._id)
       )
@@ -383,6 +371,10 @@ const AddVisitNonAuth = () => {
         .filter((visit) => visit.specjalista.sid === values.specjalista)
         .map((item) => item.data)
         .reduce((cnt, cur) => ((cnt[cur] = cnt[cur] + 1 || 1), cnt), {})
+
+      const foundDoctor = allDoctorsFromDb.find(
+        (doctor) => doctor.doctorId === values.specjalista
+      )
 
       toExclude = Object.entries(doctorDatesToExclude)
         .filter((item) => item[1] > foundDoctor.godzinyPracy.length - 1)
@@ -405,10 +397,12 @@ const AddVisitNonAuth = () => {
     ))
   }
 
-  const pickingHours = (values) => {
+  const onHourSelect = (values) => {
+
     const selectedDoctorData = allDoctorsFromDb.find(
       (doctor) => doctor.doctorId === doctorSelected
     )
+
     const today = new Date()
 
     const currentDayDoctorVisits = allVisitsFromDb
@@ -418,17 +412,22 @@ const AddVisitNonAuth = () => {
           visit.specjalista.sid === `${selectedDoctorData.doctorId}`
       )
       .map((item) => +item.godzina)
+
     let updatedHours = []
+
     if (
       serviceSelected &&
       serviceGroupSelected &&
       startDate &&
       doctorSelected
     ) {
+
       const servicePrice = allServicesFromDb
         .filter((service) => service.grupa === serviceGroupSelected)[0]
         .uslugi.filter((usluga) => usluga.nazwa === serviceSelected)[0]
+
       setSelectedServicePrice(servicePrice.cena)
+
       updatedHours = selectedDoctorData.godzinyPracy
         .filter((item) => !currentDayDoctorVisits.includes(item))
         .filter((hour) => {
@@ -438,6 +437,7 @@ const AddVisitNonAuth = () => {
             return hour
           }
         })
+        
     }
     return updatedHours.map((item) => (
       <option value={`${item}`} key={`${item}`}>{`${item}`}</option>
@@ -486,7 +486,7 @@ const AddVisitNonAuth = () => {
                       <>
                         <Field name='grupa' as={MyStyledSelect}>
                           <option value=''>Wybierz grupę usług</option>
-                          {serviceGroupHandler(values)}
+                          {onServiceGroupSelect(values)}
                         </Field>
                         <ErrorMessage name='grupa'>
                           {(msg) => (
@@ -501,7 +501,7 @@ const AddVisitNonAuth = () => {
                           disabled={!serviceGroupSelected}
                         >
                           <option value=''>Wybierz usługę</option>
-                          {serviceHandler(values)}
+                          {onServiceSelect(values)}
                         </Field>
                         <ErrorMessage name='usluga'>
                           {(msg) => (
@@ -516,7 +516,7 @@ const AddVisitNonAuth = () => {
                           disabled={!serviceSelected}
                         >
                           <option value=''>Wybierz specjalistę</option>
-                          {doctorHandler(values)}
+                          {onDoctorSelect(values)}
                         </Field>
                         <ErrorMessage name='specjalista'>
                           {(msg) => (
@@ -560,7 +560,7 @@ const AddVisitNonAuth = () => {
                           name='godzina'
                         >
                           <option value=''>Wybierz godzinę</option>
-                          {pickingHours(values.data)}
+                          {onHourSelect(values.data)}
                         </Field>
                         <ErrorMessage name='godzina'>
                           {(msg) => (

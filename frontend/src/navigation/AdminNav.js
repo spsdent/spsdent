@@ -6,9 +6,6 @@ import {
 
 const AdminNav = () => (
   <>
-    {/* <NavItem>
-      <StyledLink to='/add-visit'>Zarezerwuj</StyledLink>
-    </NavItem> */}
     <NavItem>
       <StyledLink to='/grafik'>Grafik</StyledLink>
     </NavItem>
@@ -19,7 +16,7 @@ const AdminNav = () => (
       <StyledLink to='/archiwum-wizyt'>Historia wizyt</StyledLink>
     </NavItem>
     <NavItem>
-      <StyledLink to='/profil'>Ustawienia</StyledLink>
+      <StyledLink to='/profil'>Profil użytkownika</StyledLink>
     </NavItem>
     <NavItem>
       <StyledLink to='/panel-zarzadzania'>Panel zarzadzania</StyledLink>

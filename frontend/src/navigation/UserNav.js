@@ -16,7 +16,7 @@ const UserNav = () => (
       <StyledLink to='/archiwum-wizyt'>Historia wizyt</StyledLink>
     </NavItem>
     <NavItem>
-      <StyledLink to='/profil'>Ustawienia</StyledLink>
+      <StyledLink to='/profil'>Profil użytkownika</StyledLink>
     </NavItem>
   </>
 )
