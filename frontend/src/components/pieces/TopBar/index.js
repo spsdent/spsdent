@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
-import { FaBars } from 'react-icons/fa'
-import { HiOutlineLocationMarker } from 'react-icons/hi'
-import { BsTelephone } from 'react-icons/bs'
+import React, { useEffect, useState } from "react";
+import { FaBars } from "react-icons/fa";
+import { HiOutlineLocationMarker } from "react-icons/hi";
+import { BsTelephone } from "react-icons/bs";
 import {
   Nav,
   NavBarContainer,
@@ -15,38 +15,42 @@ import {
   MobileIcon,
   ButtonNav,
   ButtonsContainer,
-} from './TopBarElements'
-import { useDispatch, useSelector } from 'react-redux'
-import { logout } from '../../../store/actions/auth'
-import { history } from '../../../helpers/history'
-import { clearMessage } from '../../../store/actions/message'
+} from "./TopBarElements";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../../store/actions/auth";
+import { history } from "../../../helpers/history";
+import { clearMessage } from "../../../store/actions/message";
 
 const TopBar = () => {
-  const { user: currentUser } = useSelector((state) => state.auth)
-  const dispatch = useDispatch()
+  const { user: currentUser } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     history.listen((location) => {
-      dispatch(clearMessage()) // clear message when changing location
-    })
-  }, [dispatch])
+      dispatch(clearMessage()); // clear message when changing location
+    });
+  }, [dispatch]);
 
   const logOut = () => {
-    dispatch(logout())
-  }
+    dispatch(logout());
+  };
 
   const isAdmin = currentUser && currentUser.roles.includes("ROLE_ADMIN");
-
+  const [isOpen, setIsOpen] = useState(false);
+  const setIsOpenHandler = () => {
+    setIsOpen(!isOpen);
+    console.log(isOpen);
+  };
   return (
     <>
       <Nav>
         <NavBarContainer>
           <NavLogoContainer>
-            <NavLogo to='/'>
-              <NavImage src='../logo.png' alt='spsdentLogo' />
+            <NavLogo to="/">
+              <NavImage src="../logo.png" alt="spsdentLogo" />
             </NavLogo>
           </NavLogoContainer>
-          <MobileIcon>
+          <MobileIcon onClick={setIsOpenHandler}>
             <FaBars />
           </MobileIcon>
           <NavInfoContainer>
@@ -62,7 +66,7 @@ const TopBar = () => {
           <ButtonsContainer>
             <ButtonNav primary>
               <ButtonLink
-                to={isAdmin ? '/timesheet' :'/add-visit'}
+                to={isAdmin ? "/timesheet" : "/add-visit"}
                 onClick={() => dispatch(clearMessage())}
               >
                 Umów się na wizytę
@@ -71,10 +75,10 @@ const TopBar = () => {
             {currentUser ? (
               <ButtonNav>
                 <ButtonLink
-                  to='/login'
+                  to="/login"
                   onClick={() => {
-                    logOut()
-                    dispatch(clearMessage())
+                    logOut();
+                    dispatch(clearMessage());
                   }}
                 >
                   Wyloguj się
@@ -83,7 +87,7 @@ const TopBar = () => {
             ) : (
               <ButtonNav>
                 <ButtonLink
-                  to='/login'
+                  to="/login"
                   onClick={() => dispatch(clearMessage())}
                 >
                   Zaloguj się
@@ -94,7 +98,7 @@ const TopBar = () => {
         </NavBarContainer>
       </Nav>
     </>
-  )
-}
+  );
+};
 
-export default TopBar
+export default TopBar;

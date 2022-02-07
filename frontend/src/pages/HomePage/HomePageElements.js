@@ -57,12 +57,12 @@ export const TextContainer = styled.div`
   }
 `;
 export const HeaderWelcome = styled(motion.h2)`
-  font-size: ${(props) => (props.primary ? "1.6em" : "4em")};
+  font-size: ${(props) => (props.primary ? "7em" : "4em")};
   letter-spacing: 0.07em;
   color: #333;
   line-height: 0.85em;
   @media screen and (max-width: 450px) {
-    font-size: 2em;
+    font-size: 3.5em;
   }
 `;
 export const StyledSpan = styled.span`

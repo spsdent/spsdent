@@ -50,6 +50,7 @@ const Home = () => {
             animate={{ opacity: 1, x: 0 }}
           >
             Witaj w <br />
+            </HeaderWelcome>
             <HeaderWelcome
               primary
               transition={{
@@ -63,7 +64,7 @@ const Home = () => {
             >
               SPS<StyledSpan>Dent</StyledSpan>!
             </HeaderWelcome>
-          </HeaderWelcome>
+          
           <HeaderText
             transition={{
               type: "spring",
