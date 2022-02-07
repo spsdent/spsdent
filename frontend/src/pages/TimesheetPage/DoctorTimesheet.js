@@ -99,7 +99,7 @@ const DoctorTimesheetPage = () => {
   };
 
   const goToVisit = (item) => {
-    navigate(`/visits/${item.id}`, {
+    navigate(`/wizyty/${item.id}`, {
       state: { item: item, bRoute: "timesheet" },
     });
   };

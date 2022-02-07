@@ -87,15 +87,15 @@ const NonAuth = (props) => {
             <StyledLink to="/">Strona Główna</StyledLink>
           </NavItem>
           <NavItem>
-            <StyledLink to="/about-us">O nas</StyledLink>
+            <StyledLink to="/o-nas">O nas</StyledLink>
           </NavItem>
           <NavItem>
-            <StyledLink to="/offer">Oferta</StyledLink>
+            <StyledLink to="/oferta">Oferta</StyledLink>
           </NavItem>
-          <NavItem onClick={() => navigate("/price-list/Wizyta")}>
-            <StyledLink to="/price-list">Cennik</StyledLink>
+          <NavItem onClick={() => navigate("/cennik/wizyta")}>
+            <StyledLink to="/cennik">Cennik</StyledLink>
           </NavItem>
-          {currentLocation === "price-list" && (
+          {currentLocation === "cennik" && (
             <>
               {serviceData.map(
                 (service, i) =>
@@ -107,7 +107,7 @@ const NonAuth = (props) => {
                     >
                       <StyledLink
                         primary
-                        to={`/price-list/${service.grupa.split(" ").join("-")}`}
+                        to={`/cennik/${service.grupa.split(" ").join("-")}`}
                       >
                         {service.grupa.split(" ").length > 2
                           ? `${service.grupa.split(" ")[0][0]}${
@@ -121,7 +121,7 @@ const NonAuth = (props) => {
             </>
           )}
           <NavItem>
-            <StyledLink to="/contact">Kontakt</StyledLink>
+            <StyledLink to="/kontakt">Kontakt</StyledLink>
           </NavItem>
         </NavWrap>
       </SideNav>

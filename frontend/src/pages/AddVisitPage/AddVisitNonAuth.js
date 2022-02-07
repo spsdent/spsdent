@@ -754,7 +754,7 @@ const AddVisitNonAuth = () => {
                         {message && <ErrorText>{message}</ErrorText>}
                         {accountCreated && (
                           <StyledLink
-                            to='/login'
+                            to='/logowanie'
                             onClick={() => dispatch(clearMessage())}
                           >
                             Przejdź do logowania!

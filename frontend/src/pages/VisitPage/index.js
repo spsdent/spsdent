@@ -42,7 +42,7 @@ const VisitPage = () => {
         .then((response) => {
           setIsOpen(false)
           dispatch(refreshApp())
-          navigate('/visits')
+          navigate('/wizyty')
         })
         .catch((e) => console.log(e))
     } else {
@@ -53,7 +53,7 @@ const VisitPage = () => {
         .then((response) => {
           setIsOpen(false)
           dispatch(refreshApp())
-          navigate('/archive')
+          navigate('/archiwum-wizyt')
         })
         .catch((e) => console.log(e))
     }
@@ -135,7 +135,7 @@ const VisitPage = () => {
                   onClick={() => navigate(`/${bRoute ? bRoute : backRoute}`)}
                 >
                   {bRoute
-                    ? bRoute === 'timesheet'
+                    ? bRoute === 'grafik'
                       ? 'Wróć do grafiku'
                       : 'Wróć do ustawień konta'
                     : state.status === false

@@ -31,17 +31,17 @@ const item = {
 
 const PriceListSubPage = () => {
   const [currentPathServices, setCurrentPathServices] = useState([])
-  let { group } = useParams()
+  let { grupa } = useParams()
 
   useEffect(() => {
     retrieveServices()
-  }, [group])
+  }, [grupa])
 
   const retrieveServices = () => {
     ServiceData.getAll().then((response) => {
       const filteredResult = response.data.filter(
         (item) =>
-          item.grupa.toLowerCase() === group.split('-').join(' ').toLowerCase()
+          item.grupa.toLowerCase() === grupa.split('-').join(' ').toLowerCase()
       )
       console.log(filteredResult);
       setCurrentPathServices(filteredResult[0].uslugi)

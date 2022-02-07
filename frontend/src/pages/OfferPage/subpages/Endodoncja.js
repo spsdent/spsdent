@@ -64,7 +64,7 @@ const Endodoncja = () => {
               <strong>BeeFill 2w1</strong>
             </PageTextColumn>
           </PageText>
-          <ComeBackButton to="/offer">Powrót do oferty</ComeBackButton>
+          <ComeBackButton to="/oferta">Powrót do oferty</ComeBackButton>
         </SubPageContainer>
         <Pattern
           src="../Pattern.png"

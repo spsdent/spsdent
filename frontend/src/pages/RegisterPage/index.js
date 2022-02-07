@@ -222,7 +222,7 @@ const Register = () => {
         ) : (
           <>
             {message && <ErrorText>{message}</ErrorText>}
-            <StyledLink to="/login" onClick={() => dispatch(clearMessage())}>
+            <StyledLink to="/logowanie" onClick={() => dispatch(clearMessage())}>
               Przejdź do logowania!
             </StyledLink>
             </> 

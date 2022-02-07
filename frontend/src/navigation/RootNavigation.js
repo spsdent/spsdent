@@ -39,13 +39,13 @@ import PriceListSubPage from '../pages/PriceListPage/PriceListSubPage'
 
 function PrivateRoute({ children }) {
   const { user: currentUser } = useSelector((state) => state.auth)
-  return currentUser === null ? <Navigate to='/login' /> : children
+  return currentUser === null ? <Navigate to='/logowanie' /> : children
 }
 
 function AdminPrivateRoute({ children }) {
   const { user: currentUser } = useSelector((state) => state.auth)
   return !currentUser.roles.includes('ROLE_ADMIN') ? (
-    <Navigate to='/add-visit' />
+    <Navigate to='/zarezerwuj' />
   ) : (
     children
   )
@@ -54,7 +54,7 @@ function AdminPrivateRoute({ children }) {
 function DoctorPrivateRoute({ children }) {
   const { user: currentUser } = useSelector((state) => state.auth)
   return !currentUser.roles.includes('ROLE_SPEC') ? (
-    <Navigate to='/add-visit' />
+    <Navigate to='/zarezerwuj' />
   ) : (
     children
   )
@@ -69,13 +69,13 @@ const RootNavigation = () => {
         <>
           <Routes>
             <Route exact path='/' element={<HomePage />} />
-            <Route exact path='/about-us' element={<AboutUsPage />} />
-            <Route exact path='/offer' element={<OfferPage />} />
-            <Route path='/price-list' element={<PriceListPage />}>
-              <Route path=':group' element={<PriceListSubPage />} />
+            <Route exact path='/o-nas' element={<AboutUsPage />} />
+            <Route exact path='/oferta' element={<OfferPage />} />
+            <Route path='/cennik' element={<PriceListPage />}>
+              <Route path=':grupa' element={<PriceListSubPage />} />
             </Route>
             <Route
-              path='/timesheet'
+              path='/grafik'
               element={
                 <PrivateRoute>
                   <TimesheetPage />
@@ -83,25 +83,25 @@ const RootNavigation = () => {
               }
             />
 
-            <Route exact path='/contact' element={<ContactPage />} />
-            <Route exact path='/add-visit' element={<AddVisitPage />} />
-            <Route exact path='/password-change' element={<PwdChangePage />} />
+            <Route exact path='/kontakt' element={<ContactPage />} />
+            <Route exact path='/zarezerwuj' element={<AddVisitPage />} />
+            <Route exact path='/zresetuj-haslo' element={<PwdChangePage />} />
 
-            <Route exact path='/login' element={<LoginPage />} />
-            <Route exact path='/register' element={<RegisterPage />} />
-            <Route exact path='/offer/rtg-3d' element={<Rtg />} />
-            <Route exact path='offer/endodoncja' element={<Endodoncja />} />
-            <Route exact path='offer/dds' element={<Dds />} />
-            <Route exact path='offer/pip' element={<Pip />} />
-            <Route exact path='offer/pcyfrowa' element={<Pcyfrowa />} />
-            <Route exact path='offer/implanty' element={<Implanty />} />
-            <Route exact path='offer/ortodoncja' element={<Ortodoncja />} />
-            <Route exact path='offer/diagnostyka' element={<Diagnostyka />} />
-            <Route exact path='offer/znieczulenie' element={<Znieczulenie />} />
-            <Route exact path='offer/zachowawcza' element={<Zachowawcza />} />
+            <Route exact path='/logowanie' element={<LoginPage />} />
+            <Route exact path='/rejestracja' element={<RegisterPage />} />
+            <Route exact path='/oferta/rtg-3d' element={<Rtg />} />
+            <Route exact path='oferta/endodoncja' element={<Endodoncja />} />
+            <Route exact path='oferta/dds' element={<Dds />} />
+            <Route exact path='oferta/pip' element={<Pip />} />
+            <Route exact path='oferta/pcyfrowa' element={<Pcyfrowa />} />
+            <Route exact path='oferta/implanty' element={<Implanty />} />
+            <Route exact path='oferta/ortodoncja' element={<Ortodoncja />} />
+            <Route exact path='oferta/diagnostyka' element={<Diagnostyka />} />
+            <Route exact path='oferta/znieczulenie' element={<Znieczulenie />} />
+            <Route exact path='oferta/zachowawcza' element={<Zachowawcza />} />
             <Route
               exact
-              path='/settings'
+              path='/profil'
               element={
                 <PrivateRoute>
                   <ProfilePage />
@@ -109,7 +109,7 @@ const RootNavigation = () => {
               }
             />
             <Route
-              path='/visits'
+              path='/wizyty'
               element={
                 <PrivateRoute>
                   <VisitsPage />
@@ -117,7 +117,7 @@ const RootNavigation = () => {
               }
             />
             <Route
-              path='archive'
+              path='/archiwum-wizyt'
               element={
                 <PrivateRoute>
                   <ArchiveVisitsPage />
@@ -125,7 +125,7 @@ const RootNavigation = () => {
               }
             />
             <Route
-              path='visits/:id'
+              path='wizyty/:id'
               element={
                 <PrivateRoute>
                   <VisitPage />
@@ -133,7 +133,7 @@ const RootNavigation = () => {
               }
             />
             <Route
-              path='archive/:id'
+              path='archiwum-wizyt/:id'
               element={
                 <PrivateRoute>
                   <VisitPage />
@@ -141,7 +141,7 @@ const RootNavigation = () => {
               }
             />
             <Route
-              path='control-panel'
+              path='panel-zarzadzania'
               element={
                 <PrivateRoute>
                   <AdminPrivateRoute>

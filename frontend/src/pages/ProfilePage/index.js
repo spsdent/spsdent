@@ -128,7 +128,7 @@ const ProfilePage = () => {
           payload: "Konto zostało usunięte, przykro nam, że nas opuszczasz",
         });
         dispatch(logout());
-        navigate("/login");
+        navigate("/logowanie");
       })
       .catch((e) => console.log("Blad podczas usuwania"));
   };
@@ -162,14 +162,14 @@ const ProfilePage = () => {
   };
 
   const goToVisit = (item) => {
-    navigate(`/visits/${item.id}`, {
-      state: { item: item, bRoute: "settings" },
+    navigate(`/wizyty/${item.id}`, {
+      state: { item: item, bRoute: "profil" },
     });
   };
 
   const goToArchiveVisit = (item) => {
-    navigate(`/archive/${item.id}`, {
-      state: { item: item, bRoute: "settings" },
+    navigate(`/archiwum-wizyt/${item.id}`, {
+      state: { item: item, bRoute: "profil" },
     });
   };
 

@@ -94,7 +94,7 @@ const Znieczulenie = () => {
               </strong>
             </PageTextColumn>
           </PageText>
-          <ComeBackButton to="/offer">Powrót do oferty</ComeBackButton>
+          <ComeBackButton to="/oferta">Powrót do oferty</ComeBackButton>
         </SubPageContainer>
         <Pattern
           src="../Pattern.png"

@@ -7,13 +7,13 @@ import {
 const SpecNav = () => (
   <>
     <NavItem>
-      <StyledLink to='/timesheet'>Grafik</StyledLink>
+      <StyledLink to='/grafik'>Grafik</StyledLink>
     </NavItem>
     <NavItem>
-      <StyledLink to='/archive'>Historia wizyt</StyledLink>
+      <StyledLink to='/archiwum-wizyt'>Historia wizyt</StyledLink>
     </NavItem>
     <NavItem>
-      <StyledLink to='/settings'>Ustawienia</StyledLink>
+      <StyledLink to='/profil'>Ustawienia</StyledLink>
     </NavItem>
   </>
 )

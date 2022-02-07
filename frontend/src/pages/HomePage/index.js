@@ -95,7 +95,7 @@ const Home = () => {
               <FaAngleDoubleRight />
             </ButtonSpan>
             <AddVisitButton>
-              <ButtonLink to="/add-visit">Umów się na wizytę</ButtonLink>
+              <ButtonLink to="/zarezerwuj">Umów się na wizytę</ButtonLink>
             </AddVisitButton>
           </ButtonContainer>
         </TextContainer>

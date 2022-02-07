@@ -7,16 +7,16 @@ import {
 const UserNav = () => (
   <>
     <NavItem>
-      <StyledLink to='/add-visit'>Zarezerwuj</StyledLink>
+      <StyledLink to='/zarezerwuj'>Zarezerwuj</StyledLink>
     </NavItem>
     <NavItem>
-      <StyledLink to='/visits'>Aktualne wizyty</StyledLink>
+      <StyledLink to='/wizyty'>Aktualne wizyty</StyledLink>
     </NavItem>
     <NavItem>
-      <StyledLink to='/archive'>Historia wizyt</StyledLink>
+      <StyledLink to='/archiwum-wizyt'>Historia wizyt</StyledLink>
     </NavItem>
     <NavItem>
-      <StyledLink to='/settings'>Ustawienia</StyledLink>
+      <StyledLink to='/profil'>Ustawienia</StyledLink>
     </NavItem>
   </>
 )

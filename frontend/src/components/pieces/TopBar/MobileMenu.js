@@ -90,8 +90,8 @@ const MobileMenu = ({ setIsOpenHandler }, ref) => {
             Oferta
           </StyledLink>
         </NavItem>
-        <NavItem mobile onClick={() => navigate("/price-list/Wizyta")}>
-          <StyledLink onClick={setIsOpenHandler} to="/price-list">
+        <NavItem mobile onClick={() => navigate("/cennik/wizyta")}>
+          <StyledLink onClick={setIsOpenHandler} to="/cennik">
             Cennik
           </StyledLink>
         </NavItem>
@@ -99,7 +99,7 @@ const MobileMenu = ({ setIsOpenHandler }, ref) => {
         <ButtonsContainer>
           <ButtonNav primary onClick={setIsOpenHandler}>
             <ButtonLink
-              to={isAdmin ? "/timesheet" : "/add-visit"}
+              to={isAdmin ? "/grafik" : "/zarezerwuj"}
               onClick={() => dispatch(clearMessage())}
             >
               Umów się na wizytę
@@ -108,7 +108,7 @@ const MobileMenu = ({ setIsOpenHandler }, ref) => {
           {currentUser ? (
             <ButtonNav onClick={setIsOpenHandler}>
               <ButtonLink
-                to="/login"
+                to="/logowanie"
                 onClick={() => {
                   logOut();
                   dispatch(clearMessage());
@@ -119,7 +119,7 @@ const MobileMenu = ({ setIsOpenHandler }, ref) => {
             </ButtonNav>
           ) : (
             <ButtonNav onClick={setIsOpenHandler}>
-              <ButtonLink to="/login" onClick={() => dispatch(clearMessage())}>
+              <ButtonLink to="/logowanie" onClick={() => dispatch(clearMessage())}>
                 Zaloguj się
               </ButtonLink>
             </ButtonNav>

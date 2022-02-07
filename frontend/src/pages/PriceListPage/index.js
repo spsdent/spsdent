@@ -35,7 +35,7 @@ import ServiceData from '../../services/service'
 const PriceListPage = () => {
   const [currentPathServices, setCurrentPathServices] = useState([])
   let params = useParams()
-  let priceGroup = params['group']
+  let priceGroup = params['grupa']
 
   useEffect(() => {
     retrieveServices()

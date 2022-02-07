@@ -109,7 +109,7 @@ const AddVisitAuthUser = () => {
     VisitData.create(visitData)
       .then((response) => {
         dispatch(refreshApp())
-        navigate('/visits')
+        navigate('/wizyty')
       })
       .catch((e) => {
         console.log(e)

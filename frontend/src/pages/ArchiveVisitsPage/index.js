@@ -83,7 +83,7 @@ const ArchiveVisitsList = () => {
   }
 
   const goToVisit = (item) => {
-    navigate(`/archive/${item.id}`, { state: { item } })
+    navigate(`/archiwum-wizyt/${item.id}`, { state: { item } })
   }
 
   const displayVisits = visitsList

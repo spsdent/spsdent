@@ -118,7 +118,7 @@ const PwdChangePage = () => {
                   <TextContainer>
                     <UserText>Chcesz utworzyć konto?</UserText>
                     <StyledLink
-                      to="/register"
+                      to="/rejestracja"
                       onClick={() => dispatch(clearMessage())}
                     >
                       Kliknij tutaj!

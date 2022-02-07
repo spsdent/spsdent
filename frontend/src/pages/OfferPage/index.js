@@ -56,7 +56,7 @@ const OfferPage = () => {
             initial="hidden"
             animate="visible"
           >
-            <LinkButton to="/offer/rtg-3d">
+            <LinkButton to="/oferta/rtg-3d">
               <OfferButtonContainer
                 variants={item}
                 whileHover={{ scale: 0.95 }}
@@ -67,7 +67,7 @@ const OfferPage = () => {
                 <OfferButtonText>rtg 3d</OfferButtonText>
               </OfferButtonContainer>
             </LinkButton>
-            <LinkButton to="/offer/endodoncja">
+            <LinkButton to="/oferta/endodoncja">
               <OfferButtonContainer
                 variants={item}
                 whileHover={{ scale: 0.95 }}
@@ -77,7 +77,7 @@ const OfferPage = () => {
                 <OfferButtonText>Endodoncja</OfferButtonText>
               </OfferButtonContainer>
             </LinkButton>
-            <LinkButton to="/offer/dds">
+            <LinkButton to="/oferta/dds">
               <OfferButtonContainer
                 whileHover={{ scale: 0.95 }}
                 whileTap={{ scale: 0.9 }}
@@ -87,7 +87,7 @@ const OfferPage = () => {
                 <OfferButtonText>DDS</OfferButtonText>
               </OfferButtonContainer>
             </LinkButton>
-            <LinkButton to="/offer/pip">
+            <LinkButton to="/oferta/pip">
               <OfferButtonContainer
                 whileHover={{ scale: 0.95 }}
                 whileTap={{ scale: 0.9 }}
@@ -99,7 +99,7 @@ const OfferPage = () => {
                 </OfferButtonText>
               </OfferButtonContainer>
             </LinkButton>
-            <LinkButton to="/offer/pcyfrowa">
+            <LinkButton to="/oferta/pcyfrowa">
               <OfferButtonContainer
                 whileHover={{ scale: 0.95 }}
                 whileTap={{ scale: 0.9 }}
@@ -115,7 +115,7 @@ const OfferPage = () => {
             initial="hidden"
             animate="visible"
           >
-            <LinkButton to="/offer/implanty">
+            <LinkButton to="/oferta/implanty">
               <OfferButtonContainer
                 whileHover={{ scale: 0.95 }}
                 whileTap={{ scale: 0.9 }}
@@ -125,7 +125,7 @@ const OfferPage = () => {
                 <OfferButtonText>Implanty</OfferButtonText>
               </OfferButtonContainer>
             </LinkButton>
-            <LinkButton to="/offer/ortodoncja">
+            <LinkButton to="/oferta/ortodoncja">
               <OfferButtonContainer
                 whileHover={{ scale: 0.95 }}
                 whileTap={{ scale: 0.9 }}
@@ -135,7 +135,7 @@ const OfferPage = () => {
                 <OfferButtonText>Ortodoncja</OfferButtonText>
               </OfferButtonContainer>
             </LinkButton>
-            <LinkButton to="/offer/diagnostyka">
+            <LinkButton to="/oferta/diagnostyka">
               <OfferButtonContainer
                 whileHover={{ scale: 0.95 }}
                 whileTap={{ scale: 0.9 }}
@@ -145,7 +145,7 @@ const OfferPage = () => {
                 <OfferButtonText>Diagnostyka</OfferButtonText>
               </OfferButtonContainer>
             </LinkButton>
-            <LinkButton to="/offer/znieczulenie">
+            <LinkButton to="/oferta/znieczulenie">
               <OfferButtonContainer
                 whileHover={{ scale: 0.95 }}
                 whileTap={{ scale: 0.9 }}
@@ -155,7 +155,7 @@ const OfferPage = () => {
                 <OfferButtonText>znieczulenie ogólne</OfferButtonText>
               </OfferButtonContainer>
             </LinkButton>
-            <LinkButton to="/offer/zachowawcza">
+            <LinkButton to="/oferta/zachowawcza">
               <OfferButtonContainer
                 whileHover={{ scale: 0.95 }}
                 whileTap={{ scale: 0.9 }}

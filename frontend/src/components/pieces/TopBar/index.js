@@ -69,7 +69,7 @@ const TopBar = () => {
           <ButtonsContainer>
             <ButtonNav primary>
               <ButtonLink
-                to={isAdmin ? "/timesheet" : "/add-visit"}
+                to={isAdmin ? "/grafik" : "/zarezerwuj"}
                 onClick={() => dispatch(clearMessage())}
               >
                 Umów się na wizytę
@@ -78,7 +78,7 @@ const TopBar = () => {
             {currentUser ? (
               <ButtonNav>
                 <ButtonLink
-                  to="/login"
+                  to="/logowanie"
                   onClick={() => {
                     logOut();
                     dispatch(clearMessage());
@@ -90,7 +90,7 @@ const TopBar = () => {
             ) : (
               <ButtonNav>
                 <ButtonLink
-                  to="/login"
+                  to="/logowanie"
                   onClick={() => dispatch(clearMessage())}
                 >
                   Zaloguj się

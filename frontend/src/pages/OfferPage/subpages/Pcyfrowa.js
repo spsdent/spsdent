@@ -69,7 +69,7 @@ const Pcyfrowa = () => {
               EasyShade.
             </PageTextColumn>
           </PageText>
-          <ComeBackButton to="/offer">Powrót do oferty</ComeBackButton>
+          <ComeBackButton to="/oferta">Powrót do oferty</ComeBackButton>
         </SubPageContainer>
         <Pattern
           src="../Pattern.png"

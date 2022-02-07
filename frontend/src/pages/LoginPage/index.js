@@ -50,7 +50,7 @@ const LoginPage = () => {
     dispatch(login(email, password))
       .then(() => {
         dispatch(clearMessage());
-        navigate("/settings");
+        navigate("/profil");
       })
       .catch(() => {
         setLoading(false);
@@ -58,7 +58,7 @@ const LoginPage = () => {
   };
 
   if (isLoggedIn) {
-    return <Navigate to="/settings" />;
+    return <Navigate to="/profil" />;
   }
 
   return (
@@ -116,11 +116,11 @@ const LoginPage = () => {
                   {message && <ErrorText primary>{message}</ErrorText>}
                   <TextContainer>
                     <UserText>Chcesz utworzyć konto?</UserText>
-                    <StyledLink to="/register">Kliknij tutaj!</StyledLink>
+                    <StyledLink to="/rejestracja">Kliknij tutaj!</StyledLink>
                   </TextContainer>
                   <TextContainer>
                     <UserText>Zapomniałeś hasła?</UserText>
-                    <StyledLink to="/password-change">
+                    <StyledLink to="/zresetuj-haslo">
                       Zresetuj hasło!
                     </StyledLink>
                   </TextContainer>
