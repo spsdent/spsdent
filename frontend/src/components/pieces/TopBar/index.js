@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../store/actions/auth";
 import { history } from "../../../helpers/history";
 import { clearMessage } from "../../../store/actions/message";
-
+import MobileMenu from "./MobileMenu";
 const TopBar = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -53,6 +53,7 @@ const TopBar = () => {
           <MobileIcon onClick={setIsOpenHandler}>
             <FaBars />
           </MobileIcon>
+          {isOpen && <MobileMenu/>}
           <NavInfoContainer>
             <InfoContainer>
               <BsTelephone />

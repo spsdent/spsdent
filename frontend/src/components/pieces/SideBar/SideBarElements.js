@@ -51,6 +51,8 @@ export const NavWrap = styled.ul`
 export const NavItem = styled.li`
   position: relative;
   padding: 0.15em 0;
+  list-style: none;
+  
 `;
 export const StyledLink = styled(StyledNavLink)`
   text-transform: uppercase;
