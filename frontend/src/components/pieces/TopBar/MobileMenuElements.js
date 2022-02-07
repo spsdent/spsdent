@@ -1,10 +1,10 @@
 import styled, { css } from "styled-components";
 import { Link as LinkButton } from "react-router-dom";
-
+import {motion} from "framer-motion";
 import { NavLink as StyledNavLink } from "react-router-dom";
 
-export const MobileMenuContainer = styled.div`
-  background-color: rgba(255,255,255,.95);
+export const MobileMenuContainer = styled(motion.div)`
+  background-color: rgba(255, 255, 255, 0.95);
   height: 100%;
   width: 100%;
   position: fixed;
@@ -14,12 +14,12 @@ export const MobileMenuContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-font-size: 14px;
+  font-size: 14px;
   @media screen and (max-width: 400px) {
-      font-size: 10px;
+    font-size: 10px;
   }
 `;
-export const MobileMenuWrap = styled.div`
+export const MobileMenuWrap = styled(motion.div)`
   /* background-color: #645; */
   width: 80%;
   height: 80%;
@@ -97,8 +97,8 @@ export const SocialLink = styled.a`
   cursor: pointer;
 `;
 export const NavSocials = styled.div`
-position: absolute;
-bottom: 2em;
+  position: absolute;
+  bottom: 2em;
   display: flex;
   justify-content: center;
   align-items: center;

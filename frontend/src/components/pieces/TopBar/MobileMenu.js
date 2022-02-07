@@ -19,10 +19,10 @@ import {
   ButtonNav,
   ButtonsContainer,
   SocialLink,
-  NavSocials
+  NavSocials,
 } from "./MobileMenuElements";
 import { useDispatch, useSelector } from "react-redux";
-const MobileMenu = () => {
+const MobileMenu = ({ setIsOpenHandler }, ref) => {
   const { user: currentUser } = useSelector((state) => state.auth);
   const [showSpecBoard, setShowSpecBoard] = useState(false);
   const [showAdminBoard, setShowAdminBoard] = useState(false);
@@ -60,79 +60,94 @@ const MobileMenu = () => {
   };
 
   const isAdmin = currentUser && currentUser.roles.includes("ROLE_ADMIN");
-  const [isOpen, setIsOpen] = useState(false);
-  const setIsOpenHandler = () => {
-    setIsOpen(!isOpen);
-    console.log(isOpen);
-  };
+
   return (
-    <MobileMenuContainer>
-      <MobileMenuWrap>
+    <MobileMenuContainer
+      ref={ref}
+      initial={{ y: "-100vh" }}
+      animate={{ y: 0 }}
+      exit={{ y: "-100vh" }}
+      transition={{ duration: 0.5 }}
+    >
+      <MobileMenuWrap
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+      >
         <NavItem mobile>
-          <StyledLink to="/">Strona Główna</StyledLink>
+          <StyledLink onClick={setIsOpenHandler} to="/">
+            Strona Główna
+          </StyledLink>
         </NavItem>
         <NavItem mobile>
-          <StyledLink to="/about-us">O nas</StyledLink>
+          <StyledLink onClick={setIsOpenHandler} to="/about-us">
+            O nas
+          </StyledLink>
         </NavItem>
         <NavItem mobile>
-          <StyledLink to="/offer">Oferta</StyledLink>
+          <StyledLink onClick={setIsOpenHandler} to="/offer">
+            Oferta
+          </StyledLink>
         </NavItem>
         <NavItem mobile onClick={() => navigate("/price-list/Wizyta")}>
-          <StyledLink to="/price-list">Cennik</StyledLink>
+          <StyledLink onClick={setIsOpenHandler} to="/price-list">
+            Cennik
+          </StyledLink>
         </NavItem>
-       
+
         <ButtonsContainer>
-        <ButtonNav primary>
-          <ButtonLink
-            to={isAdmin ? "/timesheet" : "/add-visit"}
-            onClick={() => dispatch(clearMessage())}
-          >
-            Umów się na wizytę
-          </ButtonLink>
-        </ButtonNav>
-        {currentUser ? (
-          <ButtonNav>
+          <ButtonNav primary onClick={setIsOpenHandler}>
             <ButtonLink
-              to="/login"
-              onClick={() => {
-                logOut();
-                dispatch(clearMessage());
-              }}
+              to={isAdmin ? "/timesheet" : "/add-visit"}
+              onClick={() => dispatch(clearMessage())}
             >
-              Wyloguj się
+              Umów się na wizytę
             </ButtonLink>
           </ButtonNav>
-        ) : (
-          <ButtonNav>
-            <ButtonLink to="/login" onClick={() => dispatch(clearMessage())}>
-              Zaloguj się
-            </ButtonLink>
-          </ButtonNav>
-        )}
-      </ButtonsContainer>
-      <NavSocials>
-        <SocialLink
-          href="//www.facebook.com"
-          target="_blank"
-          aria-label="facebook"
-        >
-          <FiFacebook />
-        </SocialLink>
-        <SocialLink
-          href="//www.instagram.com"
-          target="_blank"
-          aria-label="instagram"
-        >
-          <FaInstagram />
-        </SocialLink>
-        <SocialLink
-          href="//www.twitter.com"
-          target="_blank"
-          aria-label="twitter"
-        >
-          <FiTwitter />
-        </SocialLink>
-      </NavSocials>
+          {currentUser ? (
+            <ButtonNav onClick={setIsOpenHandler}>
+              <ButtonLink
+                to="/login"
+                onClick={() => {
+                  logOut();
+                  dispatch(clearMessage());
+                }}
+              >
+                Wyloguj się
+              </ButtonLink>
+            </ButtonNav>
+          ) : (
+            <ButtonNav onClick={setIsOpenHandler}>
+              <ButtonLink to="/login" onClick={() => dispatch(clearMessage())}>
+                Zaloguj się
+              </ButtonLink>
+            </ButtonNav>
+          )}
+        </ButtonsContainer>
+        <NavSocials>
+          <SocialLink
+            href="//www.facebook.com"
+            target="_blank"
+            aria-label="facebook"
+          >
+            <FiFacebook />
+          </SocialLink>
+          <SocialLink
+            href="//www.instagram.com"
+            target="_blank"
+            aria-label="instagram"
+          >
+            <FaInstagram />
+          </SocialLink>
+          <SocialLink
+            href="//www.twitter.com"
+            target="_blank"
+            aria-label="twitter"
+          >
+            <FiTwitter />
+          </SocialLink>
+        </NavSocials>
       </MobileMenuWrap>
     </MobileMenuContainer>
   );

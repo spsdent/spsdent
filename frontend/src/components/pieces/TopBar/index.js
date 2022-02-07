@@ -21,6 +21,7 @@ import { logout } from "../../../store/actions/auth";
 import { history } from "../../../helpers/history";
 import { clearMessage } from "../../../store/actions/message";
 import MobileMenu from "./MobileMenu";
+import { AnimatePresence } from "framer-motion";
 const TopBar = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -39,7 +40,6 @@ const TopBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const setIsOpenHandler = () => {
     setIsOpen(!isOpen);
-    console.log(isOpen);
   };
   return (
     <>
@@ -50,10 +50,12 @@ const TopBar = () => {
               <NavImage src="../logo.png" alt="spsdentLogo" />
             </NavLogo>
           </NavLogoContainer>
-          <MobileIcon onClick={setIsOpenHandler}>
+          <MobileIcon onClick={setIsOpenHandler} >
             <FaBars />
           </MobileIcon>
-          {isOpen && <MobileMenu/>}
+          <AnimatePresence>
+          {isOpen && <MobileMenu setIsOpenHandler={setIsOpenHandler}/>}
+          </AnimatePresence>
           <NavInfoContainer>
             <InfoContainer>
               <BsTelephone />
