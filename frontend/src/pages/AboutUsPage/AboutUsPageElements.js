@@ -71,9 +71,8 @@ export const ButtonText = styled.p`
   font-size: 0.6em;
 `;
 export const ContentContainer = styled(motion.div)`
-  height: fit-content;
-  width: 100%;
   height: 100%;
+  width: 100%;
   display: flex;
   background-color: ${(props) => (props.primary ? "#333" : "#eee")};
   z-index: 1;

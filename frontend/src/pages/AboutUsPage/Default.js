@@ -14,7 +14,7 @@ import {
 const Default = () => {
   return (
     <>
-      <PageTitle
+      {/* <PageTitle
         initial={{ opacity: 0, x: "25vw" }}
         animate={{ opacity: 1, x: "0" }}
         exit={{ opacity: 0, x: "-25vw" }}
@@ -94,7 +94,7 @@ const Default = () => {
         initial={{ y: -200, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: -200, opacity: 0 }}
-      ></Pattern>
+      ></Pattern> */}
     </>
   );
 };
