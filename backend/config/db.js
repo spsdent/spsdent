@@ -1,6 +1,6 @@
 module.exports = {
-  HOST: 'admin',
+  HOST: "admin",
   PORT: 27017,
-  PWD: 'jebackurwypolicyjne',
-  DB: 'stomatology',
-}
+  PWD: "spsdentDBpassword",
+  DB: "stomatology",
+};
