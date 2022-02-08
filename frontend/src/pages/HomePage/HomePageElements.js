@@ -9,6 +9,7 @@ export const Container = styled.div`
   justify-content: space-around;
   align-items: center;
   font-size: 20px;
+  
   /* background-color: red; */
   @media screen and (max-width: 1600px) {
     font-size: 16px;
@@ -22,32 +23,17 @@ export const Container = styled.div`
   @media screen and (max-width: 960px) {
     font-size: 10px;
   }
-  @media screen and (orientation: portrait) {
+  @media (orientation: portrait) and (max-width: 768px) {
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-  
-  }
-  @media screen and (max-width: 768px) {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-
   }
 `;
 export const TextContainer = styled.div`
   width: 50%;
   height: fit-content;
-  @media screen and (orientation: portrait) {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.3em;
-  }
-  @media screen and (max-width: 768px) {
+  @media (orientation: portrait) and (max-width: 768px) {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -61,7 +47,7 @@ export const HeaderWelcome = styled(motion.h2)`
   letter-spacing: 0.07em;
   color: #333;
   line-height: 0.85em;
-  @media screen and (max-width: 450px) {
+  @media screen and (max-width: 768px) {
     font-size: 3.5em;
   }
 `;
@@ -69,17 +55,17 @@ export const StyledSpan = styled.span`
   color: ${(props) => (props.primary ? "#333" : "#01d4bf")};
 `;
 export const HeaderText = styled(motion.p)`
-  font-family: "montserrat", "Poppins";
+  font-family: "Poppins";
   font-weight: 300;
   width: 85%;
   font-size: 0.9em;
   margin: 1em 0 1.5em 0;
   line-height: 1.3em;
-
+  color: #333;
   @media screen and (max-width: 450px) {
     margin: 1em 0;
     width: 100%;
-    font-size: .7em;
+    font-size: 0.7em;
   }
 `;
 export const ButtonContainer = styled(motion.div)`
@@ -122,22 +108,21 @@ export const AddVisitButton = styled(motion.button)`
 `;
 export const HeaderPhotoContainer = styled.div`
   width: 50%;
-  height: 100%;
+  height: 90%;
+  position: relative;
+
+  @media (max-width: 768px) and (orientation: portrait) {
+    width: 80%;
+  }
 `;
 export const PhotoHeader = styled(motion.img)`
   border: none;
   border-radius: 15px;
-  width: ${(props) => (props.primary ? "14em" : "19em")};
+  width: ${(props) => (props.primary ? "45%" : "65%")};
   position: absolute;
-  top: ${(props) => (props.primary ? "45%" : "21%")};
-  right: ${(props) => (props.primary ? "15%" : "20%")};
+  top: ${(props) => (props.primary ? "35%" : "5%")};
+  right: ${(props) => (props.primary ? "10%" : "30%")};
   cursor: pointer;
-  @media screen and (orientation: portrait) {
-    display: none;
-  }
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
 `;
 export const ButtonLink = styled(LinkButton)`
   width: 100%;

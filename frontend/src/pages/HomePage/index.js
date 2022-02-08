@@ -15,9 +15,19 @@ import {
   ButtonContainer,
   ButtonLink,
 } from "./HomePageElements";
-
+import {
+  ContactContainer,
+  ContactForm,
+  ContactTitle,
+  ContactInfo,
+  ContactInfoTitle,
+  ContactText,
+  ContactInput,
+  ContactMessage,
+  ButtonContact,
+  ContactSocket,
+} from "../ContactPage/ContactPageElements";
 const Home = () => {
-
   return (
     <PageWrapper primary>
       <Container>
@@ -32,21 +42,21 @@ const Home = () => {
             animate={{ opacity: 1, x: 0 }}
           >
             Witaj w <br />
-            </HeaderWelcome>
-            <HeaderWelcome
-              primary
-              transition={{
-                type: "spring",
-                bounce: 0.6,
-                duration: 2,
-                delay: 0.1,
-              }}
-              initial={{ opacity: 0, x: -200 }}
-              animate={{ opacity: 1, x: 0 }}
-            >
-              SPS<StyledSpan>Dent</StyledSpan>!
-            </HeaderWelcome>
-          
+          </HeaderWelcome>
+          <HeaderWelcome
+            primary
+            transition={{
+              type: "spring",
+              bounce: 0.6,
+              duration: 2,
+              delay: 0.1,
+            }}
+            initial={{ opacity: 0, x: -200 }}
+            animate={{ opacity: 1, x: 0 }}
+          >
+            SPS<StyledSpan>Dent</StyledSpan>!
+          </HeaderWelcome>
+
           <HeaderText
             transition={{
               type: "spring",
@@ -81,6 +91,34 @@ const Home = () => {
             </AddVisitButton>
           </ButtonContainer>
         </TextContainer>
+        <ContactInfo
+          home
+          initial={{ x: 300 }}
+          animate={{ x: 0 }}
+          transition={{ type: "spring", damping: 5, stiffness: 100 }}
+        >
+          <ContactSocket>
+            <ContactInfoTitle>Tu nas znajdziesz</ContactInfoTitle>
+            <ContactText>
+              ul. Filaretów 27,<br></br>lok.4 20-609<br></br>Lublin
+            </ContactText>
+          </ContactSocket>
+          <ContactSocket>
+            <ContactInfoTitle>Godziny otwarcia</ContactInfoTitle>
+            <ContactText>
+              Poniedziałek - Piątek<br></br>8:00 - 16:00<br></br>Sobota<br></br>
+              9:00 - 13:00
+            </ContactText>
+          </ContactSocket>
+          <ContactSocket>
+            <ContactInfoTitle>Telefon</ContactInfoTitle>
+            <ContactText>607 677 888</ContactText>
+          </ContactSocket>
+          <ContactSocket>
+            <ContactInfoTitle>Pomoc</ContactInfoTitle>
+            <ContactText>pomoc@spsdent.com</ContactText>
+          </ContactSocket>
+        </ContactInfo>
         <HeaderPhotoContainer>
           <PhotoHeader
             transition={{ type: "spring", bounce: 0.6, duration: 1.5 }}
