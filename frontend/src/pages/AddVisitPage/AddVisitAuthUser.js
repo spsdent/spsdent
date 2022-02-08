@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { useNavigate } from 'react-router-dom'
@@ -44,6 +44,7 @@ import {
   ModalButtonsContainer,
 } from '../VisitPage/VisitPageElements'
 import { StyledModalButton } from '../TimesheetPage/AdminCreateVisitElements'
+import HashLoader from 'react-spinners/HashLoader'
 
 const MyStyledSelect = FormInput.withComponent('select')
 
@@ -56,6 +57,7 @@ const AddVisitAuthUser = () => {
   const [selectedServicePrice, setSelectedServicePrice] = useState('')
   const [isSubmit, setIsSubmit] = useState(false)
   const [startDate, setStartDate] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   // rejestrowanie polskich znaków dla kalendarza
   registerLocale('pl', pl)
@@ -72,6 +74,14 @@ const AddVisitAuthUser = () => {
   const allServicesFromDb = useFetchAllServices()
   const allDoctorsFromDb = useFetchAllDoctors()
   const allUsersFromDb = useFetchAllUsers()
+
+  useEffect(()=>{
+    setIsLoading(true)
+    if(allVisitsFromDb.length > 0) {
+      setIsLoading(false)
+    }
+  },[allVisitsFromDb])
+
 
   // funkcja odpowiedzialna za dodawanie wizyt
   const createVisit = (values) => {
@@ -358,7 +368,13 @@ const AddVisitAuthUser = () => {
 
   return (
     <PageWrapper>
-      <AddVisitContainer>
+      <HashLoader
+        color='#01d4bf'
+        loading={isLoading}
+        size={50}
+        css={{ width: '100%', height: '100%' }}
+      />
+      {!isLoading && <AddVisitContainer>
         <TitleContainer>
           <Title>Zarezerwuj</Title>
           <Title primary>Wizytę</Title>
@@ -566,7 +582,7 @@ const AddVisitAuthUser = () => {
         ) : (
           <p>Przykro nam, ale nie oferujemy żadnych usług</p>
         )}
-      </AddVisitContainer>
+      </AddVisitContainer>}
     </PageWrapper>
   )
 }

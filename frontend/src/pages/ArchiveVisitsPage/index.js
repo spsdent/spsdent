@@ -24,6 +24,7 @@ import {
 } from '../VisitsPage/VisitsPageElements'
 import useFetchAllUsers from '../../hooks/useFetchAllUsers'
 import { MyPaginate } from '../VisitsPage/VisitsPageElements'
+import HashLoader from 'react-spinners/HashLoader'
 
 const ArchiveVisitsList = () => {
   const [filterPosition, setFilterPosition] = useState({
@@ -34,6 +35,7 @@ const ArchiveVisitsList = () => {
     cena: 0,
   })
   const [visitsList, setVisitsList] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
   const { user: currentUser } = useSelector((state) => state.auth)
   const { refresh: isRefresh } = useSelector((state) => state)
   const dispatch = useDispatch()
@@ -48,6 +50,7 @@ const ArchiveVisitsList = () => {
   }, [isRefresh])
 
   const retrieveVisits = () => {
+    setIsLoading(true)
     VisitDataService.getAll()
       .then((response) => {
         const visitsArr = response.data.filter((item) => item.status === true)
@@ -64,6 +67,7 @@ const ArchiveVisitsList = () => {
           )
           setVisitsList(userVisitsArr)
         }
+        setIsLoading(false)
       })
       .catch((e) => {
         console.log(e)
@@ -233,7 +237,8 @@ const ArchiveVisitsList = () => {
 
   return (
     <PageWrapper>
-      {allUsers.length > 0 && (
+      <HashLoader color='#01d4bf' loading={isLoading} size={50} css={{width: '100%', height: '100%'}}/>
+      {!isLoading && (
         <>
           <VisitsPageContainer>
             <VisitsPageTitleContainer>

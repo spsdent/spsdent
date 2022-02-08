@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 
 import { useSelector, useDispatch } from 'react-redux'
-import DatePicker, { registerLocale }  from 'react-datepicker'
+import DatePicker, { registerLocale } from 'react-datepicker'
 import pl from 'date-fns/locale/pl'
 import 'react-datepicker/dist/react-datepicker.css'
 import 'react-datepicker/dist/react-datepicker-cssmodules.css'
@@ -38,6 +38,7 @@ import {
 } from '../VisitPage/VisitPageElements'
 import useFetchAllUsers from '../../hooks/useFetchAllUsers'
 import { refreshApp } from '../../store/actions/refresh'
+import HashLoader from 'react-spinners/HashLoader'
 
 const StyledContainer = styled.section`
   width: 100%;
@@ -84,10 +85,11 @@ const DoctorTimesheetPage = () => {
   const [selectedDate, setSelectedDate] = useState(null)
   const [visits, setVisits] = useState([])
   const [selectedDateVisits, setSelectedDateVisits] = useState([])
-  const { user: currentUser } = useSelector((state) => state.auth)
   const [isDelete, setIsDelete] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [visitId, setVisitId] = useState('')
   const [pageNumber, setPageNumber] = useState(0)
+  const { user: currentUser } = useSelector((state) => state.auth)
   const visitsPerPage = 5
   const pagesVisited = pageNumber * visitsPerPage
   const allUsers = useFetchAllUsers()
@@ -100,12 +102,14 @@ const DoctorTimesheetPage = () => {
   }, [])
 
   const retrieveVisits = () => {
+    setIsLoading(true)
     VisitData.getAll().then((response) => {
       const currentUserVisits = response.data.filter(
         (visit) =>
           visit.specjalista.sid === currentUser.id && visit.status === false
       )
       setVisits(currentUserVisits)
+      setIsLoading(false)
     })
   }
 
@@ -147,7 +151,6 @@ const DoctorTimesheetPage = () => {
       })
       .catch((e) => console.log(e))
   }
-
 
   // wyswietlanie wizyt wraz z paginacjami
   const displayVisits = selectedDateVisits
@@ -308,139 +311,147 @@ const DoctorTimesheetPage = () => {
 
   return (
     <PageWrapper>
-      <StyledContainer>
-        <StyledHeader isSelected={selectedDate}>
-          <VisitsPageTitleContainer>
-            <VisitsPageTitle
-              initial={{ y: -50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.1 }}
-            >
-              Grafik
-            </VisitsPageTitle>
-          </VisitsPageTitleContainer>
-          <DatePicker
-            selected={selectedDate}
-            dateFormat='dd/MM/yyyy'
-            onChange={(date) => onDateSelect(date)}
-            filterDate={isWeekday}
-            name='data'
-            placeholderText='Wybierz date...'
-            withPortal
-            locale='pl'
-          />
-        </StyledHeader>
-        <StyledList isSelected={selectedDate}>
-          <VisitsPageContainer>
-            <VisitsContainer>
-              {selectedDate !== null ? (
-                selectedDateVisits.length > 0 ? (
-                  <>
-                    <Headers
-                      variants={container}
-                      initial='hidden'
-                      animate='show'
+      <HashLoader
+        color='#01d4bf'
+        loading={isLoading}
+        size={50}
+        css={{ width: '100%', height: '100%' }}
+      />
+      {!isLoading && (
+        <StyledContainer>
+          <StyledHeader isSelected={selectedDate}>
+            <VisitsPageTitleContainer>
+              <VisitsPageTitle
+                initial={{ y: -50, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.1 }}
+              >
+                Grafik
+              </VisitsPageTitle>
+            </VisitsPageTitleContainer>
+            <DatePicker
+              selected={selectedDate}
+              dateFormat='dd/MM/yyyy'
+              onChange={(date) => onDateSelect(date)}
+              filterDate={isWeekday}
+              name='data'
+              placeholderText='Wybierz date...'
+              withPortal
+              locale='pl'
+            />
+          </StyledHeader>
+          <StyledList isSelected={selectedDate}>
+            <VisitsPageContainer>
+              <VisitsContainer>
+                {selectedDate !== null ? (
+                  selectedDateVisits.length > 0 ? (
+                    <>
+                      <Headers
+                        variants={container}
+                        initial='hidden'
+                        animate='show'
+                      >
+                        <Header primary onClick={onFilterByService}>
+                          <HeaderText variants={itemOne}>usługa</HeaderText>
+                          {filterPosition.usluga === 0 ? (
+                            <TriangleDesc />
+                          ) : filterPosition.usluga === 1 ? (
+                            <TriangleDescActive />
+                          ) : (
+                            <TriangleAsc />
+                          )}
+                        </Header>
+                        <Header onClick={onFilterBySpecialist}>
+                          <HeaderText>lekarz</HeaderText>
+                          {filterPosition.lekarz === 0 ? (
+                            <TriangleDesc />
+                          ) : filterPosition.lekarz === 1 ? (
+                            <TriangleDescActive />
+                          ) : (
+                            <TriangleAsc />
+                          )}
+                        </Header>
+                        <Header onClick={onFilterByDate}>
+                          <HeaderText>data</HeaderText>
+                          {filterPosition.data === 0 ? (
+                            <TriangleDesc />
+                          ) : filterPosition.data === 1 ? (
+                            <TriangleDescActive />
+                          ) : (
+                            <TriangleAsc />
+                          )}
+                        </Header>
+                        <Header onClick={onFilterByHour}>
+                          <HeaderText>godzina</HeaderText>
+                          {filterPosition.godzina === 0 ? (
+                            <TriangleDesc />
+                          ) : filterPosition.godzina === 1 ? (
+                            <TriangleDescActive />
+                          ) : (
+                            <TriangleAsc />
+                          )}
+                        </Header>
+                        <Header onClick={onFilterByPrice}>
+                          <HeaderText>cena</HeaderText>
+                          {filterPosition.cena === 0 ? (
+                            <TriangleDesc />
+                          ) : filterPosition.cena === 1 ? (
+                            <TriangleDescActive />
+                          ) : (
+                            <TriangleAsc />
+                          )}
+                        </Header>
+                      </Headers>
+                      <VisitsListContainer
+                        variants={container}
+                        initial='hidden'
+                        animate='show'
+                      >
+                        {displayVisits}
+                        <MyPaginate
+                          previousLabel={'Poprzednia strona'}
+                          nextLabel={'Następna strona'}
+                          pageCount={pageCount}
+                          onPageChange={changePage}
+                        />
+                      </VisitsListContainer>
+                    </>
+                  ) : (
+                    <VisitsPageTitle
+                      initial={{ y: -50, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.1 }}
                     >
-                      <Header primary onClick={onFilterByService}>
-                        <HeaderText variants={itemOne}>usługa</HeaderText>
-                        {filterPosition.usluga === 0 ? (
-                          <TriangleDesc />
-                        ) : filterPosition.usluga === 1 ? (
-                          <TriangleDescActive />
-                        ) : (
-                          <TriangleAsc />
-                        )}
-                      </Header>
-                      <Header onClick={onFilterBySpecialist}>
-                        <HeaderText>lekarz</HeaderText>
-                        {filterPosition.lekarz === 0 ? (
-                          <TriangleDesc />
-                        ) : filterPosition.lekarz === 1 ? (
-                          <TriangleDescActive />
-                        ) : (
-                          <TriangleAsc />
-                        )}
-                      </Header>
-                      <Header onClick={onFilterByDate}>
-                        <HeaderText>data</HeaderText>
-                        {filterPosition.data === 0 ? (
-                          <TriangleDesc />
-                        ) : filterPosition.data === 1 ? (
-                          <TriangleDescActive />
-                        ) : (
-                          <TriangleAsc />
-                        )}
-                      </Header>
-                      <Header onClick={onFilterByHour}>
-                        <HeaderText>godzina</HeaderText>
-                        {filterPosition.godzina === 0 ? (
-                          <TriangleDesc />
-                        ) : filterPosition.godzina === 1 ? (
-                          <TriangleDescActive />
-                        ) : (
-                          <TriangleAsc />
-                        )}
-                      </Header>
-                      <Header onClick={onFilterByPrice}>
-                        <HeaderText>cena</HeaderText>
-                        {filterPosition.cena === 0 ? (
-                          <TriangleDesc />
-                        ) : filterPosition.cena === 1 ? (
-                          <TriangleDescActive />
-                        ) : (
-                          <TriangleAsc />
-                        )}
-                      </Header>
-                    </Headers>
-                    <VisitsListContainer
-                      variants={container}
-                      initial='hidden'
-                      animate='show'
-                    >
-                      {displayVisits}
-                      <MyPaginate
-                        previousLabel={'Poprzednia strona'}
-                        nextLabel={'Następna strona'}
-                        pageCount={pageCount}
-                        onPageChange={changePage}
-                      />
-                    </VisitsListContainer>
-                  </>
+                      Brak wizyt tego dnia
+                    </VisitsPageTitle>
+                  )
                 ) : (
                   <VisitsPageTitle
                     initial={{ y: -50, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.1 }}
                   >
-                    Brak wizyt tego dnia
+                    Wybierz datę
                   </VisitsPageTitle>
-                )
-              ) : (
-                <VisitsPageTitle
-                  initial={{ y: -50, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.1 }}
-                >
-                  Wybierz datę
-                </VisitsPageTitle>
-              )}
-            </VisitsContainer>
-          </VisitsPageContainer>
-        </StyledList>
-        {isDelete && (
-          <ModalShadow>
-            <ModalContainer>
-              <ModalText>Na pewno chcesz usunąć wizytę?</ModalText>
-              <ModalButtonsContainer>
-                <ModalButton primary onClick={() => setIsDelete(false)}>
-                  Nie
-                </ModalButton>
-                <ModalButton onClick={onVisitDelete}>Tak</ModalButton>
-              </ModalButtonsContainer>
-            </ModalContainer>
-          </ModalShadow>
-        )}
-      </StyledContainer>
+                )}
+              </VisitsContainer>
+            </VisitsPageContainer>
+          </StyledList>
+          {isDelete && (
+            <ModalShadow>
+              <ModalContainer>
+                <ModalText>Na pewno chcesz usunąć wizytę?</ModalText>
+                <ModalButtonsContainer>
+                  <ModalButton primary onClick={() => setIsDelete(false)}>
+                    Nie
+                  </ModalButton>
+                  <ModalButton onClick={onVisitDelete}>Tak</ModalButton>
+                </ModalButtonsContainer>
+              </ModalContainer>
+            </ModalShadow>
+          )}
+        </StyledContainer>
+      )}
     </PageWrapper>
   )
 }

@@ -22,6 +22,7 @@ import { Pattern } from '../../components/Pattern'
 import useFetchAllUsers from '../../hooks/useFetchAllUsers'
 
 const VisitPage = () => {
+  
   let {
     state: { item: state, bRoute },
   } = useLocation()
@@ -30,11 +31,12 @@ const VisitPage = () => {
   const { user: currentUser } = useSelector((state) => state.auth)
   const isAdmin = currentUser.roles.includes('ROLE_ADMIN')
   const isSpec = currentUser.roles.includes('ROLE_SPEC')
-  const [isOpen, setIsOpen] = useState(false)
   const [actionType, setActionType] = useState('')
+  const [isOpen, setIsOpen] = useState(false)
   const location = useLocation()
   const backRoute = location.pathname.split('/')[1]
   const allUsers = useFetchAllUsers()
+
 
   // funkcja odpowiedzialna za wykonanie odpowiedniej akcji w zaleznosci od kliknietego przycisku
   const onHandleAction = () => {

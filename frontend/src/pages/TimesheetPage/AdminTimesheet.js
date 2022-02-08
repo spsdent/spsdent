@@ -32,6 +32,7 @@ import {
 } from '../VisitPage/VisitPageElements'
 import { refreshApp } from '../../store/actions/refresh'
 import { Option, TimesheetPick } from './TimesheetPageElements'
+import HashLoader from 'react-spinners/HashLoader'
 
 import DoctorData from '../../services/doctor'
 import UserData from '../../services/user'
@@ -85,6 +86,7 @@ const AdminTimesheetPage = () => {
   const [isSelected, setIsSelected] = useState(false)
   const [startDate, setStartDate] = useState(new Date())
   const [isCreated, setIsCreated] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const visitsPerPage = 5
   const pagesVisited = pageNumber * visitsPerPage
   const dispatch = useDispatch()
@@ -173,8 +175,10 @@ const AdminTimesheetPage = () => {
   }, [isCreated, startDate, updatedVisits, selectedDoctor])
 
   const retrieveUsers = () => {
+    setIsLoading(true)
     UserData.getAll().then((response) => {
       setUsers(response.data)
+      setIsLoading(false)
     })
   }
 
@@ -312,50 +316,57 @@ const AdminTimesheetPage = () => {
   `
   return (
     <PageWrapper>
-      <StyledContainer>
-        <StyledHeader isSelected={selectedDoctor}>
-          <VisitsPageTitleContainer>
-            <VisitsPageTitle
-              initial={{ y: -50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.1 }}
+      <HashLoader
+        color='#01d4bf'
+        loading={isLoading}
+        size={50}
+        css={{ width: '100%', height: '100%' }}
+      />
+      {!isLoading && (
+        <StyledContainer>
+          <StyledHeader isSelected={selectedDoctor}>
+            <VisitsPageTitleContainer>
+              <VisitsPageTitle
+                initial={{ y: -50, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.1 }}
+              >
+                Grafik
+              </VisitsPageTitle>
+            </VisitsPageTitleContainer>
+            <TimesheetPick
+              name='selectedDoctor'
+              onChange={onDoctorChange}
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              value={selectedDoctor}
             >
-              Grafik
-            </VisitsPageTitle>
-          </VisitsPageTitleContainer>
-          <TimesheetPick
-            name='selectedDoctor'
-            onChange={onDoctorChange}
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            value={selectedDoctor}
-          >
-            <Option value=''>Wybierz lekarza</Option>
-            {filteredUsers.map((doctor) => (
-              <Option value={doctor._id} key={doctor._id}>
-                {doctor.imie} {doctor.nazwisko}
-              </Option>
-            ))}
-          </TimesheetPick>
-        </StyledHeader>
-        <StyledList isSelected={selectedDoctor}>
-          {selectedDoctor && (
-            <>
-              <Styles>
-                <DatePicker
-                  selected={startDate}
-                  dateFormat='dd/MM/yyyy'
-                  onChange={(date) => setStartDate(date)}
-                  value={startDate}
-                  filterDate={isWeekday}
-                  name='data'
-                  withPortal
-                  locale='pl'
-                />
-              </Styles>
-              <VisitsPageContainer>
-                <VisitsContainer>
+              <Option value=''>Wybierz lekarza</Option>
+              {filteredUsers.map((doctor) => (
+                <Option value={doctor._id} key={doctor._id}>
+                  {doctor.imie} {doctor.nazwisko}
+                </Option>
+              ))}
+            </TimesheetPick>
+          </StyledHeader>
+          <StyledList isSelected={selectedDoctor}>
+            {selectedDoctor && (
+              <>
+                <Styles>
+                  <DatePicker
+                    selected={startDate}
+                    dateFormat='dd/MM/yyyy'
+                    onChange={(date) => setStartDate(date)}
+                    value={startDate}
+                    filterDate={isWeekday}
+                    name='data'
+                    withPortal
+                    locale='pl'
+                  />
+                </Styles>
+                <VisitsPageContainer>
+                  <VisitsContainer>
                     {selectedDateVisits ? (
                       <>
                         <VisitsListContainer
@@ -382,37 +393,38 @@ const AdminTimesheetPage = () => {
                         Brak wizyt tego dnia
                       </VisitsPageTitle>
                     )}
-                </VisitsContainer>
-              </VisitsPageContainer>
-            </>
+                  </VisitsContainer>
+                </VisitsPageContainer>
+              </>
+            )}
+          </StyledList>
+          {isSelected && (
+            <ModalShadow>
+              <AdminCreateVisit
+                isDelete={isDelete}
+                bookingInfo={bookingInfo}
+                doctors={doctors}
+                selectedDoctor={selectedDoctor}
+                isSelectedFunc={setIsSelected}
+                onCreate={setIsCreated}
+              />
+            </ModalShadow>
           )}
-        </StyledList>
-        {isSelected && (
-          <ModalShadow>
-            <AdminCreateVisit
-              isDelete={isDelete}
-              bookingInfo={bookingInfo}
-              doctors={doctors}
-              selectedDoctor={selectedDoctor}
-              isSelectedFunc={setIsSelected}
-              onCreate={setIsCreated}
-            />
-          </ModalShadow>
-        )}
-        {isDelete && (
-          <ModalShadow>
-            <ModalContainer>
-              <ModalText>Na pewno chcesz usunąć wizytę?</ModalText>
-              <ModalButtonsContainer>
-                <ModalButton primary onClick={() => setIsDelete(false)}>
-                  Nie
-                </ModalButton>
-                <ModalButton onClick={onVisitDelete}>Tak</ModalButton>
-              </ModalButtonsContainer>
-            </ModalContainer>
-          </ModalShadow>
-        )}
-      </StyledContainer>
+          {isDelete && (
+            <ModalShadow>
+              <ModalContainer>
+                <ModalText>Na pewno chcesz usunąć wizytę?</ModalText>
+                <ModalButtonsContainer>
+                  <ModalButton primary onClick={() => setIsDelete(false)}>
+                    Nie
+                  </ModalButton>
+                  <ModalButton onClick={onVisitDelete}>Tak</ModalButton>
+                </ModalButtonsContainer>
+              </ModalContainer>
+            </ModalShadow>
+          )}
+        </StyledContainer>
+      )}
 
       <Pattern
         initial={{ x: 300, opacity: 0 }}
