@@ -26,7 +26,7 @@ export const Container = styled.div`
   @media (orientation: portrait) and (max-width: 768px) {
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     text-align: center;
   }
 `;
@@ -120,7 +120,7 @@ export const PhotoHeader = styled(motion.img)`
   border-radius: 15px;
   width: ${(props) => (props.primary ? "45%" : "65%")};
   position: absolute;
-  top: ${(props) => (props.primary ? "35%" : "5%")};
+  top: ${(props) => (props.primary ? "40%" : "5%")};
   right: ${(props) => (props.primary ? "10%" : "30%")};
   cursor: pointer;
 `;
