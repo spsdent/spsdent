@@ -13,14 +13,34 @@ export const OurStaffContainer = styled(motion.div)`
   align-items: center;
   width: 100%;
   overflow: hidden;
+  font-size: 24px;
+  @media screen and (max-width: 1600px) {
+    font-size: 20px;
+  }
+  @media screen and (max-width: 1400px) {
+    font-size: 18px;
+  }
+  @media screen and (max-width: 1280px) {
+    font-size: 16px;
+  }
+  @media screen and (max-width: 960px) {
+    font-size: 14px;
+  }
+  @media screen and (max-width: 768px) {
+    font-size: 12px;
+    flex-direction: column;
+  }
 `;
 export const TitleContainer = styled.div`
   width: 50%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  @media screen and (max-width:768px) {
+    margin-top: 3em;
+  }
 `;
 export const CardsContainer = styled.div`
   width: 50%;

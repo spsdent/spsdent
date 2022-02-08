@@ -36,11 +36,15 @@ export const ButtonsContainer = styled.div`
   justify-content: flex-start;
   align-items: center;
   gap: 1.5em;
-  padding-left: 1em;
   height: 3em;
   padding: 1em 1em 1em 6em;
   position: fixed;
   z-index: 100;
+  @media screen and (max-width: 768px) {
+    padding-left: 0;
+    justify-content: center;
+    width: 100%;
+  }
 `;
 export const ButtonContainer = styled(motion.div)`
   display: flex;
@@ -69,6 +73,7 @@ export const CircleButton = styled.div`
 export const ButtonText = styled.p`
   font-family: "poppins";
   font-size: 0.6em;
+  white-space: nowrap;
 `;
 export const ContentContainer = styled(motion.div)`
   height: 100%;

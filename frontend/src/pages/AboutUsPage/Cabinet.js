@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import React from "react";
 import {
+  Container,
   Title,
   CabinetColumn,
   PhotoCabinet,
@@ -20,6 +21,7 @@ const style = {
 const Cabinet = () => {
   return (
     <>
+    <Container>
       <CabinetColumn>
         <Title
           initial={{ y: "-100vh" }}
@@ -126,6 +128,7 @@ const Cabinet = () => {
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: -200, opacity: 0 }}
       ></Pattern>
+      </Container>
     </>
   );
 };

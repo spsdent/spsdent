@@ -81,12 +81,12 @@ const MobileMenu = ({ setIsOpenHandler }, ref) => {
           </StyledLink>
         </NavItem>
         <NavItem mobile>
-          <StyledLink onClick={setIsOpenHandler} to="/about-us">
+          <StyledLink onClick={setIsOpenHandler} to="/o-nas">
             O nas
           </StyledLink>
         </NavItem>
         <NavItem mobile>
-          <StyledLink onClick={setIsOpenHandler} to="/offer">
+          <StyledLink onClick={setIsOpenHandler} to="/oferta">
             Oferta
           </StyledLink>
         </NavItem>
