@@ -67,18 +67,19 @@ export const ContactSocket = styled.div`
   align-items: flex-start;
   width: auto;
   /* background-color: gray; */
+  flex-grow: 1;
 `;
 export const ContactInfoTitle = styled.h2`
   font-family: "bebas neue";
-  font-size: 1em;
-  color: rgba(51, 51, 51, 0.75);
-  letter-spacing: 0.1em;
+  font-size: 1.2em;
+  color: #333;
+  letter-spacing: 0.06em;
 `;
 export const ContactText = styled.p`
   font-family: "poppins";
-  font-size: ${(props) => (props.primary ? ".7em" : ".8em")};
+  font-size: ${(props) => (props.primary ? ".8em" : ".9em")};
   color: #333;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.04em;
   margin-bottom: ${(props) => (props.primary ? "0;" : "1.5em;")};
   padding: ${(props) => (props.primary ? "0;" : "0.2em 0;")};
   text-align: left;
