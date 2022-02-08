@@ -14,7 +14,7 @@ export const OurStaffContainer = styled(motion.div)`
   width: 100%;
   overflow: hidden;
   font-size: 24px;
-  /* height: 100%; */
+  height: 100%;
   @media screen and (max-width: 1600px) {
     font-size: 20px;
   }
