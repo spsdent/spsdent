@@ -44,7 +44,7 @@ class ContactPage extends Component {
             onSubmit={this.handleSubmit}
             initial={{ y: -300 }}
             animate={{ y: 0 }}
-            transition={{ type: "spring", damping: 7, stiffness: 50 }}
+            transition={{ type: "spring", damping: 10, stiffness: 50 }}
           >
             <ContactTitle>Kontakt</ContactTitle>
             <ContactText primary>
@@ -81,9 +81,9 @@ class ContactPage extends Component {
             <ButtonContact type="submit">Wyślij</ButtonContact>
           </ContactForm>
           <ContactInfo
-            initial={{ y: 300 }}
-            animate={{ y: 0 }}
-            transition={{ type: "spring", damping: 5, stiffness: 100 }}
+            initial={{ y: -300, opacity: 0 }}
+            animate={{ y: 0, opacity: 1}}
+            transition={{ type: "spring", damping: 10, stiffness: 50, delay: .2 }}
           >
             <ContactSocket>
               <ContactInfoTitle>Tu nas znajdziesz</ContactInfoTitle>
