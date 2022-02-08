@@ -45,8 +45,44 @@ import {
 } from '../VisitPage/VisitPageElements'
 import { StyledModalButton } from '../TimesheetPage/AdminCreateVisitElements'
 import HashLoader from 'react-spinners/HashLoader'
+import styled from 'styled-components'
 
 const MyStyledSelect = FormInput.withComponent('select')
+
+const Styles = styled.div`
+  width: 100%;
+  padding: 0;
+  .react-datepicker__input-container input {
+    width: 100%;
+    padding-left: 1em;
+    padding: 0.5em 0 0.5em 1em;
+    outline: none;
+    border: 2px solid #333;
+    background-color: #fff;
+    background: transparent;
+    font-family: 'poppins';
+    font-size: 15px;
+    color: #333;
+    @media screen and (max-width: 1500px) {
+      font-size: 13px;
+    }
+    @media screen and (max-width: 1280px) {
+      font-size: 11px;
+    }
+    @media screen and (max-width: 960px) {
+      font-size: 9px;
+    }
+    @media screen and (max-width: 768px) {
+      font-size: 7px;
+    }
+  }
+  
+
+  .react-datepicker__input-container input:disabled {
+    border: 2px solid rgba(3,3,3,.5);
+  }
+`
+
 
 const AddVisitAuthUser = () => {
   // definiowanie stanów, które będą wkorzystywane w komponencie
@@ -75,13 +111,12 @@ const AddVisitAuthUser = () => {
   const allDoctorsFromDb = useFetchAllDoctors()
   const allUsersFromDb = useFetchAllUsers()
 
-  useEffect(()=>{
+  useEffect(() => {
     setIsLoading(true)
-    if(allVisitsFromDb.length > 0) {
+    if (allVisitsFromDb.length > 0) {
       setIsLoading(false)
     }
-  },[allVisitsFromDb])
-
+  }, [allVisitsFromDb])
 
   // funkcja odpowiedzialna za dodawanie wizyt
   const createVisit = (values) => {
@@ -276,7 +311,7 @@ const AddVisitAuthUser = () => {
         (doctor) => doctor.doctorId === values.specjalista
       )
 
-      // a tutaj dodaje te daty do wykluczenia do tablicy 
+      // a tutaj dodaje te daty do wykluczenia do tablicy
       toExclude = Object.entries(doctorDatesToExclude)
         .filter((item) => item[1] > foundDoctor.godzinyPracy.length - 1)
         .map((item) => [
@@ -325,8 +360,8 @@ const AddVisitAuthUser = () => {
       // zapis dopasowanej ceny do stanu
       setSelectedServicePrice(servicePrice.cena)
 
-    // szukam w kolekcji wizyt z taka sama data jaka zostala wybrana w formularzu i w dodatku tego konkretnego wybranego lekarza
-    // a nastepnie zwracam same godziny tych wizyt
+      // szukam w kolekcji wizyt z taka sama data jaka zostala wybrana w formularzu i w dodatku tego konkretnego wybranego lekarza
+      // a nastepnie zwracam same godziny tych wizyt
       const currentDayDoctorBookedHours = allVisitsFromDb
         .filter(
           (visit) =>
@@ -374,215 +409,220 @@ const AddVisitAuthUser = () => {
         size={50}
         css={{ width: '100%', height: '100%' }}
       />
-      {!isLoading && <AddVisitContainer>
-        <TitleContainer>
-          <Title>Zarezerwuj</Title>
-          <Title primary>Wizytę</Title>
-        </TitleContainer>
-        {allDoctorsFromDb.length > 0 ? (
-          <Formik
-            enableReinitialize
-            initialValues={visit}
-            validationSchema={addVisitUserValidationSchema}
-            onSubmit={() => setIsSubmit(true)}
-            onReset={() => setVisit(initialAddVisitValues)}
-          >
-            {({
-              errors,
-              touched,
-              values,
-              setValues,
-              resetForm,
-              handleBlur,
-            }) => (
-              <Form>
-                <FormContainer>
-                  <FormColumn>
-                    <Field as={MyStyledSelect} name='grupa' onBlur={handleBlur}>
-                      <option value=''> Wybierz grupę usługi... </option>
-                      {onServiceGroupSelect(values)}
-                    </Field>
-                    <ErrorMessage name='grupa'>
-                      {(msg) => <FormError>{msg}</FormError>}
-                    </ErrorMessage>
-                    <Field
-                      as={MyStyledSelect}
-                      name='usluga'
-                      onBlur={handleBlur}
-                      disabled={!serviceGroupSelected}
-                    >
-                      <option value=''> Wybierz usługę... </option>
-                      {onServiceSelect(values)}
-                    </Field>
-                    <ErrorMessage name='usluga'>
-                      {(msg) => <FormError>{msg}</FormError>}
-                    </ErrorMessage>
-                    <Field
-                      as={MyStyledSelect}
-                      name='specjalista'
-                      onBlur={handleBlur}
-                      disabled={!serviceSelected}
-                    >
-                      <option value=''> Wybierz specjalistę... </option>
-                      {onDoctorSelect(values)}
-                    </Field>
-                    <ErrorMessage name='specjalista'>
-                      {(msg) => <FormError>{msg}</FormError>}
-                    </ErrorMessage>
-                    <DatePicker
-                      disabled={!doctorSelected}
-                      selected={startDate}
-                      dateFormat='dd/MM/yyyy'
-                      onChange={(date) => {
-                        setStartDate(date)
-                        values.data = `${date.getDate()}.${
-                          date.getMonth() + 1
-                        }.${date.getFullYear()}`
-                        setValues(values)
-                      }}
-                      minDate={minDate}
-                      placeholderText='Wybierz termin wizyty'
-                      filterDate={isWeekday}
-                      excludeDates={toExclude}
-                      name='data'
-                      onBlur={handleBlur}
-                      withPortal
-                      locale='pl'
-                    />
-                    <ErrorMessage name='data'>
-                      {(msg) => <FormError>{msg}</FormError>}
-                    </ErrorMessage>
-                    <Field
-                      disabled={!values.data}
-                      as={MyStyledSelect}
-                      name='godzina'
-                      onBlur={handleBlur}
-                    >
-                      <option value=''> Wybierz godzinę... </option>
-                      {onHourSelect(values.data)}
-                    </Field>
-                    <ErrorMessage name='godzina'>
-                      {(msg) => <FormError>{msg}</FormError>}
-                    </ErrorMessage>
+      {!isLoading && (
+        <AddVisitContainer>
+          <TitleContainer>
+            <Title>Zarezerwuj</Title>
+            <Title primary>Wizytę</Title>
+          </TitleContainer>
+          {allDoctorsFromDb.length > 0 ? (
+            <Formik
+              enableReinitialize
+              initialValues={visit}
+              validationSchema={addVisitUserValidationSchema}
+              onSubmit={() => setIsSubmit(true)}
+              onReset={() => setVisit(initialAddVisitValues)}
+            >
+              {({ values, setValues, resetForm, handleBlur }) => (
+                <Form>
+                  <FormContainer>
+                    <FormColumn>
+                      <Field
+                        as={MyStyledSelect}
+                        name='grupa'
+                        onBlur={handleBlur}
+                      >
+                        <option value=''> Wybierz grupę usługi... </option>
+                        {onServiceGroupSelect(values)}
+                      </Field>
+                      <ErrorMessage name='grupa'>
+                        {(msg) => <FormError>{msg}</FormError>}
+                      </ErrorMessage>
+                      <Field
+                        as={MyStyledSelect}
+                        name='usluga'
+                        onBlur={handleBlur}
+                        disabled={!serviceGroupSelected}
+                      >
+                        <option value=''> Wybierz usługę... </option>
+                        {onServiceSelect(values)}
+                      </Field>
+                      <ErrorMessage name='usluga'>
+                        {(msg) => <FormError>{msg}</FormError>}
+                      </ErrorMessage>
+                      <Field
+                        as={MyStyledSelect}
+                        name='specjalista'
+                        onBlur={handleBlur}
+                        disabled={!serviceSelected}
+                      >
+                        <option value=''> Wybierz specjalistę... </option>
+                        {onDoctorSelect(values)}
+                      </Field>
+                      <ErrorMessage name='specjalista'>
+                        {(msg) => <FormError>{msg}</FormError>}
+                      </ErrorMessage>
+                      <Styles>
+                      <DatePicker
+                        disabled={!doctorSelected}
+                        selected={startDate}
+                        dateFormat='dd/MM/yyyy'
+                        onChange={(date) => {
+                          setStartDate(date)
+                          values.data = `${date.getDate()}.${
+                            date.getMonth() + 1
+                          }.${date.getFullYear()}`
+                          setValues(values)
+                        }}
+                        minDate={minDate}
+                        placeholderText='Wybierz termin wizyty'
+                        filterDate={isWeekday}
+                        excludeDates={toExclude}
+                        name='data'
+                        onBlur={handleBlur}
+                        withPortal
+                        locale='pl'
+                      />
+                      </Styles>
+                      <ErrorMessage name='data'>
+                        {(msg) => <FormError>{msg}</FormError>}
+                      </ErrorMessage>
+                      <Field
+                        disabled={!values.data}
+                        as={MyStyledSelect}
+                        name='godzina'
+                        onBlur={handleBlur}
+                      >
+                        <option value=''> Wybierz godzinę... </option>
+                        {onHourSelect(values.data)}
+                      </Field>
+                      <ErrorMessage name='godzina'>
+                        {(msg) => <FormError>{msg}</FormError>}
+                      </ErrorMessage>
 
-                    <FormButton type='submit'>Podsumowanie</FormButton>
-                    <FormButton type='reset'>Wyczyść formularz</FormButton>
-                    {isSubmit && (
-                      <ModalShadow>
-                        <ModalContainer>
-                          <ModalText>Podsumowanie</ModalText>
-                          <ModalVisitContentContainer>
-                            <ModalVisitData>
-                              <h3>Twoje dane</h3>
-                              <ModalVisitTextContainer>
-                                <ModalVisitDataLabel>
-                                  Imie i nazwisko
-                                </ModalVisitDataLabel>
-                                <ModalVisitDataText>
-                                  {currentUser.imie} {currentUser.nazwisko}
-                                </ModalVisitDataText>
-                              </ModalVisitTextContainer>
-                              <ModalVisitTextContainer>
-                                <ModalVisitDataLabel>
-                                  E-mail
-                                </ModalVisitDataLabel>
-                                <ModalVisitDataText>
-                                  {currentUser.email}
-                                </ModalVisitDataText>
-                              </ModalVisitTextContainer>
-                              <ModalVisitTextContainer>
-                                <ModalVisitDataLabel>
-                                  Telefon
-                                </ModalVisitDataLabel>
-                                <ModalVisitDataText>
-                                  {currentUser.telefon}
-                                </ModalVisitDataText>
-                              </ModalVisitTextContainer>
-                              <ModalVisitTextContainer>
-                                <ModalVisitDataLabel>
-                                  Miasto
-                                </ModalVisitDataLabel>
-                                <ModalVisitDataText>
-                                  {currentUser.miasto}
-                                </ModalVisitDataText>
-                              </ModalVisitTextContainer>
-                              <ModalVisitTextContainer>
-                                <ModalVisitDataLabel>Ulica</ModalVisitDataLabel>
-                                <ModalVisitDataText>
-                                  {currentUser.ulica}
-                                </ModalVisitDataText>
-                              </ModalVisitTextContainer>
-                              <ModalVisitTextContainer>
-                                <ModalVisitDataLabel>
-                                  Kod-pocztowy
-                                </ModalVisitDataLabel>
-                                <ModalVisitDataText>
-                                  {currentUser.kodPocztowy}
-                                </ModalVisitDataText>
-                              </ModalVisitTextContainer>
-                            </ModalVisitData>
-                            <ModalVisitData>
-                              <h3>Umówiona wizyta</h3>
-                              <ModalVisitTextContainer>
-                                <ModalVisitDataLabel>Grupa</ModalVisitDataLabel>
-                                <ModalVisitDataText>
-                                  {values.grupa}
-                                </ModalVisitDataText>
-                              </ModalVisitTextContainer>
-                              <ModalVisitTextContainer>
-                                <ModalVisitDataLabel>
-                                  Usługa
-                                </ModalVisitDataLabel>
-                                <ModalVisitDataText>
-                                  {values.usluga}
-                                </ModalVisitDataText>
-                              </ModalVisitTextContainer>
-                              <ModalVisitTextContainer>
-                                <ModalVisitDataLabel>
-                                  Data wizyty
-                                </ModalVisitDataLabel>
-                                <ModalVisitDataText>
-                                  {values.data}r.
-                                </ModalVisitDataText>
-                              </ModalVisitTextContainer>
-                              <ModalVisitTextContainer>
-                                <ModalVisitDataLabel>
-                                  Godzina wizyty
-                                </ModalVisitDataLabel>
-                                <ModalVisitDataText>
-                                  {values.godzina}:00
-                                </ModalVisitDataText>
-                              </ModalVisitTextContainer>
-                            </ModalVisitData>
-                          </ModalVisitContentContainer>
-                          <ModalButtonsContainer>
-                            <StyledModalButton
-                              onClick={() => setIsSubmit(false)}
-                            >
-                              Anuluj
-                            </StyledModalButton>
-                            <StyledModalButton
-                              onClick={() => {
-                                createVisit(values)
-                                resetForm()
-                                setIsSubmit(false)
-                              }}
-                            >
-                              Potwierdź rezerwację
-                            </StyledModalButton>
-                          </ModalButtonsContainer>
-                        </ModalContainer>
-                      </ModalShadow>
-                    )}
-                  </FormColumn>
-                </FormContainer>
-              </Form>
-            )}
-          </Formik>
-        ) : (
-          <p>Przykro nam, ale nie oferujemy żadnych usług</p>
-        )}
-      </AddVisitContainer>}
+                      <FormButton type='submit'>Podsumowanie</FormButton>
+                      <FormButton type='reset'>Wyczyść formularz</FormButton>
+                      {isSubmit && (
+                        <ModalShadow>
+                          <ModalContainer>
+                            <ModalText>Podsumowanie</ModalText>
+                            <ModalVisitContentContainer>
+                              <ModalVisitData>
+                                <h3>Twoje dane</h3>
+                                <ModalVisitTextContainer>
+                                  <ModalVisitDataLabel>
+                                    Imie i nazwisko
+                                  </ModalVisitDataLabel>
+                                  <ModalVisitDataText>
+                                    {currentUser.imie} {currentUser.nazwisko}
+                                  </ModalVisitDataText>
+                                </ModalVisitTextContainer>
+                                <ModalVisitTextContainer>
+                                  <ModalVisitDataLabel>
+                                    E-mail
+                                  </ModalVisitDataLabel>
+                                  <ModalVisitDataText>
+                                    {currentUser.email}
+                                  </ModalVisitDataText>
+                                </ModalVisitTextContainer>
+                                <ModalVisitTextContainer>
+                                  <ModalVisitDataLabel>
+                                    Telefon
+                                  </ModalVisitDataLabel>
+                                  <ModalVisitDataText>
+                                    {currentUser.telefon}
+                                  </ModalVisitDataText>
+                                </ModalVisitTextContainer>
+                                <ModalVisitTextContainer>
+                                  <ModalVisitDataLabel>
+                                    Miasto
+                                  </ModalVisitDataLabel>
+                                  <ModalVisitDataText>
+                                    {currentUser.miasto}
+                                  </ModalVisitDataText>
+                                </ModalVisitTextContainer>
+                                <ModalVisitTextContainer>
+                                  <ModalVisitDataLabel>
+                                    Ulica
+                                  </ModalVisitDataLabel>
+                                  <ModalVisitDataText>
+                                    {currentUser.ulica}
+                                  </ModalVisitDataText>
+                                </ModalVisitTextContainer>
+                                <ModalVisitTextContainer>
+                                  <ModalVisitDataLabel>
+                                    Kod-pocztowy
+                                  </ModalVisitDataLabel>
+                                  <ModalVisitDataText>
+                                    {currentUser.kodPocztowy}
+                                  </ModalVisitDataText>
+                                </ModalVisitTextContainer>
+                              </ModalVisitData>
+                              <ModalVisitData>
+                                <h3>Umówiona wizyta</h3>
+                                <ModalVisitTextContainer>
+                                  <ModalVisitDataLabel>
+                                    Grupa
+                                  </ModalVisitDataLabel>
+                                  <ModalVisitDataText>
+                                    {values.grupa}
+                                  </ModalVisitDataText>
+                                </ModalVisitTextContainer>
+                                <ModalVisitTextContainer>
+                                  <ModalVisitDataLabel>
+                                    Usługa
+                                  </ModalVisitDataLabel>
+                                  <ModalVisitDataText>
+                                    {values.usluga}
+                                  </ModalVisitDataText>
+                                </ModalVisitTextContainer>
+                                <ModalVisitTextContainer>
+                                  <ModalVisitDataLabel>
+                                    Data wizyty
+                                  </ModalVisitDataLabel>
+                                  <ModalVisitDataText>
+                                    {values.data}r.
+                                  </ModalVisitDataText>
+                                </ModalVisitTextContainer>
+                                <ModalVisitTextContainer>
+                                  <ModalVisitDataLabel>
+                                    Godzina wizyty
+                                  </ModalVisitDataLabel>
+                                  <ModalVisitDataText>
+                                    {values.godzina}:00
+                                  </ModalVisitDataText>
+                                </ModalVisitTextContainer>
+                              </ModalVisitData>
+                            </ModalVisitContentContainer>
+                            <ModalButtonsContainer>
+                              <StyledModalButton
+                                onClick={() => setIsSubmit(false)}
+                              >
+                                Anuluj
+                              </StyledModalButton>
+                              <StyledModalButton
+                                onClick={() => {
+                                  createVisit(values)
+                                  resetForm()
+                                  setIsSubmit(false)
+                                }}
+                              >
+                                Potwierdź rezerwację
+                              </StyledModalButton>
+                            </ModalButtonsContainer>
+                          </ModalContainer>
+                        </ModalShadow>
+                      )}
+                    </FormColumn>
+                  </FormContainer>
+                </Form>
+              )}
+            </Formik>
+          ) : (
+            <p>Przykro nam, ale nie oferujemy żadnych usług</p>
+          )}
+        </AddVisitContainer>
+      )}
     </PageWrapper>
   )
 }

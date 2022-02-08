@@ -74,6 +74,21 @@ const StyledList = styled.div`
   align-items: center;
 `
 
+const Styles = styled.div`
+    .react-datepicker__input-container input {
+      width: 25em;
+      height: 3em;
+      text-align: center;
+      outline: none;
+      border: 2px solid #333;
+      background-color: #fff;
+      font-family: 'poppins';
+      background: transparent;
+      color: #333;
+      margin-top: 2em;
+    }
+  `
+
 const DoctorTimesheetPage = () => {
   const [filterPosition, setFilterPosition] = useState({
     usluga: 0,
@@ -329,16 +344,18 @@ const DoctorTimesheetPage = () => {
                 Grafik
               </VisitsPageTitle>
             </VisitsPageTitleContainer>
-            <DatePicker
-              selected={selectedDate}
-              dateFormat='dd/MM/yyyy'
-              onChange={(date) => onDateSelect(date)}
-              filterDate={isWeekday}
-              name='data'
-              placeholderText='Wybierz date...'
-              withPortal
-              locale='pl'
-            />
+            <Styles>
+              <DatePicker
+                selected={selectedDate}
+                dateFormat='dd/MM/yyyy'
+                onChange={(date) => onDateSelect(date)}
+                filterDate={isWeekday}
+                name='data'
+                placeholderText='Wybierz date...'
+                withPortal
+                locale='pl'
+              />
+            </Styles>
           </StyledHeader>
           <StyledList isSelected={selectedDate}>
             <VisitsPageContainer>

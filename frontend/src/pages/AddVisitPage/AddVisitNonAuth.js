@@ -57,23 +57,6 @@ import {
   StyledLink,
 } from '../LoginPage/LoginPageElements'
 
-const Styles = styled.div`
-  .react-datepicker__input-container input {
-    background-color: transparent;
-    border: 2px solid #333;
-    height: 3em;
-    width: 18em;
-    margin: 0.6em 0;
-    padding-left: 1em;
-    outline: none;
-    color: #333;
-    font-family: 'Poppins';
-    /* letter-spacing: 0.04em; */
-    /* text-transform: uppercase; */
-    font-size: 15px;
-  }
-`
-
 const PageButtonContainer = styled.div`
   position: relative;
   width: 100%;
@@ -85,14 +68,29 @@ const PageButtonContainer = styled.div`
 
 const PageButton = styled.button`
   width: 18em;
-  height: 3em;
-  max-width: 300px;
+  padding: 1em 0;
+  max-width: 350px;
   margin-top: 20px;
   border: 2px solid #01d4bf;
   background-size: 100% 200%;
   background-image: linear-gradient(to bottom, transparent 50%, #01d4bf 50%);
   transition: background-position 1s;
   cursor: pointer;
+  font-size: 15px;
+
+  @media screen and (max-width: 1500px) {
+    font-size: 13px;
+  }
+  @media screen and (max-width: 1280px) {
+    font-size: 11px;
+  }
+  @media screen and (max-width: 960px) {
+    font-size: 9px;
+  }
+  @media screen and (max-width: 768px) {
+    font-size: 7px;
+    max-width: 400px;
+  }
 
   ${({ values }) =>
     values.grupa &&
@@ -155,8 +153,68 @@ const ProgressIcon = styled.div`
   }
 `
 
-const MyStyledSelect = FormInput.withComponent('select')
-const MyStyledInput = FormInput.withComponent('input')
+export const FI = styled(FormInput)`
+  background-color: transparent;
+  border: 2px solid #333;
+  padding: 0.5em 0 0.5em 1em;
+  width: 18em;
+  margin: 0.6em 0;
+  outline: none;
+  color: #333;
+  font-family: 'Poppins';
+  font-size: 15px;
+  max-width: 350px;
+
+  @media screen and (max-width: 1500px) {
+    font-size: 13px;
+  }
+  @media screen and (max-width: 1280px) {
+    font-size: 11px;
+  }
+  @media screen and (max-width: 960px) {
+    font-size: 9px;
+  }
+  @media screen and (max-width: 768px) {
+    font-size: 7px;
+    max-width: 400px;
+  }
+`
+
+const Styles = styled.div`
+  padding: 0;
+  .react-datepicker__input-container input {
+    width: 18em;
+    padding-left: 1em;
+    padding: 0.5em 0 0.5em 1em;
+    outline: none;
+    border: 2px solid #333;
+    background-color: #fff;
+    background: transparent;
+    font-family: 'poppins';
+    font-size: 15px;
+    color: #333;
+    @media screen and (max-width: 1500px) {
+      font-size: 13px;
+    }
+    @media screen and (max-width: 1280px) {
+      font-size: 11px;
+    }
+    @media screen and (max-width: 960px) {
+      font-size: 9px;
+    }
+    @media screen and (max-width: 768px) {
+      font-size: 7px;
+    }
+  }
+  
+
+  .react-datepicker__input-container input:disabled {
+    border: 2px solid rgba(3,3,3,.5);
+  }
+`
+
+const MyStyledSelect = FI.withComponent('select')
+const MyStyledInput = FI.withComponent('input')
 const MyStyledButton = FormButton.withComponent('button')
 
 const AddVisitNonAuth = () => {

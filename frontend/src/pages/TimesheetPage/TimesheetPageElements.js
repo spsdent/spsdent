@@ -54,6 +54,7 @@ export const TimesheetPick = styled(motion.select)`
   /* font-size: 0.7em; */
   color: #333;
   letter-spacing: 0.05em;
+  background: transparent;
   text-align: center;
   &:focus {
     box-shadow: 0px 0px 3px 0.1px #333;
