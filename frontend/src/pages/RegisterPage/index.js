@@ -10,7 +10,6 @@ import {
   Title,
   FormButton,
   FormContainer,
-  FormInput,
 } from "../AddVisitPage/AddVisitPageElements";
 import {
   StyledField,

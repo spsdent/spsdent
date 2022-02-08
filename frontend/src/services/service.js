@@ -20,10 +20,12 @@ const remove = (id) => {
   return http.delete(`/services/${id}`)
 }
 
-export default {
+const service = {
   getAll,
   get,
   create,
   remove,
   update,
 }
+
+export default service

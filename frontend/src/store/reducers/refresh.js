@@ -4,7 +4,7 @@ const initialState = {
   isRefresh: false,
 }
 
-export default function (state = initialState, action) {
+const refreshReducer = function (state = initialState, action) {
   const { type } = action
 
   switch (type) {
@@ -17,3 +17,5 @@ export default function (state = initialState, action) {
       return state
   }
 }
+
+export default refreshReducer

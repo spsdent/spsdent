@@ -28,7 +28,7 @@ const findByTitle = (title) => {
   return http.get(`/visits?usluga=${title}`)
 }
 
-export default {
+const visit = {
   getAll,
   get,
   create,
@@ -37,3 +37,5 @@ export default {
   removeAll,
   findByTitle,
 }
+
+export default visit

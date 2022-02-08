@@ -4,6 +4,8 @@ const getAll = () => {
   return http.get('/roles')
 }
 
-export default {
+const role = {
   getAll,
 }
+
+export default role

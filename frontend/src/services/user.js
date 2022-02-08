@@ -27,11 +27,12 @@ const updateUser = (id, data) => {
   return axios.put(API_URL + `users/${id}`, data, { headers: authHeader() })
 }
 
-
-export default {
+const user = {
   getPublicContent,
   getUsersByLastName,
   getAll,
   deleteUser,
   updateUser,
 }
+
+export default user

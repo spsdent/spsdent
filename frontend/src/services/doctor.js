@@ -9,7 +9,7 @@ const get = (id) => {
 }
 
 const create = (data) => {
-return http.post('/doctors', data)
+  return http.post('/doctors', data)
 }
 
 const remove = (id) => {
@@ -20,12 +20,12 @@ const update = (id, data) => {
   return http.put(`/doctors/${id}`, data)
 }
 
-// const update = 
-
-export default {
+const doctor = {
   getAll,
   get,
   create,
   remove,
-  update
+  update,
 }
+
+export default doctor
