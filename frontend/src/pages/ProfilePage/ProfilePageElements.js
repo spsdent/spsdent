@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import { Formik, Field, Form } from "formik";
+import { Field } from "formik";
 
 export const Container = styled.div`
   width: 70%;

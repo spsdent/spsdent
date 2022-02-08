@@ -1,15 +1,15 @@
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 import React from "react";
-import { Pattern } from "../../components/Pattern";
-import {
-  PageTitle,
-  TextContainer,
-  PictureContainer,
-  TextTitle,
-  Text,
-  TextWrap,
+// import { Pattern } from "../../components/Pattern";
+// import {
+//   PageTitle,
+//   TextContainer,
+//   PictureContainer,
+//   TextTitle,
+//   Text,
+//   TextWrap,
   
-} from "./DefaultPageElements";
+// } from "./DefaultPageElements";
 
 const Default = () => {
   return (

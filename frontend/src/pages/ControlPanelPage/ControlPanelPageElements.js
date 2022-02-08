@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import Select from "react-select";
-import { motion } from "framer-motion";
 import { Field } from "formik";
 export const StyledContainer = styled.section`
   width: 60%;

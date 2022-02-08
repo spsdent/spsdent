@@ -36,7 +36,6 @@ import { refreshApp } from "../../store/actions/refresh";
 import UserData from "../../services/user";
 import VisitData from "../../services/visit";
 import { SET_MESSAGE } from "../../store/actions/types";
-import { clearMessage } from "../../store/actions/message";
 import { AnimatePresence } from "framer-motion";
 import {
   ModalShadow,
@@ -64,7 +63,6 @@ const ProfilePage = () => {
   const [userData, setUserData] = useState("");
   const [visitsArr, setVisitsArr] = useState([]);
   const [archiveVisits, setArchiveVisits] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   const { user: currentUser } = useSelector((state) => state.auth);
   const { isRefresh } = useSelector((state) => state.refresh);
   const { message } = useSelector((state) => state.message);
@@ -72,9 +70,7 @@ const ProfilePage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setIsLoading(true);
     UserData.getAll().then((response) => {
-      setIsLoading(false);
       const signInUser = response.data.filter(
         (user) => user._id === currentUser.id
       )[0];

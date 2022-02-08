@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { PageWrapper } from "../../components/PageWrapper";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import OurStaff from "./OurStaff";
 import Cabinet from "./Cabinet";
 import Default from "./Default";

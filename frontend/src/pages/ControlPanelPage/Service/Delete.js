@@ -3,17 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 import ServiceData from "../../../services/service";
 import { refreshApp } from "../../../store/actions/refresh";
-import { PageWrapper } from "../../../components/PageWrapper";
-import { Container } from "../../ProfilePage/ProfilePageElements";
 
-import styled from "styled-components";
 import {
   StyledContainer,
-  StyledHeading,
-  ButtonControl,
   SubTitle,
   StyledButton,
-  ErrorText,
   UserText,
   ServiceWrap,
   DeleteServiceContainer,
@@ -25,15 +19,6 @@ import {
   ModalButtonsContainer,
   ModalButton,
 } from "../../VisitPage/VisitPageElements";
-const StyledLabel = styled.label`
-  font-size: 0.813rem;
-`;
-
-const StyledHeadingCreate = styled(StyledHeading)`
-  font-size: 1rem;
-  margin-bottom: 1rem;
-  font-family: "poppins";
-`;
 
 const DeleteService = () => {
   const [servicesArr, setServicesArr] = useState([]);
@@ -54,6 +39,8 @@ const DeleteService = () => {
       .catch((e) => console.log(e));
   };
 
+
+// funkcja odpowiedzialna za usuniecie uslugi z bazy
   const onServiceDelete = (service) => {
     ServiceData.remove(service)
       .then((response) => {
@@ -71,12 +58,6 @@ const DeleteService = () => {
         {servicesArr.map((service) => (
           <ServiceWrap>
             <UserText title>{service.grupa}</UserText>
-            {/* {service.uslugi.map((usluga) => (
-            <div style={{ margin: '10px 0' }}>
-              <p>Nazwa uslugi: {usluga.nazwa}</p>
-              <p>Cena uslugi: {usluga.cena}</p>
-            </div>
-          ))} */}
             <StyledButton
               delete
               onClick={() => {

@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Formik, Form, Field, setIn } from "formik";
+import { Formik, Form} from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
 import { createServiceValidationSchema } from "../../../utils/validationSchemas";
 
 import ServiceData from "../../../services/service";
 import { SET_MESSAGE } from "../../../store/actions/types";
-import { clearMessage } from "../../../store/actions/message";
 import {
   StyledContainer,
-  StyledHeading,
   StyledField,
   ErrorText,
   UserText,
@@ -39,6 +37,7 @@ const NewService = () => {
       .catch((e) => console.log(e));
   };
 
+  // funkcja odpowiedzialna za dodawanie kolejnych inputow - maksymalnie 5 inputow na wprowadzenie uslugi i ceny
   const newServiceInput = () => {
     if (inputArr.length > 4) {
       dispatch({
@@ -50,16 +49,20 @@ const NewService = () => {
     }
   };
 
+  // funkcja odpowiedzialna za usuniecie pola do wprowadzania ceny i uslugi
   const deleteInputService = () => {
     setInputArr(inputArr.slice(0, -1));
   };
 
+  // funkcja wykonujaca sie po potwierdzeniu
+  // jej zadaniem jest dodawanie grupy uslugi wraz z uslugami do bazy
   const onSubmitHandle = (values) => {
     const servicesToUpdate = servicesArr.filter(
       (service) => service.grupa === values.grupa
     );
     const { grupa, ...uslugi } = values;
     let obj = [];
+
     if ("u1nazwa" in uslugi) {
       for (let i = 0; i < inputArr.length; i++) {
         if (uslugi[`u${i + 1}nazwa`]) {
@@ -73,7 +76,11 @@ const NewService = () => {
         }
       }
     }
+
+
     let servicesObj = { grupa: grupa, uslugi: [...obj] };
+
+
     if (servicesToUpdate.length) {
       dispatch({
         type: SET_MESSAGE,

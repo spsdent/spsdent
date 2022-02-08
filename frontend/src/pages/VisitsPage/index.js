@@ -33,12 +33,6 @@ import {
 } from "../VisitPage/VisitPageElements";
 import useFetchAllUsers from "../../hooks/useFetchAllUsers";
 
-const style = {
-  whiteSpace: "nowrap",
-  fontFamily: "Poppins",
-  color: "red",
-}
-
 const VisitsPage = () => {
   const [filterPosition, setFilterPosition] = useState({
     usluga: 0,
@@ -59,10 +53,16 @@ const VisitsPage = () => {
   const visitsPerPage = 5;
   const pagesVisited = pageNumber * visitsPerPage;
 
+
+  // pobieranie wizyt z bazy wraz z załadowaniem komponentu
+  // isRefresh jest stanem, ktory jest odpowiedzialny za odswiezanie useEffect jesli zmieni swoja wartosc(isRefresh)
   useEffect(() => {
     retrieveVisits();
   }, [isRefresh]);
 
+  // funkcja ktora definiuje pobieranie wizyt z bazdy i sprawdzajaca od razu jaki uzytkownik jest zalogowany i pod tym warunkiem
+  // dodaje konkretne wizyty do stanu visitsList
+  // tutaj zwracane sa wizyty ktorych status jest false, czyli nie zostaly zarchiwizowane
   const retrieveVisits = () => {
     VisitDataService.getAll()
       .then((response) => {
@@ -86,20 +86,23 @@ const VisitsPage = () => {
       });
   };
 
+  // funkcja ktora odpowiada za przeniesienie nas do podstrony z konkretna wizyta, wraz z informacjami o tej wizycie
   const goToVisit = (item) => {
     navigate(`/wizyty/${item.id}`, { state: { item } });
   };
 
+  // funkcja odpowiedzialna za usuniecie wizyty z bazy
   const onVisitDelete = () => {
     setIsDelete(false);
     VisitDataService.remove(visitId.id)
       .then((response) => {
-        console.log("Usunieto wizyte pomyslnie!");
         dispatch(refreshApp());
       })
       .catch((e) => console.log(e));
   };
 
+  // funkcja odpowiedzialna za wyswietlanie wizyt
+  // jest tutaj rowniez dodana paginacja zeby mozna bylo pogrupowac wizyty na strony(5 wizyt na strone)
   const displayVisits = visitsList
     .slice(pagesVisited, pagesVisited + visitsPerPage)
     .map((visit, i) => {
@@ -135,11 +138,16 @@ const VisitsPage = () => {
       }
     });
 
+  // funkcja obliczajaca liczbe stron bazujac na pobranych wizytach tego uzytkownika z bazy
   const pageCount = Math.ceil(visitsList.length / visitsPerPage);
+
+  // funkcja zmieniajaca strone
   const changePage = ({ selected }) => {
     setPageNumber(selected);
   };
 
+  // filtrowanie po nazwie uslugi
+  // jest tutaj resetowanie pozycji innych filtrow w razie gdybysmy np filtrowali po usludze, a nagle chcemy po cenie
   const onFilterByService = () => {
     if (filterPosition.usluga === 0) {
       const descArr = visitsList.sort((a, b) =>
@@ -159,6 +167,7 @@ const VisitsPage = () => {
     }
   };
 
+  // filtrowanie po nazwisku specjalisty
   const onFilterBySpecialist = () => {
     if (filterPosition.lekarz === 0) {
       const descArr = visitsList.sort((a, b) =>
@@ -184,6 +193,7 @@ const VisitsPage = () => {
     }
   };
 
+  // filtrowanie po dacie
   const onFilterByDate = () => {
     if (filterPosition.data === 0) {
       const descArr = visitsList.sort((a, b) => {
@@ -207,6 +217,7 @@ const VisitsPage = () => {
     }
   };
 
+  // filtrowanie po godzinie
   const onFilterByHour = () => {
     if (filterPosition.godzina === 0) {
       const descArr = visitsList.sort((a, b) => b.godzina - a.godzina);
@@ -222,6 +233,7 @@ const VisitsPage = () => {
     }
   };
 
+  // filtrowanie po cenie
   const onFilterByPrice = () => {
     if (filterPosition.cena === 0) {
       const descArr = visitsList.sort((a, b) => b.cena - a.cena);
@@ -237,6 +249,7 @@ const VisitsPage = () => {
     }
   };
 
+  // Macka kontener z animacjami
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -248,6 +261,8 @@ const VisitsPage = () => {
       },
     },
   };
+
+  // jw.
   const itemOne = {
     hidden: { y: -100, opacity: 0 },
     visible: {

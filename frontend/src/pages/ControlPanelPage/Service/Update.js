@@ -59,10 +59,13 @@ const UpdateService = () => {
       .catch((e) => console.log(e));
   };
 
+  // funkcja odpowiedzialna za aktualizacje specjalizacji znajdujacych sie w bazie
   const addNewService = (values) => {
+
     const isDuplicate = servicesArr
       .filter((item) => item.grupa === values.grupa)[0]
       .uslugi.filter((usluga) => usluga.nazwa === values.nazwa);
+
     if (!isDuplicate.length) {
       const serviceToUpdate = servicesArr.filter(
         (service) => service.grupa === values.grupa
@@ -88,6 +91,7 @@ const UpdateService = () => {
     }
   };
 
+  // funkcja odpowiedzialna za usuniecie uslugi z bazy dla wybranej grupy
   const onServiceDelete = (service, usluga) => {
     const { _id: serviceId } = service;
     const updatedServiceArr = service.uslugi.filter(
@@ -184,7 +188,6 @@ const UpdateService = () => {
             )}
             {btnType === "usun" && (
               <>
-                {/* <UserText>Wybierz usługę do usunięcia</UserText> */}
                 <DeleteServiceContainer>
                   {servicesArr
                     .filter((item) => item.grupa === values.grupa)
@@ -210,7 +213,6 @@ const UpdateService = () => {
             )}
             {btnType === "dodaj" && (
               <>
-                {/* <UserText>Dodaj usługę</UserText> */}
                 <Field
                   placeholder="Nazwa usługi"
                   name="nazwa"

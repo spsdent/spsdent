@@ -5,12 +5,13 @@ import NewService from './Create'
 import DeleteService from './Delete'
 import UpdateService from './Update'
 import { clearMessage } from '../../../store/actions/message'
-import styled from 'styled-components'
 import {
   StyledButton,
   StyledContainer,
   StyledButtonContainer,
 } from '../ControlPanelPageElements'
+
+// glowny komponent wyswietlajacy opcje po wyborze zarzadzaj specjalizacjami
 
 const ServicesControl = () => {
   const dispatch = useDispatch()

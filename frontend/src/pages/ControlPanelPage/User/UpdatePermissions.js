@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Formik, Field, Form } from "formik";
-import Select from "react-select";
+import { Formik, Form } from "formik";
 
 import DoctorService from "../../../services/doctor";
 import UserService from "../../../services/user";
@@ -12,10 +11,9 @@ import {
   updateRoleValidationSchema,
 } from "../../../utils/validationSchemas";
 
-import useFetchAllUsers from "../../../hooks/useFetchAllUsers";
 import { SET_MESSAGE } from "../../../store/actions/types";
-import { clearMessage } from "../../../store/actions/message";
 import UserData from "../../../services/user";
+
 import {
   StyledSelect,
   UserText,
@@ -44,11 +42,7 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
   const [users, setUsers] = useState([]);
   const [selectedSpecs, setSelectedSpecs] = useState(null);
   const [selectedOption, setSelectedOption] = useState(null);
-  const [errorMsg, setErrorMsg] = useState("");
-  const [currUserRole, setCurrUserRole] = useState("");
   const { isRefresh } = useSelector((state) => state.refresh);
-  const { user: currentUser } = useSelector((state) => state.auth);
-  const { message } = useSelector((state) => state.message);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -90,42 +84,45 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
       .catch((e) => console.log(e));
   };
 
+  // funkcja odpowiedzialna za zaktualizacje uprawnien
   const updateRoles = () => {
+    // zapisuje wartosc wybranej roli w formularzu
     const rolesIdArr = selectedOption.value;
+
     let userObj = {
       roles: rolesIdArr,
     };
+    
+    // pobieram dane aktualnie wybranego uzytkownika w formularzu
     const currentSelectedUser = users.filter(
       (user) => user._id === selectedUser
     )[0];
+
+    // sprawdzam czy obecnie wybrany uzytkownik jest lekarzem(ma role lekarza/specjalisty)
     const selectedUserIsSpec = currentSelectedUser.roles.includes(
       "61a795d1bd23a782906a1dfd"
     );
+
+    // przeszukuje kolekcje lekarzy w celu dopasowania lekarza do wybranego uzytkownika
+    // przyda mi sie do warunku czy wybrany uzytkownik jest lekarzem
     const doctorToDelete = doctorsArr.filter(
       (doctor) => doctor.doctorId === selectedUser
     )[0];
+
+    // sprawdzam czy wybrany uzytkownik w formularzu jest specjalista i czy wybrana role z selecta nie jest spec
+    // po to zeby usunac tego uzytkownika z kolekcji lekarzy jesli zmienimy mu role ze specjalisty na np zwyklego uzytkownika
     if (
       selectedUserIsSpec &&
       doctorToDelete &&
       selectedOption.label !== "spec"
     ) {
+      // tutaj wlasnie usuwam jego obiekt z kolekcji lekarzy
       DoctorService.remove(doctorToDelete._id)
         .then((res) => console.log("Usunięto pomyślnie", res))
         .catch((e) => console.log(e));
-      UserService.updateUser(selectedUser, userObj)
-        .then((response) => {
-          setBtnType("");
-          setUser({
-            roles: [{}],
-          });
-          setSelectedOption(null);
-          dispatch({
-            type: SET_MESSAGE,
-            payload: "Zmiany zostały wprowadzone!",
-          });
-        })
-        .catch((e) => console.log(e));
     }
+
+    // a tutaj aktualizuje role tego uzytkownika
     UserService.updateUser(selectedUser, userObj)
       .then((response) => {
         setBtnType("");
@@ -138,6 +135,7 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
       .catch((e) => console.log(e));
   };
 
+  // funkcja odpowiedzialna za aktualizacje lub tworzenie doktora jesli go nie ma w bazie
   const handleDoctor = (values) => {
     const specsIdArr = selectedSpecs.map((spec) => spec.value);
     let godzinyPracy = [];

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   PriceListTable,
   PriceTableRow,
@@ -21,13 +21,6 @@ const container = {
   },
 }
 
-const item = {
-  hidden: { y: -100, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-  },
-}
 
 const PriceListSubPage = () => {
   const [currentPathServices, setCurrentPathServices] = useState([])

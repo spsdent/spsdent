@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { PageWrapper } from '../../components/PageWrapper'
 import { Pattern } from '../../components/Pattern'
 import {
@@ -33,7 +33,6 @@ import ServiceData from '../../services/service'
 //   },
 
 const PriceListPage = () => {
-  const [currentPathServices, setCurrentPathServices] = useState([])
   let params = useParams()
   let priceGroup = params['grupa']
 

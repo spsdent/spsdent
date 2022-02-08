@@ -36,6 +36,12 @@ const MyStyledSelect = FormInput.withComponent('select')
 const MyStyledInput = FormInput.withComponent('input')
 const MyStyledButton = FormButton.withComponent('button')
 
+// tutaj jest komponent odpowiedzialny za wyswietlenie formularza w modalu z prawej strony w grafiku admina jak klikniemy w wolny termin
+// zasada dodawania wizyty jest praktycznie identyczna jak w normalnej rezerwacji z tym ze nie wybieramy w formularzu
+// lekarza bo lekarza mamy wybranego wczesniej i godziny bo godzine wybieramy klikajac w pole z wolnym terminem
+// wiec te dwie informacje
+
+
 const AdminCreateVisit = ({
   bookingInfo,
   doctors,
@@ -122,7 +128,7 @@ const AdminCreateVisit = ({
       status,
     } = values
 
-    // Create object with values from form
+
     let visitData = {
       grupa,
       usluga,
@@ -144,10 +150,9 @@ const AdminCreateVisit = ({
       cena: selectedServicePrice,
       uid: currentUser !== null ? currentUser.id : null,
     }
-    console.log('bookinginfo', bookingInfo)
 
     if (values.password) {
-      // Create new visit based on provide visitData object
+
       dispatch(
         register(
           imie,
@@ -161,7 +166,7 @@ const AdminCreateVisit = ({
         )
       )
     }
-    // Create new visit based on provide visitData object
+  
     VisitData.create(visitData)
       .then((response) => {
         setIsSubmit(false)
@@ -185,12 +190,6 @@ const AdminCreateVisit = ({
     createVisit(values)
   }
 
-  const onCreateHandler = (values, setValues) => {
-    const { password, ...oldValues } = values
-    setIsCreateAccount(false)
-    setValues(oldValues)
-  }
-
   return (
     <>
       <SideModalContainer>
@@ -206,7 +205,7 @@ const AdminCreateVisit = ({
             onSubmit={() => setIsSubmit(true)}
             onReset={() => setInitialState(visitState)}
           >
-            {({ errors, values, setValues, handleBlur, resetForm }) => (
+            {({ values, setValues, handleBlur, resetForm }) => (
               <SideModalContent>
                 <Form>
                   <FormContainer>

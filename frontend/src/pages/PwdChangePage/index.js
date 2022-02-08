@@ -1,25 +1,19 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { PageWrapper } from "../../components/PageWrapper";
-import { changePassword, logout } from "../../store/actions/auth";
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { changePassword } from "../../store/actions/auth";
+import { Formik, Form, ErrorMessage } from "formik";
 import { passwordChangeValidationSchema } from "../../utils/validationSchemas";
-import { Link } from "react-router-dom";
 import { clearMessage } from "../../store/actions/message";
 import {
   Title,
   FormButton,
-  FormColumn,
   FormContainer,
-  FormInput,
-  FormError,
 } from "../AddVisitPage/AddVisitPageElements";
 import {
-  LoginButton,
   TitleContainer,
   AddVisitContainer,
   LoginContainer,
-  FieldContainer,
   TextContainer,
   StyledLink,
 } from "../LoginPage/LoginPageElements";
@@ -27,9 +21,7 @@ import {
   UserText,
   StyledField,
   ErrorText,
-  StyledButton,
 } from "../ControlPanelPage/ControlPanelPageElements";
-const MyStyledInput = FormInput.withComponent("input");
 
 const PwdChangePage = () => {
   const initialValues = {
@@ -40,6 +32,8 @@ const PwdChangePage = () => {
   const dispatch = useDispatch();
   const { message } = useSelector((state) => state.message);
 
+  // funkcja odpowiedzialna za zmiane hasla 
+  // changePassword jest zdefiniowana w store/actions/auth
   const onPwdUpdate = (values, actions) => {
     dispatch(changePassword(values))
       .then(() => {
@@ -60,7 +54,7 @@ const PwdChangePage = () => {
           }}
           validationSchema={passwordChangeValidationSchema}
         >
-          {({ values, errors, touched, handleBlur }) => (
+          {({ handleBlur }) => (
             <Form>
               <FormContainer>
                 <LoginContainer

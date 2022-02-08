@@ -36,6 +36,7 @@ const VisitPage = () => {
   const backRoute = location.pathname.split('/')[1]
   const allUsers = useFetchAllUsers()
 
+  // funkcja odpowiedzialna za wykonanie odpowiedniej akcji w zaleznosci od kliknietego przycisku
   const onHandleAction = () => {
     if (actionType === 'usun') {
       VisitDataService.remove(state.id)

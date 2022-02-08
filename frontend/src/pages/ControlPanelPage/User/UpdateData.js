@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Formik, Field, Form } from "formik";
-import { useSelector, useDispatch } from "react-redux";
+import { Formik, Form } from "formik";
+import { useDispatch } from "react-redux";
 import UserService from "../../../services/user";
 
 import { updateUserDataValidationSchema } from "../../../utils/validationSchemas";
@@ -14,12 +14,15 @@ import {
   ErrorText,
   StyledButton,
 } from "../ControlPanelPageElements";
+
 const StyledFormik = styled(Formik)`
   width: 100%;
   height: 100%;
 `;
 
 const UpdateUser = ({ setBtnType, selectedUser }) => {
+
+  // obiekt reprezentujacy stan poczatkowych wartosci dla formularza
   let initialState = {
     userId: "",
     imie: "",
@@ -32,9 +35,10 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
   };
   const [user, setUser] = useState(initialState);
   const [userOld, setUserOld] = useState("");
-  const { message } = useSelector((state) => state.message);
   const dispatch = useDispatch();
 
+  // tutaj wraz z zaladowaniem komponentu pobierane sa informacje o wybranym w formularzu uzytkowniku
+  // te informacje sa destrukturyzowane i zapisywane do nowego obiektu
   useEffect(() => {
     UserService.getAll()
       .then((response) => {
@@ -58,6 +62,8 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
       .catch((e) => console.log(e));
   }, [selectedUser]);
 
+
+  // funkcja odpowiadajaca za zaktualizowane uzytkownika
   const updateUser = (values) => {
     const { imie, nazwisko, email, telefon, kodPocztowy, miasto, ulica } =
       values;
@@ -70,6 +76,9 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
       miasto,
       ulica,
     };
+
+    // tutaj sprawdzam czy wczesniejsze dane(pobrane z bazy i wyswietlane w formularzu) sa takie same -
+    // zeby wyswietlic informacje ze zadne zmiany nie zostaly wprowadzone
     const equals = (a, b) => {
       if (a === b) return true;
       if (a instanceof Date && b instanceof Date)
@@ -81,6 +90,7 @@ const UpdateUser = ({ setBtnType, selectedUser }) => {
       if (keys.length !== Object.keys(b).length) return false;
       return keys.every((k) => equals(a[k], b[k]));
     };
+
     if (equals(userObj, userOld)) {
       dispatch({
         type: SET_MESSAGE,

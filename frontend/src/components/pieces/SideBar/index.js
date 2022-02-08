@@ -15,10 +15,6 @@ import {
 import AdminNav from "../../../navigation/AdminNav";
 import UserNav from "../../../navigation/UserNav";
 import SpecNav from "../../../navigation/SpecNav";
-import { motion } from "framer-motion";
-
-// import { logout } from '../../../store/actions/auth'
-// import { clearMessage } from '../../../store/actions/message'
 
 import ServiceData from "../../../services/service";
 

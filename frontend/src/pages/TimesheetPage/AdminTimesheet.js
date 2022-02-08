@@ -1,12 +1,12 @@
-import React, { useState, useEffect, Suspense } from 'react'
+import React, { useState, useEffect } from 'react'
 import { PageWrapper } from '../../components/PageWrapper'
 import { Pattern } from '../../components/Pattern'
 import '../../styles/index.css'
 import styled from 'styled-components'
 
-import { addDays, getDay } from 'date-fns'
+import { getDay } from 'date-fns'
 import pl from 'date-fns/locale/pl'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import 'react-datepicker/dist/react-datepicker-cssmodules.css'
@@ -198,7 +198,7 @@ const AdminTimesheetPage = () => {
 
   const goToVisit = (item) => {
     navigate(`/wizyty/${item.id}`, {
-      state: { item: item, bRoute: 'timesheet' },
+      state: { item: item, bRoute: 'grafik' },
     })
   }
 

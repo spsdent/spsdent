@@ -51,15 +51,6 @@ function AdminPrivateRoute({ children }) {
   )
 }
 
-function DoctorPrivateRoute({ children }) {
-  const { user: currentUser } = useSelector((state) => state.auth)
-  return !currentUser.roles.includes('ROLE_SPEC') ? (
-    <Navigate to='/zarezerwuj' />
-  ) : (
-    children
-  )
-}
-
 const RootNavigation = () => {
   return (
     <BrowserRouter history={history}>

@@ -1,26 +1,17 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Navigate, Link, useNavigate } from "react-router-dom";
-import { login } from "../../store/actions/auth";
-import { PageWrapper } from "../../components/PageWrapper";
-import { ErrorMessage, Field, Form, Formik } from "formik";
-import { loginValidationSchema } from "../../utils/validationSchemas";
-import { AnimatePresence, motion } from "framer-motion";
-import { clearMessage } from "../../store/actions/message";
-import {
-  Title,
-  FormButton,
-  FormColumn,
-  FormContainer,
-  FormInput,
-  FormError,
-} from "../AddVisitPage/AddVisitPageElements";
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Navigate, useNavigate } from 'react-router-dom'
+import { login } from '../../store/actions/auth'
+import { PageWrapper } from '../../components/PageWrapper'
+import { ErrorMessage, Formik, Form } from 'formik'
+import { loginValidationSchema } from '../../utils/validationSchemas'
+import { clearMessage } from '../../store/actions/message'
+import { Title, FormContainer } from '../AddVisitPage/AddVisitPageElements'
 import {
   UserText,
   StyledField,
   ErrorText,
-  StyledButton,
-} from "../ControlPanelPage/ControlPanelPageElements";
+} from '../ControlPanelPage/ControlPanelPageElements'
 import {
   LoginButton,
   TitleContainer,
@@ -29,36 +20,34 @@ import {
   FieldContainer,
   TextContainer,
   StyledLink,
-} from "./LoginPageElements";
-const MyStyledInput = FormInput.withComponent("input");
+} from './LoginPageElements'
 
 const LoginPage = () => {
   const initialValues = {
-    email: "",
-    password: "",
-  };
-  const [loading, setLoading] = useState(false);
-  const { isLoggedIn } = useSelector((state) => state.auth);
-  const { message } = useSelector((state) => state.message);
-  let navigate = useNavigate();
+    email: '',
+    password: '',
+  }
+  const { isLoggedIn } = useSelector((state) => state.auth)
+  const { message } = useSelector((state) => state.message)
+  let navigate = useNavigate()
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
+  // funkcja zarzadzajaca zalogowaniem sie
+  // jesli logowanie sie powiedzie to przenosi nas na podstrone profil
+  // jesli sie nie powiedzie to MESSAGE ze stanu wyswietli komunikat o bledzie
+  // login jest zdefiniowana w store/actions/auth
   const handleLogin = (values) => {
-    const { email, password } = values;
+    const { email, password } = values
 
-    dispatch(login(email, password))
-      .then(() => {
-        dispatch(clearMessage());
-        navigate("/profil");
-      })
-      .catch(() => {
-        setLoading(false);
-      });
-  };
+    dispatch(login(email, password)).then(() => {
+      dispatch(clearMessage())
+      navigate('/profil')
+    })
+  }
 
   if (isLoggedIn) {
-    return <Navigate to="/profil" />;
+    return <Navigate to='/profil' />
   }
 
   return (
@@ -69,7 +58,7 @@ const LoginPage = () => {
           initialValues={initialValues}
           validationSchema={loginValidationSchema}
         >
-          {({ errors, values, touched, handleBlur }) => (
+          {({ handleBlur }) => (
             <Form>
               <FormContainer>
                 <LoginContainer
@@ -83,12 +72,12 @@ const LoginPage = () => {
                   </TitleContainer>
                   <FieldContainer>
                     <StyledField
-                      type="email"
-                      name="email"
-                      placeholder="E-mail"
+                      type='email'
+                      name='email'
+                      placeholder='E-mail'
                       onBlur={handleBlur}
                     />
-                    <ErrorMessage name="email">
+                    <ErrorMessage name='email'>
                       {(msg) => (
                         <ErrorText primary panel>
                           {msg}
@@ -98,12 +87,12 @@ const LoginPage = () => {
                   </FieldContainer>
                   <FieldContainer>
                     <StyledField
-                      type="password"
-                      name="password"
-                      placeholder="Hasło"
+                      type='password'
+                      name='password'
+                      placeholder='Hasło'
                       onBlur={handleBlur}
                     />
-                    <ErrorMessage name="password">
+                    <ErrorMessage name='password'>
                       {(msg) => (
                         <ErrorText primary panel>
                           {msg}
@@ -116,11 +105,11 @@ const LoginPage = () => {
                   {message && <ErrorText primary>{message}</ErrorText>}
                   <TextContainer>
                     <UserText>Chcesz utworzyć konto?</UserText>
-                    <StyledLink to="/rejestracja">Kliknij tutaj!</StyledLink>
+                    <StyledLink to='/rejestracja'>Kliknij tutaj!</StyledLink>
                   </TextContainer>
                   <TextContainer>
                     <UserText>Zapomniałeś hasła?</UserText>
-                    <StyledLink to="/zresetuj-haslo">
+                    <StyledLink to='/zresetuj-haslo'>
                       Zresetuj hasło!
                     </StyledLink>
                   </TextContainer>
@@ -131,7 +120,7 @@ const LoginPage = () => {
         </Formik>
       </AddVisitContainer>
     </PageWrapper>
-  );
-};
+  )
+}
 
-export default LoginPage;
+export default LoginPage

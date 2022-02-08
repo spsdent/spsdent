@@ -2,13 +2,16 @@ import React, { useState } from 'react'
 import { PageWrapper } from '../../components/PageWrapper'
 import DoctorsControl from './User'
 import ServicesControl from './Service'
-import styled from 'styled-components'
 import {
   StyledButton,
   StyledContainer,
   StyledHeading,
   StyledButtonContainer,
 } from './ControlPanelPageElements'
+
+// jest to glowny komponent wyswietlajacy przyciski zarzadzaj uzytkownikami i specjalizacjami
+// na podstawie kliknietego przycisku zmienia sie wartosc stanu btnType na podstawie ktorego sa wyswietlane dalsze
+// mozliwosci zarzadzania
 
 
 const ControlPanel = () => {

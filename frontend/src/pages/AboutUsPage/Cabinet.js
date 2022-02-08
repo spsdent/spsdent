@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import React from "react";
 import {
   Container,
@@ -10,13 +9,6 @@ import {
   ScrollContainer,
 } from "./CabinetPageElements";
 import { Pattern } from "../../components/Pattern";
-const style = {
-  position: "fixed",
-  bottom: "5%",
-  left: "50%",
-  fontSize: "2em",
-  color: "#333",
-};
 
 const Cabinet = () => {
   return (

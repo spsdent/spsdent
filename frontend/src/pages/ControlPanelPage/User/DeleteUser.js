@@ -3,11 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { refreshApp } from '../../../store/actions/refresh'
 import UserService from '../../../services/user'
-import { PageWrapper } from '../../../components/PageWrapper'
 import useDebounce from '../../../hooks/useDebounce'
 import { SET_MESSAGE } from '../../../store/actions/types'
 import { clearMessage } from '../../../store/actions/message'
-import styled from 'styled-components'
 import {
   StyledContainer,
   SubTitle,
@@ -18,6 +16,7 @@ import {
   UserText,
   StyledButton,
 } from '../ControlPanelPageElements'
+
 import {
   ModalShadow,
   ModalContainer,
@@ -25,7 +24,9 @@ import {
   ModalButtonsContainer,
   ModalButton,
 } from '../../VisitPage/VisitPageElements'
+
 import DoctorService from '../../../services/doctor'
+
 const DeleteUser = () => {
   const [isDelete, setIsDelete] = useState(false)
   const [userToDelete, setUserToDelete] = useState(null)
@@ -37,6 +38,7 @@ const DeleteUser = () => {
   const { message } = useSelector((state) => state.message)
   const dispatch = useDispatch()
 
+  // pobranie listy uzytkownikow i lekarzy wraz z zaladowanie komponentu
   useEffect(() => {
     retrieveUsers()
     retrieveDoctors()
@@ -59,13 +61,17 @@ const DeleteUser = () => {
       .catch((e) => console.log(e))
   }
 
-  //
-
+  // funkcja odpowiedzialna za usuniecie uzytkownika z bazy
   const onUserDelete = (user) => {
     const { _id: userId } = user
+
+    // sprawdzam czy w kolekcji lekarze jest lekarz z id takim jak uzytkownik wybrany do usuniecia
     const doctorToDelete = doctorsArr.find(
       (doctor) => doctor.doctorId === userId
     )
+
+    // jestli jest to dodatkowo oprócz uzytkownika usuwam lekarza z kolekcji lekarzy
+    // zeby nie bylo ze usune uzytkownika ktory byl lekarzem, ale sam obiekt lekarza zostanie w bazie
     if (doctorToDelete) {
       DoctorService.remove(doctorToDelete._id)
         .then((res) => console.log('Usunięto pomyślnie', res))
@@ -90,6 +96,7 @@ const DeleteUser = () => {
         name='nazwisko'
       />
       {message && <ErrorText primary>{message}</ErrorText>}
+      {/* Debounce pozwala na "odsuniecie" w czasie wyswietlania wynikow, w sensie ze dopiero po jakims czasie(.5s) od wpisania wyniki sa pobierane*/}
       {debouncedSearchTerm && (
         <>
           {usersArr.filter((item) =>

@@ -3,7 +3,6 @@ import VisitDataService from '../../services/visit'
 import { useSelector, useDispatch } from 'react-redux'
 import { refreshApp } from '../../store/actions/refresh'
 import { useNavigate } from 'react-router-dom'
-import useDebounce from '../../hooks/useDebounce'
 import { PageWrapper } from '../../components/PageWrapper'
 import { FaTrashAlt } from 'react-icons/fa'
 import { Pattern } from '../../components/Pattern'
@@ -37,8 +36,6 @@ const ArchiveVisitsList = () => {
   const [visitsList, setVisitsList] = useState([])
   const { user: currentUser } = useSelector((state) => state.auth)
   const { refresh: isRefresh } = useSelector((state) => state)
-  const [searchTerm, setSearchTerm] = useState('')
-  const debouncedSearchTerm = useDebounce(searchTerm, 500)
   const dispatch = useDispatch()
   let navigate = useNavigate()
   const allUsers = useFetchAllUsers()

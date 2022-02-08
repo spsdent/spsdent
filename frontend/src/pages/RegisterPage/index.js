@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PageWrapper } from "../../components/PageWrapper";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useNavigate, Link } from "react-router-dom";
+import { Formik, Form, ErrorMessage } from "formik";
 import { register } from "../../store/actions/auth";
 import { signupValidationSchema } from "../../utils/validationSchemas";
 import { clearMessage } from "../../store/actions/message";
@@ -25,9 +24,6 @@ import {
   StyledLink,
 } from "../LoginPage/LoginPageElements";
 
-const MyStyledInput = FormInput.withComponent("input");
-const MyStyledButton = FormButton.withComponent("button");
-
 const Register = () => {
   const initialValues = {
     imie: "",
@@ -42,8 +38,10 @@ const Register = () => {
   const [successful, setSuccessful] = useState(false);
   const { message } = useSelector((state) => state.message);
   const dispatch = useDispatch();
-  // const navigate = useNavigate()
 
+  // funkcja zajmujaca sie rejestracja
+  // values sa z formularza, a actions to obiekt ktory jest dostarczany przez formik ze zdefiniowanymi metodami
+  // register jest zdefiniowana w store/actions/auth
   const handleRegister = (values, actions) => {
     const {
       imie,
@@ -71,7 +69,6 @@ const Register = () => {
       .then(() => {
         setSuccessful(true);
         actions.resetForm();
-        // navigate('/login')
       })
       .catch(() => {
         setSuccessful(false);
@@ -91,7 +88,7 @@ const Register = () => {
               }}
               validationSchema={signupValidationSchema}
             >
-              {({ values, errors, touched, handleBlur }) => (
+              {({ handleBlur }) => (
                 <Form>
                   <FormContainer>
                     <LoginContainer

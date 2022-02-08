@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Select from "react-select";
 
-import DoctorService from "../../../services/doctor";
 import UserService from "../../../services/user";
-import RoleService from "../../../services/role";
-import ServiceData from "../../../services/service";
 import UpdatePermissions from "./UpdatePermissions";
 import UpdateData from "./UpdateData";
 import { clearMessage } from "../../../store/actions/message";
-import styled from "styled-components";
+
 import {
   StyledButton,
   StyledContainer,
@@ -19,38 +15,19 @@ import {
   StyledSelect
 } from "..//ControlPanelPageElements";
 
+// tutaj jest komponent ktory wyswietla fomularz do wyboru uzytkownika i po wyborze uzytkownika
+// daje dwa kolejne przyciski do wyboru albo modyfikacji danych albo zmiany uprawnien
+
 const UpdateUser = (props) => {
-  let initialState = {
-    userId: "",
-    imie: "",
-    nazwisko: "",
-    telefon: "",
-    email: "",
-    miasto: "",
-    ulica: "",
-    kodPocztowy: "",
-    roles: [{}],
-    doctorId: "",
-    specjalnosci: [],
-    godzinyStart: "",
-    godzinyKoniec: "",
-  };
-  const [doctorsArr, setDoctorsArr] = useState([]);
   const [usersArr, setUsersArr] = useState([]);
-  const [rolesArr, setRolesArr] = useState([]);
-  const [specsArr, setSpecsArr] = useState([]);
   const [btnType, setBtnType] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
   const { isRefresh } = useSelector((state) => state.refresh);
-  const { user: currentUser } = useSelector((state) => state.auth);
   const { message } = useSelector((state) => state.message);
   const dispatch = useDispatch();
 
   useEffect(() => {
     retrieveUsers();
-    retrieveDoctors();
-    retrieveRoles();
-    retrieveSpecs();
   }, [isRefresh]);
 
   const retrieveUsers = () => {
@@ -61,29 +38,6 @@ const UpdateUser = (props) => {
       .catch((e) => console.log(e));
   };
 
-  const retrieveDoctors = () => {
-    DoctorService.getAll()
-      .then((response) => {
-        setDoctorsArr(response.data);
-      })
-      .catch((e) => console.log(e));
-  };
-
-  const retrieveRoles = () => {
-    RoleService.getAll()
-      .then((response) => {
-        setRolesArr(response.data);
-      })
-      .catch((e) => console.log(e));
-  };
-
-  const retrieveSpecs = () => {
-    ServiceData.getAll()
-      .then((response) => {
-        setSpecsArr(response.data);
-      })
-      .catch((e) => console.log(e));
-  };
 
   const onDataChange = (type, userInfo) => {
     if (btnType === type) {
