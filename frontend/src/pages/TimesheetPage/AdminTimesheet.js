@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { PageWrapper } from '../../components/PageWrapper'
 import { Pattern } from '../../components/Pattern'
-import '../../styles/index.css'
 import styled from 'styled-components'
 
 import { getDay } from 'date-fns'
@@ -135,8 +134,6 @@ const AdminTimesheetPage = () => {
         startDate.getMonth() + 1
       }.${startDate.getFullYear()}`
 
-      console.log('selectedDate', selectedDate)
-
       const selectedDateVisitsArr = response.data
         .filter((visit) => visit.data === selectedDate)
         .filter((visit) => visit.specjalista.sid === selectedDoctor)
@@ -145,31 +142,36 @@ const AdminTimesheetPage = () => {
         (ar) => !selectedDateVisitsArr.find((rm) => rm.godzina === ar.godzina)
       )
 
-      let aa = todayDate.split('.').reverse().join()
-      let bb = selectedDate.split('.').reverse().join()
+      let aa = todayDate.split('.').reverse().join('-')
+      let bb = selectedDate.split('.').reverse().join('-')
+      let arrToDisplay = []
+      let todayDateTime = new Date(aa).getTime()
+      let selectedDateTime = new Date(bb).getTime()
 
-      if (aa > bb) {
+      if (todayDateTime > selectedDateTime) {
         setSelectedDateVisits(selectedDateVisitsArr)
-      } else if (bb >= aa) {
-        if (selectedDateVisitsArr.length > 0) {
-          let arrToDisplay = []
-          if (selectedDate == todayDate) {
-            let arr = updatedArr.filter(
-              (item) => item.godzina > today.getHours()
-            )
-            arrToDisplay = [...arr, ...selectedDateVisitsArr].sort(
-              (a, b) => a.godzina - b.godzina
-            )
-            setSelectedDateVisits(arrToDisplay)
-          } else {
-            arrToDisplay = [...updatedArr, ...selectedDateVisitsArr].sort(
-              (a, b) => a.godzina - b.godzina
-            )
-            setSelectedDateVisits(arrToDisplay)
-          }
+      } else if (selectedDateTime === todayDateTime) {
+        let arr = updatedArr.filter((item) => item.godzina > today.getHours())
+        arrToDisplay = [...arr, ...selectedDateVisitsArr].sort(
+          (a, b) => a.godzina - b.godzina
+        )
+        if (selectedDateVisits.length > 0) {
+          setSelectedDateVisits(arrToDisplay)
         } else {
-          setSelectedDateVisits(updatedVisits)
+          setSelectedDateVisits(updatedArr)
         }
+        setSelectedDateVisits(arrToDisplay)
+      } else if (selectedDateTime > todayDateTime) {
+        if (selectedDateVisits.length > 0) {
+          arrToDisplay = [...updatedArr, ...selectedDateVisitsArr].sort(
+            (a, b) => a.godzina - b.godzina
+          )
+          setSelectedDateVisits(arrToDisplay)
+        } else {
+          setSelectedDateVisits(updatedArr)
+        }
+      } else {
+        setSelectedDateVisits(updatedArr)
       }
     })
   }, [isCreated, startDate, updatedVisits, selectedDoctor])
@@ -309,6 +311,7 @@ const AdminTimesheetPage = () => {
       outline: none;
       border: 2px solid #333;
       background-color: #fff;
+      background: transparent;
       font-family: 'poppins';
       color: #333;
       margin-top: 2em;

@@ -3,7 +3,7 @@ import { ModalContainer as MC } from '../VisitPage/VisitPageElements'
 import { Field } from 'formik'
 
 export const AddVisitContainer = styled.div`
-  /* background-color: cadetblue; */
+  // background-color: cadetblue;
   width: 90%;
   height: fit-content;
   display: flex;
@@ -42,9 +42,10 @@ export const FormColumn = styled.div`
   justify-content: flex-start;
   align-items: center;
   width: 17em;
-  box-shadow: 0px 0px 10px 0px #aaa;
+  box-shadow: 0px 0px 47px -36px rgba(51, 51, 51, 0.5);
   padding: 1em;
   font-size: 24px;
+  max-width: 350px;
 
   @media screen and (max-width: 1500px) {
     font-size: 20px;
@@ -57,15 +58,15 @@ export const FormColumn = styled.div`
   }
   @media screen and (max-width: 768px) {
     font-size: 14px;
+    max-width: 400px;
   }
 `
 export const FormInput = styled(Field)`
   background-color: transparent;
   border: 2px solid #333;
-  height: 3em;
-  width: 18em;
+  padding: 0.5em 0 0.5em 1em;
+  width: 100%;
   margin: 0.6em 0;
-  padding-left: 1em;
   outline: none;
   color: #333;
   font-family: 'Poppins';
@@ -90,12 +91,12 @@ export const FormButton = styled.button`
   background-color: transparent;
   border: 2px solid #333;
   font-family: 'Poppins';
-  width: 18em;
-  height: 4em;
-  margin: 1em 0;
+  width: 100%;
+  padding: .5em 0;
   color: #333;
   transition: 0.2s ease;
   cursor: pointer;
+  margin-bottom: .25em;
 
   &:hover {
     background-color: #01d4bf;
