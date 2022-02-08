@@ -12,9 +12,11 @@ export const OurStaffContainer = styled(motion.div)`
   justify-content: center;
   align-items: center;
   width: 100%;
-  overflow: hidden;
+  overflow-X: hidden;
+  overflow-Y: ${props => props.default ? "visible" : "hidden"};
   font-size: 24px;
   height: 100%;
+  
   @media screen and (max-width: 1600px) {
     font-size: 20px;
   }
