@@ -15,7 +15,7 @@ export const Container = styled.div`
     font-size: 14.5px;
   }
   @media screen and (max-width: 768px) {
-    display: none;
+    /* display: none; */
   }
 `;
 export const SubPageContainer = styled(motion.div)`
@@ -39,6 +39,7 @@ export const HeaderImage = styled(motion.div)`
   background-size: cover;
   @media screen and (max-width: 768px) {
     left: 0%;
+    width: 100%;
   }
 `;
 export const PageTitle = styled.h1`

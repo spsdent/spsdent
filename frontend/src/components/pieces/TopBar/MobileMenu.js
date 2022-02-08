@@ -25,7 +25,7 @@ const MobileMenu = ({ setIsOpenHandler }, ref) => {
   let navigate = useNavigate();
 
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     history.listen((location) => {
       dispatch(clearMessage()); // clear message when changing location
@@ -52,27 +52,31 @@ const MobileMenu = ({ setIsOpenHandler }, ref) => {
         exit={{ opacity: 0 }}
         transition={{ duration: 0.5, delay: 0.4 }}
       >
-        <NavItem mobile>
+        <NavItem>
           <StyledLink onClick={setIsOpenHandler} to="/">
             Strona Główna
           </StyledLink>
         </NavItem>
-        <NavItem mobile>
+        <NavItem>
           <StyledLink onClick={setIsOpenHandler} to="/o-nas">
             O nas
           </StyledLink>
         </NavItem>
-        <NavItem mobile>
+        <NavItem>
           <StyledLink onClick={setIsOpenHandler} to="/oferta">
             Oferta
           </StyledLink>
         </NavItem>
-        <NavItem mobile onClick={() => navigate("/cennik/wizyta")}>
+        <NavItem onClick={() => navigate("/cennik/wizyta")}>
           <StyledLink onClick={setIsOpenHandler} to="/cennik">
             Cennik
           </StyledLink>
         </NavItem>
-
+        <NavItem>
+          <StyledLink onClick={setIsOpenHandler} to="/kontakt">
+            Kontakt
+          </StyledLink>
+        </NavItem>
         <ButtonsContainer>
           <ButtonNav primary onClick={setIsOpenHandler}>
             <ButtonLink
@@ -96,7 +100,10 @@ const MobileMenu = ({ setIsOpenHandler }, ref) => {
             </ButtonNav>
           ) : (
             <ButtonNav onClick={setIsOpenHandler}>
-              <ButtonLink to="/logowanie" onClick={() => dispatch(clearMessage())}>
+              <ButtonLink
+                to="/logowanie"
+                onClick={() => dispatch(clearMessage())}
+              >
                 Zaloguj się
               </ButtonLink>
             </ButtonNav>

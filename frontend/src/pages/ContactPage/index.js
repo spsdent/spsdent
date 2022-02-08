@@ -11,6 +11,7 @@ import {
   ContactInput,
   ContactMessage,
   ButtonContact,
+  ContactSocket,
 } from "./ContactPageElements";
 class ContactPage extends Component {
   state = {
@@ -37,7 +38,7 @@ class ContactPage extends Component {
   };
   render() {
     return (
-      <PageWrapper primary>
+      <PageWrapper>
         <ContactContainer>
           <ContactForm
             onSubmit={this.handleSubmit}
@@ -84,19 +85,28 @@ class ContactPage extends Component {
             animate={{ y: 0 }}
             transition={{ type: "spring", damping: 5, stiffness: 100 }}
           >
-            <ContactInfoTitle>Tu nas znajdziesz</ContactInfoTitle>
-            <ContactText>
-              ul. Filaretów 27,<br></br>lok.4 20-609<br></br>Lublin
-            </ContactText>
-            <ContactInfoTitle>Godziny otwarcia</ContactInfoTitle>
-            <ContactText>
-              Poniedziałek - Piątek<br></br>8:00 - 16:00<br></br>Sobota<br></br>
-              9:00 - 13:00
-            </ContactText>
-            <ContactInfoTitle>Telefon</ContactInfoTitle>
-            <ContactText>607 677 888</ContactText>
-            <ContactInfoTitle>Pomoc</ContactInfoTitle>
-            <ContactText>pomoc@spsdent.com</ContactText>
+            <ContactSocket>
+              <ContactInfoTitle>Tu nas znajdziesz</ContactInfoTitle>
+              <ContactText>
+                ul. Filaretów 27,<br></br>lok.4 20-609<br></br>Lublin
+              </ContactText>
+            </ContactSocket>
+            <ContactSocket>
+              <ContactInfoTitle>Godziny otwarcia</ContactInfoTitle>
+              <ContactText>
+                Poniedziałek - Piątek<br></br>8:00 - 16:00<br></br>Sobota
+                <br></br>
+                9:00 - 13:00
+              </ContactText>
+            </ContactSocket>
+            <ContactSocket>
+              <ContactInfoTitle>Telefon</ContactInfoTitle>
+              <ContactText>607 677 888</ContactText>
+            </ContactSocket>
+            <ContactSocket>
+              <ContactInfoTitle>Pomoc</ContactInfoTitle>
+              <ContactText>pomoc@spsdent.com</ContactText>
+            </ContactSocket>
           </ContactInfo>
         </ContactContainer>
         <Pattern

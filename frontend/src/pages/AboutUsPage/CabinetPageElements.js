@@ -44,8 +44,7 @@ export const Container = styled(motion.div)`
     position: absolute;
     top: 20em;
   }
-
-`
+`;
 export const Title = styled(motion.h1)`
   font-size: 4.5em;
   letter-spacing: 0.05em;
@@ -59,19 +58,17 @@ export const Title = styled(motion.h1)`
 `;
 export const CabinetColumn = styled(motion.div)`
   width: ${(props) => (props.primary ? "60%" : "40%")};
-  height: ${(props) => (props.primary ? "fit-content" : "100%")};
+  height: ${(props) => (props.primary ? "fit-content" : "85vh")};
   display: flex;
   flex-direction: column;
   justify-content: ${(props) => (props.primary ? "flex-start" : "center")};
   align-items: ${(props) => (props.primary ? "flex-start" : "center")};
   padding: ${(props) => (props.primary ? "3em 2em" : "0")};
-  
   gap: 3em;
-
-
   @media screen and (max-width: 768px) {
-    width: ${props => props.primary ? "auto" : "40%"};
+    width: ${(props) => (props.primary ? "auto" : "40%")};
     margin-top: ${(props) => (props.primary ? "10em" : "0")};
+    height: fit-content;
   }
 `;
 export const PhotoCabinet = styled(motion.div)`
@@ -106,5 +103,4 @@ export const ScrollContainer = styled(motion.div)`
   bottom: 2em;
   position: fixed;
   z-index: 20;
-
 `;
