@@ -30,6 +30,9 @@ export const OurStaffContainer = styled(motion.div)`
     font-size: 12px;
     flex-direction: column;
   }
+  @media screen and (max-width: 400px) {
+    font-size: 10px;
+  }
 `;
 export const TitleContainer = styled.div`
   width: 50%;
@@ -39,7 +42,7 @@ export const TitleContainer = styled.div`
   justify-content: center;
 
   @media screen and (max-width:768px) {
-    margin-top: 3em;
+    margin-top: 4em;
   }
 `;
 export const CardsContainer = styled.div`
