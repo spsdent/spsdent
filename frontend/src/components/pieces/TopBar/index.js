@@ -15,6 +15,7 @@ import {
   MobileIcon,
   ButtonNav,
   ButtonsContainer,
+  BurgerIcon,
 } from "./TopBarElements";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../store/actions/auth";
@@ -51,7 +52,7 @@ const TopBar = () => {
             </NavLogo>
           </NavLogoContainer>
           <MobileIcon onClick={setIsOpenHandler} >
-            <FaBars />
+            <BurgerIcon isOpen={isOpen} />
           </MobileIcon>
           <AnimatePresence>
           {isOpen && <MobileMenu setIsOpenHandler={setIsOpenHandler}/>}

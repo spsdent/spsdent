@@ -55,15 +55,19 @@ export const NavImage = styled.img`
 export const MobileIcon = styled.div`
   display: none;
   @media screen and (max-width: 768px) {
-    display: block;
     position: absolute;
-    top: 0;
+    top: 50%;
     right: 0;
-    font-size: 2em;
+    transform: translate(-50%, -40%);
     cursor: pointer;
-    transform: translate(-100%, 40%);
-    color: #000;
+    color: #333;
     z-index: 1000;
+    height: 28px;
+    width: 40px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
   }
 `;
 export const NavInfoContainer = styled.div`
@@ -132,4 +136,38 @@ export const ButtonLink = styled(LinkButton)`
   white-space: nowrap;
   text-decoration: none;
   cursor: pointer;
+`;
+export const BurgerIcon = styled.div`
+  width: 30px;
+  height: 4px;
+  background-color: ${(props) =>
+    props.isOpen === true ? "transparent" : "#333"};
+  border-radius: 5px;
+  transition: all 0.5s ease-in-out;
+
+  transform: translate(
+    ${(props) => (props.isOpen === true ? "-50px, 10px" : "0px, 10px")}
+  );
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    width: 30px;
+    height: 4px;
+    background-color: #333;
+    border-radius: 5px;
+    transition: all 0.5s ease-in-out;
+  }
+  &:before {
+    transform: translate(
+        ${(props) => (props.isOpen === true ? "50px, 0px" : "0px, -10px")}
+      )
+      rotate(${(props) => (props.isOpen === true ? "-45deg" : "0deg")});
+  }
+  &:after {
+    transform: translate(
+        ${(props) => (props.isOpen === true ? "50px, 0px" : "0px, 10px")}
+      )
+      rotate(${(props) => (props.isOpen === true ? "45deg" : "0deg")});
+  }
 `;
