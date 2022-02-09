@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
 export const Pattern = styled(motion.img)`
-  width: 550px;
-  height: 250px;
+  width: 21em;
+  height: 10em;
   position: fixed;
   top: ${(props) => props.top};
   left: ${(props) => props.left};
   z-index: -1;
-  @media screen and (max-width: 1600px) {
+  /* @media screen and (max-width: 1600px) {
     width: 450px;
     height: 200px;
   }
@@ -22,5 +22,5 @@ export const Pattern = styled(motion.img)`
   @media screen and (max-width: 960px) {
     width: 200px;
     height: 50px;
-  }
+  } */
 `;
