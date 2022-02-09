@@ -1,24 +1,32 @@
-import React from 'react'
+import React from "react";
 import {
   NavItem,
   StyledLink,
-} from '../components/pieces/SideBar/SideBarElements'
+} from "../components/pieces/SideBar/SideBarElements";
 
-const UserNav = () => (
+const UserNav = ({ setIsOpenHandler }) => (
   <>
     <NavItem>
-      <StyledLink to='/zarezerwuj'>Zarezerwuj</StyledLink>
+      <StyledLink mobile onClick={setIsOpenHandler} to="/zarezerwuj">
+        Zarezerwuj
+      </StyledLink>
     </NavItem>
     <NavItem>
-      <StyledLink to='/wizyty'>Aktualne wizyty</StyledLink>
+      <StyledLink mobile onClick={setIsOpenHandler} to="/wizyty">
+        Aktualne wizyty
+      </StyledLink>
     </NavItem>
     <NavItem>
-      <StyledLink to='/archiwum-wizyt'>Historia wizyt</StyledLink>
+      <StyledLink mobile onClick={setIsOpenHandler} to="/archiwum-wizyt">
+        Historia wizyt
+      </StyledLink>
     </NavItem>
     <NavItem>
-      <StyledLink to='/profil'>Profil użytkownika</StyledLink>
+      <StyledLink mobile onClick={setIsOpenHandler} to="/profil">
+        Profil użytkownika
+      </StyledLink>
     </NavItem>
   </>
-)
+);
 
-export default UserNav
+export default UserNav;

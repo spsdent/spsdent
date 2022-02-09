@@ -102,9 +102,9 @@ const MobileMenu = ({ setIsOpenHandler }, ref) => {
         </NavItem>
         {currentUser && (
           <>
-            {showSpecBoard && <SpecNav />}
-            {showAdminBoard && <AdminNav />}
-            {showUserBoard && <UserNav />}
+            {showSpecBoard && <SpecNav setIsOpenHandler={setIsOpenHandler} />}
+            {showAdminBoard && <AdminNav setIsOpenHandler={setIsOpenHandler} />}
+            {showUserBoard && <UserNav setIsOpenHandler={setIsOpenHandler} />}
           </>
         )}
         <ButtonsContainer>

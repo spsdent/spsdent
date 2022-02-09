@@ -52,7 +52,6 @@ export const NavItem = styled.li`
   position: relative;
   padding: 0.15em 0;
   list-style: none;
-  
 `;
 export const StyledLink = styled(StyledNavLink)`
   text-transform: uppercase;
@@ -64,6 +63,10 @@ export const StyledLink = styled(StyledNavLink)`
   font-size: ${(props) => (props.primary ? ".6em" : ".7em")};
   &:hover {
     color: black;
+  }
+
+  @media (orientation: portrait) and (max-width: 768px) {
+    font-size: ${(props) => (props.mobile ? "2em" : ".7em")};
   }
 `;
 export const SocialLink = styled.a`
