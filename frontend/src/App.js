@@ -3,6 +3,7 @@ import './styles/index.css'
 import RootNavigation from './navigation/RootNavigation'
 
 const App = () => {
+  
   return (
     <>
       <RootNavigation />

@@ -14,11 +14,13 @@ import {
   ContactSocket,
 } from './ContactPageElements'
 import HashLoader from 'react-spinners/HashLoader'
+import emailjs from 'emailjs-com'
+import Swal from 'sweetalert2'
 
 const ContactPage = () => {
   const [state, setState] = useState({
-    name: '',
-    email: '',
+    from_name: '',
+    from_email: '',
     topic: '',
     message: '',
   })
@@ -37,9 +39,35 @@ const ContactPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+
+    emailjs
+      .sendForm(
+        process.env.REACT_APP_SERVICE_ID,
+        process.env.REACT_APP_TEMPLATE_ID,
+        e.target,
+        process.env.REACT_APP_USER_ID
+      )
+      .then(
+        (result) => {
+          console.log(result.text)
+          Swal.fire({
+            icon: 'success',
+            title: 'Wiadomość została wysłana!',
+          })
+        },
+        (error) => {
+          console.log(error.text)
+          Swal.fire({
+            icon: 'error',
+            title: 'Ooops, wystąpił błąd.',
+          })
+        }
+      )
+    e.target.reset()
+
     setState({
-      name: '',
-      email: '',
+      from_name: '',
+      from_email: '',
       topic: '',
       message: '',
     })
@@ -67,17 +95,19 @@ const ContactPage = () => {
               </ContactText>
               <ContactInput
                 type='text'
-                name='name'
+                name='from_name'
                 value={state.name}
                 onChange={handleChange}
                 placeholder='Imię i Nazwisko'
+                required
               />
               <ContactInput
-                type='text'
-                name='email'
+                type='email'
+                name='from_email'
                 value={state.email}
                 onChange={handleChange}
                 placeholder='E-mail'
+                required
               />
               <ContactInput
                 type='text'
@@ -85,6 +115,7 @@ const ContactPage = () => {
                 value={state.topic}
                 onChange={handleChange}
                 placeholder='Temat'
+                required
               />
               <ContactMessage
                 type='text'
@@ -92,6 +123,7 @@ const ContactPage = () => {
                 value={state.message}
                 onChange={handleChange}
                 placeholder='Treść'
+                required
               />
               <ButtonContact type='submit'>Wyślij</ButtonContact>
             </ContactForm>
