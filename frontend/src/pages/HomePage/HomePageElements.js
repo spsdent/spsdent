@@ -28,6 +28,7 @@ export const Container = styled.div`
     align-items: center;
     justify-content: flex-start;
     text-align: center;
+    font-size: 14px;
   }
 `;
 export const TextContainer = styled.div`

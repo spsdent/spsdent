@@ -16,15 +16,9 @@ import {
   ButtonLink,
 } from "./HomePageElements";
 import {
-  ContactContainer,
-  ContactForm,
-  ContactTitle,
   ContactInfo,
   ContactInfoTitle,
   ContactText,
-  ContactInput,
-  ContactMessage,
-  ButtonContact,
   ContactSocket,
 } from "../ContactPage/ContactPageElements";
 const Home = () => {

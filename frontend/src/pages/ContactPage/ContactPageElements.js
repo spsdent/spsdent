@@ -3,14 +3,11 @@ import { motion } from "framer-motion";
 
 export const ContactContainer = styled.div`
   width: 80%;
-  /* height: 75vh; */
   margin-top: 2.6em;
   display: flex;
   justify-content: space-around;
   align-items: flex-start;
   font-size: 22px;
-  /* background-color: cadetblue; */
-  /* overflow: hidden; */
   @media screen and (max-width: 1500px) {
     font-size: 18px;
   }
@@ -26,7 +23,6 @@ export const ContactContainer = styled.div`
   }
 `;
 export const ContactForm = styled(motion.form)`
-  /* background-color: cadetblue; */
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -34,14 +30,11 @@ export const ContactForm = styled(motion.form)`
   width: 45%;
   max-width: 500px;
   min-width: 240px;
-  /* margin-left: 5em; */
-
   @media screen and (max-width: 1500px) {
     max-width: 300px;
   }
 `;
 export const ContactInfo = styled(motion.div)`
-  /* background-color: yellowgreen; */
   display: ${(props) => (props.home ? "none" : "flex")};
   flex-direction: column;
   justify-content: flex-start;
@@ -49,14 +42,12 @@ export const ContactInfo = styled(motion.div)`
   height: fit-content;
   width: auto;
   flex-wrap: wrap;
-
   @media (orientation: portrait) and (max-width: 768px) {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: flex-start;
-    gap: 1em;
-    margin-top: ${props => props.home ? "2em" : "0"};
+    margin-top: ${(props) => (props.home ? "2em" : "0")};
     width: 20em;
   }
 `;
@@ -66,14 +57,22 @@ export const ContactSocket = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   width: auto;
-  /* background-color: gray; */
   flex-grow: 1;
+  @media (orientation: portrait) and (max-width: 768px) {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3em;
+  }
 `;
 export const ContactInfoTitle = styled.h2`
   font-family: "bebas neue";
   font-size: 1.2em;
   color: #333;
   letter-spacing: 0.06em;
+  @media (orientation: portrait) and (max-width: 768px) {
+    font-size: 1.5em;
+  }
 `;
 export const ContactText = styled.p`
   font-family: "poppins";
@@ -83,6 +82,10 @@ export const ContactText = styled.p`
   margin-bottom: ${(props) => (props.primary ? "0;" : "1.5em;")};
   padding: ${(props) => (props.primary ? "0;" : "0.2em 0;")};
   text-align: left;
+
+  @media (orientation: portrait) and (max-width: 768px) {
+    text-align: center;
+  }
 `;
 export const ContactInput = styled.input`
   width: 100%;
