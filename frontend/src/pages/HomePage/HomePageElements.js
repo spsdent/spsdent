@@ -9,8 +9,7 @@ export const Container = styled.div`
   justify-content: space-around;
   align-items: center;
   font-size: 20px;
-  
-  /* background-color: red; */
+
   @media screen and (max-width: 1600px) {
     font-size: 16px;
   }
@@ -48,8 +47,8 @@ export const HeaderWelcome = styled(motion.h2)`
   letter-spacing: 0.07em;
   color: #333;
   line-height: 0.85em;
-  @media screen and (max-width: 768px) {
-    font-size: 3.5em;
+  @media (orientation: portrait) and (max-width: 768px) {
+    font-size: 4em;
   }
 `;
 export const StyledSpan = styled.span`
@@ -63,10 +62,9 @@ export const HeaderText = styled(motion.p)`
   margin: 1em 0 1.5em 0;
   line-height: 1.3em;
   color: #333;
-  @media screen and (max-width: 450px) {
-    margin: 1em 0;
+  @media (orientation: portrait) and (max-width: 768px) {
+    font-size: 0.8em;
     width: 100%;
-    font-size: 0.7em;
   }
 `;
 export const ButtonContainer = styled(motion.div)`
@@ -111,9 +109,8 @@ export const HeaderPhotoContainer = styled.div`
   width: 50%;
   height: 90%;
   position: relative;
-
-  @media (max-width: 768px) and (orientation: portrait) {
-    width: 80%;
+  @media (orientation: portrait) and (max-width: 768px) {
+    display: none;
   }
 `;
 export const PhotoHeader = styled(motion.img)`

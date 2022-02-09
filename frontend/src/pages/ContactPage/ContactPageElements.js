@@ -77,6 +77,7 @@ export const ContactInfoTitle = styled.h2`
 export const ContactText = styled.p`
   font-family: "poppins";
   font-size: ${(props) => (props.primary ? ".8em" : ".9em")};
+  font-weight: 300;
   color: #333;
   letter-spacing: 0.04em;
   margin-bottom: ${(props) => (props.primary ? "0;" : "1.5em;")};
