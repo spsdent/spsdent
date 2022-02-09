@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { PageWrapper } from "../../components/PageWrapper";
 import { Pattern } from "../../components/Pattern";
-import styled from "styled-components";
-import { StyledLink } from "../../components/pieces/SideBar/SideBarElements";
 import {
   PriceListPageContainer,
   PriceListTitle,
@@ -13,36 +11,33 @@ import {
 import { useParams } from "react-router-dom";
 import PriceListSubPage from "./PriceListSubPage";
 import ServiceData from "../../services/service";
-import { useLocation } from "react-router-dom";
+import HashLoader from 'react-spinners/HashLoader'
 
 const PriceListPage = () => {
   let params = useParams();
   let priceGroup = params["grupa"];
+  const [isLoading, setIsLoading] = useState(false)
+  const [serviceData, setServiceData] = useState([]);
+
 
   useEffect(() => {
-    retrieveServices();
+    setIsLoading(true)
+    ServiceData.getAll().then((response) => {
+      setServiceData(response.data)
+      setIsLoading(false)
+    });
   }, [priceGroup]);
 
-  // const retrieveServices = () => {
-  //   ServiceData.getAll().then((response) => {
-  //     const filteredResult = response.data.filter(
-  //       (item) =>
-  //         item.grupa.toLowerCase() ===
-  //         priceGroup.split("-").join(" ").toLowerCase()
-  //     );
-  //     console.log(filteredResult);
-  //     // setCurrentPathServices(filteredResult[0].uslugi)
-  //   });
-  // };
 
-  const [serviceData, setServiceData] = useState([]);
-  const retrieveServices = () => {
-    ServiceData.getAll().then((response) => setServiceData(response.data));
-  };
-  let location = useLocation();
   return (
     <PageWrapper>
-      <PriceListPageContainer>
+      <HashLoader
+        color='#01d4bf'
+        loading={isLoading}
+        size={50}
+        css={{ width: '100%', height: '100%' }}
+      />
+      {!isLoading && <><PriceListPageContainer>
         <PriceListTitle
           primary
           transition={{ type: "spring", bounce: 0.5, duration: 1.2 }}
@@ -97,7 +92,7 @@ const PriceListPage = () => {
         transition={{ type: "spring", bounce: 0.5, duration: 2, delay: 0.5 }}
         initial={{ opacity: 0, y: -200 }}
         animate={{ opacity: 1, y: 0 }}
-      />
+      /></>}
     </PageWrapper>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import styled, { css } from 'styled-components'
@@ -23,6 +23,7 @@ import {
 import { register } from '../../store/actions/auth'
 import { SET_MESSAGE } from '../../store/actions/types'
 import { clearMessage } from '../../store/actions/message'
+import HashLoader from 'react-spinners/HashLoader'
 
 import {
   Title,
@@ -206,10 +207,9 @@ const Styles = styled.div`
       font-size: 7px;
     }
   }
-  
 
   .react-datepicker__input-container input:disabled {
-    border: 2px solid rgba(3,3,3,.5);
+    border: 2px solid rgba(3, 3, 3, 0.5);
   }
 `
 
@@ -239,6 +239,15 @@ const AddVisitNonAuth = () => {
   const allServicesFromDb = useFetchAllServices()
   const allDoctorsFromDb = useFetchAllDoctors()
   const allUsersFromDb = useFetchAllUsers()
+
+  const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    setIsLoading(true)
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 1000)
+  }, [])
 
   const createVisit = (values) => {
     const {
@@ -456,7 +465,6 @@ const AddVisitNonAuth = () => {
   }
 
   const onHourSelect = (values) => {
-
     const selectedDoctorData = allDoctorsFromDb.find(
       (doctor) => doctor.doctorId === doctorSelected
     )
@@ -479,7 +487,6 @@ const AddVisitNonAuth = () => {
       startDate &&
       doctorSelected
     ) {
-
       const servicePrice = allServicesFromDb
         .filter((service) => service.grupa === serviceGroupSelected)[0]
         .uslugi.filter((usluga) => usluga.nazwa === serviceSelected)[0]
@@ -495,7 +502,6 @@ const AddVisitNonAuth = () => {
             return hour
           }
         })
-        
     }
     return updatedHours.map((item) => (
       <option value={`${item}`} key={`${item}`}>{`${item}`}</option>
@@ -514,424 +520,446 @@ const AddVisitNonAuth = () => {
 
   return (
     <PageWrapper>
-      <AddVisitContainer>
-        <>
-          <Formik
-            enableReinitialize
-            initialValues={visit}
-            validationSchema={addVisitNonAuthValidationSchema}
-            onSubmit={() => setIsSubmit(true)}
-            onReset={() => {
-              setVisit(initialAddVisitValues)
-              setPage(0)
-            }}
-          >
-            {({ values, setValues, handleBlur, resetForm }) => (
-              <Form>
-                <FormContainer>
-                  <LoginContainer
-                    register
-                    initial={{ opacity: 0, scale: 0, rotate: 60 }}
-                    animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <TitleContainer>
-                      <Title>Zarezerwuj</Title>
-                      <Title primary>wizytę</Title>
-                    </TitleContainer>
+      <HashLoader
+        color='#01d4bf'
+        loading={isLoading}
+        size={50}
+        css={{ width: '100%', height: '100%' }}
+      />
+      {!isLoading && (
+        <AddVisitContainer>
+          <>
+            <Formik
+              enableReinitialize
+              initialValues={visit}
+              validationSchema={addVisitNonAuthValidationSchema}
+              onSubmit={() => setIsSubmit(true)}
+              onReset={() => {
+                setVisit(initialAddVisitValues)
+                setPage(0)
+              }}
+            >
+              {({ values, setValues, handleBlur, resetForm }) => (
+                <Form>
+                  <FormContainer>
+                    <LoginContainer
+                      register
+                      initial={{ opacity: 0, scale: 0, rotate: 60 }}
+                      animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <TitleContainer>
+                        <Title>Zarezerwuj</Title>
+                        <Title primary>wizytę</Title>
+                      </TitleContainer>
 
-                    {page === 0 && (
-                      <>
-                        <Field name='grupa' as={MyStyledSelect}>
-                          <option value=''>Wybierz grupę usług</option>
-                          {onServiceGroupSelect(values)}
-                        </Field>
-                        <ErrorMessage name='grupa'>
-                          {(msg) => (
-                            <ErrorText primary panel>
-                              {msg}
-                            </ErrorText>
-                          )}
-                        </ErrorMessage>
-                        <Field
-                          as={MyStyledSelect}
-                          name='usluga'
-                          disabled={!serviceGroupSelected}
-                        >
-                          <option value=''>Wybierz usługę</option>
-                          {onServiceSelect(values)}
-                        </Field>
-                        <ErrorMessage name='usluga'>
-                          {(msg) => (
-                            <ErrorText primary panel>
-                              {msg}
-                            </ErrorText>
-                          )}
-                        </ErrorMessage>
-                        <Field
-                          as={MyStyledSelect}
-                          name='specjalista'
-                          disabled={!serviceSelected}
-                        >
-                          <option value=''>Wybierz specjalistę</option>
-                          {onDoctorSelect(values)}
-                        </Field>
-                        <ErrorMessage name='specjalista'>
-                          {(msg) => (
-                            <ErrorText primary panel>
-                              {msg}
-                            </ErrorText>
-                          )}
-                        </ErrorMessage>
-                        <Styles>
-                          <DatePicker
-                            disabled={!doctorSelected}
-                            selected={startDate}
-                            dateFormat='dd/MM/yyyy'
-                            onChange={(date) => {
-                              setStartDate(date)
-                              values.data = `${date.getDate()}.${
-                                date.getMonth() + 1
-                              }.${date.getFullYear()}`
-                              setValues(values)
-                            }}
-                            minDate={minDate}
-                            placeholderText='Wybierz termin wizyty'
-                            filterDate={isWeekday}
-                            excludeDates={toExclude}
-                            name='data'
-                            locale='pl'
+                      {page === 0 && (
+                        <>
+                          <Field name='grupa' as={MyStyledSelect}>
+                            <option value=''>Wybierz grupę usług</option>
+                            {onServiceGroupSelect(values)}
+                          </Field>
+                          <ErrorMessage name='grupa'>
+                            {(msg) => (
+                              <ErrorText primary panel>
+                                {msg}
+                              </ErrorText>
+                            )}
+                          </ErrorMessage>
+                          <Field
+                            as={MyStyledSelect}
+                            name='usluga'
+                            disabled={!serviceGroupSelected}
+                          >
+                            <option value=''>Wybierz usługę</option>
+                            {onServiceSelect(values)}
+                          </Field>
+                          <ErrorMessage name='usluga'>
+                            {(msg) => (
+                              <ErrorText primary panel>
+                                {msg}
+                              </ErrorText>
+                            )}
+                          </ErrorMessage>
+                          <Field
+                            as={MyStyledSelect}
+                            name='specjalista'
+                            disabled={!serviceSelected}
+                          >
+                            <option value=''>Wybierz specjalistę</option>
+                            {onDoctorSelect(values)}
+                          </Field>
+                          <ErrorMessage name='specjalista'>
+                            {(msg) => (
+                              <ErrorText primary panel>
+                                {msg}
+                              </ErrorText>
+                            )}
+                          </ErrorMessage>
+                          <Styles>
+                            <DatePicker
+                              disabled={!doctorSelected}
+                              selected={startDate}
+                              dateFormat='dd/MM/yyyy'
+                              onChange={(date) => {
+                                setStartDate(date)
+                                values.data = `${date.getDate()}.${
+                                  date.getMonth() + 1
+                                }.${date.getFullYear()}`
+                                setValues(values)
+                              }}
+                              minDate={minDate}
+                              placeholderText='Wybierz termin wizyty'
+                              filterDate={isWeekday}
+                              excludeDates={toExclude}
+                              name='data'
+                              locale='pl'
+                              onBlur={handleBlur}
+                              withPortal
+                            />
+                          </Styles>
+                          <ErrorMessage name='data'>
+                            {(msg) => (
+                              <ErrorText primary panel>
+                                {msg}
+                              </ErrorText>
+                            )}
+                          </ErrorMessage>
+                          <Field
+                            disabled={!values.data}
+                            as={MyStyledSelect}
+                            name='godzina'
+                          >
+                            <option value=''>Wybierz godzinę</option>
+                            {onHourSelect(values.data)}
+                          </Field>
+                          <ErrorMessage name='godzina'>
+                            {(msg) => (
+                              <ErrorText primary panel>
+                                {msg}
+                              </ErrorText>
+                            )}
+                          </ErrorMessage>
+                        </>
+                      )}
+                      {page === 1 && (
+                        <>
+                          <Field
+                            as={MyStyledInput}
+                            name='imie'
+                            type='text'
+                            placeholder='Imie'
                             onBlur={handleBlur}
-                            withPortal
                           />
-                        </Styles>
-                        <ErrorMessage name='data'>
-                          {(msg) => (
-                            <ErrorText primary panel>
-                              {msg}
-                            </ErrorText>
-                          )}
-                        </ErrorMessage>
-                        <Field
-                          disabled={!values.data}
-                          as={MyStyledSelect}
-                          name='godzina'
-                        >
-                          <option value=''>Wybierz godzinę</option>
-                          {onHourSelect(values.data)}
-                        </Field>
-                        <ErrorMessage name='godzina'>
-                          {(msg) => (
-                            <ErrorText primary panel>
-                              {msg}
-                            </ErrorText>
-                          )}
-                        </ErrorMessage>
-                      </>
-                    )}
-                    {page === 1 && (
-                      <>
-                        <Field
-                          as={MyStyledInput}
-                          name='imie'
-                          type='text'
-                          placeholder='Imie'
-                          onBlur={handleBlur}
-                        />
-                        <ErrorMessage name='imie'>
-                          {(msg) => (
-                            <ErrorText primary panel>
-                              {msg}
-                            </ErrorText>
-                          )}
-                        </ErrorMessage>
-                        <Field
-                          as={MyStyledInput}
-                          name='nazwisko'
-                          type='text'
-                          placeholder='Nazwisko'
-                          onBlur={handleBlur}
-                        />
-                        <ErrorMessage name='nazwisko'>
-                          {(msg) => (
-                            <ErrorText primary panel>
-                              {msg}
-                            </ErrorText>
-                          )}
-                        </ErrorMessage>
-                        <Field
-                          as={MyStyledInput}
-                          name='email'
-                          type='email'
-                          placeholder='E-mail'
-                          onBlur={handleBlur}
-                        />
-                        <ErrorMessage name='email'>
-                          {(msg) => (
-                            <ErrorText primary panel>
-                              {msg}
-                            </ErrorText>
-                          )}
-                        </ErrorMessage>
-                        <Field
-                          as={MyStyledInput}
-                          name='telefon'
-                          type='number'
-                          placeholder='Telefon'
-                          onBlur={handleBlur}
-                        />
-                        <ErrorMessage name='telefon'>
-                          {(msg) => (
-                            <ErrorText primary panel>
-                              {msg}
-                            </ErrorText>
-                          )}
-                        </ErrorMessage>
-                        <Field
-                          as={MyStyledInput}
-                          name='miasto'
-                          type='text'
-                          placeholder='Miasto'
-                          onBlur={handleBlur}
-                        />
-                        <ErrorMessage name='miasto'>
-                          {(msg) => (
-                            <ErrorText primary panel>
-                              {msg}
-                            </ErrorText>
-                          )}
-                        </ErrorMessage>
-                        <Field
-                          as={MyStyledInput}
-                          name='ulica'
-                          type='text'
-                          placeholder='Ulica'
-                          onBlur={handleBlur}
-                        />
-                        <ErrorMessage name='ulica'>
-                          {(msg) => (
-                            <ErrorText primary panel>
-                              {msg}
-                            </ErrorText>
-                          )}
-                        </ErrorMessage>
-                        <Field
-                          as={MyStyledInput}
-                          name='kodPocztowy'
-                          type='number'
-                          placeholder='Kod pocztowy'
-                          onBlur={handleBlur}
-                        />
-                        <ErrorMessage name='kodPocztowy'>
-                          {(msg) => (
-                            <ErrorText primary panel>
-                              {msg}
-                            </ErrorText>
-                          )}
-                        </ErrorMessage>
-                        {isCreateAccount ? (
-                          <>
+                          <ErrorMessage name='imie'>
+                            {(msg) => (
+                              <ErrorText primary panel>
+                                {msg}
+                              </ErrorText>
+                            )}
+                          </ErrorMessage>
+                          <Field
+                            as={MyStyledInput}
+                            name='nazwisko'
+                            type='text'
+                            placeholder='Nazwisko'
+                            onBlur={handleBlur}
+                          />
+                          <ErrorMessage name='nazwisko'>
+                            {(msg) => (
+                              <ErrorText primary panel>
+                                {msg}
+                              </ErrorText>
+                            )}
+                          </ErrorMessage>
+                          <Field
+                            as={MyStyledInput}
+                            name='email'
+                            type='email'
+                            placeholder='E-mail'
+                            onBlur={handleBlur}
+                          />
+                          <ErrorMessage name='email'>
+                            {(msg) => (
+                              <ErrorText primary panel>
+                                {msg}
+                              </ErrorText>
+                            )}
+                          </ErrorMessage>
+                          <Field
+                            as={MyStyledInput}
+                            name='telefon'
+                            type='number'
+                            placeholder='Telefon'
+                            onBlur={handleBlur}
+                          />
+                          <ErrorMessage name='telefon'>
+                            {(msg) => (
+                              <ErrorText primary panel>
+                                {msg}
+                              </ErrorText>
+                            )}
+                          </ErrorMessage>
+                          <Field
+                            as={MyStyledInput}
+                            name='miasto'
+                            type='text'
+                            placeholder='Miasto'
+                            onBlur={handleBlur}
+                          />
+                          <ErrorMessage name='miasto'>
+                            {(msg) => (
+                              <ErrorText primary panel>
+                                {msg}
+                              </ErrorText>
+                            )}
+                          </ErrorMessage>
+                          <Field
+                            as={MyStyledInput}
+                            name='ulica'
+                            type='text'
+                            placeholder='Ulica'
+                            onBlur={handleBlur}
+                          />
+                          <ErrorMessage name='ulica'>
+                            {(msg) => (
+                              <ErrorText primary panel>
+                                {msg}
+                              </ErrorText>
+                            )}
+                          </ErrorMessage>
+                          <Field
+                            as={MyStyledInput}
+                            name='kodPocztowy'
+                            type='number'
+                            placeholder='Kod pocztowy'
+                            onBlur={handleBlur}
+                          />
+                          <ErrorMessage name='kodPocztowy'>
+                            {(msg) => (
+                              <ErrorText primary panel>
+                                {msg}
+                              </ErrorText>
+                            )}
+                          </ErrorMessage>
+                          {isCreateAccount ? (
+                            <>
+                              <TextContainer primary>
+                                <RegisterText>
+                                  Jednak nie chcesz tworzyc konta?
+                                </RegisterText>
+                                <RegisterText
+                                  primary
+                                  onClick={() => {
+                                    const { password, ...oldValues } = values
+                                    setIsCreateAccount(false)
+                                    setValues(oldValues)
+                                  }}
+                                >
+                                  Kliknij tutaj
+                                </RegisterText>
+                              </TextContainer>
+                              <Field
+                                as={MyStyledInput}
+                                name='password'
+                                type='password'
+                                placeholder='Hasło do konta'
+                                onBlur={handleBlur}
+                              />
+                              <ErrorMessage name='password'>
+                                {(msg) => (
+                                  <ErrorText primary panel>
+                                    {msg}
+                                  </ErrorText>
+                                )}
+                              </ErrorMessage>
+                            </>
+                          ) : (
                             <TextContainer primary>
                               <RegisterText>
-                                Jednak nie chcesz tworzyc konta?
+                                Chcesz utworzyć konto?
                               </RegisterText>
                               <RegisterText
                                 primary
-                                onClick={() => {
-                                  const { password, ...oldValues } = values
-                                  setIsCreateAccount(false)
-                                  setValues(oldValues)
-                                }}
+                                onClick={() => setIsCreateAccount(true)}
                               >
                                 Kliknij tutaj
                               </RegisterText>
                             </TextContainer>
-                            <Field
-                              as={MyStyledInput}
-                              name='password'
-                              type='password'
-                              placeholder='Hasło do konta'
-                              onBlur={handleBlur}
-                            />
-                            <ErrorMessage name='password'>
-                              {(msg) => (
-                                <ErrorText primary panel>
-                                  {msg}
-                                </ErrorText>
-                              )}
-                            </ErrorMessage>
-                          </>
-                        ) : (
-                          <TextContainer primary>
-                            <RegisterText>Chcesz utworzyć konto?</RegisterText>
-                            <RegisterText
-                              primary
-                              onClick={() => setIsCreateAccount(true)}
-                            >
-                              Kliknij tutaj
-                            </RegisterText>
-                          </TextContainer>
-                        )}
-                        <StyledButton addVisit type='submit'>
-                          Podsumowanie
-                        </StyledButton>
-                        <StyledButton addVisit type='reset'>
-                          Wyczyść formularz
-                        </StyledButton>
-                      </>
-                    )}
-                    <ProgressIconContainer>
-                      <ProgressIcon values={values}></ProgressIcon>
-                      <ProgressIcon page={page} values={values}></ProgressIcon>
-                    </ProgressIconContainer>
-                    <PageButtonContainer>
-                      {page === 1 && (
-                        <PageButton onClick={() => setPage(0)} values={values}>
-                          Poprzednia strona
-                        </PageButton>
+                          )}
+                          <StyledButton addVisit type='submit'>
+                            Podsumowanie
+                          </StyledButton>
+                          <StyledButton addVisit type='reset'>
+                            Wyczyść formularz
+                          </StyledButton>
+                        </>
                       )}
-                      {page === 0 && (
-                        <PageButton
-                          disabled={
-                            !values.usluga ||
-                            !values.grupa ||
-                            !values.specjalista ||
-                            !values.data ||
-                            !values.godzina ||
-                            page === 1
-                          }
+                      <ProgressIconContainer>
+                        <ProgressIcon values={values}></ProgressIcon>
+                        <ProgressIcon
+                          page={page}
                           values={values}
-                          onClick={() => setPage(1)}
-                        >
-                          Nastepna strona
-                        </PageButton>
-                      )}
-                    </PageButtonContainer>
-                    {isSuccessful && (
-                      <>
-                        {message && <ErrorText>{message}</ErrorText>}
-                        {accountCreated && (
-                          <StyledLink
-                            to='/logowanie'
-                            onClick={() => dispatch(clearMessage())}
+                        ></ProgressIcon>
+                      </ProgressIconContainer>
+                      <PageButtonContainer>
+                        {page === 1 && (
+                          <PageButton
+                            onClick={() => setPage(0)}
+                            values={values}
                           >
-                            Przejdź do logowania!
-                          </StyledLink>
+                            Poprzednia strona
+                          </PageButton>
                         )}
-                      </>
-                    )}
-                    {isSubmit && (
-                      <ModalShadow>
-                        <ModalContainer>
-                          <ModalText>Podsumowanie</ModalText>
-                          <ModalVisitContentContainer>
-                            <ModalVisitData>
-                              <h3>Twoje dane</h3>
-                              <ModalVisitTextContainer>
-                                <ModalVisitDataLabel>
-                                  Imie i nazwisko
-                                </ModalVisitDataLabel>
-                                <ModalVisitDataText>
-                                  {values.imie} {values.nazwisko}
-                                </ModalVisitDataText>
-                              </ModalVisitTextContainer>
-                              <ModalVisitTextContainer>
-                                <ModalVisitDataLabel>
-                                  E-mail
-                                </ModalVisitDataLabel>
-                                <ModalVisitDataText>
-                                  {values.email}
-                                </ModalVisitDataText>
-                              </ModalVisitTextContainer>
-                              <ModalVisitTextContainer>
-                                <ModalVisitDataLabel>
-                                  Telefon
-                                </ModalVisitDataLabel>
-                                <ModalVisitDataText>
-                                  {values.telefon}
-                                </ModalVisitDataText>
-                              </ModalVisitTextContainer>
-                              <ModalVisitTextContainer>
-                                <ModalVisitDataLabel>
-                                  Miasto
-                                </ModalVisitDataLabel>
-                                <ModalVisitDataText>
-                                  {values.miasto}
-                                </ModalVisitDataText>
-                              </ModalVisitTextContainer>
-                              <ModalVisitTextContainer>
-                                <ModalVisitDataLabel>Ulica</ModalVisitDataLabel>
-                                <ModalVisitDataText>
-                                  {values.ulica}
-                                </ModalVisitDataText>
-                              </ModalVisitTextContainer>
-                              <ModalVisitTextContainer>
-                                <ModalVisitDataLabel>
-                                  Kod-pocztowy
-                                </ModalVisitDataLabel>
-                                <ModalVisitDataText>
-                                  {values.kodPocztowy}
-                                </ModalVisitDataText>
-                              </ModalVisitTextContainer>
-                            </ModalVisitData>
-                            <ModalVisitData>
-                              <h3>Umówiona wizyta</h3>
-                              <ModalVisitTextContainer>
-                                <ModalVisitDataLabel>Grupa</ModalVisitDataLabel>
-                                <ModalVisitDataText>
-                                  {values.grupa}
-                                </ModalVisitDataText>
-                              </ModalVisitTextContainer>
-                              <ModalVisitTextContainer>
-                                <ModalVisitDataLabel>
-                                  Usługa
-                                </ModalVisitDataLabel>
-                                <ModalVisitDataText>
-                                  {values.usluga}
-                                </ModalVisitDataText>
-                              </ModalVisitTextContainer>
-                              <ModalVisitTextContainer>
-                                <ModalVisitDataLabel>
-                                  Data wizyty
-                                </ModalVisitDataLabel>
-                                <ModalVisitDataText>
-                                  {values.data}r.
-                                </ModalVisitDataText>
-                              </ModalVisitTextContainer>
-                              <ModalVisitTextContainer>
-                                <ModalVisitDataLabel>
-                                  Godzina wizyty
-                                </ModalVisitDataLabel>
-                                <ModalVisitDataText>
-                                  {values.godzina}:00
-                                </ModalVisitDataText>
-                              </ModalVisitTextContainer>
-                            </ModalVisitData>
-                          </ModalVisitContentContainer>
-                          <ModalButtonsContainer>
-                            <MyStyledButton onClick={() => setIsSubmit(false)}>
-                              Anuluj
-                            </MyStyledButton>
-                            <ModalButton
-                              onClick={() => {
-                                onVisitSubmit(values)
-                                resetForm()
-                                setIsSubmit(false)
-                              }}
+                        {page === 0 && (
+                          <PageButton
+                            disabled={
+                              !values.usluga ||
+                              !values.grupa ||
+                              !values.specjalista ||
+                              !values.data ||
+                              !values.godzina ||
+                              page === 1
+                            }
+                            values={values}
+                            onClick={() => setPage(1)}
+                          >
+                            Nastepna strona
+                          </PageButton>
+                        )}
+                      </PageButtonContainer>
+                      {isSuccessful && (
+                        <>
+                          {message && <ErrorText>{message}</ErrorText>}
+                          {accountCreated && (
+                            <StyledLink
+                              to='/logowanie'
+                              onClick={() => dispatch(clearMessage())}
                             >
-                              Potwierdź rezerwacje
-                            </ModalButton>
-                          </ModalButtonsContainer>
-                        </ModalContainer>
-                      </ModalShadow>
-                    )}
-                  </LoginContainer>
-                </FormContainer>
-              </Form>
-            )}
-          </Formik>
-        </>
-      </AddVisitContainer>
+                              Przejdź do logowania!
+                            </StyledLink>
+                          )}
+                        </>
+                      )}
+                      {isSubmit && (
+                        <ModalShadow>
+                          <ModalContainer>
+                            <ModalText>Podsumowanie</ModalText>
+                            <ModalVisitContentContainer>
+                              <ModalVisitData>
+                                <h3>Twoje dane</h3>
+                                <ModalVisitTextContainer>
+                                  <ModalVisitDataLabel>
+                                    Imie i nazwisko
+                                  </ModalVisitDataLabel>
+                                  <ModalVisitDataText>
+                                    {values.imie} {values.nazwisko}
+                                  </ModalVisitDataText>
+                                </ModalVisitTextContainer>
+                                <ModalVisitTextContainer>
+                                  <ModalVisitDataLabel>
+                                    E-mail
+                                  </ModalVisitDataLabel>
+                                  <ModalVisitDataText>
+                                    {values.email}
+                                  </ModalVisitDataText>
+                                </ModalVisitTextContainer>
+                                <ModalVisitTextContainer>
+                                  <ModalVisitDataLabel>
+                                    Telefon
+                                  </ModalVisitDataLabel>
+                                  <ModalVisitDataText>
+                                    {values.telefon}
+                                  </ModalVisitDataText>
+                                </ModalVisitTextContainer>
+                                <ModalVisitTextContainer>
+                                  <ModalVisitDataLabel>
+                                    Miasto
+                                  </ModalVisitDataLabel>
+                                  <ModalVisitDataText>
+                                    {values.miasto}
+                                  </ModalVisitDataText>
+                                </ModalVisitTextContainer>
+                                <ModalVisitTextContainer>
+                                  <ModalVisitDataLabel>
+                                    Ulica
+                                  </ModalVisitDataLabel>
+                                  <ModalVisitDataText>
+                                    {values.ulica}
+                                  </ModalVisitDataText>
+                                </ModalVisitTextContainer>
+                                <ModalVisitTextContainer>
+                                  <ModalVisitDataLabel>
+                                    Kod-pocztowy
+                                  </ModalVisitDataLabel>
+                                  <ModalVisitDataText>
+                                    {values.kodPocztowy}
+                                  </ModalVisitDataText>
+                                </ModalVisitTextContainer>
+                              </ModalVisitData>
+                              <ModalVisitData>
+                                <h3>Umówiona wizyta</h3>
+                                <ModalVisitTextContainer>
+                                  <ModalVisitDataLabel>
+                                    Grupa
+                                  </ModalVisitDataLabel>
+                                  <ModalVisitDataText>
+                                    {values.grupa}
+                                  </ModalVisitDataText>
+                                </ModalVisitTextContainer>
+                                <ModalVisitTextContainer>
+                                  <ModalVisitDataLabel>
+                                    Usługa
+                                  </ModalVisitDataLabel>
+                                  <ModalVisitDataText>
+                                    {values.usluga}
+                                  </ModalVisitDataText>
+                                </ModalVisitTextContainer>
+                                <ModalVisitTextContainer>
+                                  <ModalVisitDataLabel>
+                                    Data wizyty
+                                  </ModalVisitDataLabel>
+                                  <ModalVisitDataText>
+                                    {values.data}r.
+                                  </ModalVisitDataText>
+                                </ModalVisitTextContainer>
+                                <ModalVisitTextContainer>
+                                  <ModalVisitDataLabel>
+                                    Godzina wizyty
+                                  </ModalVisitDataLabel>
+                                  <ModalVisitDataText>
+                                    {values.godzina}:00
+                                  </ModalVisitDataText>
+                                </ModalVisitTextContainer>
+                              </ModalVisitData>
+                            </ModalVisitContentContainer>
+                            <ModalButtonsContainer>
+                              <MyStyledButton
+                                onClick={() => setIsSubmit(false)}
+                              >
+                                Anuluj
+                              </MyStyledButton>
+                              <ModalButton
+                                onClick={() => {
+                                  onVisitSubmit(values)
+                                  resetForm()
+                                  setIsSubmit(false)
+                                }}
+                              >
+                                Potwierdź rezerwacje
+                              </ModalButton>
+                            </ModalButtonsContainer>
+                          </ModalContainer>
+                        </ModalShadow>
+                      )}
+                    </LoginContainer>
+                  </FormContainer>
+                </Form>
+              )}
+            </Formik>
+          </>
+        </AddVisitContainer>
+      )}
     </PageWrapper>
   )
 }
