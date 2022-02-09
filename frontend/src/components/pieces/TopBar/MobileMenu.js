@@ -1,6 +1,4 @@
-import React, { useEffect } from "react";
-
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import { logout } from "../../../store/actions/auth";
 import { history } from "../../../helpers/history";
 import { clearMessage } from "../../../store/actions/message";
@@ -17,8 +15,12 @@ import {
   SocialLink,
   NavSocials,
 } from "./MobileMenuElements";
-
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import AdminNav from "../../../navigation/AdminNav";
+import UserNav from "../../../navigation/UserNav";
+import SpecNav from "../../../navigation/SpecNav";
+import ServiceData from "../../../services/service";
 
 const MobileMenu = ({ setIsOpenHandler }, ref) => {
   const { user: currentUser } = useSelector((state) => state.auth);
@@ -35,8 +37,29 @@ const MobileMenu = ({ setIsOpenHandler }, ref) => {
   const logOut = () => {
     dispatch(logout());
   };
-
   const isAdmin = currentUser && currentUser.roles.includes("ROLE_ADMIN");
+  const [showSpecBoard, setShowSpecBoard] = useState(false);
+  const [showAdminBoard, setShowAdminBoard] = useState(false);
+  const [showUserBoard, setShowUserBoard] = useState(false);
+  const [serviceData, setServiceData] = useState([]);
+  let location = useLocation();
+  let currentLocation = location.pathname.split("/")[1];
+
+  useEffect(() => {
+    retrieveServices();
+  }, []);
+
+  const retrieveServices = () => {
+    ServiceData.getAll().then((response) => setServiceData(response.data));
+  };
+
+  useEffect(() => {
+    if (currentUser) {
+      setShowSpecBoard(currentUser.roles.includes("ROLE_SPEC"));
+      setShowAdminBoard(currentUser.roles.includes("ROLE_ADMIN"));
+      setShowUserBoard(currentUser.roles.includes("ROLE_USER"));
+    }
+  }, [currentUser]);
 
   return (
     <MobileMenuContainer
@@ -77,6 +100,13 @@ const MobileMenu = ({ setIsOpenHandler }, ref) => {
             Kontakt
           </StyledLink>
         </NavItem>
+        {currentUser && (
+          <>
+            {showSpecBoard && <SpecNav />}
+            {showAdminBoard && <AdminNav />}
+            {showUserBoard && <UserNav />}
+          </>
+        )}
         <ButtonsContainer>
           <ButtonNav primary onClick={setIsOpenHandler}>
             <ButtonLink

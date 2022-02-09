@@ -142,7 +142,7 @@ export const VisitDelete = styled.div`
   justify-content: center;
   align-items: center;
   transition: 0.2s;
-  z-index: 999;
+  z-index: 99;
 
   &:hover {
     background-color: rgba(1, 212, 191, 0.3);
