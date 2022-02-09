@@ -81,7 +81,7 @@ class ContactPage extends Component {
             <ButtonContact type="submit">Wyślij</ButtonContact>
           </ContactForm>
           <ContactInfo
-            initial={{ y: -300, opacity: 0 }}
+            initial={{ y: 300, opacity: 0 }}
             animate={{ y: 0, opacity: 1}}
             transition={{ type: "spring", damping: 10, stiffness: 50, delay: .2 }}
           >
