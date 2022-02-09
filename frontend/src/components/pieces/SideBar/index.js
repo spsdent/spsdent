@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { FaInstagram } from "react-icons/fa";
 import { FiFacebook, FiTwitter } from "react-icons/fi";
+import { motion } from "framer-motion";
 import {
   SideBarContainer,
   SideNav,
@@ -20,7 +21,7 @@ import ServiceData from "../../../services/service";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-export const NavItemSub = styled.li`
+export const NavItemSub = styled(motion.li)`
   position: relative;
   margin-left: 10px;
   cursor: pointer;
