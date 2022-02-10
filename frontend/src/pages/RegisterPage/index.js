@@ -168,7 +168,7 @@ const Register = () => {
                     <FormContainer>
                       <LoginContainer
                         register
-                        initial={{ opacity: 0, scale: 0, rotate: 60 }}
+                        initial={{ opacity: 0, scale: 0, rotate: -60 }}
                         animate={{ opacity: 1, scale: 1, rotate: 0 }}
                         transition={{ duration: 0.5 }}
                       >
