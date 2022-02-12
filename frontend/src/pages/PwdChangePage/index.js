@@ -1,28 +1,31 @@
-import React, { useState, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { PageWrapper } from '../../components/PageWrapper'
-import { changePassword } from '../../store/actions/auth'
-import { Formik, Form, ErrorMessage, Field } from 'formik'
-import { passwordChangeValidationSchema } from '../../utils/validationSchemas'
-import { clearMessage } from '../../store/actions/message'
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { PageWrapper } from '../../components/PageWrapper';
+import { resetPwd } from '../../store/actions/auth';
+import { Formik, Form, ErrorMessage, Field } from 'formik';
+import { passwordResetValidationSchema } from '../../utils/validationSchemas';
+import { clearMessage } from '../../store/actions/message';
 import {
   Title,
   FormContainer,
   FormInput,
-} from '../AddVisitPage/AddVisitPageElements'
+} from '../AddVisitPage/AddVisitPageElements';
 import {
   TitleContainer,
   AddVisitContainer,
   LoginContainer,
   TextContainer,
   StyledLink,
-} from '../LoginPage/LoginPageElements'
+} from '../LoginPage/LoginPageElements';
 import {
   UserText,
   ErrorText,
-} from '../ControlPanelPage/ControlPanelPageElements'
-import HashLoader from 'react-spinners/HashLoader'
-import styled from 'styled-components'
+} from '../ControlPanelPage/ControlPanelPageElements';
+import HashLoader from 'react-spinners/HashLoader';
+import styled from 'styled-components';
+import emailjs from 'emailjs-com';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router';
 
 export const FI = styled(FormInput)`
   background-color: transparent;
@@ -49,7 +52,7 @@ export const FI = styled(FormInput)`
     font-size: 7px;
     max-width: 400px;
   }
-`
+`;
 
 const StyledBtn = styled.button`
   width: 18em;
@@ -80,38 +83,71 @@ const StyledBtn = styled.button`
     font-size: 7px;
     max-width: 400px;
   }
-`
+`;
 
-const MyStyledInput = FI.withComponent('input')
+const MyStyledInput = FI.withComponent('input');
 
 const PwdChangePage = () => {
   const initialValues = {
     email: '',
-    oldPassword: '',
-    newPassword: '',
-  }
-  const dispatch = useDispatch()
-  const { message } = useSelector((state) => state.message)
-  const [isLoading, setIsLoading] = useState(false)
+  };
+  const dispatch = useDispatch();
+  const { message } = useSelector((state) => state.message);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     setTimeout(() => {
-      setIsLoading(false)
-    }, 1000)
-  }, [])
+      setIsLoading(false);
+    }, 1000);
+  }, []);
 
   // funkcja odpowiedzialna za zmiane hasla
   // changePassword jest zdefiniowana w store/actions/auth
   const onPwdUpdate = (values, actions) => {
-    dispatch(changePassword(values))
+    let randomPwd = Math.random().toString(36).slice(-8);
+    let obj = {
+      email: values.email,
+      newPassword: randomPwd,
+    };
+    let templateParams = {
+      to: values.email,
+      subject: 'Twoje hasło zostało zresetowane - SPS Dent',
+      pwd: randomPwd,
+    };
+
+    dispatch(resetPwd(obj))
       .then(() => {
-        actions.resetForm()
+        actions.resetForm();
+        emailjs
+          .send(
+            process.env.REACT_APP_SERVICE_ID,
+            'template_v2havob',
+            templateParams,
+            process.env.REACT_APP_USER_ID
+          )
+          .then(
+            (result) => {
+              console.log(result.text);
+              Swal.fire({
+                icon: 'success',
+                title:
+                  'Hasło zostało zresetowane! Nowe hasło znajdziesz na poczcie.',
+              });
+            },
+            (error) => {
+              console.log(error.text);
+              Swal.fire({
+                icon: 'error',
+                title: 'Ooops, wystąpił błąd podczas resetowania hasła.',
+              });
+            }
+          );
       })
       .catch((e) => {
-        console.log(e)
-      })
-  }
+        console.log(e);
+      });
+  };
 
   return (
     <PageWrapper>
@@ -126,9 +162,9 @@ const PwdChangePage = () => {
           <Formik
             initialValues={initialValues}
             onSubmit={(values, actions) => {
-              onPwdUpdate(values, actions)
+              onPwdUpdate(values, actions);
             }}
-            validationSchema={passwordChangeValidationSchema}
+            validationSchema={passwordResetValidationSchema}
           >
             {({ handleBlur }) => (
               <Form>
@@ -140,7 +176,7 @@ const PwdChangePage = () => {
                     transition={{ duration: 0.5 }}
                   >
                     <TitleContainer>
-                      <Title>Zmień</Title>
+                      <Title>Zresetuj</Title>
                       <Title primary>hasło</Title>
                     </TitleContainer>
                     <Field
@@ -158,35 +194,7 @@ const PwdChangePage = () => {
                       )}
                     </ErrorMessage>
 
-                    <Field
-                      as={MyStyledInput}
-                      type='password'
-                      name='oldPassword'
-                      placeholder='Stare hasło'
-                      onBlur={handleBlur}
-                    />
-                    <ErrorMessage name='oldPassword'>
-                      {(msg) => (
-                        <ErrorText primary panel>
-                          {msg}
-                        </ErrorText>
-                      )}
-                    </ErrorMessage>
-                    <Field
-                      as={MyStyledInput}
-                      type='password'
-                      name='newPassword'
-                      placeholder='Nowe hasło'
-                      onBlur={handleBlur}
-                    />
-                    <ErrorMessage name='newPassword'>
-                      {(msg) => (
-                        <ErrorText primary panel>
-                          {msg}
-                        </ErrorText>
-                      )}
-                    </ErrorMessage>
-                    <StyledBtn>Zmień hasło</StyledBtn>
+                    <StyledBtn type='submit'>Zresetuj hasło</StyledBtn>
                     {message && <ErrorText primary>{message}</ErrorText>}
                     <TextContainer>
                       <UserText>Chcesz utworzyć konto?</UserText>
@@ -205,7 +213,7 @@ const PwdChangePage = () => {
         </AddVisitContainer>
       )}
     </PageWrapper>
-  )
-}
+  );
+};
 
-export default PwdChangePage
+export default PwdChangePage;

@@ -15,18 +15,21 @@ export const passwordChangeValidationSchema = Yup.object().shape({
     .label('E-mail'),
   oldPassword: Yup.string()
     .required('Stare hasło jest wymagane')
-    .label('Stare hasło')
-    .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-      'Hasło musi zawierać min. 8 znaków w tym: literę, cyfrę i znak specjalny'
-    ),
+    .label('Stare hasło'),
   newPassword: Yup.string()
     .required('Nowe hasło jest wymagane')
     .label('Nowe hasło')
     .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-      'Hasło musi zawierać min. 8 znaków w tym: literę, cyfrę i znak specjalny'
+      /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
+      'Hasło musi zawierać min. 8 znaków w tym: małą i dużą literę, cyfrę i znak specjalny'
     ),
+})
+
+export const passwordResetValidationSchema = Yup.object().shape({
+  email: Yup.string()
+    .required('E-mail jest wymagany do zresetowania hasła')
+    .email('Wpisz poprawny adres e-mail')
+    .label('E-mail')
 })
 
 export const passwordChangeAdminValidationSchema = Yup.object().shape({
@@ -34,14 +37,14 @@ export const passwordChangeAdminValidationSchema = Yup.object().shape({
     .required('Nowe hasło jest wymagane')
     .label('Nowe hasło')
     .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-      'Hasło musi zawierać min. 8 znaków w tym: literę, cyfrę i znak specjalny'
+      /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
+      'Hasło musi zawierać min. 8 znaków w tym: małą i dużą literę, cyfrę i znak specjalny'
     ),
   repeatPassword: Yup.string()
     .required('Powtórzenie hasła jest wymagane')
     .label('Powtórz hasło')
     .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
       'Hasło musi zawierac min. 8 znaków w tym: literę, cyfrę i znak specjalny'
     )
     .oneOf([Yup.ref('password'), null], 'Hasła muszą być takie same'),
@@ -64,8 +67,8 @@ export const signupValidationSchema = Yup.object().shape({
     .required('Hasło jest wymagane')
     .label('Password')
     .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-      'Hasło musi zawierać min. 8 znaków w tym: literę, cyfrę i znak specjalny'
+      /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
+      'Hasło musi zawierać min. 8 znaków w tym: małą i dużą literę, cyfrę i znak specjalny'
     ),
   telefon: Yup.number()
     .test(
@@ -134,8 +137,8 @@ export const addVisitValidationSchema = Yup.object().shape({
     .required('Hasło jest wymagane')
     .label('Password')
     .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-      'Hasło musi zawierać min. 8 znaków w tym: literę, cyfrę i znak specjalny'
+      /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
+      'Hasło musi zawierać min. 8 znaków w tym: małą i dużą literę, cyfrę i znak specjalny'
     ),
 })
 
@@ -189,8 +192,8 @@ export const addVisitNonAuthValidationSchema = Yup.object().shape({
   password: Yup.string()
     .label('Password')
     .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-      'Hasło musi zawierać min. 8 znaków w tym: literę, cyfrę i znak specjalny'
+      /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
+      'Hasło musi zawierać min. 8 znaków w tym: małą i dużą literę, cyfrę i znak specjalny'
     ),
 })
 
@@ -236,8 +239,8 @@ export const addVisitAdminValidationSchema = Yup.object().shape({
   password: Yup.string()
     .label('Password')
     .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-      'Hasło musi zawierać min. 8 znaków w tym: literę, cyfrę i znak specjalny'
+      /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
+      'Hasło musi zawierać min. 8 znaków w tym: małą i dużą literę, cyfrę i znak specjalny'
     ),
 })
 
@@ -288,17 +291,13 @@ export const updateUserDataValidationSchema = Yup.object().shape({
 export const signInChangePasswordValidationSchema = Yup.object().shape({
   oldPassword: Yup.string()
     .required('Stare hasło jest wymagane')
-    .label('Stare hasło')
-    .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-      'Hasło musi zawierać min. 8 znaków w tym: literę, cyfrę i znak specjalny'
-    ),
+    .label('Stare hasło'),
   newPassword: Yup.string()
     .required('Nowe hasło jest wymagane')
     .label('Nowe hasło')
     .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-      'Hasło musi zawierać min. 8 znaków w tym: literę, cyfrę i znak specjalny'
+      /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
+      'Hasło musi zawierać min. 8 znaków w tym: małą i dużą literę, cyfrę i znak specjalny'
     ),
 })
 
@@ -455,7 +454,7 @@ export const addVisitAdminTimesheetValidationSchema = Yup.object().shape({
   password: Yup.string()
     .label('Password')
     .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-      'Hasło musi zawierać min. 8 znaków w tym: literę, cyfrę i znak specjalny'
+      /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
+      'Hasło musi zawierać min. 8 znaków w tym: małą i dużą literę, cyfrę i znak specjalny'
     ),
 })

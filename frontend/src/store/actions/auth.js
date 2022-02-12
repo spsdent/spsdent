@@ -128,6 +128,34 @@ export const changePassword = (data) => (dispatch) => {
   )
 }
 
+export const resetPwd= (data) => (dispatch) => {
+  return AuthService.passwordReset(data).then(
+    (response) => {
+      dispatch({
+        type: SET_MESSAGE,
+        payload: response.data.message,
+      })
+
+      return Promise.resolve()
+    },
+    (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      })
+
+      return Promise.reject()
+    }
+  )
+}
+
 export const logout = () => (dispatch) => {
   AuthService.logout()
 
