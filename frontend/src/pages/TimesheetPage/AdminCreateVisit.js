@@ -1,14 +1,15 @@
-import React, { useState } from 'react'
-import { Formik, Field, Form, ErrorMessage } from 'formik'
+import React, { useState } from 'react';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
 
-import { useDispatch, useSelector } from 'react-redux'
-import { useFetchAllServices } from '../../hooks'
-import { addVisitAdminTimesheetValidationSchema } from '../../utils/validationSchemas'
-import { register } from '../../store/actions/auth'
-import { SET_MESSAGE } from '../../store/actions/types'
-import { refreshApp } from '../../store/actions/refresh'
-import VisitData from '../../services/visit'
-import { ModalShadow, ModalText } from '../VisitPage/VisitPageElements'
+import { useDispatch, useSelector } from 'react-redux';
+import { useFetchAllServices } from '../../hooks';
+import { addVisitAdminTimesheetValidationSchema } from '../../utils/validationSchemas';
+import { register } from '../../store/actions/auth';
+import { SET_MESSAGE } from '../../store/actions/types';
+import { refreshApp } from '../../store/actions/refresh';
+import VisitData from '../../services/visit';
+import { ModalShadow, ModalText } from '../VisitPage/VisitPageElements';
+import UserData from '../../services/user';
 import {
   SideModalContainer,
   SideModalContent,
@@ -18,7 +19,7 @@ import {
   FormButton,
   StyledButtonsModalContainer,
   StyledModalButton,
-} from './AdminCreateVisitElements.js'
+} from './AdminCreateVisitElements.js';
 import {
   FormContainer,
   FormError,
@@ -30,12 +31,12 @@ import {
   RegisterText,
   TextContainer,
   ModalContainer,
-} from '../AddVisitPage/AddVisitPageElements.js'
-import HashLoader from 'react-spinners/HashLoader'
+} from '../AddVisitPage/AddVisitPageElements.js';
+import HashLoader from 'react-spinners/HashLoader';
 
-const MyStyledSelect = FormInput.withComponent('select')
-const MyStyledInput = FormInput.withComponent('input')
-const MyStyledButton = FormButton.withComponent('button')
+const MyStyledSelect = FormInput.withComponent('select');
+const MyStyledInput = FormInput.withComponent('input');
+const MyStyledButton = FormButton.withComponent('button');
 
 // tutaj jest komponent odpowiedzialny za wyswietlenie formularza w modalu z prawej strony w grafiku admina jak klikniemy w wolny termin
 // zasada dodawania wizyty jest praktycznie identyczna jak w normalnej rezerwacji z tym ze nie wybieramy w formularzu
@@ -52,67 +53,75 @@ const AdminCreateVisit = ({
   const visitState = {
     grupa: '',
     usluga: '',
-    nazwisko: '',
+    specjalista: '',
+    data: '',
+    godzina: '',
     imie: '',
+    nazwisko: '',
+    email: '',
     telefon: '',
     miasto: '',
     ulica: '',
     kodPocztowy: '',
-    email: '',
-  }
-  const [initialState, setInitialState] = useState(visitState)
-  const [serviceGroupSelected, setServiceGroupSelected] = useState('')
-  const [selectedServicePrice, setSelectedServicePrice] = useState('')
-  const [serviceSelected, setServiceSelected] = useState('')
-  const [isCreateAccount, setIsCreateAccount] = useState(false)
-  const [isSubmit, setIsSubmit] = useState(false)
-  const allServicesFromDb = useFetchAllServices()
-  const { user: currentUser } = useSelector((state) => state.auth)
-  const dispatch = useDispatch()
+    status: false,
+    pacjent: '',
+  };
+  const [initialState, setInitialState] = useState(visitState);
+  const [serviceGroupSelected, setServiceGroupSelected] = useState('');
+  const [selectedServicePrice, setSelectedServicePrice] = useState('');
+  const [serviceSelected, setServiceSelected] = useState('');
+  const [isCreateAccount, setIsCreateAccount] = useState(false);
+  const [isSubmit, setIsSubmit] = useState(false);
+  const [foundUsers, setFoundUsers] = useState([]);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [isSearched, setIsSearched] = useState(false);
+  const allServicesFromDb = useFetchAllServices();
+  const { user: currentUser } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   const serviceGroupHandler = (values) => {
-    setServiceGroupSelected(values.grupa)
+    setServiceGroupSelected(values.grupa);
     const currentSelectedDoctor = doctors
       .filter((doctor) => doctor.doctorId === selectedDoctor)
       .map((item) => item.specjalnosci)
-      .flat()
+      .flat();
     const servicesToDisplay = allServicesFromDb.filter((service) =>
       currentSelectedDoctor.includes(service._id)
-    )
+    );
     if (serviceGroupSelected && !serviceSelected) {
-      values.specjalista = ''
-      values.data = ''
-      values.godzina = ''
+      values.specjalista = '';
+      values.data = '';
+      values.godzina = '';
     } else if (!serviceGroupSelected) {
-      setServiceSelected('')
-      values.usluga = ''
-      values.data = ''
-      values.godzina = ''
+      setServiceSelected('');
+      values.usluga = '';
+      values.data = '';
+      values.godzina = '';
     }
 
     return servicesToDisplay.map((service) => (
       <option value={service.grupa}>{service.grupa}</option>
-    ))
-  }
+    ));
+  };
 
   const serviceHandler = (values) => {
-    setServiceSelected(values.usluga)
+    setServiceSelected(values.usluga);
     const selectedGroupServices = allServicesFromDb
       .filter((service) => service.grupa === serviceGroupSelected)
       .map((service) => service.uslugi)
-      .flatMap((item) => item)
+      .flatMap((item) => item);
 
     if (values.usluga) {
       const price = selectedGroupServices.find(
         (item) => item.nazwa.toLowerCase() === values.usluga.toLowerCase()
-      ).cena
-      setSelectedServicePrice(price)
+      ).cena;
+      setSelectedServicePrice(price);
     }
 
     return selectedGroupServices.map((item) => (
       <option value={item.nazwa}>{item.nazwa}</option>
-    ))
-  }
+    ));
+  };
 
   const createVisit = (values) => {
     const {
@@ -126,7 +135,7 @@ const AdminCreateVisit = ({
       kodPocztowy,
       ulica,
       status,
-    } = values
+    } = values;
 
     let visitData = {
       grupa,
@@ -148,7 +157,7 @@ const AdminCreateVisit = ({
       status,
       cena: selectedServicePrice,
       uid: currentUser !== null ? currentUser.id : null,
-    }
+    };
 
     if (values.password) {
       dispatch(
@@ -162,31 +171,64 @@ const AdminCreateVisit = ({
           email,
           values.password
         )
-      )
+      );
     }
 
     VisitData.create(visitData)
       .then((response) => {
-        setIsSubmit(false)
-        isSelectedFunc(false)
-        onCreate(true)
-        dispatch(refreshApp())
+        setIsSubmit(false);
+        isSelectedFunc(false);
+        onCreate(true);
+        dispatch(refreshApp());
         dispatch({
           type: SET_MESSAGE,
           payload: 'Wizyta została utworzona!',
-        })
+        });
       })
       .catch((e) => {
         dispatch({
           type: SET_MESSAGE,
           payload: 'Wystapił błąd podczas tworzenia rezerwacji, przepraszamy.',
-        })
-      })
-  }
+        });
+      });
+  };
 
   const onVisitSubmit = (values) => {
-    createVisit(values)
-  }
+    createVisit(values);
+  };
+
+  const searchUser = (values) => {
+    const { pacjent } = values;
+    if (!pacjent) {
+      setErrorMsg('Podaj nazwisko pacjenta');
+    } else {
+      UserData.getUsersByLastName(pacjent)
+        .then((response) => {
+          setFoundUsers(response.data);
+          setIsSearched(true)
+        })
+        .catch((e) => console.log(e));
+    }
+  };
+
+  const fillFormHandler = (user, setValues) => {
+    const { imie, nazwisko, email, telefon, miasto, ulica, kodPocztowy } = user;
+    console.log('test2', user);
+    const updatedVisit = {
+      ...initialState,
+      imie,
+      nazwisko,
+      email,
+      telefon,
+      miasto,
+      ulica,
+      kodPocztowy,
+    };
+    setValues(updatedVisit);
+    setIsSearched(false)
+    setFoundUsers([]);
+    setErrorMsg(null);
+  };
 
   return (
     <>
@@ -205,152 +247,230 @@ const AdminCreateVisit = ({
               onSubmit={() => setIsSubmit(true)}
               onReset={() => setInitialState(visitState)}
             >
-              {({ values, setValues, handleBlur, resetForm }) => (
+              {({
+                values,
+                setValues,
+                handleBlur,
+                resetForm,
+                errors,
+                touched,
+              }) => (
                 <SideModalContent>
                   <Form>
                     <FormContainer>
                       <FormColumn>
-                        <Field as={MyStyledSelect} name='grupa'>
-                          <option value=''>Wybierz grupę usług</option>
-                          {serviceGroupHandler(values)}
-                        </Field>
-                        <ErrorMessage name='grupa'>
-                          {(msg) => <FormError>{msg}</FormError>}
-                        </ErrorMessage>
-
-                        <Field
-                          as={MyStyledSelect}
-                          name='usluga'
-                          disabled={!serviceGroupSelected}
-                        >
-                          <option value=''>Wybierz usługę</option>
-                          {serviceHandler(values)}
-                        </Field>
-                        <ErrorMessage name='usluga'>
-                          {(msg) => <FormError>{msg}</FormError>}
-                        </ErrorMessage>
-
-                        <Field
-                          name='imie'
-                          as={MyStyledInput}
-                          type='text'
-                          placeholder='Imie'
-                          onBlur={handleBlur}
-                        />
-                        <ErrorMessage name='imie'>
-                          {(msg) => <FormError>{msg}</FormError>}
-                        </ErrorMessage>
-
-                        <Field
-                          name='nazwisko'
-                          type='text'
-                          as={MyStyledInput}
-                          placeholder='Nazwisko'
-                          onBlur={handleBlur}
-                        />
-                        <ErrorMessage name='nazwisko'>
-                          {(msg) => <FormError>{msg}</FormError>}
-                        </ErrorMessage>
-
-                        <Field
-                          name='email'
-                          type='email'
-                          as={MyStyledInput}
-                          placeholder='E-mail'
-                          onBlur={handleBlur}
-                        />
-                        <ErrorMessage name='email'>
-                          {(msg) => <FormError>{msg}</FormError>}
-                        </ErrorMessage>
-
-                        <Field
-                          name='telefon'
-                          type='number'
-                          as={MyStyledInput}
-                          placeholder='Telefon'
-                          onBlur={handleBlur}
-                        />
-                        <ErrorMessage name='telefon'>
-                          {(msg) => <FormError>{msg}</FormError>}
-                        </ErrorMessage>
-
-                        <Field
-                          name='miasto'
-                          type='text'
-                          as={MyStyledInput}
-                          placeholder='Miasto'
-                          onBlur={handleBlur}
-                        />
-                        <ErrorMessage name='miasto'>
-                          {(msg) => <FormError>{msg}</FormError>}
-                        </ErrorMessage>
-
-                        <Field
-                          name='ulica'
-                          type='text'
-                          as={MyStyledInput}
-                          placeholder='Ulica'
-                          onBlur={handleBlur}
-                        />
-                        <ErrorMessage name='ulica'>
-                          {(msg) => <FormError>{msg}</FormError>}
-                        </ErrorMessage>
-
-                        <Field
-                          name='kodPocztowy'
-                          type='number'
-                          as={MyStyledInput}
-                          placeholder='Kod-pocztowy'
-                          onBlur={handleBlur}
-                        />
-                        <ErrorMessage name='kodPocztowy'>
-                          {(msg) => <FormError>{msg}</FormError>}
-                        </ErrorMessage>
-
-                        {isCreateAccount ? (
+                        {!isSearched && (
                           <>
-                            <TextContainer>
-                              <RegisterText>
-                                Jednak nie chcesz tworzyc konta?
-                              </RegisterText>
-                              <RegisterText
-                                primary
-                                onClick={() => {
-                                  const { password, ...oldValues } = values
-                                  setIsCreateAccount(false)
-                                  setValues(oldValues)
-                                }}
-                              >
-                                Kliknij tutaj
-                              </RegisterText>
-                            </TextContainer>
-                            <FormInput
-                              name='password'
-                              type='password'
-                              placeholder='Wpisz hasło'
-                              onBlur={handleBlur}
-                            />
-                            <ErrorMessage name='password'>
+                            <Field as={MyStyledSelect} name='grupa'>
+                              <option value=''>Wybierz grupę usług</option>
+                              {serviceGroupHandler(values)}
+                            </Field>
+                            <ErrorMessage name='grupa'>
                               {(msg) => <FormError>{msg}</FormError>}
                             </ErrorMessage>
+
+                            <Field
+                              as={MyStyledSelect}
+                              name='usluga'
+                              disabled={!serviceGroupSelected}
+                            >
+                              <option value=''>Wybierz usługę</option>
+                              {serviceHandler(values)}
+                            </Field>
+                            <ErrorMessage name='usluga'>
+                              {(msg) => <FormError>{msg}</FormError>}
+                            </ErrorMessage>
+
+                            <Field
+                              name='imie'
+                              as={MyStyledInput}
+                              type='text'
+                              placeholder='Imie'
+                              onBlur={handleBlur}
+                            />
+                            <ErrorMessage name='imie'>
+                              {(msg) => <FormError>{msg}</FormError>}
+                            </ErrorMessage>
+
+                            <Field
+                              name='nazwisko'
+                              type='text'
+                              as={MyStyledInput}
+                              placeholder='Nazwisko'
+                              onBlur={handleBlur}
+                            />
+                            <ErrorMessage name='nazwisko'>
+                              {(msg) => <FormError>{msg}</FormError>}
+                            </ErrorMessage>
+
+                            <Field
+                              name='email'
+                              type='email'
+                              as={MyStyledInput}
+                              placeholder='E-mail'
+                              onBlur={handleBlur}
+                            />
+                            <ErrorMessage name='email'>
+                              {(msg) => <FormError>{msg}</FormError>}
+                            </ErrorMessage>
+
+                            <Field
+                              name='telefon'
+                              type='number'
+                              as={MyStyledInput}
+                              placeholder='Telefon'
+                              onBlur={handleBlur}
+                            />
+                            <ErrorMessage name='telefon'>
+                              {(msg) => <FormError>{msg}</FormError>}
+                            </ErrorMessage>
+
+                            <Field
+                              name='miasto'
+                              type='text'
+                              as={MyStyledInput}
+                              placeholder='Miasto'
+                              onBlur={handleBlur}
+                            />
+                            <ErrorMessage name='miasto'>
+                              {(msg) => <FormError>{msg}</FormError>}
+                            </ErrorMessage>
+
+                            <Field
+                              name='ulica'
+                              type='text'
+                              as={MyStyledInput}
+                              placeholder='Ulica'
+                              onBlur={handleBlur}
+                            />
+                            <ErrorMessage name='ulica'>
+                              {(msg) => <FormError>{msg}</FormError>}
+                            </ErrorMessage>
+
+                            <Field
+                              name='kodPocztowy'
+                              type='number'
+                              as={MyStyledInput}
+                              placeholder='Kod-pocztowy'
+                              onBlur={handleBlur}
+                            />
+                            <ErrorMessage name='kodPocztowy'>
+                              {(msg) => <FormError>{msg}</FormError>}
+                            </ErrorMessage>
+
+                            {isCreateAccount ? (
+                              <>
+                                <TextContainer>
+                                  <RegisterText>
+                                    Jednak nie chcesz tworzyc konta?
+                                  </RegisterText>
+                                  <RegisterText
+                                    primary
+                                    onClick={() => {
+                                      const { password, ...oldValues } = values;
+                                      setIsCreateAccount(false);
+                                      setValues(oldValues);
+                                    }}
+                                  >
+                                    Kliknij tutaj
+                                  </RegisterText>
+                                </TextContainer>
+                                <FormInput
+                                  name='password'
+                                  type='password'
+                                  placeholder='Wpisz hasło'
+                                  onBlur={handleBlur}
+                                />
+                                <ErrorMessage name='password'>
+                                  {(msg) => <FormError>{msg}</FormError>}
+                                </ErrorMessage>
+                              </>
+                            ) : (
+                              <TextContainer>
+                                <RegisterText>
+                                  Chcesz utworzyć konto?
+                                </RegisterText>
+                                <RegisterText
+                                  primary
+                                  onClick={() => setIsCreateAccount(true)}
+                                >
+                                  Kliknij tutaj
+                                </RegisterText>
+                              </TextContainer>
+                            )}
+                            <MyStyledButton type='submit'>
+                              Zarezerwuj
+                            </MyStyledButton>
+                            <MyStyledButton type='reset'>
+                              Wyczyść formularz
+                            </MyStyledButton>
+                          </>
+                        )}
+                        {currentUser &&
+                          currentUser.roles.includes('ROLE_ADMIN') && (
+                            <>
+                              <TextContainer>
+                                <p>Wyszukaj pacjenta </p>
+                              </TextContainer>
+                              <Field
+                                as={MyStyledInput}
+                                onBlur={handleBlur}
+                                type='text'
+                                name='pacjent'
+                                placeholder='Wyszukaj pacjenta'
+                              />
+                              <MyStyledButton
+                                onClick={() => searchUser(values)}
+                                type='button'
+                              >
+                                Wyszukaj
+                              </MyStyledButton>
+                              {errors.pacjent && touched.pacjent ? (
+                                <p style={{ color: 'red' }}>{errors.pacjent}</p>
+                              ) : null}
+                            </>
+                          )}
+
+                        {foundUsers.length > 0 ? (
+                          <>
+                            {foundUsers.map((user) => (
+                              <div
+                                style={{
+                                  backgroundColor: '#333',
+                                  width: '300px',
+                                  padding: '15px',
+                                  color: 'white',
+                                }}
+                                key={user._id}
+                              >
+                                <p>Imie: {user.imie}</p>
+                                <p>Nazwisko: {user.nazwisko}</p>
+                                <p>Telefon: {user.telefon}</p>
+                                <p>Miasto: {user.miasto}</p>
+                                <p>Ulica: {user.ulica}</p>
+                                <p>Kod-pocztowy: {user.kodPocztowy}</p>
+                                <button
+                                  onClick={() => {
+                                    fillFormHandler(user, setValues);
+                                  }}
+                                  type='submit'
+                                  style={{
+                                    backgroundColor: 'none',
+                                    border: '2px solid #333',
+                                    height: '3em',
+                                    margin: '10px 0',
+                                    padding: '10px',
+                                    cursor: 'pointer',
+                                  }}
+                                >
+                                  Wybierz tego pacjenta
+                                </button>
+                              </div>
+                            ))}
                           </>
                         ) : (
-                          <TextContainer>
-                            <RegisterText>Chcesz utworzyć konto?</RegisterText>
-                            <RegisterText
-                              primary
-                              onClick={() => setIsCreateAccount(true)}
-                            >
-                              Kliknij tutaj
-                            </RegisterText>
-                          </TextContainer>
+                          <p style={{ color: 'red' }}>{errorMsg}</p>
                         )}
-                        <MyStyledButton type='submit'>
-                          Zarezerwuj
-                        </MyStyledButton>
-                        <MyStyledButton type='reset'>
-                          Wyczyść formularz
-                        </MyStyledButton>
 
                         {isSubmit && (
                           <ModalShadow>
@@ -470,9 +590,9 @@ const AdminCreateVisit = ({
                                   type='button'
                                   primary
                                   onClick={() => {
-                                    onVisitSubmit(values)
-                                    resetForm()
-                                    setIsSubmit(false)
+                                    onVisitSubmit(values);
+                                    resetForm();
+                                    setIsSubmit(false);
                                   }}
                                 >
                                   Potwierdź rezerwacje
@@ -497,7 +617,7 @@ const AdminCreateVisit = ({
         )}
       </SideModalContainer>
     </>
-  )
-}
+  );
+};
 
-export default AdminCreateVisit
+export default AdminCreateVisit;

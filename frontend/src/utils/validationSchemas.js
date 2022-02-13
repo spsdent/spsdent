@@ -1,4 +1,4 @@
-import * as Yup from 'yup'
+import * as Yup from 'yup';
 
 export const loginValidationSchema = Yup.object().shape({
   email: Yup.string()
@@ -6,7 +6,7 @@ export const loginValidationSchema = Yup.object().shape({
     .email('Wpisz poprawny adres e-mail')
     .label('E-mail'),
   password: Yup.string().required('Hasło jest wymagane').label('Hasło'),
-})
+});
 
 export const passwordChangeValidationSchema = Yup.object().shape({
   email: Yup.string()
@@ -23,14 +23,14 @@ export const passwordChangeValidationSchema = Yup.object().shape({
       /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
       'Hasło musi zawierać min. 8 znaków w tym: małą i dużą literę, cyfrę i znak specjalny'
     ),
-})
+});
 
 export const passwordResetValidationSchema = Yup.object().shape({
   email: Yup.string()
     .required('E-mail jest wymagany do zresetowania hasła')
     .email('Wpisz poprawny adres e-mail')
-    .label('E-mail')
-})
+    .label('E-mail'),
+});
 
 export const passwordChangeAdminValidationSchema = Yup.object().shape({
   password: Yup.string()
@@ -48,7 +48,7 @@ export const passwordChangeAdminValidationSchema = Yup.object().shape({
       'Hasło musi zawierac min. 8 znaków w tym: literę, cyfrę i znak specjalny'
     )
     .oneOf([Yup.ref('password'), null], 'Hasła muszą być takie same'),
-})
+});
 
 export const signupValidationSchema = Yup.object().shape({
   imie: Yup.string()
@@ -92,7 +92,7 @@ export const signupValidationSchema = Yup.object().shape({
       (val) => val && val.toString().length === 5
     )
     .required('Kod pocztowy jest wymagany'),
-})
+});
 
 export const addVisitValidationSchema = Yup.object().shape({
   grupa: Yup.string().required('Wybierz grupę usług'),
@@ -140,7 +140,7 @@ export const addVisitValidationSchema = Yup.object().shape({
       /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
       'Hasło musi zawierać min. 8 znaków w tym: małą i dużą literę, cyfrę i znak specjalny'
     ),
-})
+});
 
 export const addVisitUserValidationSchema = Yup.object().shape({
   grupa: Yup.string().required('Wybierz grupę usług'),
@@ -148,7 +148,7 @@ export const addVisitUserValidationSchema = Yup.object().shape({
   specjalista: Yup.string().required('Wybierz specjalistę'),
   data: Yup.string().required('Wybierz termin wizyty'),
   godzina: Yup.string().required('Wybierz godzinę wizyty'),
-})
+});
 
 export const addVisitNonAuthValidationSchema = Yup.object().shape({
   grupa: Yup.string().required('Wybierz grupę usług'),
@@ -195,7 +195,7 @@ export const addVisitNonAuthValidationSchema = Yup.object().shape({
       /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
       'Hasło musi zawierać min. 8 znaków w tym: małą i dużą literę, cyfrę i znak specjalny'
     ),
-})
+});
 
 export const addVisitAdminValidationSchema = Yup.object().shape({
   grupa: Yup.string().required('Wybierz grupę usług'),
@@ -242,14 +242,14 @@ export const addVisitAdminValidationSchema = Yup.object().shape({
       /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
       'Hasło musi zawierać min. 8 znaków w tym: małą i dużą literę, cyfrę i znak specjalny'
     ),
-})
+});
 
 export const addVisitSearchUserValidationSchema = Yup.object().shape({
   pacjent: Yup.string()
     .required('Wprowadź nazwisko')
     .min(2, 'Za krótkie')
     .max(50, 'Za długie'),
-})
+});
 
 export const updateUserDataValidationSchema = Yup.object().shape({
   imie: Yup.string()
@@ -286,7 +286,7 @@ export const updateUserDataValidationSchema = Yup.object().shape({
       (val) => val && val.toString().length === 5
     )
     .required('Kod pocztowy jest wymagany'),
-})
+});
 
 export const signInChangePasswordValidationSchema = Yup.object().shape({
   oldPassword: Yup.string()
@@ -299,11 +299,11 @@ export const signInChangePasswordValidationSchema = Yup.object().shape({
       /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
       'Hasło musi zawierać min. 8 znaków w tym: małą i dużą literę, cyfrę i znak specjalny'
     ),
-})
+});
 
 Yup.addMethod(Yup.string, 'integer', function () {
-  return this.matches(/^\d+$/, 'To pole wymaga podania cyfr')
-})
+  return this.matches(/^\d+$/, 'To pole wymaga podania cyfr');
+});
 
 export const createServiceValidationSchema = Yup.object().shape({
   grupa: Yup.string()
@@ -333,7 +333,7 @@ export const createServiceValidationSchema = Yup.object().shape({
     .min(3, 'Usługa musi mieć co najmniej 3 znaki')
     .max(25, 'Usługa może mieć maksymalnie 25 znaków'),
   u5cena: Yup.string().integer(Yup.ref('u1cena')),
-})
+});
 
 export const updateServiceValidationSchema = Yup.object().shape({
   grupa: Yup.string()
@@ -350,7 +350,7 @@ export const updateServiceValidationSchema = Yup.object().shape({
       (val) => val && val.toString().length > 0
     )
     .required('Podanie ceny usługi jest wymagane'),
-})
+});
 
 function startBigger(ref, msg) {
   return this.test({
@@ -361,9 +361,9 @@ function startBigger(ref, msg) {
       reference: ref.path,
     },
     test: function (value) {
-      return value > this.resolve(ref)
+      return value > this.resolve(ref);
     },
-  })
+  });
 }
 
 function endBigger(ref, msg) {
@@ -375,20 +375,20 @@ function endBigger(ref, msg) {
       reference: ref.path,
     },
     test: function (value) {
-      return value < this.resolve(ref)
+      return value < this.resolve(ref);
     },
-  })
+  });
 }
 
-Yup.addMethod(Yup.number, 'startBigger', startBigger)
-Yup.addMethod(Yup.number, 'endBigger', endBigger)
+Yup.addMethod(Yup.number, 'startBigger', startBigger);
+Yup.addMethod(Yup.number, 'endBigger', endBigger);
 
 export const updateRoleValidationSchema = Yup.object().shape({
   rola: Yup.object().shape({
     label: Yup.string(),
     value: Yup.string(),
   }),
-})
+});
 
 export const updatePermissionsValidationSchema = Yup.object().shape({
   rola: Yup.object().shape({
@@ -413,7 +413,7 @@ export const updatePermissionsValidationSchema = Yup.object().shape({
       })
     )
     .min(1, 'Wybierz min. 1 specjalizację'),
-})
+});
 
 export const addVisitAdminTimesheetValidationSchema = Yup.object().shape({
   grupa: Yup.string().required('Wybierz grupę usług'),
@@ -457,4 +457,5 @@ export const addVisitAdminTimesheetValidationSchema = Yup.object().shape({
       /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
       'Hasło musi zawierać min. 8 znaków w tym: małą i dużą literę, cyfrę i znak specjalny'
     ),
-})
+  pacjent: Yup.string().min(2, 'Za krótkie').max(50, 'Za długie'),
+});
