@@ -75,6 +75,7 @@ const AdminCreateVisit = ({
   const [foundUsers, setFoundUsers] = useState([]);
   const [errorMsg, setErrorMsg] = useState('');
   const [isSearched, setIsSearched] = useState(false);
+  const [selectedFromDb, setSelectedFromDb] = useState(false);
   const allServicesFromDb = useFetchAllServices();
   const { user: currentUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -213,7 +214,6 @@ const AdminCreateVisit = ({
 
   const fillFormHandler = (user, setValues) => {
     const { imie, nazwisko, email, telefon, miasto, ulica, kodPocztowy } = user;
-    console.log('test2', user);
     const updatedVisit = {
       ...initialState,
       imie,
@@ -225,6 +225,7 @@ const AdminCreateVisit = ({
       kodPocztowy,
     };
     setValues(updatedVisit);
+    setSelectedFromDb(true);
     setIsSearched(false);
     setFoundUsers([]);
     setErrorMsg(null);
@@ -245,7 +246,10 @@ const AdminCreateVisit = ({
               initialValues={initialState}
               validationSchema={addVisitAdminTimesheetValidationSchema}
               onSubmit={() => setIsSubmit(true)}
-              onReset={() => setInitialState(visitState)}
+              onReset={() => {
+                setInitialState(visitState);
+                setSelectedFromDb(false);
+              }}
             >
               {({
                 values,
@@ -358,7 +362,7 @@ const AdminCreateVisit = ({
                               {(msg) => <FormError>{msg}</FormError>}
                             </ErrorMessage>
 
-                            {isCreateAccount ? (
+                            {selectedFromDb ? null : isCreateAccount ? (
                               <>
                                 <TextContainer>
                                   <RegisterText>
@@ -406,6 +410,7 @@ const AdminCreateVisit = ({
                             </MyStyledButton>
                           </>
                         )}
+
                         {currentUser &&
                           currentUser.roles.includes('ROLE_ADMIN') && (
                             <>
@@ -430,8 +435,8 @@ const AdminCreateVisit = ({
                                   onClick={() => {
                                     setIsSearched(false);
                                     setFoundUsers([]);
-                                    setValues({...values, pacjent: ''})
-                                    setErrorMsg('')
+                                    setValues({ ...values, pacjent: '' });
+                                    setErrorMsg('');
                                   }}
                                   type='button'
                                 >
@@ -454,7 +459,7 @@ const AdminCreateVisit = ({
                                   padding: '15px',
                                   color: '#333',
                                   margin: '10px 0',
-                                  fontSize: '.7em'
+                                  fontSize: '.7em',
                                 }}
                                 key={user._id}
                               >
