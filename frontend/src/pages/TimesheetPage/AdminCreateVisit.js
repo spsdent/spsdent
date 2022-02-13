@@ -205,7 +205,7 @@ const AdminCreateVisit = ({
       UserData.getUsersByLastName(pacjent)
         .then((response) => {
           setFoundUsers(response.data);
-          setIsSearched(true)
+          setIsSearched(true);
         })
         .catch((e) => console.log(e));
     }
@@ -225,7 +225,7 @@ const AdminCreateVisit = ({
       kodPocztowy,
     };
     setValues(updatedVisit);
-    setIsSearched(false)
+    setIsSearched(false);
     setFoundUsers([]);
     setErrorMsg(null);
   };
@@ -425,6 +425,19 @@ const AdminCreateVisit = ({
                               >
                                 Wyszukaj
                               </MyStyledButton>
+                              {isSearched && (
+                                <MyStyledButton
+                                  onClick={() => {
+                                    setIsSearched(false);
+                                    setFoundUsers([]);
+                                    setValues({...values, pacjent: ''})
+                                    setErrorMsg('')
+                                  }}
+                                  type='button'
+                                >
+                                  Anuluj wyszukiwanie
+                                </MyStyledButton>
+                              )}
                               {errors.pacjent && touched.pacjent ? (
                                 <p style={{ color: 'red' }}>{errors.pacjent}</p>
                               ) : null}
@@ -436,10 +449,12 @@ const AdminCreateVisit = ({
                             {foundUsers.map((user) => (
                               <div
                                 style={{
-                                  backgroundColor: '#333',
+                                  border: '2px solid #333',
                                   width: '300px',
                                   padding: '15px',
-                                  color: 'white',
+                                  color: '#333',
+                                  margin: '10px 0',
+                                  fontSize: '.7em'
                                 }}
                                 key={user._id}
                               >
@@ -449,22 +464,14 @@ const AdminCreateVisit = ({
                                 <p>Miasto: {user.miasto}</p>
                                 <p>Ulica: {user.ulica}</p>
                                 <p>Kod-pocztowy: {user.kodPocztowy}</p>
-                                <button
+                                <MyStyledButton
                                   onClick={() => {
                                     fillFormHandler(user, setValues);
                                   }}
-                                  type='submit'
-                                  style={{
-                                    backgroundColor: 'none',
-                                    border: '2px solid #333',
-                                    height: '3em',
-                                    margin: '10px 0',
-                                    padding: '10px',
-                                    cursor: 'pointer',
-                                  }}
+                                  type='button'
                                 >
                                   Wybierz tego pacjenta
-                                </button>
+                                </MyStyledButton>
                               </div>
                             ))}
                           </>
